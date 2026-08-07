@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sri Tulasi Ram | Engineer</title>
+    <style>
+        :root {
+            --bg-color: #000000;
+            --text-main: #f5f5f7; 
+            --text-muted: #86868b; 
+            --accent: #2997ff; 
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow: hidden;
+        }
+
+        @keyframes fadeUpBlur {
+            0% { opacity: 0; transform: translateY(40px) scale(0.95); filter: blur(12px); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+
+        .animate-1 { animation: fadeUpBlur 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; opacity: 0; }
+        .animate-2 { animation: fadeUpBlur 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards; opacity: 0; }
+        .animate-3 { animation: fadeUpBlur 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards; opacity: 0; }
+
+        .badge {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: clamp(44px, 8vw, 84px);
+            font-weight: 700;
+            letter-spacing: -0.04em; 
+            line-height: 1.05;
+            margin-bottom: 24px;
+            background: linear-gradient(180deg, #ffffff 0%, #86868b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            max-width: 900px;
+            padding: 0 20px;
+        }
+
+        p.subtitle {
+            font-size: clamp(19px, 3vw, 24px);
+            font-weight: 500;
+            color: var(--text-main);
+            margin-bottom: 40px;
+            letter-spacing: -0.015em;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        .btn {
+            display: inline-block;
+            border-radius: 980px; 
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--text-main);
+            color: var(--bg-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #ffffff;
+            transform: scale(1.02);
+        }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+    </style>
+</head>
+<body>
+    <div class="badge animate-1">COMING SOON</div>
+    
+    <h1 class="animate-1">Engineering precision.<br>Design intuition.</h1>
+    
+    <p class="subtitle animate-2">Sri Tulasi Ram</p>
+    
+    <div class="cta-group animate-3">
+        <a href="https://www.linkedin.com/in/sritulasiram" target="_blank" class="btn btn-primary">Connect on LinkedIn</a>
+        <a href="mailto:sritulasiram27@gmail.com" class="btn btn-secondary">Send an Email</a>
+    </div>
+</body>
+</html>
