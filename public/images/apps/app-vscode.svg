@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Edge-to-edge solid white plate matching official macOS VS Code icon -->
+  <rect width="512" height="512" fill="#FFFFFF"/>
+  
+  <!-- Official Visual Studio Code Blue Ribbon Geometry scaled & centered -->
+  <g transform="translate(64, 64) scale(16)">
+    <!-- Back ribbon segment -->
+    <path fill="#0065A9" d="M23.15 2.587L18.21.21a1.494 1.494 0 0 0-1.705.29l-9.46 8.63-4.12-3.128a.999.999 0 0 0-1.276.057L.327 7.261A1 1 0 0 0 .326 8.74L3.899 12 .326 15.26a1 1 0 0 0 .001 1.479L1.65 17.94a.999.999 0 0 0 1.276.057l4.12-3.128 9.46 8.63a1.492 1.492 0 0 0 1.704.29l4.942-2.377A1.5 1.5 0 0 0 24 20.06V3.939a1.5 1.5 0 0 0-.85-1.352z"/>
+    <!-- Main blue body -->
+    <path fill="#007ACC" d="M23.15 2.587L18.21.21a1.494 1.494 0 0 0-1.705.29l-9.46 8.63 4.12 3.128 6.885-5.226V17.06l-6.885-5.226-4.12 3.128 9.46 8.63a1.492 1.492 0 0 0 1.704.29l4.942-2.377A1.5 1.5 0 0 0 24 20.06V3.939a1.5 1.5 0 0 0-.85-1.352z"/>
+    <!-- Right fold highlight -->
+    <path fill="#1F8AD2" d="M18.004 17.448L10.826 12l7.178-5.448v10.896z"/>
+    <!-- Depth shadow overlay -->
+    <path fill="#0065A9" opacity="0.32" d="M18.004 6.552L10.826 12l2.368 1.797 4.81-3.651V6.552z"/>
+    <!-- Subtle specular sheen -->
+    <path fill="#FFFFFF" opacity="0.18" d="M18.004 17.448L10.826 12l7.178-5.448v10.896z"/>
+  </g>
+</svg>

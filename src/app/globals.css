@@ -1,26 +1,923 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro", var(--font-inter), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: "SF Pro Display", -apple-system, BlinkMacSystemFont, "SF Pro", var(--font-inter), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro", var(--font-inter), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-serif: var(--font-instrument), "Instrument Serif", Georgia, Cambria, serif;
+}
+
+.font-instrument {
+  font-family: var(--font-instrument), "Instrument Serif", Georgia, serif;
+}
+
 :root {
+  color-scheme: light;
   --background: #ffffff;
-  --foreground: #171717;
+  --canvas-subtle: #f5f5f7;
+  --canvas-neutral: #fafafa;
+  --foreground: #1d1d1f;
+  --foreground-secondary: #6e6e73;
+  --foreground-tertiary: #86868b;
+  --accent: #0071e3;
+  --accent-hover: #0077ed;
+  --accent-subtle: #f0f6ff;
+  --border: #e5e5ea;
+  --border-subtle: #f0f0f2;
+  --card-bg: #ffffff;
+  --card-hover: #fafafa;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Base HTML & Body */
+html, body {
+  background-color: #ffffff;
+  color: #1d1d1f;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+input, textarea, button, select, code, kbd, samp, pre {
+  font-family: inherit;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+input::placeholder, textarea::placeholder {
+  font-weight: inherit;
+}
+
+/* Ensure anchor links scroll with comfortable clearance under fixed 48px navigation bar */
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
+/* ========================================================================= */
+/* APPLE-GRADE DARK MODE SYSTEM */
+/* ========================================================================= */
+html.dark {
+  color-scheme: dark;
+  --background: #000000;
+  --canvas-subtle: #141416;
+  --canvas-neutral: #0a0a0c;
+  --foreground: #f5f5f7;
+  --foreground-secondary: #a1a1a6;
+  --foreground-tertiary: #8e8e93;
+  --accent: #2997ff;
+  --accent-hover: #0077ed;
+  --accent-subtle: rgba(41, 151, 255, 0.15);
+  --border: #2c2c2e;
+  --border-subtle: #1c1c1e;
+  --card-bg: #121214;
+  --card-hover: #1c1c1e;
+}
+
+html.dark body {
+  background-color: #000000 !important;
+  color: #f5f5f7 !important;
+}
+
+html.dark main {
+  background-color: #000000 !important;
+  color: #f5f5f7 !important;
+}
+
+/* Header & Nav — frosted glass */
+html.dark header {
+  background-color: rgba(10, 10, 12, 0.72) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) brightness(0.85) !important;
+  backdrop-filter: blur(28px) saturate(180%) brightness(0.85) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark header[data-dropdown-open="true"] {
+  background-color: rgba(10, 10, 12, 0.92) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(180%) brightness(0.85) !important;
+  backdrop-filter: blur(32px) saturate(180%) brightness(0.85) !important;
+}
+
+/* When mobile menu is open, header becomes completely transparent so full-screen mobile menu glass is 100% seamless */
+header[data-mobile-open="true"],
+html.dark header[data-mobile-open="true"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  border-color: transparent !important;
+  border-bottom-color: transparent !important;
+  box-shadow: none !important;
+}
+
+#mobile-menu {
+  -webkit-backdrop-filter: blur(28px) saturate(180%) brightness(0.85);
+  backdrop-filter: blur(28px) saturate(180%) brightness(0.85);
+  will-change: transform, opacity;
+  transition: opacity 380ms cubic-bezier(0.32, 0.72, 0, 1),
+              transform 380ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+html.dark #mobile-menu {
+  background-color: rgba(10, 10, 12, 0.78) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) brightness(0.85) !important;
+  backdrop-filter: blur(28px) saturate(180%) brightness(0.85) !important;
+}
+
+html:not(.dark) #mobile-menu {
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+}
+
+/* Mobile Navigation Apple Fluid Cascade */
+@keyframes mobileCascadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.mobile-item-1 {
+  animation: mobileCascadeIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) 0.04s both;
 }
+.mobile-item-2 {
+  animation: mobileCascadeIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both;
+}
+.mobile-item-3 {
+  animation: mobileCascadeIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+}
+.mobile-item-4 {
+  animation: mobileCascadeIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) 0.16s both;
+}
+.mobile-item-5 {
+  animation: mobileCascadeIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) 0.20s both;
+}
+
+/* Surfaces */
+html.dark .bg-white {
+  background-color: #000000 !important;
+}
+
+html.dark .bg-\[\#FAFAFA\],
+html.dark .bg-\[\#fafafa\] {
+  background-color: #161617 !important;
+}
+
+html.dark .bg-\[\#F5F5F7\],
+html.dark .bg-\[\#f5f5f7\] {
+  background-color: #1c1c1e !important;
+}
+
+html.dark .hover\:bg-\[\#FAFAFA\]:hover,
+html.dark .hover\:bg-\[\#fafafa\]:hover {
+  background-color: #1c1c1e !important;
+}
+
+html.dark .hover\:bg-\[\#F5F5F7\]:hover,
+html.dark .hover\:bg-\[\#f5f5f7\]:hover {
+  background-color: #2c2c2e !important;
+}
+
+html.dark .hover\:bg-\[\#E5E5EA\]:hover,
+html.dark .hover\:bg-\[\#e5e5ea\]:hover {
+  background-color: #3a3a3c !important;
+}
+
+html.dark .hover\:bg-\[\#EBEBED\]:hover {
+  background-color: #2c2c2e !important;
+}
+
+html.dark .bg-\[\#1D1D1F\]\/5 {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark .hover\:bg-\[\#1D1D1F\]\/5:hover {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Text Colors */
+html.dark .text-\[\#1D1D1F\],
+html.dark .text-\[\#1d1d1f\] {
+  color: #f5f5f7 !important;
+}
+
+html.dark .text-\[\#6E6E73\],
+html.dark .text-\[\#6e6e73\] {
+  color: #a1a1a6 !important;
+}
+
+html.dark .text-\[\#86868B\],
+html.dark .text-\[\#86868b\] {
+  color: #8e8e93 !important;
+}
+
+html.dark .hover\:text-\[\#1D1D1F\]:hover,
+html.dark .hover\:text-\[\#1d1d1f\]:hover {
+  color: #ffffff !important;
+}
+
+/* Borders */
+html.dark .border-\[\#E5E5EA\],
+html.dark .border-\[\#e5e5ea\],
+html.dark .border-\[\#D2D2D7\],
+html.dark .border-\[\#d2d2d7\],
+html.dark .border-\[\#F5F5F7\],
+html.dark .border-\[\#f5f5f7\] {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+html.dark .divide-\[\#E5E5EA\] > :not([hidden]) ~ :not([hidden]),
+html.dark .divide-\[\#e5e5ea\] > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Cards & Elevation */
+html.dark .apple-card-shadow {
+  background-color: #161617 !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+html.dark .apple-card-shadow:hover {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.14) !important;
+}
+
+/* Glass Surface */
+html.dark .glass-surface {
+  background-color: rgba(20, 20, 24, 0.72) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 24px 64px -12px rgba(0, 0, 0, 0.6), inset 0 1px 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Buttons with Inverted Primary Dark Style */
+html.dark button.bg-\[\#1D1D1F\],
+html.dark a.bg-\[\#1D1D1F\] {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+html.dark button.bg-\[\#1D1D1F\]:hover,
+html.dark a.bg-\[\#1D1D1F\]:hover {
+  background-color: #e5e5ea !important;
+}
+
+/* Mobile Drawer */
+.mobile-nav-panel {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Selection */
+html.dark ::selection {
+  background-color: rgba(41, 151, 255, 0.28) !important;
+  color: #ffffff !important;
+}
+
+/* =========================================================================
+   PORTFOLIO SCROLLBAR
+   Light mode : black pill on white track
+   Dark mode  : white pill on black track
+   KEY: selectors must target html directly (no space) so html.dark::-webkit
+        applies to html's OWN scrollbar, not its children's scrollbars.
+   ========================================================================= */
+
+/* Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.50) #ffffff;
+}
+
+html.dark {
+  scrollbar-color: rgba(255, 255, 255, 0.50) #000000;
+}
+
+/* WebKit — target html element's OWN scrollbar (no descendant space) */
+html::-webkit-scrollbar {
+  width: 8px;
+}
+
+html::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+html::-webkit-scrollbar-corner {
+  background: #ffffff;
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.45);
+  border-radius: 9999px;
+  border: 2px solid #ffffff;
+  transition: background-color 0.2s ease;
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.65);
+}
+
+html::-webkit-scrollbar-thumb:active {
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+/* Dark mode — same pattern, no space before ::-webkit */
+html.dark::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+html.dark::-webkit-scrollbar-corner {
+  background: #000000;
+}
+
+html.dark::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.45);
+  border-radius: 9999px;
+  border: 2px solid #000000;
+}
+
+html.dark::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.65);
+}
+
+html.dark::-webkit-scrollbar-thumb:active {
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+/* Hide scrollbar utility (internal scroll containers) */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+/* Selection highlight */
+::selection {
+  background-color: rgba(0, 113, 227, 0.15);
+  color: #1d1d1f;
+}
+
+/* Typography utilities */
+.tracking-apple-tight {
+  letter-spacing: -0.028em;
+}
+
+.tracking-apple-hero {
+  letter-spacing: -0.035em;
+}
+
+.tracking-apple-headline {
+  letter-spacing: -0.022em;
+}
+
+.tracking-apple-subhead {
+  letter-spacing: -0.015em;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Apple Keynote Metallic Titanium Typography Gradients (Dark Mode) */
+.apple-headline-gradient {
+  color: #1d1d1f;
+  transition: color 0.25s cubic-bezier(0.16, 1, 0.3, 1), -webkit-text-fill-color 0.25s ease;
+}
+
+html.dark .apple-headline-gradient {
+  background: linear-gradient(180deg, #ffffff 15%, #f2f2f7 50%, #b8b8be 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+
+.apple-headline-gradient-dim {
+  color: #1d1d1f;
+  transition: color 0.25s cubic-bezier(0.16, 1, 0.3, 1), -webkit-text-fill-color 0.25s ease;
+}
+
+html.dark .apple-headline-gradient-dim {
+  background: linear-gradient(180deg, #f2f2f7 10%, #dcdce2 50%, #a1a1a6 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+
+/* Continuous 3-Tier Headline Gradient Cascade (SRI -> TULASI -> RAM) */
+.apple-headline-tier1,
+.apple-headline-tier2,
+.apple-headline-tier3 {
+  color: #1d1d1f;
+  transition: color 0.25s cubic-bezier(0.16, 1, 0.3, 1), -webkit-text-fill-color 0.25s ease;
+}
+
+/* Mobile: Single horizontal line -> unified luminous titanium gradient across all words */
+@media (max-width: 1023px) {
+  html.dark .apple-headline-tier1,
+  html.dark .apple-headline-tier2,
+  html.dark .apple-headline-tier3 {
+    background: linear-gradient(180deg, #ffffff 15%, #f5f5f7 50%, #e1e1e6 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    color: transparent !important;
+  }
+}
+
+/* Desktop: Vertical cascade across lines with balanced, readable contrast */
+@media (min-width: 1024px) {
+  html.dark .apple-headline-tier1 {
+    background: linear-gradient(180deg, #ffffff 10%, #f5f5f7 50%, #e1e1e6 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    color: transparent !important;
+  }
+
+  html.dark .apple-headline-tier2 {
+    background: linear-gradient(180deg, #f0f0f4 10%, #dedee4 50%, #c4c4ca 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    color: transparent !important;
+  }
+
+  html.dark .apple-headline-tier3 {
+    background: linear-gradient(180deg, #e4e4e8 10%, #ceced4 50%, #b0b0b8 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    color: transparent !important;
+  }
+}
+
+.apple-tagline-gradient {
+  color: #424245;
+  transition: color 0.25s cubic-bezier(0.16, 1, 0.3, 1), -webkit-text-fill-color 0.25s ease;
+}
+
+html.dark .apple-tagline-gradient {
+  background: linear-gradient(180deg, #ffffff 0%, #e5e5ea 55%, #c7c7cc 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+
+/* True Apple Frosted Glass System (VisionOS / macOS Sequoia) */
+.glass-surface {
+  background-color: rgba(255, 255, 255, 0.68);
+  backdrop-filter: blur(40px) saturate(190%) contrast(102%);
+  -webkit-backdrop-filter: blur(40px) saturate(190%) contrast(102%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 
+    0 24px 64px -12px rgba(0, 0, 0, 0.08),
+    0 1px 2px rgba(0, 0, 0, 0.02),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+.nav-glass {
+  background-color: rgba(255, 255, 255, 0.68);
+  backdrop-filter: blur(32px) saturate(190%);
+  -webkit-backdrop-filter: blur(32px) saturate(190%);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.02);
+}
+
+.nav-blur {
+  background-color: rgba(255, 255, 255, 0.68);
+  backdrop-filter: blur(32px) saturate(190%);
+  -webkit-backdrop-filter: blur(32px) saturate(190%);
+}
+
+/* Subtle card elevation */
+.apple-card-shadow {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apple-card-shadow:hover {
+  box-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.07), 0 4px 12px rgba(0, 0, 0, 0.03);
+  transform: translateY(-2px);
+}
+
+/* Apple-style smooth page entrance transition (opacity only to preserve fixed viewport context) */
+@keyframes pageEnter {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-page-enter {
+  animation: pageEnter 0.25s ease-out forwards;
+}
+
+/* Apple Slide Swap Transition (for carousel project story swaps) */
+@keyframes appleSlideSwap {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.apple-slide-enter {
+  animation: appleSlideSwap 0.36s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Hero entrance animations: pure CSS compositor accelerated, zero main-thread JS blocking */
+@keyframes heroPortraitRise {
+  0% {
+    transform: scale(0.96) translateY(16px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes heroWordRise {
+  0% {
+    opacity: 0;
+    transform: translateY(105%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroFadeRise {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroHaloBloom {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.hero-anim-portrait {
+  animation: heroPortraitRise 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform;
+}
+
+.hero-anim-halo {
+  animation: heroHaloBloom 0.65s ease-out both;
+  will-change: transform, opacity;
+}
+
+.hero-anim-eyebrow {
+  animation: heroFadeRise 0.35s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+  will-change: transform, opacity;
+}
+
+.hero-anim-company {
+  animation: heroFadeRise 0.35s cubic-bezier(0.16, 1, 0.3, 1) 0.14s both;
+  will-change: transform, opacity;
+}
+
+.hero-anim-word-1 {
+  animation: heroWordRise 0.48s cubic-bezier(0.16, 1, 0.3, 1) 0.16s both;
+  will-change: transform, opacity;
+}
+
+.hero-anim-word-2 {
+  animation: heroWordRise 0.48s cubic-bezier(0.16, 1, 0.3, 1) 0.21s both;
+  will-change: transform, opacity;
+}
+
+.hero-anim-word-3 {
+  animation: heroWordRise 0.48s cubic-bezier(0.16, 1, 0.3, 1) 0.26s both;
+  will-change: transform, opacity;
+}
+
+.hero-anim-role-1 {
+  animation: heroWordRise 0.48s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;
+  will-change: transform, opacity;
+}
+
+.hero-anim-role-2 {
+  animation: heroWordRise 0.48s cubic-bezier(0.16, 1, 0.3, 1) 0.28s both;
+  will-change: transform, opacity;
+}
+
+.hero-anim-tag {
+  animation: heroFadeRise 0.38s cubic-bezier(0.16, 1, 0.3, 1) 0.36s both;
+  will-change: transform, opacity;
+}
+
+.hero-anim-desc {
+  animation: heroFadeRise 0.38s cubic-bezier(0.16, 1, 0.3, 1) 0.41s both;
+  will-change: transform, opacity;
+}
+
+.hero-anim-cta {
+  animation: heroFadeRise 0.35s cubic-bezier(0.16, 1, 0.3, 1) 0.46s both;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-page-enter,
+  .apple-slide-enter,
+  .hero-anim-portrait,
+  .hero-anim-halo,
+  .hero-anim-eyebrow,
+  .hero-anim-company,
+  .hero-anim-word-1,
+  .hero-anim-word-2,
+  .hero-anim-word-3,
+  .hero-anim-role-1,
+  .hero-anim-role-2,
+  .hero-anim-tag,
+  .hero-anim-desc,
+  .hero-anim-cta {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .apple-stagger-1,
+  .apple-stagger-2,
+  .apple-stagger-3,
+  .apple-stagger-4,
+  .apple-stagger-5,
+  .apple-stagger-6,
+  .mobile-item-1,
+  .mobile-item-2,
+  .mobile-item-3,
+  .mobile-item-4,
+  .mobile-item-5 {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  #mobile-menu {
+    transition: none !important;
+  }
+  .animate-photo-marquee {
+    animation: none !important;
+  }
+  html, body {
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Apple Mega-Dropdown Keyframes & Smooth Stagger */
+@keyframes appleItemStagger {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.apple-stagger-1 {
+  animation: appleItemStagger 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.02s both;
+}
+
+.apple-stagger-2 {
+  animation: appleItemStagger 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+}
+
+.apple-stagger-3 {
+  animation: appleItemStagger 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both;
+}
+
+.apple-stagger-4 {
+  animation: appleItemStagger 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.11s both;
+}
+
+.apple-stagger-5 {
+  animation: appleItemStagger 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.14s both;
+}
+
+.apple-stagger-6 {
+  animation: appleItemStagger 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.17s both;
+}
+
+/* Infinite Smooth Photo Ribbon Marquee */
+@keyframes photoMarquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-photo-marquee {
+  display: flex;
+  width: max-content;
+  animation: photoMarquee 38s linear infinite;
+}
+
+.animate-photo-marquee:hover {
+  animation-play-state: paused;
+}
+
+.marquee-mask {
+  mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+}
+
+/* 3D Transform Utilities for Lightbox Flip Easter Egg */
+.perspective-1200 {
+  perspective: 1200px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* Apple Ambient Radial Glow */
+.apple-ambient-glow {
+  background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 113, 227, 0.07), transparent 75%);
+}
+
+html.dark .apple-ambient-glow {
+  background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(41, 151, 255, 0.12), transparent 75%);
+}
+
+/* Apple Standard Button Classes */
+.apple-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2.5rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+  background-color: #1d1d1f;
+  color: #ffffff;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.apple-btn-primary:hover {
+  background-color: #2c2c2e;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+  transform: translateY(-1px);
+}
+
+.apple-btn-primary:active {
+  transform: scale(0.98);
+}
+
+/* Dark mode: invert to crisp near-white */
+html.dark .apple-btn-primary {
+  background-color: #f0f0f2;
+  color: #000000;
+  box-shadow: 0 1px 4px rgba(255, 255, 255, 0.08);
+}
+
+html.dark .apple-btn-primary:hover {
+  background-color: #ffffff;
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
+}
+
+.apple-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2.5rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+  background-color: #f5f5f7;
+  color: #1d1d1f;
+  border: 1px solid #e5e5ea;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.apple-btn-secondary:hover {
+  background-color: #e5e5ea;
+  color: #000000;
+}
+
+html.dark .apple-btn-secondary {
+  background-color: #1c1c1e;
+  color: #f5f5f7;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+html.dark .apple-btn-secondary:hover {
+  background-color: #2c2c2e;
+  color: #ffffff;
+}
+
+/* Apple Carousel Controller GPU Scrub Animation */
+@keyframes apple-scrub-fill {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+/* Native View Transitions (Hardware-Accelerated Apple-Grade Crossfade) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+::view-transition-old(root) {
+  animation-name: appleThemeFadeOut;
+}
+
+::view-transition-new(root) {
+  animation-name: appleThemeFadeIn;
+}
+
+@keyframes appleThemeFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes appleThemeFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes phonePanFromCenter {
+  from {
+    transform: translateX(var(--pan-offset)) scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+  .phone-reveal-anim {
+    animation: none !important;
+  }
+}
+
+
+
+
+
