@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgAg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14171F"/>
+      <stop offset="100%" stop-color="#0B0D12"/>
+    </linearGradient>
+    <linearGradient id="agGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4285F4"/>
+      <stop offset="35%" stop-color="#9B51E0"/>
+      <stop offset="70%" stop-color="#EA4335"/>
+      <stop offset="100%" stop-color="#34A853"/>
+    </linearGradient>
+    <linearGradient id="orbitRing" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2997FF"/>
+      <stop offset="100%" stop-color="#00D084"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="115" fill="url(#bgAg)"/>
+  <rect x="8" y="8" width="496" height="496" rx="107" stroke="rgba(255,255,255,0.08)" stroke-width="4" fill="none"/>
+  
+  <!-- Outer Antigravity Orbital Ring -->
+  <circle cx="256" cy="256" r="160" stroke="url(#agGlow)" stroke-width="22" stroke-linecap="round" fill="none" opacity="0.9" stroke-dasharray="720 180" transform="rotate(-45 256 256)"/>
+  
+  <!-- Inner Levitation Core / Anti-Gravity Delta -->
+  <g transform="translate(256, 256)">
+    <path d="M0 -90 L85 65 L0 30 L-85 65 Z" fill="url(#agGlow)"/>
+    <circle cx="0" cy="-12" r="18" fill="#FFFFFF"/>
+    <!-- Floating Particle Glows -->
+    <circle cx="-55" cy="-55" r="9" fill="#2997FF" opacity="0.8"/>
+    <circle cx="65" cy="-45" r="8" fill="#34A853" opacity="0.8"/>
+    <circle cx="0" cy="105" r="7" fill="#FBBC05" opacity="0.8"/>
+  </g>
+</svg>
