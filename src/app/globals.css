@@ -39,7 +39,6 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
-  transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 input, textarea, button, select, code, kbd, samp, pre {
@@ -61,6 +60,7 @@ section[id] {
 /* APPLE-GRADE DARK MODE SYSTEM */
 /* ========================================================================= */
 html.dark {
+  background-color: #000000 !important;
   color-scheme: dark;
   --background: #000000;
   --canvas-subtle: #141416;
@@ -908,6 +908,13 @@ html.dark .apple-btn-secondary:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* Projects carousel: no sliding or scaling, slides only fade between states */
+  .stage-slide {
+    transition: opacity 250ms linear, filter 250ms linear !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation: none !important;
@@ -915,7 +922,29 @@ html.dark .apple-btn-secondary:hover {
   .phone-reveal-anim {
     animation: none !important;
   }
+  .animate-apple-progress {
+    animation: none !important;
+  }
 }
+
+/* Apple System Maintenance Progress Shimmer Keyframes */
+@keyframes appleProgressBarIndeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+.animate-apple-progress {
+  animation: appleProgressBarIndeterminate 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+
 
 
 

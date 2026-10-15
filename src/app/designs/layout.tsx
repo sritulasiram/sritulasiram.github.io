@@ -5,6 +5,7 @@ export const metadata: Metadata = {
     default: "Designs",
     template: "%s",
   },
+  alternates: { canonical: "/designs" },
   description:
     "UI/UX prototypes, mobile companion applications, and ergonomic design systems created in Figma and Adobe XD by Sri Tulasi Ram.",
 };
