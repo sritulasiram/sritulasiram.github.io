@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Instrument_Serif } from "next/font/google";
-import Navigation from "@/components/Navigation";
+import Navigation from "@/components/layout/Navigation";
 import "./globals.css";
 
 const inter = Inter({
@@ -42,9 +42,6 @@ export const metadata: Metadata = {
   authors: [{ name: "Sri Tulasi Ram", url: "https://sritulasiram.my" }],
   creator: "Sri Tulasi Ram",
   metadataBase: new URL("https://sritulasiram.my"),
-  alternates: {
-    canonical: "https://sritulasiram.my",
-  },
   openGraph: {
     title: "Sri Tulasi Ram",
     description:
@@ -55,7 +52,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/images/sri-portrait.webp",
+        url: "/images/portraits/sri-portrait.webp",
         width: 1200,
         height: 630,
         alt: "Sri Tulasi Ram - Support Engineer at Cytron Technologies",
@@ -67,7 +64,7 @@ export const metadata: Metadata = {
     title: "Sri Tulasi Ram",
     description:
       "Support Engineer at Cytron Technologies. Solving technical problems, refining internal operations, and crafting digital tools.",
-    images: ["/images/sri-portrait.webp"],
+    images: ["/images/portraits/sri-portrait.webp"],
   },
   icons: {
     icon: "/favicon.ico",
@@ -119,7 +116,7 @@ const personSchema = {
         }
       ],
       "url": "https://sritulasiram.my",
-      "image": "https://sritulasiram.my/images/sri-portrait.webp",
+      "image": "https://sritulasiram.my/images/portraits/sri-portrait.webp",
       "email": "mailto:sritulasiram@yahoo.com",
       "sameAs": [
         "https://www.linkedin.com/in/sritulasiram",
@@ -165,17 +162,24 @@ export default function RootLayout({
     >
       <head>
         <script
+          key="theme-script"
+          id="theme-script"
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
                 try {
+                  var d = document.documentElement;
                   var stored = localStorage.getItem('theme');
                   var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
                   var isDark = stored === 'dark' || (!stored && prefersDark);
                   if (isDark) {
-                    document.documentElement.classList.add('dark');
+                    d.classList.add('dark');
+                    d.style.colorScheme = 'dark';
+                    d.style.backgroundColor = '#000000';
                   } else {
-                    document.documentElement.classList.remove('dark');
+                    d.classList.remove('dark');
+                    d.style.colorScheme = 'light';
+                    d.style.backgroundColor = '#ffffff';
                   }
                   var color = isDark ? '#000000' : '#ffffff';
                   var metas = document.querySelectorAll('meta[name="theme-color"]');
@@ -190,16 +194,19 @@ export default function RootLayout({
       </head>
       <body
         suppressHydrationWarning
-        className="min-h-screen bg-white dark:bg-black text-[#1d1d1f] dark:text-[#F5F5F7] font-sans selection:bg-[#0071e3]/15 selection:text-[#1d1d1f] transition-colors duration-300 ease-out"
+        className="min-h-screen bg-white dark:bg-black text-[#1d1d1f] dark:text-[#F5F5F7] font-sans selection:bg-[#0071e3]/15 selection:text-[#1d1d1f]"
       >
         <script
+          key="schema-person"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(personSchema),
           }}
         />
         <Navigation />
-        {children}
+        <div className="animate-page-enter min-h-screen flex flex-col">
+          {children}
+        </div>
       </body>
     </html>
   );

@@ -1,12 +1,12 @@
 "use client";
 
-import Footer from "@/components/Footer";
-import DesignStickySubnav from "@/components/DesignStickySubnav";
-import DesignHeroStage from "@/components/DesignHeroStage";
-import DesignFoundationsKit from "@/components/DesignFoundationsKit";
-import DesignIconsKit from "@/components/DesignIconsKit";
-import DesignTypographyKit from "@/components/DesignTypographyKit";
-import DesignWorkflowKit from "@/components/DesignWorkflowKit";
+import Footer from "@/components/layout/Footer";
+import DesignStickySubnav from "@/components/designs/DesignStickySubnav";
+import DesignHeroStage from "@/components/designs/DesignHeroStage";
+import DesignFoundationsKit from "@/components/designs/DesignFoundationsKit";
+import DesignIconsKit from "@/components/designs/DesignIconsKit";
+import DesignTypographyKit from "@/components/designs/DesignTypographyKit";
+import DesignWorkflowKit from "@/components/designs/DesignWorkflowKit";
 
 export default function DesignsPage() {
   return (

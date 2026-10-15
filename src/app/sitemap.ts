@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 import { PROJECTS_DATA } from "@/data/content";
 import { DESIGNS_DATA } from "@/data/designDetails";
 
+export const dynamic = "force-static";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://sritulasiram.my";
   const currentDate = new Date();
