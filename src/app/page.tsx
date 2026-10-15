@@ -1,9 +1,9 @@
-import Hero from "@/components/Hero";
-import SelectedWork from "@/components/SelectedWork";
-import DesignsTeaser from "@/components/DesignsTeaser";
-import AboutTeaser from "@/components/AboutTeaser";
-import PhotographyStrip from "@/components/PhotographyStrip";
-import Footer from "@/components/Footer";
+import Hero from "@/components/home/Hero";
+import SelectedWork from "@/components/home/SelectedWork";
+import DesignsTeaser from "@/components/home/DesignsTeaser";
+import AboutTeaser from "@/components/home/AboutTeaser";
+import PhotographyStrip from "@/components/home/PhotographyStrip";
+import Footer from "@/components/layout/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

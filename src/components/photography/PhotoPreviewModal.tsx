@@ -329,7 +329,7 @@ export default function PhotoPreviewModal({
                 <div className="flex items-center gap-2">
                   <div className="relative w-5 h-5 shrink-0">
                     <Image
-                      src="/images/iphone-16-pro-desert-titanium.png"
+                      src="/images/devices/iphone-16-pro-desert-titanium.png"
                       alt="iPhone 16 Pro Camera"
                       fill
                       className="object-contain"

@@ -24,8 +24,8 @@ import {
   Scale,
   Clock,
 } from "lucide-react";
-import ProjectCtaIcon from "@/components/ProjectCtaIcon";
-import CaseStudyBreadcrumb from "@/components/CaseStudyBreadcrumb";
+import ProjectCtaIcon from "@/components/shared/ProjectCtaIcon";
+import CaseStudyBreadcrumb from "@/components/shared/CaseStudyBreadcrumb";
 import type { CaseStudy, ProjectItem } from "@/types";
 
 interface Props {
@@ -189,7 +189,7 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
         {/* Hero Image: Prototype Layout */}
         <div className="mt-10 sm:mt-12 flex justify-center">
           <Image
-            src="/images/projects/iot-fertiliser/fig-2a-prototype-layout.jpg"
+            src="/images/projects/iot-fertiliser-mixing/fig-2a-prototype-layout.jpg"
             alt="Prototype layout showing flow sensors, ESP32 expansion board, dual relay modules, and solenoid valves"
             width={751}
             height={581}
@@ -247,7 +247,7 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
         {/* System Overview Diagram */}
         <div>
           <Image
-            src="/images/projects/iot-fertiliser/fig-1-system-overview.png"
+            src="/images/projects/iot-fertiliser-mixing/fig-1-system-overview.png"
             alt="Overall IoT-based fertiliser mixing system processes: Real-Time Monitoring, Fertiliser Mixing System, and User-End Experience"
             width={1408}
             height={779}
@@ -299,7 +299,7 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
         {/* Circuit Design Diagram */}
         <div>
           <Image
-            src="/images/projects/iot-fertiliser/fig-3-circuit-design.png"
+            src="/images/projects/iot-fertiliser-mixing/fig-3-circuit-design.png"
             alt="Circuit design diagram showing full ESP32 wiring schematic, relay modules, buck converter, and sensors"
             width={1211}
             height={730}
@@ -380,7 +380,7 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
         {/* Firmware Process Flowchart */}
         <div className="flex justify-center">
           <Image
-            src="/images/projects/iot-fertiliser/fig-4-firmware-flowchart.png"
+            src="/images/projects/iot-fertiliser-mixing/fig-4-firmware-flowchart.png"
             alt="Process flow of the prototype code implementation flowchart"
             width={1340}
             height={1001}
@@ -481,7 +481,7 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
             <Image
-              src="/images/projects/iot-fertiliser/fig-5-tds-test-setup.jpg"
+              src="/images/projects/iot-fertiliser-mixing/fig-5-tds-test-setup.jpg"
               alt="Accuracy test setup of the TDS sensor using 4 solution concentrations"
               width={1216}
               height={693}
@@ -490,7 +490,7 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
             />
 
             <Image
-              src="/images/projects/iot-fertiliser/fig-6-tds-accuracy-chart.png"
+              src="/images/projects/iot-fertiliser-mixing/fig-6-tds-accuracy-chart.png"
               alt="Graph of TDS sensor accuracy comparing sensor readings with calibrated meter"
               width={1463}
               height={870}
@@ -547,7 +547,7 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
             <Image
-              src="/images/projects/iot-fertiliser/fig-7-blynk-calibration-setup.jpg"
+              src="/images/projects/iot-fertiliser-mixing/fig-7-blynk-calibration-setup.jpg"
               alt="Setup for TDS calibration stability test with 258 ppm reference solution and Blynk IoT monitoring"
               width={991}
               height={468}
@@ -556,7 +556,7 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
             />
 
             <Image
-              src="/images/projects/iot-fertiliser/fig-8-tds-stability-chart.png"
+              src="/images/projects/iot-fertiliser-mixing/fig-8-tds-stability-chart.png"
               alt="Graph of TDS sensor reading stability over a 7-day monitoring period"
               width={1463}
               height={660}
@@ -607,7 +607,7 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
 
           <div className="flex justify-center">
             <Image
-              src="/images/projects/iot-fertiliser/fig-9-flow-sensor-testbench.jpg"
+              src="/images/projects/iot-fertiliser-mixing/fig-9-flow-sensor-testbench.jpg"
               alt="Test-bench configuration for flow rate evaluation of dual sensors"
               width={1280}
               height={678}
@@ -657,7 +657,7 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
             <div className="md:col-span-1 flex justify-center">
               <Image
-                src="/images/projects/iot-fertiliser/fig-10-hydroponic-rig-dispensing.jpg"
+                src="/images/projects/iot-fertiliser-mixing/fig-10-hydroponic-rig-dispensing.jpg"
                 alt="Fertiliser dispensing process into the hydroponic water storage system"
                 width={479}
                 height={626}
@@ -715,7 +715,7 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
 
           <div className="flex justify-center">
             <Image
-              src="/images/projects/iot-fertiliser/fig-11-response-time-stopwatch.jpg"
+              src="/images/projects/iot-fertiliser-mixing/fig-11-response-time-stopwatch.jpg"
               alt="Dispensing fertiliser AB while recording response time with precision stopwatch"
               width={1206}
               height={675}

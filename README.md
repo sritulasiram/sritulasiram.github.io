@@ -78,14 +78,18 @@ Extracted telemetry includes:
 │       ├── apps/                   # Tool & technology vector icons
 │       ├── projects/               # Engineering diagrams & hardware schematics
 │       └── ...
+├── public/images/                  # Static assets, one folder per kind
+│   ├── photography/                # Gallery photos
+│   ├── projects/<project-id>/      # Case-study images; folder name matches the project id
+│   ├── designs/<design-id>/        # Design case-study screens
+│   ├── portraits/ logos/ certificates/ awards/ devices/ apps/
 ├── scripts/
-│   └── read-photo-metadata.mjs     # Node.js optical EXIF metadata extraction script
+│   └── read-photo-metadata.mjs     # Node.js optical EXIF metadata extraction script (reads public/images/photography)
 ├── src/
 │   ├── app/                        # Next.js App Router
 │   │   ├── layout.tsx              # Root layout (Metadata, Google Fonts, Theme Provider)
 │   │   ├── page.tsx                # Homepage (Hero, Selected Work, Designs Teaser, About, Photography)
 │   │   ├── globals.css             # Tailwind CSS v4 design tokens, Apple typography
-│   │   ├── template.tsx            # Smooth page transition wrappers
 │   │   ├── robots.ts               # Automated search engine robots.txt
 │   │   ├── sitemap.ts              # Dynamic XML sitemap generator
 │   │   ├── about/page.tsx          # Full About, career timeline & engineering credentials
@@ -96,18 +100,17 @@ Extracted telemetry includes:
 │   │   └── projects/               # Engineering Projects Hub
 │   │       ├── page.tsx            # Project directory & specifications matrix
 │   │       └── [id]/page.tsx       # Engineering case study deep dives
-│   ├── components/                 # Reusable UI component modules
-│   │   ├── Navigation.tsx          # Frosted glass navbar with Spotlight search & mega dropdowns
-│   │   ├── SearchModal.tsx         # Spotlight modal search (⌘K / keyboard navigation)
-│   │   ├── ThemeToggle.tsx         # Animated light/dark theme switch
-│   │   ├── Hero.tsx                # Typographic hero section with call-to-actions
-│   │   ├── SelectedWork.tsx        # Engineering showcase cards
-│   │   ├── DesignsTeaser.tsx       # Interactive mobile mockup carousel
-│   │   ├── AboutTeaser.tsx         # Hardware engineering pillars & support ops
-│   │   ├── PhotographyStrip.tsx    # Horizontal photo preview reel
-│   │   ├── Footer.tsx              # Colophon, direct links, and contact CTA
-│   │   ├── case-studies/           # Modular project case study layouts
-│   │   └── mockups/                # Device frames (iPhone 16 Pro, MacBook Pro)
+│   ├── components/                 # UI modules, grouped by feature
+│   │   ├── layout/                 # Site shell: Navigation, Footer, SearchModal, ThemeToggle, MaintenanceView
+│   │   ├── home/                   # Homepage sections: Hero, SelectedWork, DesignsTeaser, AboutTeaser, PhotographyStrip
+│   │   ├── projects/               # Projects page: ProjectsHeroStage, ProjectsDirectory, ProjectsStickySubnav, EngineeringWorkbench
+│   │   │   ├── case-studies/       # One layout per project case study
+│   │   │   └── visuals/            # Card and hero visuals (telemetry grids, pipeline diagram, MacBook frame)
+│   │   ├── designs/                # Design page: hero stage, sub-nav, marquee and the Foundations/Icons/Typography/Workflow kits
+│   │   ├── photography/            # Gallery, hero spotlight, lightbox, camera-optics section
+│   │   ├── shared/                 # Used by case studies and designs: breadcrumb, CTA icon, screen walkthrough
+│   │   ├── mockups/                # Device frames (IphoneFrame, MacbookPro, LaptopMockupCard)
+│   │   └── ui/                     # Primitives: ProjectImage, AppleCarouselController, DotShaderHalo
 │   ├── data/                       # Content models & structured data
 │   │   ├── content.ts              # Global copy, biography, and credentials
 │   │   ├── projectDetails.ts       # Detailed engineering project writeups
@@ -143,7 +146,7 @@ git checkout dev
 # 2. Install dependencies
 npm install
 
-# 3. (Optional) Re-extract EXIF data from photos in public/images
+# 3. (Optional) Re-extract EXIF data from photos in public/images/photography
 npm run sync:photos
 
 # 4. Start local development server
@@ -163,3 +166,11 @@ npm run build
 
 Designed and developed by **[Sri Tulasi Ram](https://sritulasiram.my)**.  
 Open-sourced under the [MIT License](LICENSE).
+
+---
+
+## 🗂 Naming Conventions
+
+* **Components:** one component per file, `PascalCase.tsx`, and the file name matches the default export. Folders are by feature (`home`, `projects`, `designs`, `photography`), not by type. Keep the feature prefix when a name would otherwise be ambiguous (for example `DesignHeroStage` vs `ProjectsHeroStage`).
+* **Images:** `public/images/<kind>/<slug>/<descriptive-name>.<ext>` in lowercase kebab-case. A project's folder name equals its id in `src/data` (for example `projects/warranty-rma/`).
+* **Imports:** use the `@/` alias across folders and relative paths only inside the same folder.

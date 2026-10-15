@@ -4,8 +4,8 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, MapPin, Expand } from "lucide-react";
 import { PHOTOGRAPHY_DATA } from "@/data/content";
-import ProjectImage from "./ProjectImage";
-import PhotoPreviewModal from "./PhotoPreviewModal";
+import ProjectImage from "@/components/ui/ProjectImage";
+import PhotoPreviewModal from "@/components/photography/PhotoPreviewModal";
 import type { PhotoItem } from "@/types";
 
 const STRIP_PHOTOS = PHOTOGRAPHY_DATA.slice(0, 10);

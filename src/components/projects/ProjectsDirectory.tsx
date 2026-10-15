@@ -4,10 +4,10 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { MacbookPro } from "@/components/ui/macbook-pro";
+import { MacbookPro } from "@/components/mockups/MacbookPro";
 import { cn } from "@/lib/cn";
-import HrAssistiveMacbook from "./HrAssistiveMacbook";
-import { STAGE_PROJECTS } from "./HeroStage";
+import HrAssistiveMacbook from "./visuals/HrAssistiveMacbook";
+import { STAGE_PROJECTS } from "./ProjectsHeroStage";
 
 type ProjectStatus = "production" | "pilot" | "peer-reviewed" | "prototype" | "personal";
 
@@ -32,7 +32,7 @@ const PROJECT_STATUS: Record<string, ProjectStatus> = {
 // Projects already showcased in the hero carousel are hidden from the grid on "All"
 const FEATURED_IDS = new Set(STAGE_PROJECTS.map((p) => p.id));
 
-const Esp32TrackerBentoGrid = dynamic(() => import("./Esp32TrackerBentoGrid"), {
+const Esp32TrackerBentoGrid = dynamic(() => import("./visuals/Esp32TrackerBentoGrid"), {
   loading: () => (
     <div className="w-full h-full bg-[#0E0E11] rounded-xl flex items-center justify-center p-4">
       <div className="text-center space-y-1">
@@ -43,7 +43,7 @@ const Esp32TrackerBentoGrid = dynamic(() => import("./Esp32TrackerBentoGrid"), {
   ),
 });
 
-const TelemetryBentoGrid = dynamic(() => import("@/components/TelemetryBentoGrid"), {
+const TelemetryBentoGrid = dynamic(() => import("./visuals/TelemetryBentoGrid"), {
   loading: () => (
     <div className="w-full h-full bg-[#0E0E11] rounded-xl flex items-center justify-center p-4">
       <div className="text-center space-y-1">
@@ -78,7 +78,7 @@ const LINEUP_PROJECTS: ProjectCardData[] = [
     categoryId: "developed-systems",
     description:
       "Runs 19 diagnostic checks on compute, power, storage and GPIO in under 60 seconds, then issues a formal RMA inspection report.",
-    imageSrc: "/images/pi-diagnostic.webp",
+    imageSrc: "/images/projects/raspberry-pi-diagnostics/cover.webp",
     caseStudyUrl: "/projects/raspberry-pi-diagnostics",
     badgeColor: "#C51A4A",
     stats: ["95% faster triage", "19 diagnostic checks", "Under 60 seconds"],
@@ -91,7 +91,7 @@ const LINEUP_PROJECTS: ProjectCardData[] = [
     categoryId: "developed-systems",
     description:
       "Repair intake, thermal barcode labels and supplier claim manifests in one internal system, with secure remote access through Cloudflare Zero Trust.",
-    imageSrc: "/images/warranty-system-intake.png",
+    imageSrc: "/images/projects/warranty-rma/system-intake.png",
     caseStudyUrl: "/projects/warranty-rma",
     badgeColor: "#0071E3",
   },
@@ -116,7 +116,7 @@ const LINEUP_PROJECTS: ProjectCardData[] = [
     categoryId: "embedded-systems",
     description:
       "Closed-loop hydroponic dosing, published in IJIE (UTHM). 99.6% TDS accuracy, over 94% dosing precision from 250 to 1,000 ml, and live Blynk cloud monitoring.",
-    imageSrc: "/images/projects/iot-fertiliser/fig-1-system-overview.png",
+    imageSrc: "/images/projects/iot-fertiliser-mixing/fig-1-system-overview.png",
     caseStudyUrl: "/projects/iot-fertiliser-mixing",
     badgeColor: "#1E7E34",
     stats: ["99.6% TDS accuracy", ">94% dosing precision", "Peer-reviewed"],
@@ -142,7 +142,7 @@ const LINEUP_PROJECTS: ProjectCardData[] = [
     categoryId: "case-studies",
     description:
       "Native Swift utility for ASUS ROG and TUF laptops on macOS. Interfaces directly with USB HID microcontrollers for Aura RGB lighting, reads AppleSMC thermals, and applies display calibration without root daemons.",
-    imageSrc: "/images/rog-gaming-center-app.png",
+    imageSrc: "/images/projects/rog-gaming-center/app.png",
     caseStudyUrl: "/projects/rog-gaming-center",
     badgeColor: "#FF453A",
     stats: ["Pure Swift & SwiftUI", "No root daemons", "USB HID + AppleSMC"],
@@ -155,7 +155,7 @@ const LINEUP_PROJECTS: ProjectCardData[] = [
     categoryId: "case-studies",
     description:
       "A working macOS setup for the ASUS GL503GE: 12 custom ACPI hotpatches, integrated-graphics routing, NVIDIA GPU power-gating, and stable sleep on Sonoma, Sequoia and Tahoe.",
-    imageSrc: "/images/opencore-configurator-app.png",
+    imageSrc: "/images/projects/opencore-efi-hackintosh/configurator-app.png",
     caseStudyUrl: "/projects/opencore-efi-hackintosh",
     badgeColor: "#5856D6",
     stats: ["12 ACPI hotpatches", "17 components working", "macOS Sonoma to Tahoe"],
@@ -169,7 +169,7 @@ const CATEGORIES: { id: ProjectCategory; label: string }[] = [
   { id: "case-studies", label: "Case Studies" },
 ];
 
-export default function Directory() {
+export default function ProjectsDirectory() {
   const [selectedFilter, setSelectedFilter] = useState<ProjectCategory>("all");
 
   const filteredProjects =

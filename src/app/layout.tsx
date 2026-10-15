@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Instrument_Serif } from "next/font/google";
-import Navigation from "@/components/Navigation";
+import Navigation from "@/components/layout/Navigation";
 import "./globals.css";
 
 const inter = Inter({
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/images/sri-portrait.webp",
+        url: "/images/portraits/sri-portrait.webp",
         width: 1200,
         height: 630,
         alt: "Sri Tulasi Ram - Support Engineer at Cytron Technologies",
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     title: "Sri Tulasi Ram",
     description:
       "Support Engineer at Cytron Technologies. Solving technical problems, refining internal operations, and crafting digital tools.",
-    images: ["/images/sri-portrait.webp"],
+    images: ["/images/portraits/sri-portrait.webp"],
   },
   icons: {
     icon: "/favicon.ico",
@@ -116,7 +116,7 @@ const personSchema = {
         }
       ],
       "url": "https://sritulasiram.my",
-      "image": "https://sritulasiram.my/images/sri-portrait.webp",
+      "image": "https://sritulasiram.my/images/portraits/sri-portrait.webp",
       "email": "mailto:sritulasiram@yahoo.com",
       "sameAs": [
         "https://www.linkedin.com/in/sritulasiram",

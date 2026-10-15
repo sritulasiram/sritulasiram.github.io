@@ -3,10 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
-import TelemetryBentoGrid from "./TelemetryBentoGrid";
-import ProjectCtaIcon from "./ProjectCtaIcon";
-import { MacbookPro } from "@/components/ui/macbook-pro";
-import AppleCarouselController from "./AppleCarouselController";
+import TelemetryBentoGrid from "@/components/projects/visuals/TelemetryBentoGrid";
+import ProjectCtaIcon from "@/components/shared/ProjectCtaIcon";
+import { MacbookPro } from "@/components/mockups/MacbookPro";
+import AppleCarouselController from "@/components/ui/AppleCarouselController";
 
 interface SystemProject {
   id: string;
@@ -29,7 +29,7 @@ const SYSTEM_PROJECTS: SystemProject[] = [
     subtitle: "Internal Support Operations & Supplier RMA",
     description:
       "Full-stack Flask & SQLite repair operations platform integrating GP-1324D thermal barcode printing, multi-invoice supplier RMA manifests, and Cloudflare Zero Trust telemetry.",
-    imageSrc: "/images/warranty-system-intake.png",
+    imageSrc: "/images/projects/warranty-rma/system-intake.png",
     caseStudyLink: "/projects/warranty-rma",
     buttonColor: "#0071E3",
     ctaLabel: "View Operations Architecture",
@@ -42,7 +42,7 @@ const SYSTEM_PROJECTS: SystemProject[] = [
     subtitle: "Hardware QA & Automated RMA Triage",
     description:
       "Automated 19-vector diagnostic sweeps across compute, thermals, PMIC rails, storage endurance, and RP1 GPIO, then issues a formal RMA inspection report, in under 60 seconds.",
-    imageSrc: "/images/pi-diagnostic.webp",
+    imageSrc: "/images/projects/raspberry-pi-diagnostics/cover.webp",
     caseStudyLink: "/projects/raspberry-pi-diagnostics",
     buttonColor: "#C51A4A",
     ctaLabel: "View Hardware Validation",
@@ -56,7 +56,7 @@ const SYSTEM_PROJECTS: SystemProject[] = [
     subtitle: "Precision Agriculture & Telemetry Research",
     description:
       "Automated closed-loop IoT nutrient mixing system engineered for precision hydroponic farms with ESP32 controllers, calibrated peristaltic dosing, and real-time Blynk cloud telemetry.",
-    imageSrc: "/images/projects/iot-fertiliser/fig-1-system-overview.png",
+    imageSrc: "/images/projects/iot-fertiliser-mixing/fig-1-system-overview.png",
     caseStudyLink: "/projects/iot-fertiliser-mixing",
     buttonColor: "#1E7E34",
     ctaLabel: "Read Published Research",

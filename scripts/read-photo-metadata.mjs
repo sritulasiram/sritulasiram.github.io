@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import exifr from "exifr";
 
-const IMAGES_DIR = path.resolve(process.cwd(), "public/images");
+const IMAGES_DIR = path.resolve(process.cwd(), "public/images/photography");
 const OUTPUT_FILE = path.resolve(process.cwd(), "src/data/photo-metadata.json");
 
 // Direct binary dimension readers for 100% accuracy without dependencies
@@ -199,8 +199,21 @@ async function main() {
 
   const results = {};
 
+  // Web-optimised copies have no EXIF. Never overwrite real EXIF captured earlier from the originals.
+  let existing = {};
+  try {
+    existing = JSON.parse(fs.readFileSync(OUTPUT_FILE, "utf-8"));
+  } catch {
+    existing = {};
+  }
+
   for (const file of files) {
     const info = await inspectPhoto(file);
+    if (!info.hasRealExif && existing[file]?.hasRealExif) {
+      console.log(`↺ [KEEPING EARLIER REAL EXIF] ${file}\n`);
+      results[file] = existing[file];
+      continue;
+    }
     results[file] = info;
 
     if (info.hasRealExif) {

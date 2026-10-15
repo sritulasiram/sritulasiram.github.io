@@ -14,10 +14,10 @@ import {
   FileText,
   Activity,
 } from "lucide-react";
-import ProjectCtaIcon from "@/components/ProjectCtaIcon";
-import CaseStudyBreadcrumb from "@/components/CaseStudyBreadcrumb";
-import ProjectScreenWalkthrough from "@/components/ProjectScreenWalkthrough";
-import { MacbookPro } from "@/components/ui/macbook-pro";
+import ProjectCtaIcon from "@/components/shared/ProjectCtaIcon";
+import CaseStudyBreadcrumb from "@/components/shared/CaseStudyBreadcrumb";
+import ProjectScreenWalkthrough from "@/components/shared/ProjectScreenWalkthrough";
+import { MacbookPro } from "@/components/mockups/MacbookPro";
 import type { CaseStudy, ProjectItem } from "@/types";
 
 interface Props {
@@ -125,35 +125,35 @@ const SUPPORTED_HARDWARE: HardwareModel[] = [
     name: "Raspberry Pi 5",
     soc: "BCM2712 · RP1 Southbridge",
     badge: "Flagship 2.4GHz",
-    image: "/images/hardware/pi-5.jpg",
+    image: "/images/projects/raspberry-pi-diagnostics/hardware/pi-5.jpg",
     specs: "Direct lgpio on /dev/gpiochip4, DA9091 PMIC telemetry, Dual Micro-HDMI DRM, and PCIe Gen2/3 bus probe.",
   },
   {
     name: "Raspberry Pi 4 Model B",
     soc: "BCM2711 · VL805 USB 3.0",
     badge: "Industry Standard",
-    image: "/images/hardware/pi-4.jpg",
+    image: "/images/projects/raspberry-pi-diagnostics/hardware/pi-4.jpg",
     specs: "VL805 host controller topology, Broadcom GPIO, Dual Micro-HDMI, and PMIC under-voltage register decoding.",
   },
   {
     name: "Raspberry Pi 400 / 500",
     soc: "Integrated Keyboard Subsystem",
     badge: "Unitary PC Form",
-    image: "/images/hardware/pi-400.jpg",
+    image: "/images/projects/raspberry-pi-diagnostics/hardware/pi-400.jpg",
     specs: "Keyboard matrix scancode detection via /proc/bus/input/devices alongside full Pi 4/5 peripheral routines.",
   },
   {
     name: "Raspberry Pi 3 Model B / B+",
     soc: "BCM2837B0 · Full-Size HDMI",
     badge: "Legacy Classic",
-    image: "/images/hardware/pi-3.jpg",
+    image: "/images/projects/raspberry-pi-diagnostics/hardware/pi-3.jpg",
     specs: "Standard 40-pin GPIO header, 2.4/5GHz Wi-Fi, Bluetooth 4.2, and legacy VideoCore HDMI verification.",
   },
   {
     name: "Raspberry Pi Zero 2 W",
     soc: "BCM2710A1 · Compact Form Factor",
     badge: "Embedded Micro",
-    image: "/images/hardware/pi-zero-2.jpg",
+    image: "/images/projects/raspberry-pi-diagnostics/hardware/pi-zero-2.jpg",
     specs: "Mini-HDMI DRM engine, wireless RF transceivers, and low-power PMIC under-voltage monitoring.",
   },
 ];

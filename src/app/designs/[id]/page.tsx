@@ -12,9 +12,9 @@ import {
   Globe,
   ChevronRight,
 } from "lucide-react";
-import Footer from "@/components/Footer";
-import ProjectImage from "@/components/ProjectImage";
-import DesignScreensMarquee from "@/components/DesignScreensMarquee";
+import Footer from "@/components/layout/Footer";
+import ProjectImage from "@/components/ui/ProjectImage";
+import DesignScreensMarquee from "@/components/designs/DesignScreensMarquee";
 import { DESIGN_DETAILS, DESIGNS_DATA } from "@/data/designDetails";
 
 interface PageProps {

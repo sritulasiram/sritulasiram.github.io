@@ -10,8 +10,8 @@ import {
   ShieldAlert,
   ArrowRight,
 } from "lucide-react";
-import CaseStudyBreadcrumb from "@/components/CaseStudyBreadcrumb";
-import Esp32TrackerBentoGrid from "@/components/projects/Esp32TrackerBentoGrid";
+import CaseStudyBreadcrumb from "@/components/shared/CaseStudyBreadcrumb";
+import Esp32TrackerBentoGrid from "@/components/projects/visuals/Esp32TrackerBentoGrid";
 import type { CaseStudy, ProjectItem } from "@/types";
 
 interface Props {

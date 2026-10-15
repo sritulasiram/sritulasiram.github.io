@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { ArrowDown } from "lucide-react";
 import type { PhotoItem } from "@/types";
-import AppleCarouselController from "./AppleCarouselController";
+import AppleCarouselController from "@/components/ui/AppleCarouselController";
 
 interface PhotographyHeroSpotlightProps {
   photos: PhotoItem[];

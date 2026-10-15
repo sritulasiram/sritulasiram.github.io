@@ -19,7 +19,7 @@ const DESIGN_SCREENS: DesignScreen[] = [
     title: "Onboarding & Welcome",
     role: "Authentication Flow",
     description: "High-contrast minimalist splash with instant role onboarding and biometric security tokens.",
-    imageSrc: "/images/void-screen-welcome.png",
+    imageSrc: "/images/designs/void/screen-welcome.png",
   },
   {
     id: "home",
@@ -27,7 +27,7 @@ const DESIGN_SCREENS: DesignScreen[] = [
     title: "FYP Session Dashboard",
     role: "Workspace Switcher",
     description: "Active academic semester hub displaying Final Year Project 1 & 2 cards with supervisor metadata.",
-    imageSrc: "/images/void-screen-home.png",
+    imageSrc: "/images/designs/void/screen-home.png",
   },
   {
     id: "submissions",
@@ -35,7 +35,7 @@ const DESIGN_SCREENS: DesignScreen[] = [
     title: "Digital Submissions Hub",
     role: "Student Toolset",
     description: "Centralized P1 A-D form milestone verification, checklist tracking, and fast document uploads.",
-    imageSrc: "/images/void-screen-submissions.png",
+    imageSrc: "/images/designs/void/screen-submissions.png",
   },
   {
     id: "notifications",
@@ -43,7 +43,7 @@ const DESIGN_SCREENS: DesignScreen[] = [
     title: "Broadcast Notifications",
     role: "Department Feed",
     description: "Real-time coordinator alerts for lecture cancellations, DK2 venue briefings, and proposal deadlines.",
-    imageSrc: "/images/void-screen-notifications.png",
+    imageSrc: "/images/designs/void/screen-notifications.png",
   },
   {
     id: "drawer",
@@ -51,7 +51,7 @@ const DESIGN_SCREENS: DesignScreen[] = [
     title: "Module Navigation Drawer",
     role: "System Hub",
     description: "Slide-out navigation linking direct supervisor chat, digital log books, downloads, and app settings.",
-    imageSrc: "/images/void-screen-drawer.png",
+    imageSrc: "/images/designs/void/screen-drawer.png",
   },
 ];
 

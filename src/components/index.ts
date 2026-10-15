@@ -1,35 +1,35 @@
 // Layout & Shell
-export { default as Navigation } from "./Navigation";
-export { default as Footer } from "./Footer";
-export { default as ThemeToggle } from "./ThemeToggle";
+export { default as Navigation } from "./layout/Navigation";
+export { default as Footer } from "./layout/Footer";
+export { default as ThemeToggle } from "./layout/ThemeToggle";
 
 // Homepage Sections
-export { default as Hero } from "./Hero";
-export { default as SelectedWork } from "./SelectedWork";
-export { default as DesignsTeaser } from "./DesignsTeaser";
-export { default as AboutTeaser } from "./AboutTeaser";
-export { default as PhotographyStrip } from "./PhotographyStrip";
+export { default as Hero } from "./home/Hero";
+export { default as SelectedWork } from "./home/SelectedWork";
+export { default as DesignsTeaser } from "./home/DesignsTeaser";
+export { default as AboutTeaser } from "./home/AboutTeaser";
+export { default as PhotographyStrip } from "./home/PhotographyStrip";
 
 // Shared UI & Display Primitives
-export { default as ProjectImage } from "./ProjectImage";
-export { default as CaseStudyBreadcrumb } from "./CaseStudyBreadcrumb";
-export { default as AppleCarouselController } from "./AppleCarouselController";
-export { default as ProjectCtaIcon } from "./ProjectCtaIcon";
-export { default as TelemetryBentoGrid } from "./TelemetryBentoGrid";
-export { default as ProjectScreenWalkthrough } from "./ProjectScreenWalkthrough";
-export { default as DesignScreensMarquee } from "./DesignScreensMarquee";
+export { default as ProjectImage } from "./ui/ProjectImage";
+export { default as CaseStudyBreadcrumb } from "./shared/CaseStudyBreadcrumb";
+export { default as AppleCarouselController } from "./ui/AppleCarouselController";
+export { default as ProjectCtaIcon } from "./shared/ProjectCtaIcon";
+export { default as TelemetryBentoGrid } from "./projects/visuals/TelemetryBentoGrid";
+export { default as ProjectScreenWalkthrough } from "./shared/ProjectScreenWalkthrough";
+export { default as DesignScreensMarquee } from "./designs/DesignScreensMarquee";
 
 // Photography Components
-export { default as PhotographyGallery } from "./PhotographyGallery";
-export { default as PhotoPreviewModal } from "./PhotoPreviewModal";
+export { default as PhotographyGallery } from "./photography/PhotographyGallery";
+export { default as PhotoPreviewModal } from "./photography/PhotoPreviewModal";
 
 // Hardware & Device Mockups
 export * from "./mockups";
 
 // Design System Showcase Components
-export { default as DesignStickySubnav } from "./DesignStickySubnav";
-export { default as DesignHeroStage } from "./DesignHeroStage";
-export { default as DesignFoundationsKit } from "./DesignFoundationsKit";
+export { default as DesignStickySubnav } from "./designs/DesignStickySubnav";
+export { default as DesignHeroStage } from "./designs/DesignHeroStage";
+export { default as DesignFoundationsKit } from "./designs/DesignFoundationsKit";
 
 // Projects Showcase Components
 export * from "./projects";

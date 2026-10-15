@@ -10,7 +10,7 @@ import {
   SlidersHorizontal,
   Sparkles,
 } from "lucide-react";
-import ProjectImage from "./ProjectImage";
+import ProjectImage from "@/components/ui/ProjectImage";
 import PhotoPreviewModal from "./PhotoPreviewModal";
 import PhotographyHeroSpotlight from "./PhotographyHeroSpotlight";
 import type { PhotoItem, PhotoAlbumId } from "@/types";

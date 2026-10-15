@@ -7,8 +7,8 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import IphoneFrame from "./mockups/IphoneFrame";
-import AppleCarouselController from "./AppleCarouselController";
+import IphoneFrame from "@/components/mockups/IphoneFrame";
+import AppleCarouselController from "@/components/ui/AppleCarouselController";
 
 interface MobileDesignProject {
   id: string;
@@ -160,10 +160,10 @@ export default function DesignsTeaser() {
                   id: proj.id,
                   src:
                     proj.mockupType === "sage"
-                      ? "/images/sage-screen-preview.webp"
+                      ? "/images/designs/sage/screen-preview.webp"
                       : proj.mockupType === "recycle-ai"
-                      ? "/images/recycle-ai-screen-preview.webp"
-                      : "/images/kopiesatu-screen-preview.webp",
+                      ? "/images/designs/recycle-ai/screen-preview.webp"
+                      : "/images/designs/kopiesatu/screen-preview.webp",
                   active: activeProjectIndex === idx,
                 }))}
                 theme="light"

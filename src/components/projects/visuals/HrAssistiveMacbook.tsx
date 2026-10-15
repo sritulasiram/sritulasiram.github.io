@@ -1,8 +1,8 @@
-import { MacbookPro } from "@/components/ui/macbook-pro";
+import { MacbookPro } from "@/components/mockups/MacbookPro";
 import RagPipelineDiagram from "./RagPipelineDiagram";
 
 /**
- * Set to the screenshot path once it is uploaded, e.g. "/images/hr-assistive-intelligence.png"
+ * Set to the screenshot path once it is uploaded, e.g. "/images/projects/cytron-hr-assistive-intelligence/chat-ui.png"
  * (16:10, sanitised: no real HR document content). While null, the MacBook shows the
  * architecture diagram instead.
  */

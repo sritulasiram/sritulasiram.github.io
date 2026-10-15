@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Footer from "@/components/Footer";
+import Footer from "@/components/layout/Footer";
 import WarrantyRmaCaseStudy from "@/components/projects/case-studies/WarrantyRmaCaseStudy";
 import IotFertiliserCaseStudy from "@/components/projects/case-studies/IotFertiliserCaseStudy";
 import RaspberryPiDiagnosticCaseStudy from "@/components/projects/case-studies/RaspberryPiDiagnosticCaseStudy";

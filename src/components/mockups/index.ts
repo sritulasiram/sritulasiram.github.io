@@ -1,5 +1,6 @@
 export { default as IphoneFrame } from "./IphoneFrame";
 export type { IphoneFrameProps } from "./IphoneFrame";
+export { MacbookPro } from "./MacbookPro";
 
-export { LaptopMockupCard } from "./laptop-mockup-card";
-export type { LaptopMockupCardProps, LaptopFrameVariant } from "./laptop-mockup-card";
+export { LaptopMockupCard } from "./LaptopMockupCard";
+export type { LaptopMockupCardProps, LaptopFrameVariant } from "./LaptopMockupCard";

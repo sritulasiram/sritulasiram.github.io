@@ -4,8 +4,8 @@ import { useState, useRef, useEffect, useMemo, useCallback, Fragment } from "rea
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ChevronDown, ArrowRight, ArrowUpRight, Search, X } from "lucide-react";
-import ThemeToggle from "@/components/ThemeToggle";
-import SearchModal from "@/components/SearchModal";
+import ThemeToggle from "./ThemeToggle";
+import SearchModal from "./SearchModal";
 import { SEARCH_ITEMS, QUICK_LINKS, type SearchItem } from "@/data/searchData";
 
 function HighlightText({ text, query }: { text: string; query: string }) {

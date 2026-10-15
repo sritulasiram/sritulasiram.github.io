@@ -9,8 +9,8 @@ import {
   ArrowRight,
   MessagesSquare,
 } from "lucide-react";
-import CaseStudyBreadcrumb from "@/components/CaseStudyBreadcrumb";
-import HrAssistiveMacbook from "@/components/projects/HrAssistiveMacbook";
+import CaseStudyBreadcrumb from "@/components/shared/CaseStudyBreadcrumb";
+import HrAssistiveMacbook from "@/components/projects/visuals/HrAssistiveMacbook";
 import type { CaseStudy, ProjectItem } from "@/types";
 
 interface Props {

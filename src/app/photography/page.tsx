@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, ChevronRight } from "lucide-react";
-import Footer from "@/components/Footer";
-import PhotographyGallery from "@/components/PhotographyGallery";
-import CameraOpticsKitBento from "@/components/CameraOpticsKitBento";
+import Footer from "@/components/layout/Footer";
+import PhotographyGallery from "@/components/photography/PhotographyGallery";
+import CameraOpticsKitBento from "@/components/photography/CameraOpticsKitBento";
 import { PHOTOGRAPHY_DATA } from "@/data/content";
 
 export const metadata: Metadata = {

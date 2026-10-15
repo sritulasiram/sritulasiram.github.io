@@ -3,8 +3,8 @@
 import { useState, useRef } from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowLeft, ChevronRight } from "lucide-react";
-import IphoneFrame from "./mockups/IphoneFrame";
-import AppleCarouselController from "./AppleCarouselController";
+import IphoneFrame from "@/components/mockups/IphoneFrame";
+import AppleCarouselController from "@/components/ui/AppleCarouselController";
 import { cn } from "@/lib/cn";
 
 interface StageDesign {
@@ -25,7 +25,7 @@ const DESIGNS: StageDesign[] = [
     subtitle: "Tactile Mobile Coffee Ordering & Loyalty",
     shortSubtitle: "Coffee & Loyalty",
     category: "Consumer Mobile Commerce",
-    imageSrc: "/images/kopiesatu-screen-preview.webp",
+    imageSrc: "/images/designs/kopiesatu/screen-preview.webp",
     caseStudyUrl: "/designs/kopiesatu",
     buttonColor: "#8D5B34", // Warm Caramel Espresso
   },
@@ -35,7 +35,7 @@ const DESIGNS: StageDesign[] = [
     subtitle: "Polytechnic Project Management Architecture",
     shortSubtitle: "Project Management",
     category: "Academic Workflow Architecture",
-    imageSrc: "/images/void-screen-home.png?v=3",
+    imageSrc: "/images/designs/void/screen-home.png?v=3",
     caseStudyUrl: "/designs/void",
     buttonColor: "#234E6A", // Deep Ocean Slate Blue
   },
@@ -45,7 +45,7 @@ const DESIGNS: StageDesign[] = [
     subtitle: "Trauma-Informed Teletherapy & Mental Wellness",
     shortSubtitle: "Mental Wellness",
     category: "Digital Health & Teletherapy",
-    imageSrc: "/images/sage-screen-preview.webp",
+    imageSrc: "/images/designs/sage/screen-preview.webp",
     caseStudyUrl: "/designs/sage",
     buttonColor: "#3D7850", // Authentic Botanical Sage Green
   },
@@ -55,7 +55,7 @@ const DESIGNS: StageDesign[] = [
     subtitle: "Computer Vision & Waste Classification",
     shortSubtitle: "Waste Classification",
     category: "AI & Sustainability",
-    imageSrc: "/images/recycle-ai-screen-preview.webp",
+    imageSrc: "/images/designs/recycle-ai/screen-preview.webp",
     caseStudyUrl: "/designs/recycle-ai",
     buttonColor: "#6C9438", // Vibrant Eco-Leaf Green
   },
@@ -65,7 +65,7 @@ const DESIGNS: StageDesign[] = [
     subtitle: "Accessible Clinical Intake & Specialist Portal",
     shortSubtitle: "Clinical Portal",
     category: "Healthcare Platform",
-    imageSrc: "/images/pmc-clinic-ui.png?v=3",
+    imageSrc: "/images/designs/pmc-clinic/app-ui.png?v=3",
     caseStudyUrl: "/designs/pmc-clinic",
     buttonColor: "#0E2A8C", // Sapphire Royal Clinical Navy
   },

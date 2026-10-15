@@ -14,9 +14,9 @@ import {
   Layers,
   Sparkles,
 } from "lucide-react";
-import ProjectImage from "@/components/ProjectImage";
-import ProjectScreenWalkthrough from "@/components/ProjectScreenWalkthrough";
-import CaseStudyBreadcrumb from "@/components/CaseStudyBreadcrumb";
+import ProjectImage from "@/components/ui/ProjectImage";
+import ProjectScreenWalkthrough from "@/components/shared/ProjectScreenWalkthrough";
+import CaseStudyBreadcrumb from "@/components/shared/CaseStudyBreadcrumb";
 import type { CaseStudy } from "@/types";
 
 interface Props {

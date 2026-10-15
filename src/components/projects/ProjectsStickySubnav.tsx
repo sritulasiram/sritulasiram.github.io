@@ -8,7 +8,7 @@ const NAV_SECTIONS = [
   { id: "workbench", label: "Workbench" },
 ];
 
-export default function StickySubnav() {
+export default function ProjectsStickySubnav() {
   const [activeSection, setActiveSection] = useState("overview");
   const [navVisible, setNavVisible] = useState(false);
   const isScrollingToRef = useRef<string | null>(null);

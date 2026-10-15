@@ -16,10 +16,10 @@ import {
   Clock,
   Workflow,
 } from "lucide-react";
-import ProjectImage from "@/components/ProjectImage";
-import ProjectCtaIcon from "@/components/ProjectCtaIcon";
-import ProjectScreenWalkthrough from "@/components/ProjectScreenWalkthrough";
-import CaseStudyBreadcrumb from "@/components/CaseStudyBreadcrumb";
+import ProjectImage from "@/components/ui/ProjectImage";
+import ProjectCtaIcon from "@/components/shared/ProjectCtaIcon";
+import ProjectScreenWalkthrough from "@/components/shared/ProjectScreenWalkthrough";
+import CaseStudyBreadcrumb from "@/components/shared/CaseStudyBreadcrumb";
 import type { CaseStudy, ProjectItem } from "@/types";
 
 interface Props {

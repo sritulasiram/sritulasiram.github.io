@@ -25,7 +25,7 @@ export default function CameraOpticsKitBento() {
         <div className="lg:col-span-5 flex justify-center lg:justify-end">
           <div className="relative w-56 sm:w-64 md:w-72 aspect-square drop-shadow-2xl transition-transform duration-500 ease-out hover:scale-105">
             <Image
-              src="/images/iphone-16-pro-desert-titanium.png"
+              src="/images/devices/iphone-16-pro-desert-titanium.png"
               alt="iPhone 16 Pro Desert Titanium Pro camera system"
               fill
               sizes="(max-width: 640px) 220px, 280px"
@@ -315,7 +315,7 @@ export default function CameraOpticsKitBento() {
             <div className="relative w-full h-64 sm:h-72 flex items-center justify-center">
               <div className="relative w-44 h-full transition-transform duration-500 ease-out group-hover:-translate-y-2 drop-shadow-[0_20px_30px_rgba(0,0,0,0.18)] dark:drop-shadow-none">
                 <Image
-                  src="/images/samsung-note-edge.png"
+                  src="/images/devices/samsung-note-edge.png"
                   alt="Samsung Galaxy Note Edge with S-Pen"
                   fill
                   sizes="(max-width: 768px) 180px, 220px"
@@ -347,7 +347,7 @@ export default function CameraOpticsKitBento() {
             <div className="relative w-full h-64 sm:h-72 flex items-center justify-center">
               <div className="relative w-40 h-full transition-transform duration-500 ease-out group-hover:-translate-y-2 drop-shadow-[0_20px_30px_rgba(0,0,0,0.18)] dark:drop-shadow-none">
                 <Image
-                  src="/images/samsung-note-8.png"
+                  src="/images/devices/samsung-note-8.png"
                   alt="Samsung Galaxy Note 8 with S-Pen"
                   fill
                   sizes="(max-width: 768px) 180px, 220px"
@@ -379,7 +379,7 @@ export default function CameraOpticsKitBento() {
             <div className="relative w-full h-64 sm:h-72 flex items-center justify-center">
               <div className="relative w-52 h-full transition-transform duration-500 ease-out group-hover:-translate-y-2 drop-shadow-[0_20px_30px_rgba(0,0,0,0.18)] dark:drop-shadow-none">
                 <Image
-                  src="/images/samsung-note-20-ultra.png"
+                  src="/images/devices/samsung-note-20-ultra.png"
                   alt="Samsung Galaxy Note 20 Ultra Mystic Bronze with S-Pen"
                   fill
                   sizes="(max-width: 768px) 220px, 260px"

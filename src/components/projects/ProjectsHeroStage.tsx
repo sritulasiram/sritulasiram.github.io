@@ -4,11 +4,11 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowLeft, ChevronRight } from "lucide-react";
 import dynamic from "next/dynamic";
-import { MacbookPro } from "@/components/ui/macbook-pro";
-import AppleCarouselController from "@/components/AppleCarouselController";
+import { MacbookPro } from "@/components/mockups/MacbookPro";
+import AppleCarouselController from "@/components/ui/AppleCarouselController";
 import { cn } from "@/lib/cn";
 
-const TelemetryBentoGrid = dynamic(() => import("@/components/TelemetryBentoGrid"), {
+const TelemetryBentoGrid = dynamic(() => import("./visuals/TelemetryBentoGrid"), {
   loading: () => (
     <div className="w-full h-full bg-[#0E0E11] rounded-xl flex items-center justify-center p-4">
       <div className="text-center space-y-1">
@@ -40,7 +40,7 @@ export const STAGE_PROJECTS: StageProject[] = [
     shortSubtitle: "Hardware QA & Triage",
     category: "Developed Systems",
     categoryId: "developed-systems",
-    imageSrc: "/images/pi-diagnostic.webp",
+    imageSrc: "/images/projects/raspberry-pi-diagnostics/cover.webp",
     caseStudyUrl: "/projects/raspberry-pi-diagnostics",
     buttonColor: "#C51A4A",
     ctaText: "View case study",
@@ -52,7 +52,7 @@ export const STAGE_PROJECTS: StageProject[] = [
     shortSubtitle: "Repairs & Supplier RMA",
     category: "Developed Systems",
     categoryId: "developed-systems",
-    imageSrc: "/images/warranty-system-intake.png",
+    imageSrc: "/images/projects/warranty-rma/system-intake.png",
     caseStudyUrl: "/projects/warranty-rma",
     buttonColor: "#0071E3",
     ctaText: "View case study",
@@ -64,14 +64,14 @@ export const STAGE_PROJECTS: StageProject[] = [
     shortSubtitle: "Precision Agriculture",
     category: "Embedded Systems",
     categoryId: "embedded-systems",
-    imageSrc: "/images/projects/iot-fertiliser/fig-1-system-overview.png",
+    imageSrc: "/images/projects/iot-fertiliser-mixing/fig-1-system-overview.png",
     caseStudyUrl: "/projects/iot-fertiliser-mixing",
     buttonColor: "#1E7E34",
     ctaText: "View case study",
   },
 ];
 
-export default function HeroStage() {
+export default function ProjectsHeroStage() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [animatedIds, setAnimatedIds] = useState<Set<string>>(() => new Set());
   const touchStartX = useRef<number | null>(null);

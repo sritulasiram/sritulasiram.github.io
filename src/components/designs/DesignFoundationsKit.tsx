@@ -58,7 +58,7 @@ export default function DesignFoundationsKit() {
           <div className="w-full flex justify-center py-2 sm:py-4">
             <div className="relative w-full max-w-5xl aspect-[16/9] sm:aspect-[16/8]">
               <Image
-                src="/images/apple-liquid-glass.png"
+                src="/images/designs/foundations/apple-liquid-glass.png"
                 alt="Apple Liquid Glass across Mac, iPad, and iPhone"
                 fill
                 sizes="(max-width: 1024px) 100vw, 1024px"
@@ -139,7 +139,7 @@ export default function DesignFoundationsKit() {
           <div className="w-full flex justify-center py-2 sm:py-4">
             <div className="relative w-full max-w-5xl aspect-[16/9] sm:aspect-[16/9] rounded-3xl overflow-hidden">
               <Image
-                src="/images/material-3-preview.jpg"
+                src="/images/designs/foundations/material-3-preview.jpg"
                 alt="Google Material 3 Expressive Design Language Showcase"
                 fill
                 sizes="(max-width: 1024px) 100vw, 1024px"

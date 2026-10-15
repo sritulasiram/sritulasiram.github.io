@@ -13,7 +13,7 @@ import {
   X,
   ExternalLink,
 } from "lucide-react";
-import Footer from "@/components/Footer";
+import Footer from "@/components/layout/Footer";
 import { ABOUT_DATA } from "@/data/content";
 
 // ── Consolidated high-signal chapter sections for side nav ───────────────────
@@ -272,7 +272,7 @@ export default function AboutPage() {
               <div className="w-full max-w-[280px] sm:max-w-[320px] lg:max-w-[340px] space-y-3 text-center">
                 <div className="relative aspect-[4/5] w-full">
                   <Image
-                    src="/images/sri-portrait.webp"
+                    src="/images/portraits/sri-portrait.webp"
                     alt="Portrait of Sri Tulasi Ram"
                     fill
                     sizes="(max-width: 640px) 280px, (max-width: 1024px) 320px, 340px"
@@ -280,7 +280,7 @@ export default function AboutPage() {
                     priority
                   />
                   <Image
-                    src="/images/sri-portrait-dark.webp"
+                    src="/images/portraits/sri-portrait-dark.webp"
                     alt="Portrait of Sri Tulasi Ram (Dark Mode)"
                     fill
                     sizes="(max-width: 640px) 280px, (max-width: 1024px) 320px, 340px"
@@ -662,7 +662,7 @@ export default function AboutPage() {
                 <div className="md:col-span-4 space-y-2.5">
                   <div className="h-11 sm:h-12 flex items-center">
                     <Image
-                      src={ABOUT_DATA.accreditation.logoSrc || "/images/logo-bem.png"}
+                      src={ABOUT_DATA.accreditation.logoSrc || "/images/logos/bem.png"}
                       alt="Board of Engineers Malaysia"
                       width={56}
                       height={56}
@@ -706,14 +706,14 @@ export default function AboutPage() {
                 <div className="md:col-span-4 space-y-2.5">
                   <div className="h-11 sm:h-12 flex items-center">
                     <Image
-                      src={ABOUT_DATA.firstAid.logoSrc || "/images/logo-red-crescent.png"}
+                      src={ABOUT_DATA.firstAid.logoSrc || "/images/logos/red-crescent.png"}
                       alt="Malaysian Red Crescent Society Logo"
                       width={140}
                       height={32}
                       className="h-8 sm:h-9 w-auto object-contain dark:hidden"
                     />
                     <Image
-                      src={ABOUT_DATA.firstAid.logoDarkSrc || "/images/logo-red-crescent-dark.png"}
+                      src={ABOUT_DATA.firstAid.logoDarkSrc || "/images/logos/red-crescent-dark.png"}
                       alt="Malaysian Red Crescent Society Logo"
                       width={140}
                       height={32}
@@ -751,7 +751,7 @@ export default function AboutPage() {
                       type="button"
                       onClick={() =>
                         setCertificateModal({
-                          src: ABOUT_DATA.firstAid?.certificateSrc || "/images/cert-red-crescent.png",
+                          src: ABOUT_DATA.firstAid?.certificateSrc || "/images/certificates/red-crescent.png",
                           title: "Malaysian Red Crescent Society — First Aid & CPR Certification",
                         })
                       }
@@ -770,7 +770,7 @@ export default function AboutPage() {
               <div className="md:col-span-4 space-y-2.5">
                 <div className="h-11 sm:h-12 flex items-center">
                   <Image
-                    src="/images/logo-ijie.png"
+                    src="/images/logos/ijie.png"
                     alt="International Journal of Integrated Engineering"
                     width={100}
                     height={36}
@@ -867,7 +867,7 @@ export default function AboutPage() {
                       type="button"
                       onClick={() =>
                         setCertificateModal({
-                          src: ABOUT_DATA.flutterCert?.certificateSrc || "/images/cert-flutter-academind.png",
+                          src: ABOUT_DATA.flutterCert?.certificateSrc || "/images/certificates/flutter-academind.png",
                           title: "Academind Network — Google Flutter Cross-Platform Development Certificate",
                         })
                       }
