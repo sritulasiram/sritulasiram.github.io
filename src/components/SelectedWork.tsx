@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import TelemetryBentoGrid from "./TelemetryBentoGrid";
 import ProjectCtaIcon from "./ProjectCtaIcon";
 import { MacbookPro } from "@/components/ui/macbook-pro";
@@ -14,11 +14,10 @@ interface SystemProject {
   subtitle: string;
   description: string;
   imageSrc: string;
-  placeholderLabel: string;
-  placeholderRatio: string;
   caseStudyLink: string;
   buttonColor: string;
   ctaLabel: string;
+  stats?: string[];
   aspectRatio: string;
   maxLaptopWidth?: string;
 }
@@ -27,12 +26,10 @@ const SYSTEM_PROJECTS: SystemProject[] = [
   {
     id: "warranty-rma",
     title: "Warranty & RMA",
-    subtitle: "Cytron Support Operations & Database",
+    subtitle: "Internal Support Operations & Supplier RMA",
     description:
-      "Full-stack Flask & SQLite repair operations platform integrating thermal barcode printing, multi-invoice supplier RMA manifests, and Cloudflare Zero Trust telemetry.",
-    imageSrc: "/images/project-rma.webp",
-    placeholderLabel: "Replace: project-rma.webp",
-    placeholderRatio: "16:9 System Dashboard (1920×1080)",
+      "Full-stack Flask & SQLite repair operations platform integrating GP-1324D thermal barcode printing, multi-invoice supplier RMA manifests, and Cloudflare Zero Trust telemetry.",
+    imageSrc: "/images/warranty-system-intake.png",
     caseStudyLink: "/projects/warranty-rma",
     buttonColor: "#0071E3",
     ctaLabel: "View Operations Architecture",
@@ -42,15 +39,14 @@ const SYSTEM_PROJECTS: SystemProject[] = [
   {
     id: "raspberry-pi-diagnostics",
     title: "Raspberry Pi Diagnostics",
-    subtitle: "Enterprise Hardware QA & Automated Triage",
+    subtitle: "Hardware QA & Automated RMA Triage",
     description:
-      "Automated multi-vector diagnostic sweeps across compute, thermals, PMIC rails, storage, and I/O with SHA-256 tamper-evident test reports in under 60 seconds.",
+      "Automated 19-vector diagnostic sweeps across compute, thermals, PMIC rails, storage endurance, and RP1 GPIO, then issues a formal RMA inspection report, in under 60 seconds.",
     imageSrc: "/images/pi-diagnostic.webp",
-    placeholderLabel: "pi-diagnostic.webp",
-    placeholderRatio: "16:9 Diagnostic Dashboard (1920×1080)",
     caseStudyLink: "/projects/raspberry-pi-diagnostics",
     buttonColor: "#C51A4A",
     ctaLabel: "View Hardware Validation",
+    stats: ["95% faster triage", "19 diagnostic checks", "Under 60 seconds"],
     aspectRatio: "16/9",
     maxLaptopWidth: "max-w-[560px]",
   },
@@ -60,12 +56,11 @@ const SYSTEM_PROJECTS: SystemProject[] = [
     subtitle: "Precision Agriculture & Telemetry Research",
     description:
       "Automated closed-loop IoT nutrient mixing system engineered for precision hydroponic farms with ESP32 controllers, calibrated peristaltic dosing, and real-time Blynk cloud telemetry.",
-    imageSrc: "/images/project-fertiliser-mixing.webp",
-    placeholderLabel: "Replace: project-fertiliser-mixing.webp",
-    placeholderRatio: "16:9 Hardware Telemetry Grid (1920×1080)",
+    imageSrc: "/images/projects/iot-fertiliser/fig-1-system-overview.png",
     caseStudyLink: "/projects/iot-fertiliser-mixing",
     buttonColor: "#1E7E34",
     ctaLabel: "Read Published Research",
+    stats: ["99.6% TDS accuracy", ">94% dosing precision", "Peer-reviewed"],
     aspectRatio: "16/9",
     maxLaptopWidth: "max-w-[560px]",
   },
@@ -93,16 +88,14 @@ export default function SelectedWork() {
             Projects
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight leading-[1.1] text-balance">
-            Built for scale.
+            Built for the bench.
             <br />
             <span className="text-[#6E6E73] dark:text-[#8E8E93] font-medium">
-              Engineered for quiet,{" "}
-              <br className="hidden sm:inline" />
-              mission-critical reliability
+              Engineered to be dependable.
             </span>
           </h2>
           <p className="text-base sm:text-lg text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed pt-1 text-balance">
-            Scalable internal platforms, automated diagnostic pipelines, and embedded firmware designed to turn complex hardware challenges into seamless, dependable workflows.
+            Internal platforms, automated diagnostic pipelines, and embedded firmware that turn complex hardware problems into dependable workflows.
           </p>
         </div>
 
@@ -160,6 +153,21 @@ export default function SelectedWork() {
               <p className="text-sm sm:text-base text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed font-normal pt-1">
                 {currentProject.description}
               </p>
+
+              {currentProject.stats && (
+                <ul className="flex flex-wrap gap-x-2 gap-y-1 pt-1 text-xs sm:text-[13px] font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">
+                  {currentProject.stats.map((stat, i) => (
+                    <li key={stat} className="flex items-center gap-2">
+                      {i > 0 && (
+                        <span aria-hidden="true" className="text-[#C7C7CC] dark:text-[#48484A]">
+                          ·
+                        </span>
+                      )}
+                      <span>{stat}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
             {/* Action Bar: Apple Carousel Controller (Left) & Case Study CTA (Right) */}
@@ -206,6 +214,17 @@ export default function SelectedWork() {
               </Link>
             </div>
           </div>
+        </div>
+
+        <div className="mt-12 sm:mt-16 flex justify-center">
+          <Link
+            href="/projects"
+            prefetch={false}
+            className="apple-btn-secondary group"
+          >
+            <span>See all projects</span>
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
       </div>
     </section>

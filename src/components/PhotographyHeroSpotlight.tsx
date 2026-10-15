@@ -64,18 +64,14 @@ export default function PhotographyHeroSpotlight({
     setActiveIndex((prev) => (prev - 1 + spotlightPhotos.length) % spotlightPhotos.length);
   }, [spotlightPhotos.length]);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
-      if (e.key === "ArrowLeft") {
-        handlePrev();
-      } else if (e.key === "ArrowRight") {
-        handleNext();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handlePrev, handleNext]);
+  // Arrow keys only act while focus is inside the spotlight, so they never fight the lightbox or page
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowLeft") {
+      handlePrev();
+    } else if (e.key === "ArrowRight") {
+      handleNext();
+    }
+  };
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartXRef.current = e.touches[0].clientX;
@@ -95,6 +91,7 @@ export default function PhotographyHeroSpotlight({
   return (
     <section
       aria-label="Photography Highlights Showcase"
+      onKeyDown={handleKeyDown}
       className="w-full mb-16 sm:mb-20 text-left"
     >
       {/* 1. Header Bar: Aligned Apple 'Get the highlights' Pattern */}
@@ -139,6 +136,8 @@ export default function PhotographyHeroSpotlight({
             return (
               <div
                 key={photo.id}
+                aria-hidden={!isActive}
+                inert={!isActive}
                 className={`w-full transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] text-left ${
                   isActive
                     ? "opacity-100 translate-x-0 relative z-10 pointer-events-auto"
@@ -168,9 +167,11 @@ export default function PhotographyHeroSpotlight({
 
                     {/* Right Column: Portrait Photo Media (Col 6-12) */}
                     <div className="md:col-span-7 flex justify-center md:justify-end">
-                      <div
+                      <button
+                        type="button"
                         onClick={() => onSelectPhoto(photo)}
-                        className="relative w-full max-w-[360px] sm:max-w-[440px] md:max-w-[480px] aspect-[3/4] rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.07)] dark:shadow-[0_20px_45px_rgba(0,0,0,0.55)] cursor-pointer group bg-[#E8E8ED] dark:bg-[#1C1C1E]"
+                        aria-label={`View ${editorial.title}`}
+                        className="relative block w-full max-w-[360px] sm:max-w-[440px] md:max-w-[480px] aspect-[3/4] rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.07)] dark:shadow-[0_20px_45px_rgba(0,0,0,0.55)] cursor-pointer group bg-[#E8E8ED] dark:bg-[#1C1C1E] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0071E3]"
                       >
                         <Image
                           src={photo.imageSrc}
@@ -183,13 +184,13 @@ export default function PhotographyHeroSpotlight({
                           onLoad={() =>
                             setLoadedPhotos((prev) => ({ ...prev, [photo.id]: true }))
                           }
-                          className={`object-cover object-center transition-[transform,opacity] duration-500 ease-out group-hover:scale-[1.02] will-change-transform ${
+                          className={`object-cover object-center transition-[transform,opacity] duration-500 ease-out motion-safe:group-hover:scale-[1.02] will-change-transform ${
                             idx === 0 || loadedPhotos[photo.id]
                               ? "opacity-100 scale-100"
                               : "opacity-50 scale-105"
                           }`}
                         />
-                      </div>
+                      </button>
                     </div>
                   </div>
                 ) : (
@@ -209,9 +210,11 @@ export default function PhotographyHeroSpotlight({
                     </div>
 
                     {/* Below: Landscape Photo Media */}
-                    <div
+                    <button
+                      type="button"
                       onClick={() => onSelectPhoto(photo)}
-                      className="relative w-full aspect-[16/9] sm:aspect-[2.2/1] rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.07)] dark:shadow-[0_20px_45px_rgba(0,0,0,0.55)] cursor-pointer group bg-[#E8E8ED] dark:bg-[#1C1C1E]"
+                      aria-label={`View ${editorial.title}`}
+                      className="relative block w-full aspect-[16/9] sm:aspect-[2.2/1] rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.07)] dark:shadow-[0_20px_45px_rgba(0,0,0,0.55)] cursor-pointer group bg-[#E8E8ED] dark:bg-[#1C1C1E] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0071E3]"
                     >
                       <Image
                         src={photo.imageSrc}
@@ -224,13 +227,13 @@ export default function PhotographyHeroSpotlight({
                         onLoad={() =>
                           setLoadedPhotos((prev) => ({ ...prev, [photo.id]: true }))
                         }
-                        className={`object-cover object-center transition-[transform,opacity] duration-500 ease-out group-hover:scale-[1.02] will-change-transform ${
+                        className={`object-cover object-center transition-[transform,opacity] duration-500 ease-out motion-safe:group-hover:scale-[1.02] will-change-transform ${
                           idx === 0 || loadedPhotos[photo.id]
                             ? "opacity-100 scale-100"
                             : "opacity-50 scale-105"
                         }`}
                       />
-                    </div>
+                    </button>
                   </div>
                 )}
               </div>

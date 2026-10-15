@@ -40,6 +40,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: design.title,
     description: design.tagline,
+    alternates: { canonical: `/designs/${id}` },
   };
 }
 

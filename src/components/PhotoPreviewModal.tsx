@@ -46,6 +46,8 @@ export default function PhotoPreviewModal({
   const imgRef = useRef<HTMLImageElement | null>(null);
   const touchStartXRef = useRef<number | null>(null);
   const touchStartYRef = useRef<number | null>(null);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const isOpen = Boolean(photo);
   const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
   // Reset flip, zoom, and loaded state whenever photo changes
@@ -99,6 +101,14 @@ export default function PhotoPreviewModal({
     touchStartYRef.current = null;
   };
 
+  // Move focus into the dialog when it opens and hand it back to the opener on close
+  useEffect(() => {
+    if (!isOpen || !mounted) return;
+    const opener = document.activeElement as HTMLElement | null;
+    dialogRef.current?.querySelector<HTMLElement>('[aria-label="Close preview"]')?.focus();
+    return () => opener?.focus?.();
+  }, [isOpen, mounted]);
+
   useEffect(() => {
     if (!photo) return;
 
@@ -112,7 +122,26 @@ export default function PhotoPreviewModal({
     document.body.style.overflow = "hidden";
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+      if (e.key === "Tab") {
+        // Keep Tab inside the dialog
+        const focusable = dialogRef.current?.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])',
+        );
+        if (!focusable || focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        const active = document.activeElement;
+        if (e.shiftKey && active === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && active === last) {
+          e.preventDefault();
+          first.focus();
+        } else if (!dialogRef.current?.contains(active)) {
+          e.preventDefault();
+          first.focus();
+        }
+      } else if (e.key === "Escape") {
         if (isZoomed) {
           setIsZoomed(false);
         } else {
@@ -148,6 +177,7 @@ export default function PhotoPreviewModal({
 
   return createPortal(
     <div
+      ref={dialogRef}
       role="dialog"
       aria-modal="true"
       aria-label={photo.title || "Photo Preview"}

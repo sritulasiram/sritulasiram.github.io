@@ -8,7 +8,7 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
     title: "Warranty & RMA Management System",
     eyebrow: "Cytron Technologies · Internal Support Operations",
     tagline: "Full-stack repair operations platform integrating thermal barcode printing, batch supplier RMA manifests, and Cloudflare Zero Trust telemetry.",
-    heroMetric: "v2.46.1",
+    heroMetric: "v2.50.0",
     heroMetricLabel: "Production System (WAL Mode)",
     imageSrc: "/images/project-rma.webp",
     placeholderLabel: "Replace: project-rma.webp",
@@ -94,7 +94,7 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
     ],
     techStack: [
       { category: "Backend Architecture", items: ["Python 3", "Flask (Blueprints)", "SQLite (WAL Mode)", "Gunicorn", "systemd Daemons"] },
-      { category: "Hardware & Peripherals", items: ["Thermal Barcode Printer", "I2C OLED 128×64 (SSD1306/SH1106)", "USB Barcode Scanners", "Code128 Barcodes"] },
+      { category: "Hardware & Peripherals", items: ["GP-1324D Thermal Printer", "I2C OLED 128×64 (SSD1306/SH1106)", "USB Barcode Scanners", "Code128 Barcodes"] },
       { category: "Cloud, Sync & Security", items: ["Cloudflare Zero Trust", "Telegram Bot API", "Google Drive & Sheets API", "Google Cloud Storage", "Pytest (148 tests)"] },
     ],
     results: [
@@ -109,7 +109,7 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
         description: "Every RMA unit, diagnostic report, and supplier manifest linked by scannable Code128 barcodes.",
       },
       {
-        metric: "2.46.1",
+        metric: "2.50.0",
         label: "Production Release",
         description: "Actively deployed internal system powering Cytron's regional support operations.",
       },
@@ -150,26 +150,27 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
   "raspberry-pi-diagnostics": {
     id: "raspberry-pi-diagnostics",
     title: "Raspberry Pi Diagnostic Suite",
-    eyebrow: "Cytron Technologies · Enterprise Hardware QA & RMA Platform",
-    tagline: "Automated multi-vector hardware validation and tamper-evident cryptographic test reports in under 60 seconds.",
-    heroMetric: "< 60s",
-    heroMetricLabel: "19-Vector Automated Triage",
+    eyebrow: "Cytron Technologies · Hardware QA & Automated RMA Platform",
+    tagline: "Automated 19-vector hardware quality assurance, real-time telemetry, and standardized RMA triage for single-board computers.",
+    heroMetric: "40–55s",
+    heroMetricLabel: "19-Vector Automated Sweep",
     imageSrc: "/images/pi-diagnostic.webp",
     placeholderLabel: "pi-diagnostic.webp",
     placeholderRatio: "16:10 Diagnostic Dashboard (1920×1200)",
     timeframe: "Production Workbench Platform",
-    role: "Support Engineer",
+    role: "Support Engineer (Warranty & RMA)",
     organization: "Cytron Technologies",
+    githubUrl: "https://github.com/sritulasiram/RaspberryPiDiganostic",
     background: {
       problemStatement:
-        "Hardware bench technicians previously ran isolated terminal scripts (vcgencmd, i2cdetect, iperf, fdisk) to diagnose returned or faulty boards, taking 15–20 minutes per unit with recurring risks of electrical dead-shorts.",
+        "Hardware bench technicians previously had to toggle each GPIO pin HIGH and LOW manually via CLI scripts and take voltage readings pin-by-pin using a multimeter, alongside manual peripheral plug-in checks. This took 15–20 minutes per board and risked probe slips destroying silicon.",
       context:
-        "The release of Raspberry Pi 5 introduced the custom RP1 southbridge, breaking legacy GPIO libraries (RPi.GPIO, early gpiozero) on Linux Kernel 6.6+ (Bookworm). As an official Raspberry Pi Design Partner, Cytron needed an industrial workbench executing 19 automated diagnostic vectors in under 60 seconds with standardized, tamper-evident audit records.",
+        "The release of Raspberry Pi 5 introduced the custom RP1 southbridge, breaking legacy GPIO libraries (RPi.GPIO, early gpiozero) on Linux Kernel 6.6+ (Bookworm & Trixie). As an official Raspberry Pi Design Partner, Cytron needed an industrial workbench executing 19 automated diagnostic vectors in under a minute with standardized hardware test records.",
       challenges: [
-        "15–20 minute manual inspection bottleneck per single-board computer across compute, storage, and I/O",
+        "15–20 minute manual intake bottleneck: setting pins HIGH/LOW manually and probing 40 pins one-by-one with a multimeter",
+        "Physical probe slip hazards: handheld DMM probe tips on dense 2.54mm headers risked bridging 3.3V GPIO directly to 5V rails",
         "RP1 southbridge architecture fragmentation breaking legacy GPIO drivers on Debian Bookworm (Kernel 6.6+)",
-        "Electrical safety risks: standard output-drive GPIO tests risked causing dead-shorts on damaged boards or shorted rails",
-        "Lack of standardized, tamper-evident warranty test reports with clear pass/fail parametric thresholds",
+        "Lack of standardized warranty test reports with clear pass/fail parametric thresholds and pin-level isolation",
       ],
     },
     architecture: {
@@ -192,7 +193,7 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
             "Dynamic kernel chip auto-discovery (/dev/gpiochip4, 0, 1) for the RP1 southbridge via lgpio, with automatic fallback to gpiozero and RPi.GPIO on legacy Pi 4/3/Zero models.",
         },
         {
-          title: "Parametric Diagnostic Sweep Engine",
+          title: "3-Stage Parametric Diagnostic Runner",
           description:
             "Executes 19 automated vectors categorized into Compute/Thermals, PMIC ADC Rail Telemetry (4.75V–5.25V), Storage Direct I/O, and Peripheral RF (USB 3.0, Gigabit, MIPI, ALSA).",
         },
@@ -201,12 +202,12 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
     keyFeatures: [
       {
         title: "19-Vector Automated Diagnostic Engine",
-        description: "Executes automated multi-subsystem sweeps across compute cores, PMIC rails, storage, and transceivers in under 60 seconds.",
+        description: "Executes automated multi-subsystem sweeps across compute cores, PMIC rails, storage, and transceivers in 40–55 seconds.",
         badge: "Core Engine",
       },
       {
-        title: "Forensic Non-Destructive High-Z Probing",
-        description: "Claims user GPIO lines as passive inputs with zero voltage injection (SET_PULL_NONE), eliminating dead-short risks on damaged boards.",
+        title: "Forensic Pull-Up Pin Probing & Safe Release",
+        description: "Probes unattached 40-pin GPIO lines with internal pull-ups (SET_PULL_UP) to eliminate floating false-low states, immediately releasing each line (gpio_free) in strict try...finally blocks.",
         badge: "Electrical Safety",
       },
       {
@@ -215,13 +216,13 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
         badge: "Kernel Drivers",
       },
       {
-        title: "Tamper-Evident Test Verification Reports",
-        description: "Generates structured 2-page hardware test reports with UUT serial tracking, technician signatures, and SHA-256 audit digests.",
+        title: "Standardized 2-Page RMA Manifest & Certificate",
+        description: "Generates official hardware test certificates with formal document reference IDs (DOC-RMA-YYYYMMDD-XXXX), 4-column UUT spec sheets, pin-level fault isolation, and SHA-256 tamper digests.",
         badge: "Hardware QA",
       },
       {
         title: "MicroSD Churn & Flash Endurance Protection",
-        description: "B-Tree database indexing with in-memory 15s TTL caching eliminates continuous flash write wear on bench test fixtures.",
+        description: "B-Tree database indexing with in-memory 15s TTL caching and SQLite WAL mode eliminates continuous flash write wear on bench test fixtures.",
         badge: "Reliability",
       },
       {
@@ -232,25 +233,25 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
     ],
     techStack: [
       { category: "Languages & Core", items: ["Python 3", "JavaScript (ES6+)", "Modern CSS3", "HTML5", "Bash"] },
-      { category: "Frameworks & Drivers", items: ["Flask", "lgpio (RP1)", "gpiozero", "RPi.GPIO", "psutil", "pyudev", "SQLite3"] },
+      { category: "Frameworks & Drivers", items: ["Flask 3.1", "Gunicorn (8 Threads)", "lgpio (RP1)", "gpiozero", "RPi.GPIO", "psutil", "pyudev", "SQLite (WAL Mode)"] },
       { category: "Hardware & Protocols", items: ["Raspberry Pi 5 (RP1)", "Pi 4/3/Zero", "I2C", "SPI", "UART", "PCIe", "MIPI D-PHY", "USB 3.0", "Gigabit PHY", "Bluetooth 5.0"] },
-      { category: "Embedded Linux & QA", items: ["Raspberry Pi OS (Bookworm)", "Linux Kernel 6.6+", "Systemd", "vcgencmd", "Parametric Sweeps", "SHA-256 Audit Hashing"] },
+      { category: "Embedded Linux & QA", items: ["Raspberry Pi OS (Debian 12/13)", "Linux Kernel 6.6+", "Systemd Daemon", "vcgencmd", "Parametric Sweeps", "Official RMA Reports"] },
     ],
     results: [
       {
-        metric: "95%",
-        label: "Triage Time Reduction",
-        description: "Cut hardware bench inspection time from ~20 minutes down to under 60 seconds per unit.",
+        metric: "19 Vectors",
+        label: "Subsystem Coverage",
+        description: "Automated sweeps across ARM compute cores, PMIC power rails, block storage, and RF transceivers.",
       },
       {
         metric: "100%",
         label: "Electrical Safety",
-        description: "Zero component burnout achieved across thousands of production test cycles via passive High-Z probing.",
+        description: "Zero component burnout achieved across production test cycles via forensic pull-up probing and strict resource release.",
       },
       {
         metric: "< 45MB",
         label: "RAM Footprint",
-        description: "Ultra-low memory utilization on embedded ARM targets via zero-dependency custom SPA engine.",
+        description: "Ultra-low memory utilization on embedded ARM targets with < 1.5% CPU load via zero-dependency custom SPA engine.",
       },
     ],
     screens: [
@@ -264,7 +265,13 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
         id: "silicon-telemetry",
         title: "Thermal & PMIC Telemetry",
         description: "Live silicon temperature tracking, CPU clock frequency throttling detection, and voltage rail stability validation across Raspberry Pi 5 and 4 boards.",
-        imageSrc: "/images/pi-diagnostic.webp",
+        imageSrc: "/images/hardware/pi-5.jpg",
+      },
+      {
+        id: "fleet-compatibility",
+        title: "Fleet Hardware Compatibility",
+        description: "Dynamic kernel auto-discovery interfacing with Pi 5 RP1 southbridge via lgpio, alongside VL805 USB 3.0 and BCM2837 legacy board support.",
+        imageSrc: "/images/hardware/pi-4.jpg",
       },
       {
         id: "tamper-evident-cert",
@@ -281,13 +288,13 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
     tagline: "ESP32 firmware for automated hydroponic fertiliser dispensing, 30-point median-filtered TDS sensing, and real-time Blynk cloud telemetry.",
     heroMetric: "IJIE 2026",
     heroMetricLabel: "Peer-Reviewed Publication (Vol. 18 No. 1)",
-    imageSrc: "/images/project-fertiliser-mixing.webp",
-    placeholderLabel: "Replace: project-fertiliser-mixing.webp",
+    imageSrc: "/images/projects/iot-fertiliser/fig-1-system-overview.png",
+    placeholderLabel: "fig-1-system-overview.png",
     placeholderRatio: "16:10 Hardware & IoT Dashboard (1920×1200)",
     timeframe: "Published Vol. 18(1), pp. 186–201, 2026",
     role: "First Author & Firmware Engineer",
     organization: "Universiti Tun Hussein Onn Malaysia (UTHM)",
-    publicationUrl: "https://penerbit.uthm.edu.my/ojs/index.php/ijie/article/view/24386",
+    publicationUrl: "https://doi.org/10.30880/ijie.2026.18.01.014",
     githubUrl: "https://github.com/sritulasiram/iot-fertiliser-mixing-esp32",
     background: {
       problemStatement:
@@ -295,10 +302,10 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
       context:
         "Published in the International Journal of Integrated Engineering (IJIE), this research evaluated a production-grade ESP32 firmware prototype developed to automate nutrient formulation, dual-pump liquid dispensing, and real-time telemetry monitoring via the Blynk IoT cloud platform.",
       challenges: [
-        "Eliminating WiFi radio interference on ADC readings by isolating all analog sensors to ADC1 (GPIO 32–39)",
-        "Designing a non-blocking state machine architecture to prevent Watchdog Timer (WDT) resets while dispensing",
-        "Filtering raw ADC electrical noise from TDS submersible electrodes using a 30-point running median buffer",
-        "Synchronizing interrupt-driven flow feedback (ISRs) across dual independent pump-solenoid circuits",
+        "Eliminating WiFi radio interference on ADC readings by isolating all analog sensors exclusively to ADC1 (GPIO 34, 35, 36)",
+        "Preventing ESP32 Watchdog Timer (WDT) kernel panics and connection drops with a non-blocking asynchronous state machine",
+        "Eliminating analog electrode electrical noise with a 30-sample circular buffer and digital median filtering (getMedianNum)",
+        "Preventing torn multi-byte pulse reads with atomic ISR guards (noInterrupts/interrupts) and IRAM-cached ISR execution",
       ],
     },
     architecture: {
@@ -308,22 +315,22 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
         {
           title: "30-Point Median-Filtered TDS Pipeline",
           description:
-            "Submersible TDS electrode sampling on ADC1 (VP / GPIO 36) with circular buffer median filtering to eliminate electrical noise and maintain 99.6% measurement precision.",
+            "Submersible TDS electrode sampling on ADC1 (VP / GPIO 36) with circular buffer median filtering and 3rd-order polynomial voltage conversion to maintain 99.6% measurement precision.",
         },
         {
           title: "Non-Blocking Dispense State Machine",
           description:
-            "WDT-safe state engine executing asynchronous pump-solenoid ticks, preserving WiFi heartbeat and preventing connection drops during liquid delivery.",
+            "WDT-safe asynchronous state engine executing non-blocking pump-solenoid ticks, preserving WiFi heartbeat and preventing connection drops during liquid delivery.",
         },
         {
-          title: "Atomic ISR Flow Metering & Dual Actuation",
+          title: "Atomic ISR Flow Metering & Independent Cutoff",
           description:
-            "Hardware interrupt routines on GPIO 18/19 capturing pulse counts with atomic reads, shutting off individual pumps dynamically when target milliliters are reached.",
+            "IRAM_ATTR hardware interrupt service routines on GPIO 18/19 capturing pulse counts with atomic reads, shutting off each pump independently (5.25 and 5.50 ml/pulse) with zero volumetric overshoot.",
         },
         {
-          title: "Blynk Virtual Pin Telemetry Bridge",
+          title: "Blynk Virtual Pin Telemetry Bridge (V1–V5)",
           description:
-            "Bidirectional cloud bridge mapping volume inputs (V1), dispensed metrics (V2), real-time TDS ppm (V3), and color-coded water level LEDs (V4/V5).",
+            "Bidirectional cloud bridge mapping volume inputs (V1), dispensed metrics (V2), real-time TDS ppm (V3), and color-coded multi-level water status LEDs (V4/V5).",
         },
       ],
     },
@@ -331,19 +338,19 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
       {
         title: "Dual-Pump & Solenoid Dispensing",
         description:
-          "Two independent pump-solenoid circuits (GPIO 16/17 & 22/23) with closed-loop flow feedback.",
+          "Independent pump-solenoid circuits (GPIO 16/17 & 22/23) with closed-loop flow feedback and zero cross-contamination.",
         badge: "Actuation",
       },
       {
         title: "ADC1 Silicon Noise Isolation",
         description:
-          "Exclusively maps analog sensors to ADC1 (GPIO 32–39), avoiding ADC2 silicon corruption from the ESP32 WiFi radio.",
+          "Exclusively maps analog sensors to ADC1 (GPIO 34, 35, 36), avoiding ADC2 silicon corruption from the ESP32 WiFi radio synthesizer.",
         badge: "Hardware Architecture",
       },
       {
         title: "30-Point Median Filtered TDS",
         description:
-          "Real-time ppm readings with running circular buffer median filter and calibrated temperature tuning.",
+          "Real-time ppm calculation using 3rd-order polynomial compensation and a 30-sample running circular buffer median filter.",
         badge: "Precision Sensing",
       },
       {
@@ -355,20 +362,20 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
       {
         title: "Dual Water Level Sensing",
         description:
-          "Color-coded Low (≤700), Medium (≤1200), and High reservoir telemetry on GPIO 34 and 35.",
+          "Calibrated Low (≤700), Medium (701–1200), and High (>1200) reservoir telemetry on GPIO 34 and 35.",
         badge: "Telemetry",
       },
       {
         title: "Peer-Reviewed IJIE Journal Publication",
         description:
-          "Published in the International Journal of Integrated Engineering (IJIE), Vol. 18(1), pp. 186–201, 2026.",
+          "Published in the International Journal of Integrated Engineering (IJIE), Vol. 18(1), pp. 186–201, 2026. DOI: 10.30880/ijie.2026.18.01.014.",
         badge: "Academic Research",
       },
     ],
     techStack: [
-      { category: "Embedded Firmware & Core", items: ["ESP32 SoC", "C / C++ (Arduino Framework)", "Non-Blocking State Machine", "Hardware Interrupts (ISRs)", "Watchdog Timer (WDT)"] },
-      { category: "Sensors & Actuators", items: ["Analog TDS Sensor (ADC1)", "Pulse Flow Sensors (YF-S201)", "Dual 12V Peristaltic Pumps", "12V Solenoid Valves", "Dual Water Level Sensors"] },
-      { category: "IoT Cloud & Communication", items: ["Blynk IoT Platform", "Virtual Pin Protocols", "WiFi 802.11 b/g/n", "MIT License", "IJIE Journal Peer Review"] },
+      { category: "Embedded Firmware & Core", items: ["ESP32 SoC", "C / C++ (Arduino Core ≥ 2.0.0)", "Non-Blocking State Machine", "IRAM_ATTR ISRs", "Atomic Interrupt Locks", "Watchdog Timer (WDT)"] },
+      { category: "Sensors & Actuators", items: ["Analog TDS Sensor (ADC1 / GPIO 36)", "Pulse Flow Meters (GPIO 18/19)", "3x Submersible Pumps", "12V Solenoid Shutoff Valves", "Dual Water Level Probes"] },
+      { category: "IoT Cloud & Communication", items: ["Blynk IoT (≥ 1.3.0)", "Virtual Pins V1–V5", "WiFi 802.11 b/g/n", "MIT License", "IJIE Journal Peer Review"] },
     ],
     results: [
       {
@@ -384,7 +391,114 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
       {
         metric: "Vol. 18(1)",
         label: "IJIE Journal",
-        description: "Published research paper: pp. 186–201, International Journal of Integrated Engineering (2026).",
+        description: "Published research paper: pp. 186–201, International Journal of Integrated Engineering (2026). DOI: 10.30880/ijie.2026.18.01.014.",
+      },
+    ],
+  },
+  "esp32-heart-saver": {
+    id: "esp32-heart-saver",
+    title: "ESP32 Heart Saver",
+    eyebrow: "Embedded IoT · Autonomous Biometrics",
+    tagline: "Wearable optical pulse telemetry, real-time GPS coordinate fix, and SIM800L GSM cellular emergency dispatch.",
+    heroMetric: "> 90 BPM",
+    heroMetricLabel: "Automatic Distress Trigger",
+    imageSrc: "",
+    placeholderLabel: "esp32-heart-saver",
+    placeholderRatio: "16:10 Telemetry & Architecture Dashboard (1920×1200)",
+    timeframe: "Prototype & Field Firmware",
+    role: "Embedded Systems Developer",
+    organization: "Independent Engineering",
+    githubUrl: "https://github.com/sritulasiram/esp32-heart-saver",
+    githubLabel: "View the repo on GitHub",
+    background: {
+      problemStatement:
+        "Cardiac emergencies and acute tachycardiac events require immediate medical attention, but victims often lose consciousness before they can call emergency services or provide precise location coordinates.",
+      context:
+        "Engineered an autonomous wearable telemetry prototype integrating analog optical photoplethysmography, satellite geolocation, and direct cellular radio transmission into a unified FreeRTOS event loop.",
+      challenges: [
+        "Filtering high-frequency motion artifacts from raw optical analog pulse signals on GPIO 36",
+        "Stabilizing the SIM800L power rail against 2A transmission burst voltage dips that induce ESP32 brownouts",
+        "Ensuring reliable NMEA GPS coordinate acquisition without blocking the core sensor sampling loop",
+        "Implementing instant tactile SOS overrides with debounced hardware interrupt handling",
+      ],
+    },
+    architecture: {
+      summary:
+        "Built around an ESP32 38-pin microcontroller executing a non-blocking FreeRTOS state loop that arbitrates optical pulse ADC sampling, NMEA GPS sentence parsing via SoftwareSerial, and AT command dispatch to a SIM800L GSM transceiver over hardware UART2.",
+      components: [
+        {
+          title: "Optical Pulse Sensor ADC (GPIO 36)",
+          description:
+            "Direct analog signal acquisition on low-noise ADC1 channel with software threshold analysis for reliable peak detection and real-time BPM calculation.",
+        },
+        {
+          title: "NEO-6M GPS Receiver (9600 Baud)",
+          description:
+            "SoftwareSerial NMEA sentence parser on RX:14 / TX:15 continuously maintaining current latitude and longitude coordinate fix.",
+        },
+        {
+          title: "SIM800L Cellular Dispatcher (UART2)",
+          description:
+            "Hardware serial transceiver handling automated AT-command SMS composition, broadcasting precise GPS coordinates and heart rate telemetry to emergency contacts.",
+        },
+        {
+          title: "Isolated 3.7V–4.2V Power Delivery",
+          description:
+            "Dedicated high-discharge LiPo power rail with capacitive filtering designed to supply 2A instantaneous current spikes during GSM cellular bursts without triggering MCU brownout resets.",
+        },
+      ],
+    },
+    keyFeatures: [
+      {
+        title: "Automated Threshold Distress Trigger",
+        description:
+          "Continuously evaluates optical pulse readings and automatically initiates emergency dispatch sequence if heart rate exceeds 90 BPM.",
+        badge: "Biometric Core",
+      },
+      {
+        title: "Hardware Tactile SOS Override",
+        description:
+          "Debounced tactile pushbutton on GPIO 4 allowing immediate manual distress alert activation regardless of sensor state.",
+        badge: "Safety Override",
+      },
+      {
+        title: "Live GPS Geolocation Payload",
+        description:
+          "Packages live satellite coordinates into standardized SMS message payloads with direct Google Maps navigation links.",
+        badge: "Geolocation",
+      },
+      {
+        title: "Isolated High-Current Power Rail",
+        description:
+          "Decoupled 3.7V–4.2V power management preventing GSM transmission surges from destabilizing the core microcontroller.",
+        badge: "Hardware Power",
+      },
+    ],
+    techStack: [
+      { category: "Microcontroller & Firmware", items: ["ESP32 38-Pin MCU", "C++ / Arduino Core", "FreeRTOS Event Loop", "Hardware Interrupts"] },
+      { category: "Sensors & Geolocation", items: ["Optical Pulse Sensor", "NEO-6M GPS Module", "SoftwareSerial (9600 Baud)", "NMEA TinyGPS++"] },
+      { category: "Wireless & Power Rail", items: ["SIM800L GSM/GPRS", "UART2 (RX:16, TX:17)", "AT Command Engine", "3.7V–4.2V 2A Peak LiPo Rail"] },
+    ],
+    results: [
+      {
+        metric: "< 15s",
+        label: "Emergency Dispatch Latency",
+        description: "From critical pulse rate detection to outgoing SMS cellular transmission dispatch.",
+      },
+      {
+        metric: "±2.5m",
+        label: "Outdoor GPS Fix Accuracy",
+        description: "Satellite lock precision providing accurate rescue coordinates via NEO-6M receiver.",
+      },
+      {
+        metric: "0 Brownouts",
+        label: "Peak Current Isolation",
+        description: "Dedicated 3.7V–4.2V isolated rail delivering 2A GSM burst transmission spikes safely.",
+      },
+      {
+        metric: "100%",
+        label: "Tactile SOS Reliability",
+        description: "Debounced GPIO 4 hardware interrupt guaranteeing immediate dispatch on demand.",
       },
     ],
   },
@@ -392,7 +506,7 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
     id: "opencore-efi-hackintosh",
     title: "OpenCore EFI Hackintosh Build",
     eyebrow: "macOS Firmware Engineering · Low-Level Systems R&D",
-    tagline: "Production-grade OpenCore UEFI bootloader configuration, ACPI AML bytecode power-gating, and custom kernel extension harmonization for ASUS ROG Strix gaming hardware on macOS Sonoma, Sequoia, and Tahoe.",
+    tagline: "Optimized OpenCore UEFI bootloader configuration, ACPI AML bytecode power-gating, and custom kernel extension harmonization for ASUS ROG Strix gaming hardware on macOS Sonoma, Sequoia, and Tahoe.",
     heroMetric: "17 Working",
     heroMetricLabel: "Hardware Components Confirmed",
     imageSrc: "/images/project-opencore-uefi.png",
@@ -407,7 +521,7 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
       problemStatement:
         "Building a reliable, daily-driver Hackintosh on a high-performance gaming laptop has historically been plagued by severe community fragmentation. Critical ACPI patches, kernel quirks, and UEFI configs are dispersed across unvetted forum threads, outdated blog posts, and buried GitHub repositories. Simultaneously, low-level drivers and kexts are maintained in silos without centralized coordination, leading to frequent kernel panics, broken sleep/wake states, non-functioning multi-touch trackpads, and severe idle battery drain and heat from unsupported discrete GPUs on muxless laptops.",
       context:
-        "The objective was to synthesize this fragmented landscape into a deterministic, production-grade OpenCore EFI distribution for the ASUS ROG Strix GL503GE laptop (Intel Core i7-8750H, Intel UHD Graphics 630). By decompiling raw DSDTs and writing modular ACPI SSDT tables, the project established verified hardware compatibility, native CPU frequency scaling, dGPU power-gating, and reliable S3 sleep/wake across macOS Sonoma (14.x), Sequoia (15.x), and Tahoe (16.x).",
+        "The objective was to synthesize this fragmented landscape into a deterministic, community-tested OpenCore EFI distribution for the ASUS ROG Strix GL503GE laptop (Intel Core i7-8750H, Intel UHD Graphics 630). By decompiling raw DSDTs and writing modular ACPI SSDT tables, the project established verified hardware compatibility, native CPU frequency scaling, dGPU power-gating, and reliable S3 sleep/wake across macOS Sonoma (14.x), Sequoia (15.x), and Tahoe (16.x).",
       challenges: [
         "Power-gating the unsupported discrete NVIDIA GeForce GTX 1050 Ti Mobile via SSDT-Disable_GPU_PEG0.aml to save battery power and prevent heat",
         "Achieving reliable S3 sleep and wake via SSDT-GPRW and fix_sleep_pmset.sh to eliminate wake crashes and instant waking",
@@ -724,6 +838,125 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
       },
     ],
   },
+};
+
+PROJECT_DETAILS["cytron-hr-assistive-intelligence"] = {
+  id: "cytron-hr-assistive-intelligence",
+  title: "Cytron HR Assistive Intelligence",
+  eyebrow: "Cytron Technologies · Internal HR Assistant",
+  tagline:
+    "A chat assistant that answers employee questions only from official HR documents, cites every statement, and says so when it doesn't know.",
+  heroMetric: "0 guesses",
+  heroMetricLabel: "Unanswerable questions never reach the model",
+  imageSrc: "",
+  placeholderLabel: "rag-pipeline-diagram",
+  placeholderRatio: "16:10 Architecture Diagram",
+  timeframe: "Internal Pilot",
+  role: "Designer & Developer",
+  organization: "Cytron Technologies",
+  background: {
+    problemStatement:
+      "Employees need quick, reliable answers to HR questions, but the answers live in long documents that few people read end to end. A general-purpose chatbot is fast but can invent rules, which is unacceptable for HR guidance.",
+    context:
+      "The assistant answers only from the organisation's official HR documents. Every statement carries a numbered citation that opens the source excerpt, and a question the documents don't cover returns a fixed 'not found' reply that points to HR, without ever calling the language model.",
+    challenges: [
+      "Preventing confident-sounding answers to questions the documents do not cover",
+      "Reading source documents whose content sits in floating text boxes and tables that common parsers skip",
+      "Keeping answers current as documents change, without re-embedding everything or leaving a half-built index",
+      "Measuring whether a change to chunking, thresholds or models actually improved retrieval",
+    ],
+  },
+  architecture: {
+    summary:
+      "A single FastAPI process serves the API and the compiled React interface. A question is rewritten if it is a follow-up, embedded, matched against a local ChromaDB index, and checked against a relevance gate. Only then are the surviving excerpts sent to the language model, which streams a cited answer back over server-sent events.",
+    components: [
+      {
+        title: "Document ingestion & chunking",
+        description:
+          "A native OpenXML reader plus PDF, text and Markdown parsers split documents by structure. Whole list items and tables are never cut, short sections are merged, and each chunk is embedded with its section path.",
+      },
+      {
+        title: "Local vector index",
+        description:
+          "ChromaDB keeps a separate collection per embedding model, so switching providers never mixes vectors. Chunk ids are content hashes, so a re-index embeds only what changed.",
+      },
+      {
+        title: "Relevance gate",
+        description:
+          "A similarity cut-off and a retrieval margin filter the candidates. If nothing passes, the fixed 'not found' reply is returned and the answer model is not called at all.",
+      },
+      {
+        title: "Answer generation & citations",
+        description:
+          "Surviving excerpts are numbered and sent with a strict prompt to answer only from them. The answer streams token by token, with fallback models if one is busy, and only the cited excerpts are returned as sources.",
+      },
+    ],
+  },
+  keyFeatures: [
+    {
+      title: "Cited, grounded answers",
+      description:
+        "Each statement links to the document section it came from, and a click opens the excerpt so the reader can verify it.",
+      badge: "Trust",
+    },
+    {
+      title: "Honest 'not found'",
+      description:
+        "Questions outside the documents are answered with a pointer to HR instead of a guess, and the language model is never involved.",
+      badge: "Safety",
+    },
+    {
+      title: "Follow-up understanding",
+      description:
+        "A question like 'what about part-time staff?' is rewritten into a standalone query using the conversation so far, falling back to the original on any failure.",
+      badge: "Conversation",
+    },
+    {
+      title: "Knowledge base manager",
+      description:
+        "Add and delete documents, index them, inspect exactly how each is chunked, and test retrieval without writing an answer.",
+      badge: "Operations",
+    },
+    {
+      title: "Evaluation & insights",
+      description:
+        "Saved test questions score retrieval after every change. Insights surface unanswered questions and answers that people rated down.",
+      badge: "Quality",
+    },
+    {
+      title: "Private mode & provider choice",
+      description:
+        "Private chats store no messages, and usage analytics never record question text. Gemini and OpenAI are interchangeable for both answers and embeddings.",
+      badge: "Privacy",
+    },
+  ],
+  techStack: [
+    { category: "Backend & Retrieval", items: ["Python", "FastAPI", "ChromaDB", "SQLite", "Server-Sent Events"] },
+    { category: "AI Providers", items: ["Google Gemini", "OpenAI", "Embeddings", "Reranking", "Fallback models"] },
+    { category: "Interface", items: ["React 18", "Vite", "Tailwind CSS", "Markdown rendering", "Citation viewer"] },
+  ],
+  results: [
+    {
+      metric: "0",
+      label: "Model calls when nothing matches",
+      description: "Out-of-scope questions are refused before the answer model is involved.",
+    },
+    {
+      metric: "0.60",
+      label: "Similarity cut-off",
+      description: "Calibrated so on-topic questions score above 0.70 and off-topic ones fall to 0.48–0.59.",
+    },
+    {
+      metric: "2",
+      label: "Interchangeable AI providers",
+      description: "Gemini and OpenAI, switchable for both embeddings and answers.",
+    },
+    {
+      metric: "4",
+      label: "Supported file types",
+      description: "DOCX, PDF, TXT and Markdown, up to 20 MB each.",
+    },
+  ],
 };
 
 // Backward-compatible aliases

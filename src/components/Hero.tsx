@@ -33,7 +33,7 @@ export default function Hero() {
           className="hero-anim-portrait absolute inset-x-0 mx-auto top-0 sm:top-2 lg:-top-20 bottom-2 sm:bottom-4 lg:bottom-0 dark:-inset-x-5 dark:sm:-inset-x-8 dark:lg:inset-x-0 dark:-top-12 dark:sm:-top-16 dark:lg:-top-20 dark:bottom-6 dark:sm:bottom-8 dark:lg:bottom-0 z-10 flex items-center lg:items-end justify-center w-full dark:w-auto lg:dark:w-full max-w-[450px] sm:max-w-[490px] lg:max-w-[380px] dark:max-w-none dark:lg:max-w-[380px] xl:max-w-[420px] 2xl:max-w-[460px] select-none pointer-events-none"
         >
           {/* Light Appearance Portrait (Clean cutout without artificial white blur or bottom fade mask) */}
-          <div className="absolute inset-0 w-full h-full scale-[1.12] sm:scale-105 lg:scale-100 origin-center opacity-100 dark:opacity-0 transition-opacity duration-300 ease-out pointer-events-none">
+          <div className="absolute inset-0 w-full h-full scale-[1.12] sm:scale-105 lg:scale-100 origin-center dark:hidden pointer-events-none">
             <Image
               src={HERO_DATA.portraitPlaceholder.imageSrc}
               alt="Portrait of Sri Tulasi Ram"
@@ -46,7 +46,7 @@ export default function Hero() {
 
           {/* Dark Appearance Spotlight Portrait (Seamless Overhead Spotlight from Top of Viewport) */}
           {HERO_DATA.portraitPlaceholder.darkImageSrc && (
-            <div className="absolute inset-0 w-full h-full opacity-0 dark:opacity-100 mix-blend-screen transition-opacity duration-300 ease-out pointer-events-none [mask-image:linear-gradient(to_bottom,black_65%,rgba(0,0,0,0.8)_78%,transparent_90%)] lg:[mask-image:radial-gradient(ellipse_92%_90%_at_50%_10%,black_65%,transparent_98%)] [-webkit-mask-image:linear-gradient(to_bottom,black_65%,rgba(0,0,0,0.8)_78%,transparent_90%)] lg:[-webkit-mask-image:radial-gradient(ellipse_92%_90%_at_50%_10%,black_65%,transparent_98%)]">
+            <div className="absolute inset-0 w-full h-full hidden dark:block mix-blend-screen pointer-events-none [mask-image:linear-gradient(to_bottom,black_65%,rgba(0,0,0,0.8)_78%,transparent_90%)] lg:[mask-image:radial-gradient(ellipse_92%_90%_at_50%_10%,black_65%,transparent_98%)] [-webkit-mask-image:linear-gradient(to_bottom,black_65%,rgba(0,0,0,0.8)_78%,transparent_90%)] lg:[-webkit-mask-image:radial-gradient(ellipse_92%_90%_at_50%_10%,black_65%,transparent_98%)]">
               <Image
                 src={HERO_DATA.portraitPlaceholder.darkImageSrc}
                 alt="Portrait of Sri Tulasi Ram"
@@ -102,7 +102,7 @@ export default function Hero() {
               Cytron Technologies
             </p>
 
-            <h2
+            <p
               className="text-[1.65rem] sm:text-3xl md:text-4xl lg:text-[2.85rem] xl:text-[3.5rem] 2xl:text-[4.15rem] font-bold tracking-tighter leading-[0.95] lg:leading-[0.92] uppercase select-none flex flex-wrap lg:flex-col justify-center lg:justify-end items-center lg:items-end gap-x-2 sm:gap-x-2.5 lg:gap-x-0"
             >
               <span className="inline-block lg:block overflow-hidden">
@@ -111,10 +111,10 @@ export default function Hero() {
               <span className="inline-block lg:block overflow-hidden">
                 <span className="hero-role-line hero-anim-role-2 block apple-headline-gradient-dim">ENGINEER</span>
               </span>
-            </h2>
+            </p>
 
             <p
-              className="hero-anim-desc text-xs sm:text-[13px] md:text-sm text-[#515154] dark:text-[#D1D1D6] leading-relaxed max-w-xs sm:max-w-sm mx-auto lg:ml-auto pt-0.5 transition-colors duration-300 ease-out"
+              className="hero-anim-desc text-sm md:text-[15px] text-[#515154] dark:text-[#D1D1D6] leading-relaxed max-w-xs sm:max-w-sm mx-auto lg:ml-auto pt-0.5 transition-colors duration-300 ease-out"
             >
               {HERO_DATA.positioning}
             </p>

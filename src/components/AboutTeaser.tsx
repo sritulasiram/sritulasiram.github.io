@@ -13,7 +13,7 @@ export default function AboutTeaser() {
           {/* Left Column: Monumental Headline */}
           <div className="lg:col-span-5 space-y-3">
             <span className="text-[11px] font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#A1A1A6] block">
-              Philosophy &amp; Vision
+              Approach
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight leading-[1.12]">
               Engineering makes it work.
@@ -27,7 +27,7 @@ export default function AboutTeaser() {
           {/* Right Column: Lead Narrative & Action Button */}
           <div className="lg:col-span-7 space-y-6 lg:pt-8">
             <p className="text-base sm:text-lg md:text-xl text-[#6E6E73] dark:text-[#A1A1A6] font-normal leading-relaxed tracking-apple-subhead">
-              At Cytron Technologies, my daily work focuses on hardware diagnostics, support operations, and internal tools. But design completely changes how I build. It pushes me to strip away unnecessary complexity, obsess over typographic balance, and refine spatial proportions until an interface feels second nature. While traditional engineering often adds more controls and clutter, design forces me to simplify.
+              At Cytron Technologies, my daily work focuses on hardware diagnostics, support operations, and internal tools. But design completely changes how I build. It pushes me to strip away unnecessary complexity, obsess over typographic balance, and refine spatial proportions until an interface feels second nature. Engineering tends to add controls. Design makes me take them away.
             </p>
 
             {/* Quick Credential Highlights */}
@@ -53,7 +53,7 @@ export default function AboutTeaser() {
                   Research
                 </span>
                 <p className="text-xs sm:text-[13px] font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">
-                  Published Scopus Author
+                  Peer-Reviewed Researcher
                 </p>
               </div>
             </div>

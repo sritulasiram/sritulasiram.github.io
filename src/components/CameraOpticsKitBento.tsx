@@ -15,7 +15,7 @@ export default function CameraOpticsKitBento() {
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.06]">
             Every Shot
             <br />
-            <span className="text-[#6E6E73] dark:text-[#8E8E93] font-medium">Captured on iPhone 16 Pro.</span>
+            <span className="text-[#6E6E73] dark:text-[#8E8E93] font-medium">Shot on iPhone 16 Pro.</span>
           </h2>
           <p className="text-base sm:text-lg text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed pt-1">
             No heavy camera bags, no tripod rigs, and no lens swaps in the field.
@@ -103,7 +103,7 @@ export default function CameraOpticsKitBento() {
             48MP Apple ProRAW
           </h3>
           <p className="text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-            Uncompressed 14-bit DNG capture preserves subtle highlight roll-offs across sea reflections and deep shadows in night markets, delivering professional dynamic range straight from a phone sensor.
+            ProRAW capture preserves subtle highlight roll-offs across sea reflections and deep shadows in night markets, with wide dynamic range from a phone sensor.
           </p>
         </div>
 
@@ -127,7 +127,7 @@ export default function CameraOpticsKitBento() {
             Apps used in the field
           </h3>
           <p className="text-sm sm:text-base text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-            From instant candid frames to cinema-grade manual exposures, each application is selected for its specialized optical pipeline and sensor control.
+            From instant candid frames to fully manual exposures, each application is selected for its specialized optical pipeline and sensor control.
           </p>
         </div>
 
@@ -284,7 +284,7 @@ export default function CameraOpticsKitBento() {
                       Adobe Photoshop
                     </div>
                     <p className="text-xs sm:text-sm text-[#6E6E73] dark:text-[#8E8E93] leading-relaxed">
-                      Pixel-level master retouching, multi-layer color blending, frequency separation, and fine clean-up.
+                      Pixel-level master retouching, multi-layer colour blending, frequency separation, and fine clean-up.
                     </p>
                   </div>
                 </div>
@@ -304,7 +304,7 @@ export default function CameraOpticsKitBento() {
             Where the foundation was built.
           </h3>
           <p className="text-base sm:text-lg text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-            Before capturing on iPhone 16 Pro, years of handheld instincts, composition, and light control were forged across Samsung’s iconic Galaxy Note series.
+            Before capturing on iPhone 16 Pro, years of handheld instincts, composition, and light control were forged across Samsung’s Galaxy Note series.
           </p>
         </div>
 
@@ -313,7 +313,7 @@ export default function CameraOpticsKitBento() {
           <div className="group flex flex-col items-center text-center space-y-6">
             {/* Device Hero Render */}
             <div className="relative w-full h-64 sm:h-72 flex items-center justify-center">
-              <div className="relative w-44 h-full transition-transform duration-500 ease-out group-hover:-translate-y-2 drop-shadow-[0_20px_30px_rgba(0,0,0,0.18)] dark:drop-shadow-[0_20px_35px_rgba(255,255,255,0.06)]">
+              <div className="relative w-44 h-full transition-transform duration-500 ease-out group-hover:-translate-y-2 drop-shadow-[0_20px_30px_rgba(0,0,0,0.18)] dark:drop-shadow-none">
                 <Image
                   src="/images/samsung-note-edge.png"
                   alt="Samsung Galaxy Note Edge with S-Pen"
@@ -345,7 +345,7 @@ export default function CameraOpticsKitBento() {
           <div className="group flex flex-col items-center text-center space-y-6">
             {/* Device Hero Render */}
             <div className="relative w-full h-64 sm:h-72 flex items-center justify-center">
-              <div className="relative w-40 h-full transition-transform duration-500 ease-out group-hover:-translate-y-2 drop-shadow-[0_20px_30px_rgba(0,0,0,0.18)] dark:drop-shadow-[0_20px_35px_rgba(255,255,255,0.06)]">
+              <div className="relative w-40 h-full transition-transform duration-500 ease-out group-hover:-translate-y-2 drop-shadow-[0_20px_30px_rgba(0,0,0,0.18)] dark:drop-shadow-none">
                 <Image
                   src="/images/samsung-note-8.png"
                   alt="Samsung Galaxy Note 8 with S-Pen"
@@ -377,7 +377,7 @@ export default function CameraOpticsKitBento() {
           <div className="group flex flex-col items-center text-center space-y-6">
             {/* Device Hero Render */}
             <div className="relative w-full h-64 sm:h-72 flex items-center justify-center">
-              <div className="relative w-52 h-full transition-transform duration-500 ease-out group-hover:-translate-y-2 drop-shadow-[0_20px_30px_rgba(0,0,0,0.18)] dark:drop-shadow-[0_20px_35px_rgba(255,255,255,0.06)]">
+              <div className="relative w-52 h-full transition-transform duration-500 ease-out group-hover:-translate-y-2 drop-shadow-[0_20px_30px_rgba(0,0,0,0.18)] dark:drop-shadow-none">
                 <Image
                   src="/images/samsung-note-20-ultra.png"
                   alt="Samsung Galaxy Note 20 Ultra Mystic Bronze with S-Pen"

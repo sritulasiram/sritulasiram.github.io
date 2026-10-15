@@ -28,7 +28,7 @@ export default function OpenCoreEfiCaseStudy({ project }: Props) {
       {/* 1. Firmware Engineering Hero Section */}
       <section className="pt-24 sm:pt-28 px-6 sm:px-8 max-w-5xl mx-auto w-full">
         {/* Semantic Accessible Breadcrumb */}
-        <CaseStudyBreadcrumb title="OpenCore EFI Case Study" />
+        <CaseStudyBreadcrumb title="OpenCore EFI Hackintosh" />
 
         {/* Headline & Description */}
         <div className="space-y-4 max-w-4xl">

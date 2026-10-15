@@ -8,6 +8,7 @@ import { PHOTOGRAPHY_DATA } from "@/data/content";
 
 export const metadata: Metadata = {
   title: "Photography",
+  alternates: { canonical: "/photography" },
   description:
     "Curated photography frames by Sri Tulasi Ram. Exploring light, architecture, and street perspectives in Penang and beyond.",
 };

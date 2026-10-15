@@ -40,7 +40,7 @@ export default function Footer({ className }: FooterProps = {}) {
 
         {/* One-Line Closing Statement with Balanced Break */}
         <p className="text-base sm:text-lg md:text-xl text-[#6E6E73] dark:text-[#A1A1A6] max-w-xl mx-auto mb-10 leading-relaxed font-normal text-balance">
-          Have a technical inquiry, a project to discuss,
+          Have a technical question, a project in mind,
           <br className="hidden sm:inline" /> or just want to say hello?
         </p>
 

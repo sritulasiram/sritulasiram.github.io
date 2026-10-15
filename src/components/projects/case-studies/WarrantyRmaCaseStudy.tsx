@@ -48,10 +48,25 @@ const NEXT_PROJECT_ACCENT: Record<string, { bg: string; hoverBg: string; textHov
     hoverBg: "hover:bg-[#218838]",
     textHover: "group-hover:text-[#28A745] dark:group-hover:text-[#30D158]",
   },
+  "esp32-heart-saver": {
+    bg: "bg-[#FF453A]",
+    hoverBg: "hover:bg-[#E0382E]",
+    textHover: "group-hover:text-[#FF453A] dark:group-hover:text-[#FF6961]",
+  },
+  "opencore-efi-hackintosh": {
+    bg: "bg-[#5E5CE6]",
+    hoverBg: "hover:bg-[#4F4CD7]",
+    textHover: "group-hover:text-[#5E5CE6] dark:group-hover:text-[#7D7AFF]",
+  },
   "opencore-efi-gl503ge": {
     bg: "bg-[#5E5CE6]",
     hoverBg: "hover:bg-[#4F4CD7]",
     textHover: "group-hover:text-[#5E5CE6] dark:group-hover:text-[#7D7AFF]",
+  },
+  "rog-gaming-center": {
+    bg: "bg-[#FF453A]",
+    hoverBg: "hover:bg-[#E0382E]",
+    textHover: "group-hover:text-[#FF453A] dark:group-hover:text-[#FF6961]",
   },
 };
 
@@ -264,7 +279,7 @@ export default function WarrantyRmaCaseStudy({ project, nextProject }: Props) {
               SYSTEM RUNTIME &amp; HARDWARE TOPOLOGY
             </span>
             <span className="text-[11px] bg-white/10 px-2.5 py-0.5 rounded-full text-neutral-300 font-medium">
-              v2.46.1 · SQLite (WAL Mode)
+              v2.50.0 · SQLite (WAL Mode)
             </span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3.5 text-xs">

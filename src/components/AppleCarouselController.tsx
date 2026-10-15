@@ -39,7 +39,8 @@ export default function AppleCarouselController({
   const lastTimeRef = useRef<number | null>(null);
   const rafIdRef = useRef<number | null>(null);
   const prevActiveIndexRef = useRef(activeIndex);
-  const [isVisible, setIsVisible] = useState(false);
+  // Default to true for above-the-fold carousel to avoid mount cascading update
+  const [isVisible, setIsVisible] = useState(true);
 
   // Pause rAF ticker when carousel is scrolled off-screen to preserve 120 FPS scrolling budget
   useEffect(() => {

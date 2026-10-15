@@ -4,6 +4,11 @@ import DesignsTeaser from "@/components/DesignsTeaser";
 import AboutTeaser from "@/components/AboutTeaser";
 import PhotographyStrip from "@/components/PhotographyStrip";
 import Footer from "@/components/Footer";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default function Home() {
   return (

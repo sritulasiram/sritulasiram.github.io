@@ -95,7 +95,7 @@ export default function ProjectImage({
               : `transition-opacity duration-300 ease-out will-change-opacity ${
                   isReady
                     ? "opacity-100"
-                    : "opacity-40"
+                    : "opacity-0"
                 }`
           } rounded-[inherit]`}
           onLoad={(e) => {

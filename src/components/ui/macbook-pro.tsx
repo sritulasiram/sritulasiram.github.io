@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, type ReactNode, type SVGProps } from "react";
+import { preload } from "react-dom";
 import { cn } from "@/lib/cn";
 
 export interface MacbookProProps extends SVGProps<SVGSVGElement> {
@@ -20,6 +21,10 @@ export interface MacbookProProps extends SVGProps<SVGSVGElement> {
    * Defaults to false so web application navigation and search bars are never clipped.
    */
   showNotch?: boolean;
+  /**
+   * Preload hint and fetch priority for critical above-the-fold hero rendering.
+   */
+  priority?: boolean;
 }
 
 export function MacbookPro({
@@ -29,10 +34,15 @@ export function MacbookPro({
   children,
   fit = "fill",
   showNotch = false,
+  priority = false,
   className,
   style,
   ...props
 }: MacbookProProps) {
+  if (priority && src) {
+    preload(src, { as: "image", fetchPriority: "high" });
+  }
+
   const rawId = useId();
   const safeId = rawId.replace(/[^a-zA-Z0-9_-]/g, "");
   const clipId = `macbook-corners-${safeId || "frame"}`;

@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
-import WarrantyRmaCaseStudy from "@/components/case-studies/WarrantyRmaCaseStudy";
-import IotFertiliserCaseStudy from "@/components/case-studies/IotFertiliserCaseStudy";
-import RaspberryPiDiagnosticCaseStudy from "@/components/case-studies/RaspberryPiDiagnosticCaseStudy";
-import OpenCoreEfiCaseStudy from "@/components/case-studies/OpenCoreEfiCaseStudy";
-import RogGamingCenterCaseStudy from "@/components/case-studies/RogGamingCenterCaseStudy";
+import WarrantyRmaCaseStudy from "@/components/projects/case-studies/WarrantyRmaCaseStudy";
+import IotFertiliserCaseStudy from "@/components/projects/case-studies/IotFertiliserCaseStudy";
+import RaspberryPiDiagnosticCaseStudy from "@/components/projects/case-studies/RaspberryPiDiagnosticCaseStudy";
+import OpenCoreEfiCaseStudy from "@/components/projects/case-studies/OpenCoreEfiCaseStudy";
+import RogGamingCenterCaseStudy from "@/components/projects/case-studies/RogGamingCenterCaseStudy";
+import Esp32HeartSaverCaseStudy from "@/components/projects/case-studies/Esp32HeartSaverCaseStudy";
+import HrAssistiveIntelligenceCaseStudy from "@/components/projects/case-studies/HrAssistiveIntelligenceCaseStudy";
 import { PROJECT_DETAILS } from "@/data/projectDetails";
 import { PROJECTS_DATA } from "@/data/content";
 
@@ -13,31 +15,32 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-export async function generateStaticParams() {
-  return [
-    ...PROJECTS_DATA.map((project) => ({ id: project.id })),
-    { id: "cytron-rma" },
-    { id: "opencore-efi-hackintosh" },
-    { id: "rog-gaming-center" },
-    { id: "opencore-efi-gl503ge" },
-  ];
+const PROJECT_ALIASES: Record<string, string> = {
+  "cytron-rma": "warranty-rma",
+  "opencore-efi-gl503ge": "opencore-efi-hackintosh",
+  "opencore-efi": "opencore-efi-hackintosh",
+};
+
+function getProject(id: string) {
+  const canonicalId = PROJECT_ALIASES[id] || id;
+  return PROJECT_DETAILS[canonicalId];
 }
 
-const VALID_PROJECT_IDS = [
-  "warranty-rma",
-  "cytron-rma",
-  "raspberry-pi-diagnostics",
-  "iot-fertiliser-mixing",
-  "opencore-efi-hackintosh",
-  "rog-gaming-center",
-  "opencore-efi-gl503ge",
-];
+export async function generateStaticParams() {
+  const ids = Array.from(
+    new Set([
+      ...PROJECTS_DATA.map((p) => p.id),
+      ...Object.keys(PROJECT_ALIASES),
+    ])
+  );
+  return ids.map((id) => ({ id }));
+}
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
-  const project = PROJECT_DETAILS[id];
+  const project = getProject(id);
 
-  if (!VALID_PROJECT_IDS.includes(id) || !project) {
+  if (!project) {
     return {
       title: "Project Not Found",
     };
@@ -46,43 +49,53 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: project.title,
     description: project.tagline,
+    alternates: { canonical: `/projects/${PROJECT_ALIASES[id] || id}` },
   };
 }
 
 export default async function ProjectDetailPage({ params }: PageProps) {
   const { id } = await params;
-  const project = PROJECT_DETAILS[id];
+  const project = getProject(id);
 
-  if (!VALID_PROJECT_IDS.includes(id) || !project) {
+  if (!project) {
     notFound();
   }
 
-  // Find next project for circular navigation
-  const currentIndex = PROJECTS_DATA.findIndex((p) => p.id === id);
+  // Find next project for circular navigation using canonical id
+  const canonicalId = PROJECT_ALIASES[id] || id;
+  const currentIndex = PROJECTS_DATA.findIndex((p) => p.id === canonicalId);
   const nextProject =
     PROJECTS_DATA[(currentIndex + 1) % PROJECTS_DATA.length] || PROJECTS_DATA[0];
 
   return (
     <main className="min-h-screen bg-white dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300 flex flex-col selection:bg-[#0071E3]/15 selection:text-[#1D1D1F] dark:selection:text-[#F5F5F7]">
       {/* Tailored Case Study Layout Based on Content */}
-      {(id === "warranty-rma" || id === "cytron-rma") && (
+      {canonicalId === "warranty-rma" && (
         <WarrantyRmaCaseStudy project={project} nextProject={nextProject} />
       )}
 
-      {id === "iot-fertiliser-mixing" && (
+      {canonicalId === "iot-fertiliser-mixing" && (
         <IotFertiliserCaseStudy project={project} nextProject={nextProject} />
       )}
 
-      {id === "raspberry-pi-diagnostics" && (
+      {canonicalId === "raspberry-pi-diagnostics" && (
         <RaspberryPiDiagnosticCaseStudy project={project} nextProject={nextProject} />
       )}
 
-      {(id === "opencore-efi-hackintosh" || id === "opencore-efi-gl503ge") && (
+      {canonicalId === "opencore-efi-hackintosh" && (
         <OpenCoreEfiCaseStudy project={project} />
       )}
 
-      {id === "rog-gaming-center" && (
+      {canonicalId === "rog-gaming-center" && (
         <RogGamingCenterCaseStudy project={project} />
+      )}
+
+      {canonicalId === "esp32-heart-saver" && (
+        <Esp32HeartSaverCaseStudy project={project} nextProject={nextProject} />
+      )}
+
+      {canonicalId === "cytron-hr-assistive-intelligence" && (
+        <HrAssistiveIntelligenceCaseStudy project={project} nextProject={nextProject} />
       )}
 
       {/* Footer */}

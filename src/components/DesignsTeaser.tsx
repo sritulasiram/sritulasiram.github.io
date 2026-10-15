@@ -24,7 +24,7 @@ const MOBILE_PROJECTS: MobileDesignProject[] = [
   {
     id: "sage",
     title: "Sage",
-    subtitle: "Psychiatric Care & Mental Wellness",
+    subtitle: "Concept design · Psychiatric Care & Mental Wellness",
     description: "Trauma-informed digital health platform with a calming botanical companion and immediate crisis routing.",
     caseStudyLink: "/designs/sage",
     buttonColor: "#2D6A4F",
@@ -33,8 +33,8 @@ const MOBILE_PROJECTS: MobileDesignProject[] = [
   {
     id: "recycle-ai",
     title: "Recycle AI",
-    subtitle: "Smart Waste Classification",
-    description: "Circular commerce and material recovery platform with categorized recycling streams and marketplace discovery.",
+    subtitle: "Concept design · Smart Waste Classification",
+    description: "Snap-to-sort waste classification with recycling guidance by material, plus a marketplace for recovered goods.",
     caseStudyLink: "/designs/recycle-ai",
     buttonColor: "#5B7B3A",
     mockupType: "recycle-ai",
@@ -42,7 +42,7 @@ const MOBILE_PROJECTS: MobileDesignProject[] = [
   {
     id: "kopiesatu",
     title: "KopieSatu",
-    subtitle: "Coffee Ordering & Loyalty",
+    subtitle: "Concept design · Coffee Ordering & Loyalty",
     description: "Quick-service mobile commerce with localized category rails, dual-column product cards, and unified checkout.",
     caseStudyLink: "/designs/kopiesatu",
     buttonColor: "#7C4424",

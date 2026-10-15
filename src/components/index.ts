@@ -30,3 +30,6 @@ export * from "./mockups";
 export { default as DesignStickySubnav } from "./DesignStickySubnav";
 export { default as DesignHeroStage } from "./DesignHeroStage";
 export { default as DesignFoundationsKit } from "./DesignFoundationsKit";
+
+// Projects Showcase Components
+export * from "./projects";

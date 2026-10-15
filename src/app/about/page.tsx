@@ -10,6 +10,8 @@ import {
   ChevronRight,
   FileText,
   Award,
+  X,
+  ExternalLink,
 } from "lucide-react";
 import Footer from "@/components/Footer";
 import { ABOUT_DATA } from "@/data/content";
@@ -26,10 +28,10 @@ const NAV_SECTIONS = [
 
 function LinkedInIcon({ className = "w-3.5 h-3.5" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="#0A66C2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
       <rect width="4" height="12" x="2" y="9" />
-      <circle cx="4" cy="4" r="2" fill="#0A66C2" />
+      <circle cx="4" cy="4" r="2" fill="currentColor" stroke="none" />
     </svg>
   );
 }
@@ -45,34 +47,29 @@ function GitHubIcon({ className = "w-3.5 h-3.5" }: { className?: string }) {
 
 function InstagramIcon({ className = "w-3.5 h-3.5" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none">
-      <defs>
-        <linearGradient id="igIconGradient" x1="15%" y1="100%" x2="85%" y2="0%">
-          <stop offset="0%" stopColor="#FEC564" />
-          <stop offset="25%" stopColor="#E6683C" />
-          <stop offset="50%" stopColor="#DC2743" />
-          <stop offset="75%" stopColor="#CC2366" />
-          <stop offset="100%" stopColor="#BC1888" />
-        </linearGradient>
-      </defs>
-      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" stroke="url(#igIconGradient)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" stroke="url(#igIconGradient)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="17.5" cy="6.5" r="1.2" fill="url(#igIconGradient)" />
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
     </svg>
   );
 }
 
 function getSocialIcon(label: string) {
   const norm = label.toLowerCase();
-  if (norm.includes("linkedin")) return <LinkedInIcon className="w-3.5 h-3.5" />;
-  if (norm.includes("github")) return <GitHubIcon className="w-3.5 h-3.5 text-[#24292F] dark:text-[#F0F6FC]" />;
-  if (norm.includes("instagram")) return <InstagramIcon className="w-3.5 h-3.5" />;
+  if (norm.includes("linkedin")) return <LinkedInIcon className="w-3.5 h-3.5 text-current" />;
+  if (norm.includes("github")) return <GitHubIcon className="w-3.5 h-3.5 text-current" />;
+  if (norm.includes("instagram")) return <InstagramIcon className="w-3.5 h-3.5 text-current" />;
   return null;
 }
 
 export default function AboutPage() {
   const [activeSection, setActiveSection] = useState("overview");
   const [navVisible, setNavVisible] = useState(false);
+  const [certificateModal, setCertificateModal] = useState<{
+    src: string;
+    title: string;
+  } | null>(null);
   const isScrollingToRef = useRef<string | null>(null);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -105,6 +102,21 @@ export default function AboutPage() {
     window.addEventListener("resize", checkScroll);
     return () => window.removeEventListener("resize", checkScroll);
   }, []);
+
+  // ── Keyboard accessibility & scroll lock for certificate preview modal ───────
+  useEffect(() => {
+    if (!certificateModal) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setCertificateModal(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [certificateModal]);
 
   // ── Unified robust scroll listener for nav visibility & chapter tracking ────
   useEffect(() => {
@@ -154,7 +166,13 @@ export default function AboutPage() {
     scrollTimeoutRef.current = setTimeout(() => {
       isScrollingToRef.current = null;
     }, 850);
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "start",
+    });
   };
 
 
@@ -162,40 +180,11 @@ export default function AboutPage() {
     <div className="relative min-h-screen bg-white dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300 selection:bg-black/10 dark:selection:bg-white/15 selection:text-[#1D1D1F] dark:selection:text-[#F5F5F7]">
 
       {/* ══════════════════════════════════════════════════════════════════════ */}
-      {/* OPTION 1: SEAMLESS MONOCHROME OPTICAL TICK SCRUBBER                    */}
+      {/* DESKTOP CHAPTER SCRUBBER (Hidden on mobile/tablet to protect viewport) */}
       {/* ══════════════════════════════════════════════════════════════════════ */}
-
-      {/* Mobile: discreet optical tick marks */}
-      <nav
-        aria-label="Page sections"
-        className={`fixed right-3.5 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-3 lg:hidden transition-opacity duration-300 ${navVisible ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
-      >
-        {NAV_SECTIONS.map(({ id, label }) => {
-          const isActive = activeSection === id;
-          return (
-            <button
-              key={id}
-              onClick={() => scrollTo(id)}
-              title={label}
-              aria-label={label}
-              className="py-1 px-0.5 flex items-center justify-end group cursor-pointer"
-            >
-              <span
-                className={`block rounded-full transition-all duration-500 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] ${isActive
-                    ? "w-5 h-[2.5px] bg-black dark:bg-white"
-                    : "w-2 h-[1px] bg-[#D2D2D7] dark:bg-[#3A3A3C]"
-                  }`}
-              />
-            </button>
-          );
-        })}
-      </nav>
-
-      {/* Desktop: Seamless Monochrome Optical Ruler Scrubber */}
       <nav
         aria-label="Page chapters"
-        className={`hidden lg:flex fixed right-6 xl:right-10 top-1/2 -translate-y-1/2 z-40 flex-col gap-2.5 transition-all duration-500 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] ${navVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4 pointer-events-none"
+        className={`hidden xl:flex fixed right-4 2xl:right-8 top-1/2 -translate-y-1/2 z-40 flex-col gap-2.5 transition-all duration-500 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] ${navVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4 pointer-events-none"
           }`}
       >
         {NAV_SECTIONS.map(({ id, label }) => {
@@ -210,14 +199,14 @@ export default function AboutPage() {
               <span
                 className={`block rounded-full transition-all duration-500 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] shrink-0 ${isActive
                     ? "w-6 h-[2.5px] bg-black dark:bg-white shadow-[0_0_8px_rgba(0,0,0,0.15)] dark:shadow-[0_0_8px_rgba(255,255,255,0.2)]"
-                    : "w-2.5 h-[1px] bg-[#C7C7CC] dark:bg-[#3A3A3C] group-hover:w-4 group-hover:bg-[#86868B] dark:group-hover:bg-[#8E8E93]"
+                    : "w-2.5 h-[1px] bg-[#C7C7CC] dark:bg-[#3A3A3C] group-hover:w-4 group-hover:bg-[#6E6E73] dark:group-hover:bg-[#8E8E93]"
                   }`}
               />
               {/* Chapter Label: Bold & Shifted on Active with Apple Spring Curve */}
               <span
                 className={`whitespace-nowrap transition-all duration-500 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] ${isActive
                     ? "text-[13.5px] font-bold tracking-tight text-black dark:text-white translate-x-1"
-                    : "text-[12px] font-normal tracking-apple-tight text-[#86868B] dark:text-[#8E8E93] opacity-60 group-hover:opacity-100 group-hover:text-black dark:group-hover:text-white group-hover:translate-x-0.5"
+                    : "text-[12px] font-normal tracking-apple-tight text-[#6E6E73] dark:text-[#8E8E93] opacity-80 group-hover:opacity-100 group-hover:text-black dark:group-hover:text-white group-hover:translate-x-0.5"
                   }`}
               >
                 {label}
@@ -267,7 +256,7 @@ export default function AboutPage() {
 
             {/* 1. Headline */}
             <div className="lg:col-span-7 space-y-3">
-              <p className="text-[11px] font-semibold uppercase tracking-widest text-[#86868B] dark:text-[#8E8E93]">
+              <p className="text-[11px] font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#8E8E93]">
                 About &amp; Background
               </p>
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-semibold leading-[1.08] tracking-apple-hero text-[#1D1D1F] dark:text-[#F5F5F7]">
@@ -338,36 +327,20 @@ export default function AboutPage() {
             {/* 3. Bio Narrative */}
             <div className="lg:col-span-7 space-y-4 text-base sm:text-lg text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed max-w-[580px]">
               <p>
-                I&rsquo;m Sri. I&rsquo;ve spent most of my life obsessed with getting the small things right, and it turns out that obsession is useful in more places than you&rsquo;d think.
+                I&rsquo;m Sri. I&rsquo;ve always been drawn to the line where engineering precision meets human intuition. Whether it&rsquo;s an intermittent signal on a microcontroller bus or friction in a digital user flow, I care about the invisible details that make complex systems feel effortless.
               </p>
               <p>
-                By day, I&rsquo;m a Support Engineer at Cytron Technologies. I solve hardware and technical problems for customers, and build the internal systems, diagnostic tools, and SOPs that make that work faster, more efficient, and more accurate.
+                At Cytron Technologies, my work sits at the intersection of embedded electronics, hardware diagnostics, and systems automation. Working directly with makers, developers, and robotics engineers across the region, I diagnose elusive component-level hardware faults, architect automated test suites, and turn manual bench triage into fast, reliable software.
               </p>
               <p>
-                Design is where that same instinct goes somewhere different. I design mobile and web interfaces, not to make them look impressive, but to make them feel more natural and human, something people can actually connect with.
+                Product and interface design is where that technical rigor meets human empathy. I design mobile and web interfaces&mdash;not simply to look sleek or impressive, but to feel natural, responsive, and genuinely human. Grounded in Apple&rsquo;s design principles, my goal is to strip away cognitive clutter so the technology gets out of the way, leaving an experience that people can instinctively connect with.
               </p>
               <p>
-                Photography is the other direction entirely. Where engineering and design are about structure, photography is about atmosphere. It&rsquo;s about finding the magic and story behind a moment, and expressing the natural view of the world as it is.
+                Photography keeps that eye honest. Where engineering and design are about imposing structure, photography is about patient observation&mdash;learning to see light, atmosphere, and authentic moments as they actually exist, training the eye to notice what everyone else overlooks.
               </p>
             </div>
 
           </div>
-        </section>
-
-        {/* ── Pull Quote ───────────────────────────────────────────────────── */}
-        <section className="max-w-6xl mx-auto w-full px-6 sm:px-8 py-12 sm:py-16">
-          <blockquote className="max-w-3xl border-l-2 border-[#1D1D1F]/20 dark:border-white/25 pl-6 sm:pl-8 space-y-3">
-            <p className="text-xl sm:text-2xl md:text-3xl font-medium leading-snug tracking-apple-subhead text-[#1D1D1F] dark:text-[#F5F5F7]">
-              &ldquo;I think in big ideas, but I&rsquo;ve learned not to trust an
-              idea until I know what it&rsquo;s built from. So I start small,
-              one detail, one fix, one thing done properly, and I keep going
-              until those small things add up to something real. That&rsquo;s how
-              every idea I&rsquo;ve ever cared about actually came to life.&rdquo;
-            </p>
-            <footer className="text-xs sm:text-sm font-medium text-[#6E6E73] dark:text-[#8E8E93]">
-              Sri Tulasi Ram &mdash; Support Engineer, Cytron Technologies
-            </footer>
-          </blockquote>
         </section>
 
         {/* ── 2. Career & Education Timeline (#career) ─────────────────────── */}
@@ -377,7 +350,7 @@ export default function AboutPage() {
           className="max-w-6xl mx-auto w-full px-6 sm:px-8 py-16 sm:py-20 scroll-mt-20 space-y-12"
         >
           <div className="space-y-2">
-            <p className="text-[11px] font-semibold uppercase tracking-widest text-[#86868B] dark:text-[#8E8E93]">
+            <p className="text-[11px] font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#8E8E93]">
               Career & Foundations
             </p>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.06]">
@@ -388,7 +361,7 @@ export default function AboutPage() {
           <div className="space-y-16">
             {/* Experience Section */}
             <div className="space-y-6">
-              <p className="text-[11px] font-semibold uppercase tracking-widest text-[#86868B] dark:text-[#8E8E93]">
+              <p className="text-[11px] font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#8E8E93]">
                 Professional Experience
               </p>
 
@@ -416,11 +389,11 @@ export default function AboutPage() {
                           {item.organization}
                         </p>
                         {item.location && (
-                          <p className="text-xs text-[#86868B] dark:text-[#6E6E73]">
+                          <p className="text-xs text-[#6E6E73] dark:text-[#8E8E93]">
                             {item.location}
                           </p>
                         )}
-                        <p className="text-xs font-semibold text-[#86868B] dark:text-[#8E8E93] pt-0.5">
+                        <p className="text-xs font-semibold text-[#6E6E73] dark:text-[#8E8E93] pt-0.5">
                           {item.period}
                         </p>
                       </div>
@@ -466,7 +439,7 @@ export default function AboutPage() {
 
             {/* Education Section */}
             <div className="space-y-6">
-              <p className="text-[11px] font-semibold uppercase tracking-widest text-[#86868B] dark:text-[#8E8E93]">
+              <p className="text-[11px] font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#8E8E93]">
                 Academic Foundations
               </p>
 
@@ -499,11 +472,11 @@ export default function AboutPage() {
                           </p>
                         )}
                         {item.location && (
-                          <p className="text-xs text-[#86868B] dark:text-[#6E6E73]">
+                          <p className="text-xs text-[#6E6E73] dark:text-[#8E8E93]">
                             {item.location}
                           </p>
                         )}
-                        <p className="text-xs font-semibold text-[#86868B] dark:text-[#8E8E93] pt-0.5">
+                        <p className="text-xs font-semibold text-[#6E6E73] dark:text-[#8E8E93] pt-0.5">
                           {item.period}
                         </p>
                       </div>
@@ -559,7 +532,7 @@ export default function AboutPage() {
           {/* Header Row */}
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
             <div className="space-y-1 max-w-xl">
-              <p className="text-[11px] font-semibold uppercase tracking-widest text-[#86868B] dark:text-[#8E8E93]">
+              <p className="text-[11px] font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#8E8E93]">
                 Honours & Awards
               </p>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.06]">
@@ -618,7 +591,7 @@ export default function AboutPage() {
                         <p className="text-sm font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">
                           {item.label}
                         </p>
-                        <p className="text-xs text-[#86868B] dark:text-[#8E8E93]">
+                        <p className="text-xs text-[#6E6E73] dark:text-[#8E8E93]">
                           {item.source || "Official Credential"}
                         </p>
                       </div>
@@ -635,7 +608,7 @@ export default function AboutPage() {
                     {item.context}
                   </p>
                   {item.source && (
-                    <p className="text-xs sm:text-[13px] text-[#86868B] dark:text-[#8E8E93] pt-0.5">
+                    <p className="text-xs sm:text-[13px] text-[#6E6E73] dark:text-[#8E8E93] pt-0.5">
                       {item.source}
                     </p>
                   )}
@@ -669,257 +642,245 @@ export default function AboutPage() {
         <section
           id="credentials"
           aria-label="Credentials and Certifications"
-          className="max-w-6xl mx-auto w-full px-6 sm:px-8 py-12 sm:py-16 scroll-mt-20 space-y-8"
+          className="max-w-6xl mx-auto w-full px-6 sm:px-8 py-16 sm:py-20 scroll-mt-20 space-y-10"
         >
           <div className="space-y-1">
-            <p className="text-[11px] font-semibold uppercase tracking-widest text-[#86868B] dark:text-[#8E8E93]">
+            <p className="text-[11px] font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#8E8E93]">
               Professional Record
             </p>
-            <h2 className="text-3xl sm:text-4xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.08]">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.06]">
               Qualifications, research &amp; training.
             </h2>
           </div>
 
-          {/* ── Credentials Grouped by Category ── */}
-          <div className="space-y-14 pt-2">
+          {/* Professional Credentials List */}
+          <div className="space-y-10 sm:space-y-12">
 
-            {/* ─── 1. Licenses & Registration ───────────────────────────── */}
-            <div className="space-y-6">
-              <div className="space-y-1">
-                <p className="text-[11px] font-semibold uppercase tracking-widest text-[#86868B] dark:text-[#8E8E93]">
-                  Licenses &amp; Registration
-                </p>
-                <h3 className="text-xl sm:text-2xl font-semibold tracking-apple-tight text-[#1D1D1F] dark:text-[#F5F5F7]">
-                  Licensed to practise.
-                </h3>
-              </div>
-
-              {ABOUT_DATA.accreditation && (
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-start py-4 px-3 rounded-xl hover:bg-black/[0.02] dark:hover:bg-white/[0.03] transition-colors">
-                  <div className="md:col-span-4 space-y-2.5">
-                    <div className="h-12 flex items-center">
-                      <Image
-                        src={ABOUT_DATA.accreditation.logoSrc || "/images/logo-bem.png"}
-                        alt="Board of Engineers Malaysia"
-                        width={56}
-                        height={56}
-                        className="h-12 w-auto object-contain"
-                      />
-                    </div>
-                    <div>
-                      <span className="text-[11px] font-semibold uppercase tracking-wider text-[#86868B] dark:text-[#8E8E93] block">
-                        Statutory Professional Body
-                      </span>
-                    </div>
-                  </div>
-                  <div className="md:col-span-5 space-y-1">
-                    <h3 className="text-lg sm:text-xl font-semibold font-display tracking-apple-headline text-[#1D1D1F] dark:text-[#F5F5F7]">
-                      {ABOUT_DATA.accreditation.body}
-                    </h3>
-                    <p className="text-xs sm:text-sm font-medium tracking-apple-subhead text-[#6E6E73] dark:text-[#A1A1A6]">
-                      {ABOUT_DATA.accreditation.title} &middot; {ABOUT_DATA.accreditation.discipline}
-                    </p>
-                    <p className="text-xs text-[#86868B] dark:text-[#8E8E93] pt-0.5 leading-relaxed">
-                      Registration of Engineers Act 1967 &middot; Washington Accord (EAC)
-                    </p>
-                  </div>
-                  <div className="md:col-span-3 md:text-right flex md:flex-col md:items-end justify-between items-center gap-1">
-                    <span className="text-[11px] font-semibold uppercase tracking-wider text-[#86868B] dark:text-[#8E8E93] block">
-                      Registration No.
-                    </span>
-                    <span className="text-sm sm:text-base font-semibold tracking-apple-headline text-[#1D1D1F] dark:text-[#F5F5F7] px-2.5 py-1 rounded-md bg-black/[0.04] dark:bg-white/[0.06]">
-                      {ABOUT_DATA.accreditation.registrationNo}
-                    </span>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* ─── 2. Certifications ────────────────────────────────────── */}
-            <div className="space-y-6">
-              <div className="space-y-1">
-                <p className="text-[11px] font-semibold uppercase tracking-widest text-[#86868B] dark:text-[#8E8E93]">
-                  Certifications
-                </p>
-                <h3 className="text-xl sm:text-2xl font-semibold tracking-apple-tight text-[#1D1D1F] dark:text-[#F5F5F7]">
-                  Emergency response certified.
-                </h3>
-              </div>
-
-              {ABOUT_DATA.firstAid && (
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-start py-4 px-3 rounded-xl hover:bg-black/[0.02] dark:hover:bg-white/[0.03] transition-colors">
-                  <div className="md:col-span-4 space-y-2.5">
-                    <div className="h-8 flex items-center">
-                      <Image
-                        src={ABOUT_DATA.firstAid.logoSrc || "/images/logo-red-crescent.png"}
-                        alt="Malaysian Red Crescent Society Logo"
-                        width={140}
-                        height={32}
-                        className="h-8 w-auto object-contain dark:hidden"
-                      />
-                      <Image
-                        src={ABOUT_DATA.firstAid.logoDarkSrc || "/images/logo-red-crescent-dark.png"}
-                        alt="Malaysian Red Crescent Society Logo"
-                        width={140}
-                        height={32}
-                        className="h-8 w-auto object-contain hidden dark:block"
-                      />
-                    </div>
-                    <div>
-                      <span className="text-[11px] font-semibold uppercase tracking-wider text-[#86868B] dark:text-[#8E8E93] block">
-                        Emergency Life Support &amp; First Aid
-                      </span>
-                    </div>
-                  </div>
-                  <div className="md:col-span-5 space-y-1">
-                    <h3 className="text-lg sm:text-xl font-semibold font-display tracking-apple-headline text-[#1D1D1F] dark:text-[#F5F5F7]">
-                      {ABOUT_DATA.firstAid.body}
-                    </h3>
-                    <p className="text-xs sm:text-sm font-medium tracking-apple-subhead text-[#6E6E73] dark:text-[#A1A1A6]">
-                      {ABOUT_DATA.firstAid.title} &middot; {ABOUT_DATA.firstAid.branch}
-                    </p>
-                    <p className="text-xs text-[#86868B] dark:text-[#8E8E93] pt-0.5 leading-relaxed">
-                      National Training Committee &middot; Under royal patronage of His Majesty the Yang di-Pertuan Agong
-                    </p>
-                  </div>
-                  <div className="md:col-span-3 md:text-right flex md:flex-col md:items-end justify-between items-center gap-2">
-                    <div className="space-y-0.5">
-                      <span className="text-[11px] font-semibold uppercase tracking-wider text-[#86868B] dark:text-[#8E8E93] block">
-                        Serial No.
-                      </span>
-                      <span className="text-sm sm:text-base font-semibold tracking-apple-headline text-[#1D1D1F] dark:text-[#F5F5F7] px-2.5 py-1 rounded-md bg-black/[0.04] dark:bg-white/[0.06] inline-block">
-                        {ABOUT_DATA.firstAid.serialNo}
-                      </span>
-                    </div>
-
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* ─── 3. Publications ──────────────────────────────────────── */}
-            <div className="space-y-6">
-              <div className="space-y-1">
-                <p className="text-[11px] font-semibold uppercase tracking-widest text-[#86868B] dark:text-[#8E8E93]">
-                  Publications
-                </p>
-                <h3 className="text-xl sm:text-2xl font-semibold tracking-apple-tight text-[#1D1D1F] dark:text-[#F5F5F7]">
-                  Scopus-indexed research.
-                </h3>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-start py-4 px-3 rounded-xl hover:bg-black/[0.02] dark:hover:bg-white/[0.03] transition-colors">
+            {/* 1. Board of Engineers Malaysia (BEM) */}
+            {ABOUT_DATA.accreditation && (
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-start -mx-3 sm:-mx-4 px-3 sm:px-4 py-3 sm:py-4 rounded-2xl hover:bg-black/[0.02] dark:hover:bg-white/[0.03] transition-colors">
                 <div className="md:col-span-4 space-y-2.5">
-                  <div className="h-8 flex items-center">
+                  <div className="h-11 sm:h-12 flex items-center">
                     <Image
-                      src="/images/logo-ijie.png"
-                      alt="International Journal of Integrated Engineering"
-                      width={100}
-                      height={36}
-                      className="h-8 w-auto object-contain"
+                      src={ABOUT_DATA.accreditation.logoSrc || "/images/logo-bem.png"}
+                      alt="Board of Engineers Malaysia"
+                      width={56}
+                      height={56}
+                      className="h-11 sm:h-12 w-auto object-contain"
                     />
                   </div>
                   <div>
-                    <span className="text-[11px] font-semibold uppercase tracking-wider text-[#86868B] dark:text-[#8E8E93] block">
-                      Peer-Reviewed Journal
+                    <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6E6E73] dark:text-[#8E8E93] block">
+                      Statutory Professional Body
                     </span>
-                    <span className="inline-flex items-center px-2.5 py-0.5 mt-1 rounded-full bg-black/[0.04] dark:bg-white/[0.06] text-[#6E6E73] dark:text-[#A1A1A6] text-[11px] font-medium">
-                      Scopus Indexed &middot; 2026
+                    <span className="inline-flex items-center px-2 py-0.5 mt-1 rounded-full bg-black/[0.04] dark:bg-white/[0.06] text-[#6E6E73] dark:text-[#A1A1A6] text-[11px] font-medium">
+                      Washington Accord &middot; EAC
                     </span>
                   </div>
                 </div>
                 <div className="md:col-span-5 space-y-1">
                   <h3 className="text-lg sm:text-xl font-semibold font-display tracking-apple-headline text-[#1D1D1F] dark:text-[#F5F5F7]">
-                    International Journal of Integrated Engineering
+                    {ABOUT_DATA.accreditation.body}
                   </h3>
-                  <p className="text-xs sm:text-sm font-medium tracking-apple-subhead text-[#6E6E73] dark:text-[#A1A1A6] leading-snug">
-                    IoT-Based Fertiliser Mixing for Hydroponic Precision Agriculture
+                  <p className="text-xs sm:text-sm font-medium tracking-apple-subhead text-[#6E6E73] dark:text-[#A1A1A6]">
+                    {ABOUT_DATA.accreditation.title} &middot; {ABOUT_DATA.accreditation.discipline}
                   </p>
-                  <p className="text-xs text-[#86868B] dark:text-[#8E8E93] pt-0.5 leading-relaxed">
-                    Penerbit UTHM &middot; Vol. 18, No. 1, pp. 186–201
+                  <p className="text-xs text-[#6E6E73] dark:text-[#8E8E93] pt-0.5 leading-relaxed">
+                    Registration of Engineers Act 1967 &middot; Active Registration
                   </p>
                 </div>
                 <div className="md:col-span-3 md:text-right flex md:flex-col md:items-end justify-between items-center gap-1.5">
-                  <span className="text-[11px] font-semibold uppercase tracking-wider text-[#86868B] dark:text-[#8E8E93] block">
-                    Archive Access
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6E6E73] dark:text-[#8E8E93] block">
+                    Registration No.
                   </span>
-                  <a
-                    href="https://journal.uthm.edu.my/index.php/ijie/article/view/24386"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] bg-black/[0.05] dark:bg-white/[0.08] hover:bg-black/10 dark:hover:bg-white/15 transition-all active:scale-[0.98]"
-                  >
-                    <span>Read Paper</span>
-                    <ArrowUpRight className="w-3.5 h-3.5 text-[#86868B] dark:text-[#8E8E93]" />
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            {/* ─── 4. Training & Professional Development ───────────────── */}
-            {ABOUT_DATA.flutterCert && (
-              <div className="space-y-6">
-                <div className="space-y-1">
-                  <p className="text-[11px] font-semibold uppercase tracking-widest text-[#86868B] dark:text-[#8E8E93]">
-                    Training &amp; Professional Development
-                  </p>
-                  <h3 className="text-xl sm:text-2xl font-semibold tracking-apple-tight text-[#1D1D1F] dark:text-[#F5F5F7]">
-                    Cross-platform mobile development.
-                  </h3>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-start py-4 px-3 rounded-xl hover:bg-black/[0.02] dark:hover:bg-white/[0.03] transition-colors">
-                  <div className="md:col-span-4 space-y-2.5">
-                    <div className="h-8 flex items-center">
-                      <Image
-                        src={ABOUT_DATA.flutterCert.logoSrc}
-                        alt="Academind Network Logo"
-                        width={110}
-                        height={40}
-                        className="h-8 w-auto object-contain dark:hidden"
-                      />
-                      <Image
-                        src={ABOUT_DATA.flutterCert.logoDarkSrc || ABOUT_DATA.flutterCert.logoSrc}
-                        alt="Academind Network Logo"
-                        width={110}
-                        height={40}
-                        className="h-8 w-auto object-contain hidden dark:block"
-                      />
-                    </div>
-                    <div>
-                      <span className="text-[11px] font-semibold uppercase tracking-wider text-[#86868B] dark:text-[#8E8E93] block">
-                        Certificate of Competence
-                      </span>
-                      <span className="inline-flex items-center px-2.5 py-0.5 mt-1 rounded-full bg-black/[0.04] dark:bg-white/[0.06] text-[#6E6E73] dark:text-[#A1A1A6] text-[11px] font-medium">
-                        KPT PACE &middot; Oct 2023
-                      </span>
-                    </div>
-                  </div>
-                  <div className="md:col-span-5 space-y-1">
-                    <h3 className="text-lg sm:text-xl font-semibold font-display tracking-apple-headline text-[#1D1D1F] dark:text-[#F5F5F7]">
-                      {ABOUT_DATA.flutterCert.body}
-                    </h3>
-                    <p className="text-xs sm:text-sm font-medium tracking-apple-subhead text-[#6E6E73] dark:text-[#A1A1A6] leading-snug">
-                      {ABOUT_DATA.flutterCert.course}
-                    </p>
-                    <p className="text-xs text-[#86868B] dark:text-[#8E8E93] pt-0.5 leading-relaxed">
-                      In collaboration with UTHM &middot; {ABOUT_DATA.flutterCert.issuedRange}
-                    </p>
-                  </div>
-                  <div className="md:col-span-3 md:text-right flex md:flex-col md:items-end justify-between items-center gap-2">
-                    <div className="space-y-0.5">
-                      <span className="text-[11px] font-semibold uppercase tracking-wider text-[#86868B] dark:text-[#8E8E93] block">
-                        Serial No.
-                      </span>
-                      <span className="text-sm sm:text-base font-semibold tracking-apple-headline text-[#1D1D1F] dark:text-[#F5F5F7] px-2.5 py-1 rounded-md bg-black/[0.04] dark:bg-white/[0.06] inline-block">
-                        {ABOUT_DATA.flutterCert.serialNo}
-                      </span>
-                    </div>
-
-                  </div>
+                  <span className="text-sm sm:text-base font-semibold tracking-apple-headline text-[#1D1D1F] dark:text-[#F5F5F7] px-3 py-1 rounded-md bg-black/[0.04] dark:bg-white/[0.06]">
+                    {ABOUT_DATA.accreditation.registrationNo}
+                  </span>
                 </div>
               </div>
             )}
+
+            {/* 2. Malaysian Red Crescent Society (MRCS) */}
+            {ABOUT_DATA.firstAid && (
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-start -mx-3 sm:-mx-4 px-3 sm:px-4 py-3 sm:py-4 rounded-2xl hover:bg-black/[0.02] dark:hover:bg-white/[0.03] transition-colors">
+                <div className="md:col-span-4 space-y-2.5">
+                  <div className="h-11 sm:h-12 flex items-center">
+                    <Image
+                      src={ABOUT_DATA.firstAid.logoSrc || "/images/logo-red-crescent.png"}
+                      alt="Malaysian Red Crescent Society Logo"
+                      width={140}
+                      height={32}
+                      className="h-8 sm:h-9 w-auto object-contain dark:hidden"
+                    />
+                    <Image
+                      src={ABOUT_DATA.firstAid.logoDarkSrc || "/images/logo-red-crescent-dark.png"}
+                      alt="Malaysian Red Crescent Society Logo"
+                      width={140}
+                      height={32}
+                      className="h-8 sm:h-9 w-auto object-contain hidden dark:block"
+                    />
+                  </div>
+                  <div>
+                    <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6E6E73] dark:text-[#8E8E93] block">
+                      Emergency Life Support &amp; First Aid
+                    </span>
+                  </div>
+                </div>
+                <div className="md:col-span-5 space-y-1">
+                  <h3 className="text-lg sm:text-xl font-semibold font-display tracking-apple-headline text-[#1D1D1F] dark:text-[#F5F5F7]">
+                    {ABOUT_DATA.firstAid.body}
+                  </h3>
+                  <p className="text-xs sm:text-sm font-medium tracking-apple-subhead text-[#6E6E73] dark:text-[#A1A1A6]">
+                    {ABOUT_DATA.firstAid.title} &middot; {ABOUT_DATA.firstAid.branch}
+                  </p>
+                  <p className="text-xs text-[#6E6E73] dark:text-[#8E8E93] pt-0.5 leading-relaxed">
+                    National Training Committee &middot; Certified First Aider &amp; CPR Provider
+                  </p>
+                </div>
+                <div className="md:col-span-3 md:text-right flex md:flex-col md:items-end justify-between items-center gap-2">
+                  <div className="space-y-0.5 md:text-right">
+                    <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6E6E73] dark:text-[#8E8E93] block">
+                      Serial No.
+                    </span>
+                    <span className="text-sm font-semibold tracking-apple-headline text-[#1D1D1F] dark:text-[#F5F5F7] px-2.5 py-1 rounded-md bg-black/[0.04] dark:bg-white/[0.06] inline-block">
+                      {ABOUT_DATA.firstAid.serialNo}
+                    </span>
+                  </div>
+                  {ABOUT_DATA.firstAid.certificateSrc && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setCertificateModal({
+                          src: ABOUT_DATA.firstAid?.certificateSrc || "/images/cert-red-crescent.png",
+                          title: "Malaysian Red Crescent Society — First Aid & CPR Certification",
+                        })
+                      }
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] bg-black/[0.05] dark:bg-white/[0.08] hover:bg-black/10 dark:hover:bg-white/15 transition-all active:scale-[0.98] cursor-pointer"
+                    >
+                      <span>View Certificate</span>
+                      <ExternalLink className="w-3.5 h-3.5 text-[#6E6E73] dark:text-[#8E8E93]" />
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* 3. International Journal of Integrated Engineering (IJIE) */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-start -mx-3 sm:-mx-4 px-3 sm:px-4 py-3 sm:py-4 rounded-2xl hover:bg-black/[0.02] dark:hover:bg-white/[0.03] transition-colors">
+              <div className="md:col-span-4 space-y-2.5">
+                <div className="h-11 sm:h-12 flex items-center">
+                  <Image
+                    src="/images/logo-ijie.png"
+                    alt="International Journal of Integrated Engineering"
+                    width={100}
+                    height={36}
+                    className="h-8 sm:h-9 w-auto object-contain"
+                  />
+                </div>
+                <div>
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6E6E73] dark:text-[#8E8E93] block">
+                    Peer-Reviewed Journal
+                  </span>
+                  <span className="inline-flex items-center px-2 py-0.5 mt-1 rounded-full bg-black/[0.04] dark:bg-white/[0.06] text-[#6E6E73] dark:text-[#A1A1A6] text-[11px] font-medium">
+                    Scopus Indexed &middot; 2026
+                  </span>
+                </div>
+              </div>
+              <div className="md:col-span-5 space-y-1">
+                <h3 className="text-lg sm:text-xl font-semibold font-display tracking-apple-headline text-[#1D1D1F] dark:text-[#F5F5F7]">
+                  International Journal of Integrated Engineering
+                </h3>
+                <p className="text-xs sm:text-sm font-medium tracking-apple-subhead text-[#6E6E73] dark:text-[#A1A1A6] leading-snug">
+                  IoT-Based Fertiliser Mixing for Hydroponic Precision Agriculture
+                </p>
+                <p className="text-xs text-[#6E6E73] dark:text-[#8E8E93] pt-0.5 leading-relaxed">
+                  First Author &middot; Penerbit UTHM &middot; Vol. 18, No. 1, pp. 186–201
+                </p>
+              </div>
+              <div className="md:col-span-3 md:text-right flex md:flex-col md:items-end justify-between items-center gap-1.5">
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6E6E73] dark:text-[#8E8E93] block">
+                  Archive Access
+                </span>
+                <a
+                  href="https://journal.uthm.edu.my/index.php/ijie/article/view/24386"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] bg-black/[0.05] dark:bg-white/[0.08] hover:bg-black/10 dark:hover:bg-white/15 transition-all active:scale-[0.98]"
+                >
+                  <span>Read Paper</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-[#6E6E73] dark:text-[#8E8E93]" />
+                </a>
+              </div>
+            </div>
+
+            {/* 4. Academind & KPT PACE */}
+            {ABOUT_DATA.flutterCert && (
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-start -mx-3 sm:-mx-4 px-3 sm:px-4 py-3 sm:py-4 rounded-2xl hover:bg-black/[0.02] dark:hover:bg-white/[0.03] transition-colors">
+                <div className="md:col-span-4 space-y-2.5">
+                  <div className="h-11 sm:h-12 flex items-center">
+                    <Image
+                      src={ABOUT_DATA.flutterCert.logoSrc}
+                      alt="Academind Network Logo"
+                      width={110}
+                      height={40}
+                      className="h-8 sm:h-9 w-auto object-contain dark:hidden"
+                    />
+                    <Image
+                      src={ABOUT_DATA.flutterCert.logoDarkSrc || ABOUT_DATA.flutterCert.logoSrc}
+                      alt="Academind Network Logo"
+                      width={110}
+                      height={40}
+                      className="h-8 sm:h-9 w-auto object-contain hidden dark:block"
+                    />
+                  </div>
+                  <div>
+                    <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6E6E73] dark:text-[#8E8E93] block">
+                      Certificate of Competence
+                    </span>
+                    <span className="inline-flex items-center px-2 py-0.5 mt-1 rounded-full bg-black/[0.04] dark:bg-white/[0.06] text-[#6E6E73] dark:text-[#A1A1A6] text-[11px] font-medium">
+                      KPT PACE &middot; Oct 2023
+                    </span>
+                  </div>
+                </div>
+                <div className="md:col-span-5 space-y-1">
+                  <h3 className="text-lg sm:text-xl font-semibold font-display tracking-apple-headline text-[#1D1D1F] dark:text-[#F5F5F7]">
+                    {ABOUT_DATA.flutterCert.body}
+                  </h3>
+                  <p className="text-xs sm:text-sm font-medium tracking-apple-subhead text-[#6E6E73] dark:text-[#A1A1A6] leading-snug">
+                    {ABOUT_DATA.flutterCert.course}
+                  </p>
+                  <p className="text-xs text-[#6E6E73] dark:text-[#8E8E93] pt-0.5 leading-relaxed">
+                    KPT PACE &amp; UTHM Collaboration &middot; {ABOUT_DATA.flutterCert.issuedRange}
+                  </p>
+                </div>
+                <div className="md:col-span-3 md:text-right flex md:flex-col md:items-end justify-between items-center gap-2">
+                  <div className="space-y-0.5 md:text-right">
+                    <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6E6E73] dark:text-[#8E8E93] block">
+                      Serial No.
+                    </span>
+                    <span className="text-sm font-semibold tracking-apple-headline text-[#1D1D1F] dark:text-[#F5F5F7] px-2.5 py-1 rounded-md bg-black/[0.04] dark:bg-white/[0.06] inline-block">
+                      {ABOUT_DATA.flutterCert.serialNo}
+                    </span>
+                  </div>
+                  {ABOUT_DATA.flutterCert.certificateSrc && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setCertificateModal({
+                          src: ABOUT_DATA.flutterCert?.certificateSrc || "/images/cert-flutter-academind.png",
+                          title: "Academind Network — Google Flutter Cross-Platform Development Certificate",
+                        })
+                      }
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] bg-black/[0.05] dark:bg-white/[0.08] hover:bg-black/10 dark:hover:bg-white/15 transition-all active:scale-[0.98] cursor-pointer"
+                    >
+                      <span>View Certificate</span>
+                      <ExternalLink className="w-3.5 h-3.5 text-[#6E6E73] dark:text-[#8E8E93]" />
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+
           </div>
 
         </section>
@@ -931,7 +892,7 @@ export default function AboutPage() {
           className="max-w-6xl mx-auto w-full px-6 sm:px-8 py-16 sm:py-20 scroll-mt-20 space-y-8"
         >
           <div className="space-y-1">
-            <p className="text-[11px] font-semibold uppercase tracking-widest text-[#86868B] dark:text-[#8E8E93]">
+            <p className="text-[11px] font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#8E8E93]">
               Spoken Languages
             </p>
             <h2 className="text-3xl sm:text-4xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.08]">
@@ -950,7 +911,7 @@ export default function AboutPage() {
                     {lang.nativeName}
                   </p>
                 )}
-                <p className="text-xs sm:text-sm text-[#86868B] dark:text-[#8E8E93] mt-auto pt-1">
+                <p className="text-xs sm:text-sm text-[#6E6E73] dark:text-[#8E8E93] mt-auto pt-1">
                   {lang.proficiency}
                 </p>
               </div>
@@ -958,10 +919,56 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* ── 7. Merged Contact & Footer (#contact) ────────────────────────── */}
-        <div id="contact" className="scroll-mt-20">
-          <Footer />
-        </div>
+        {/* ── Contact & Footer (#contact) ────────────────────────── */}
+        <Footer className="scroll-mt-20" />
+
+        {/* ── Certificate Preview Lightbox Modal ───────────────────────── */}
+        {certificateModal && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={certificateModal.title}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-md animate-in fade-in duration-200"
+            onClick={() => setCertificateModal(null)}
+          >
+            <div
+              className="relative max-w-4xl w-full max-h-[90vh] bg-white dark:bg-[#1C1C1E] rounded-2xl sm:rounded-3xl border border-black/10 dark:border-white/15 overflow-hidden shadow-2xl flex flex-col"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-black/5 dark:border-white/10 bg-[#FAFAFC] dark:bg-[#161618]">
+                <div className="space-y-0.5">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-[#6E6E73] dark:text-[#8E8E93]">
+                    Verified Credential
+                  </p>
+                  <h3 className="text-base sm:text-lg font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight">
+                    {certificateModal.title}
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setCertificateModal(null)}
+                  aria-label="Close certificate preview"
+                  className="w-9 h-9 rounded-full bg-black/5 dark:bg-white/10 flex items-center justify-center text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-black/10 dark:hover:bg-white/20 transition-colors cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Modal Image Body */}
+              <div className="relative w-full aspect-[4/3] sm:aspect-[16/11] max-h-[75vh] bg-[#F5F5F7] dark:bg-black p-4 flex items-center justify-center overflow-auto">
+                <Image
+                  src={certificateModal.src}
+                  alt={certificateModal.title}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 1024px) 95vw, 896px"
+                  priority
+                />
+              </div>
+            </div>
+          </div>
+        )}
 
       </main>
     </div>

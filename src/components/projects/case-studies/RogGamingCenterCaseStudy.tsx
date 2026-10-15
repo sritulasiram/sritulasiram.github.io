@@ -29,7 +29,7 @@ export default function RogGamingCenterCaseStudy({ project }: Props) {
       {/* 1. Systems Software Hero Section */}
       <section className="pt-24 sm:pt-28 px-6 sm:px-8 max-w-5xl mx-auto w-full">
         {/* Semantic Accessible Breadcrumb */}
-        <CaseStudyBreadcrumb title="ROG Gaming Center Case Study" />
+        <CaseStudyBreadcrumb title="ROG Gaming Center" />
 
         {/* Headline & Description */}
         <div className="space-y-4 max-w-4xl">

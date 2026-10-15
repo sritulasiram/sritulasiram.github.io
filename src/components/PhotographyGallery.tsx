@@ -89,8 +89,10 @@ export default function PhotographyGallery({ photos }: PhotographyGalleryProps) 
             role="button"
             tabIndex={0}
             onClick={() => handleOpenPreview(photo)}
+            aria-label={`View ${photo.title}`}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
                 handleOpenPreview(photo);
               }
             }}
@@ -130,7 +132,7 @@ export default function PhotographyGallery({ photos }: PhotographyGalleryProps) 
                 )}
                 <div className="pt-0.5 flex items-center gap-1.5 text-[11px] font-medium text-white/90">
                   <Expand className="w-3.5 h-3.5 text-white/80 shrink-0" />
-                  <span>Tap to inspect archival master</span>
+                  <span>View photo</span>
                 </div>
               </div>
             </div>
@@ -142,7 +144,7 @@ export default function PhotographyGallery({ photos }: PhotographyGalleryProps) 
               <div className="flex items-center gap-2">
                 <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-[#1D1D1F] dark:text-[#F5F5F7] bg-black/[0.05] dark:bg-white/[0.08] px-2 py-0.5 rounded-full">
                   <Sparkles className="w-2.5 h-2.5" />
-                  Curated Feature
+                  Featured
                 </span>
                 {photo.location && (
                   <span className="text-xs text-[#6E6E73] dark:text-[#8E8E93] flex items-center gap-1">
@@ -182,8 +184,10 @@ export default function PhotographyGallery({ photos }: PhotographyGalleryProps) 
           role="button"
           tabIndex={0}
           onClick={() => handleOpenPreview(photo)}
+          aria-label={`View ${photo.title}`}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
               handleOpenPreview(photo);
             }
           }}
@@ -443,9 +447,9 @@ export default function PhotographyGallery({ photos }: PhotographyGalleryProps) 
       ) : (
         <div className="py-20 text-center space-y-3 p-8 rounded-3xl bg-[#FAFAFA] dark:bg-[#121214] border border-[#E5E5EA] dark:border-white/[0.08] apple-card-shadow max-w-md mx-auto">
           <Camera className="w-8 h-8 mx-auto text-[#86868B] dark:text-[#8E8E93]" />
-          <h3 className="text-base font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">Curating New Frames</h3>
+          <h3 className="text-base font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">No photos here yet</h3>
           <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-            New photography frames for this album are currently being selected and curated. Check back soon!
+            This album doesn’t have any photos yet.
           </p>
         </div>
       )}

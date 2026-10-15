@@ -261,6 +261,10 @@ export default function Navigation() {
     setMobileExpanded((prev) => ({ ...prev, [menu]: !prev[menu] }));
   };
 
+  if (pathname === "/maintenance") {
+    return null;
+  }
+
   return (
     <>
       <header
@@ -668,6 +672,13 @@ export default function Navigation() {
                       className="block text-lg font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] hover:text-black dark:hover:text-white hover:bg-[#F5F5F7] dark:hover:bg-[#1C1C1E] px-2.5 -mx-2.5 py-1 rounded-xl transition-all duration-150 tracking-apple-tight apple-stagger-3 hover:translate-x-0.5"
                     >
                       ROG Gaming Center macOS App
+                    </Link>
+                    <Link prefetch={false}
+                      href="/projects/esp32-heart-saver"
+                      onClick={() => setActiveDropdown(null)}
+                      className="block text-lg font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] hover:text-black dark:hover:text-white hover:bg-[#F5F5F7] dark:hover:bg-[#1C1C1E] px-2.5 -mx-2.5 py-1 rounded-xl transition-all duration-150 tracking-apple-tight apple-stagger-4 hover:translate-x-0.5"
+                    >
+                      ESP32 Heart Saver
                     </Link>
                   </div>
                 </div>

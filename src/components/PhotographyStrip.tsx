@@ -370,7 +370,7 @@ export default function PhotographyStrip() {
                 Moments in light.
                 <br />
                 <span className="text-[#6E6E73] dark:text-[#8E8E93] font-medium">
-                  Atmosphere, geometry, and quiet stillness.
+                  Atmosphere, geometry, and the moments in between.
                 </span>
               </h2>
               <p className="text-base sm:text-lg text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed pt-1 text-balance">

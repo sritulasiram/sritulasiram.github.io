@@ -5,6 +5,7 @@ export const metadata: Metadata = {
     default: "Projects",
     template: "%s",
   },
+  alternates: { canonical: "/projects" },
   description:
     "Internal operations architecture, automated hardware diagnostics, and published IoT precision agriculture research by Sri Tulasi Ram.",
 };
