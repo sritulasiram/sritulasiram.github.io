@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { projectThemeStyle } from "@/data/projectTheme";
 import Footer from "@/components/layout/Footer";
 import WarrantyRmaCaseStudy from "@/components/projects/case-studies/WarrantyRmaCaseStudy";
 import IotFertiliserCaseStudy from "@/components/projects/case-studies/IotFertiliserCaseStudy";
 import RaspberryPiDiagnosticCaseStudy from "@/components/projects/case-studies/RaspberryPiDiagnosticCaseStudy";
 import OpenCoreEfiCaseStudy from "@/components/projects/case-studies/OpenCoreEfiCaseStudy";
 import RogGamingCenterCaseStudy from "@/components/projects/case-studies/RogGamingCenterCaseStudy";
-import Esp32HeartSaverCaseStudy from "@/components/projects/case-studies/Esp32HeartSaverCaseStudy";
 import HrAssistiveIntelligenceCaseStudy from "@/components/projects/case-studies/HrAssistiveIntelligenceCaseStudy";
 import { PROJECT_DETAILS } from "@/data/projectDetails";
 import { PROJECTS_DATA } from "@/data/content";
+import ProjectLocalNav from "@/components/projects/ProjectLocalNav";
+import { isShowcaseProject } from "@/data/projectSpecs";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -67,8 +69,14 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   const nextProject =
     PROJECTS_DATA[(currentIndex + 1) % PROJECTS_DATA.length] || PROJECTS_DATA[0];
 
+  const showcase = isShowcaseProject(canonicalId);
+
   return (
-    <main className="min-h-screen bg-white dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300 flex flex-col selection:bg-[#0071E3]/15 selection:text-[#1D1D1F] dark:selection:text-[#F5F5F7]">
+    <main id="main-content" tabIndex={-1} style={showcase ? projectThemeStyle(canonicalId) : undefined} className={`${showcase ? "project-theme pt-12 " : ""}min-h-screen bg-white dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300 flex flex-col selection:bg-[#0071E3]/15 selection:text-[#1D1D1F] dark:selection:text-[#F5F5F7]`}>
+      {showcase && (
+        <ProjectLocalNav projectId={canonicalId} title={project.title} githubUrl={project.githubUrl} />
+      )}
+
       {/* Tailored Case Study Layout Based on Content */}
       {canonicalId === "warranty-rma" && (
         <WarrantyRmaCaseStudy project={project} nextProject={nextProject} />
@@ -88,10 +96,6 @@ export default async function ProjectDetailPage({ params }: PageProps) {
 
       {canonicalId === "rog-gaming-center" && (
         <RogGamingCenterCaseStudy project={project} />
-      )}
-
-      {canonicalId === "esp32-heart-saver" && (
-        <Esp32HeartSaverCaseStudy project={project} nextProject={nextProject} />
       )}
 
       {canonicalId === "cytron-hr-assistive-intelligence" && (

@@ -1,10 +1,12 @@
-import Hero from "@/components/home/Hero";
-import SelectedWork from "@/components/home/SelectedWork";
-import DesignsTeaser from "@/components/home/DesignsTeaser";
-import AboutTeaser from "@/components/home/AboutTeaser";
-import PhotographyStrip from "@/components/home/PhotographyStrip";
-import Footer from "@/components/layout/Footer";
 import type { Metadata } from "next";
+import Footer from "@/components/layout/Footer";
+import HomeHero from "@/components/home/HomeHero";
+import HomeSystems from "@/components/home/HomeSystems";
+import HomeNumbers from "@/components/home/HomeNumbers";
+import HomeDesigns from "@/components/home/HomeDesigns";
+import IntroScroller from "@/components/home/IntroScroller";
+import HomePhotography from "@/components/home/HomePhotography";
+import { accentStyle } from "@/data/projectTheme";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -12,24 +14,20 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-white dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col">
+    <main
+      id="main-content"
+      tabIndex={-1}
+      style={accentStyle(["#0066CC", "#2997FF"])}
+      className="project-theme min-h-screen bg-white dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300 flex flex-col"
+    >
+      <HomeHero />
 
-      {/* 1. Hero Section */}
-      <Hero />
+      <IntroScroller />
 
-      {/* 2. Selected Work Section (Engineering Systems) */}
-      <SelectedWork />
-
-      {/* 3. Designs Showcase (UI/UX Case Studies) */}
-      <DesignsTeaser />
-
-      {/* 4. About Teaser (Support Ops & Engineering Pillars) */}
-      <AboutTeaser />
-
-      {/* 5. Photography Strip (Personal Creative Craft) */}
-      <PhotographyStrip />
-
-      {/* 6. Footer & Contact Section */}
+      <HomeSystems />
+      <HomeNumbers />
+      <HomeDesigns />
+      <HomePhotography />
       <Footer />
     </main>
   );

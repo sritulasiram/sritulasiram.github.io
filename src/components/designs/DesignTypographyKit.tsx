@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import {
-  ArrowUpRight,
   Sparkles,
   Layers,
   Sliders,
@@ -11,31 +10,159 @@ import {
   Globe,
   Cpu,
 } from "lucide-react";
+import DesignPrincipleGrid, { type Principle } from "./DesignPrincipleGrid";
+import DesignSpecimenToggle from "./DesignSpecimenToggle";
+import DesignSectionHeading from "./DesignSectionHeading";
+
+// Apple San Francisco
+const TYPE_PRINCIPLES_1: Principle[] = [
+  {
+    icon: Sliders,
+    color: "text-[#0071E3] dark:text-[#2997FF]",
+    title: "Spacing adapts to size",
+    body: "Tighter spacing on large titles, looser spacing on small text.",
+  },
+  {
+    icon: Eye,
+    color: "text-[#AF52DE]",
+    title: "Text and Display cuts",
+    body: "Letter shapes change between the Text and Display cuts as size increases.",
+  },
+  {
+    icon: Layers,
+    color: "text-[#34C759]",
+    title: "Rounded option",
+    body: "SF Rounded gives a friendlier tone for consumer apps.",
+  },
+  {
+    icon: Cpu,
+    color: "text-[#FF9500]",
+    title: "One family across Apple devices",
+    body: "The same typeface runs on iPhone, iPad, Mac and Apple Watch.",
+  },
+];
+
+// Google Fonts and Variable Systems
+const TYPE_PRINCIPLES_2: Principle[] = [
+  {
+    icon: Sliders,
+    color: "text-[#0071E3] dark:text-[#2997FF]",
+    title: "One file, every weight",
+    body: "A variable font covers weights 100 to 900 from a single file.",
+  },
+  {
+    icon: Sparkles,
+    color: "text-[#AF52DE]",
+    title: "Open letterforms",
+    body: "Wide letter openings keep text readable at small sizes.",
+  },
+  {
+    icon: Globe,
+    color: "text-[#34C759]",
+    title: "Many scripts",
+    body: "Google Fonts covers Latin, Cyrillic, Greek and many other scripts.",
+  },
+  {
+    icon: Compass,
+    color: "text-[#FF9500]",
+    title: "Open licensing",
+    body: "Most Google Fonts are open source, so designers and developers can use the same files.",
+  },
+];
+
+const WEIGHT_OPTIONS = [
+  { value: 300, label: "Light 300" },
+  { value: 400, label: "Regular 400" },
+  { value: 600, label: "Semibold 600" },
+  { value: 700, label: "Bold 700" },
+] as const;
+
+const SIZE_OPTIONS = [
+  { value: 18, label: "18px" },
+  { value: 24, label: "24px" },
+  { value: 40, label: "40px" },
+] as const;
+
+type Weight = (typeof WEIGHT_OPTIONS)[number]["value"];
+type Size = (typeof SIZE_OPTIONS)[number]["value"];
+
+function Specimen({
+  title,
+  caption,
+  detail,
+  family,
+  weight,
+  size,
+  note,
+}: {
+  title: string;
+  caption: string;
+  detail: string;
+  family: string;
+  weight: number;
+  size: number;
+  note?: string;
+}) {
+  return (
+    <div className="p-6 sm:p-10 rounded-3xl bg-[#F5F5F7]/70 dark:bg-[#141416]/70 space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-xs text-[#6E6E73] dark:text-[#8E8E93]">
+        <div className="flex items-center gap-2">
+          <span className="font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">{title}</span>
+          <span aria-hidden="true">·</span>
+          <span>{caption}</span>
+          <span aria-hidden="true">·</span>
+          <span>{detail}</span>
+        </div>
+        <span>Weight {weight}</span>
+      </div>
+
+      <div
+        className="text-4xl sm:text-6xl text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight transition-all duration-300 break-words"
+        style={{ fontFamily: family, fontWeight: weight }}
+      >
+        Aa Bb Gg Rr 123
+      </div>
+
+      <div
+        className="text-[#1D1D1F]/90 dark:text-[#F5F5F7]/90 transition-all duration-300 leading-snug"
+        style={{ fontSize: size, fontFamily: family, fontWeight: weight }}
+      >
+        Sphinx of black quartz, judge my vow
+      </div>
+
+      <div
+        className="text-xs text-[#6E6E73] dark:text-[#8E8E93] tracking-widest uppercase transition-all duration-300 pt-2"
+        style={{ fontFamily: family }}
+      >
+        A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9
+      </div>
+
+      {note && <p className="text-xs text-[#6E6E73] dark:text-[#8E8E93] border-t border-black/[0.06] dark:border-white/10 pt-4">{note}</p>}
+    </div>
+  );
+}
+
+const APPLE_FAMILIES = {
+  display: { label: "SF Display", css: '-apple-system, BlinkMacSystemFont, "SF Pro Display", var(--font-inter), sans-serif' },
+  text: { label: "SF Text", css: '-apple-system, BlinkMacSystemFont, "SF Pro Text", var(--font-inter), sans-serif' },
+  rounded: { label: "SF Rounded", css: '"SF Pro Rounded", -apple-system, BlinkMacSystemFont, var(--font-inter), sans-serif' },
+} as const;
+
+// Loaded for this route in app/designs/layout.tsx (Inter is loaded site-wide).
+const GOOGLE_FAMILIES = {
+  roboto: { label: "Roboto Flex", css: "var(--font-roboto-flex), sans-serif" },
+  inter: { label: "Inter", css: "var(--font-inter), sans-serif" },
+  sans: { label: "Open Sans", css: "var(--font-open-sans), sans-serif" },
+} as const;
 
 export default function DesignTypographyKit() {
-  // 1. Apple Typography State
-  const [appleWeight, setAppleWeight] = useState<300 | 400 | 600 | 700>(400);
-  const [appleVariant, setAppleVariant] = useState<"display" | "text" | "rounded">("display");
-  const [appleSize, setAppleSize] = useState<18 | 24 | 40>(24);
+  const [appleWeight, setAppleWeight] = useState<Weight>(400);
+  const [appleVariant, setAppleVariant] = useState<keyof typeof APPLE_FAMILIES>("display");
+  const [appleSize, setAppleSize] = useState<Size>(24);
 
-  // 2. Google Typography State
-  const [googleWeight, setGoogleWeight] = useState<300 | 400 | 600 | 700>(400);
-  const [googleFont, setGoogleFont] = useState<"roboto" | "inter" | "sans">("roboto");
-  const [googleSize, setGoogleSize] = useState<18 | 24 | 40>(24);
-
-  // Apple Font Family mapping
-  const getAppleFontFamily = () => {
-    if (appleVariant === "rounded") return '"SF Pro Rounded", -apple-system, BlinkMacSystemFont, "SF Pro", sans-serif';
-    if (appleVariant === "text") return '-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif';
-    return '-apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif';
-  };
-
-  // Google Font Family mapping
-  const getGoogleFontFamily = () => {
-    if (googleFont === "inter") return "var(--font-inter), sans-serif";
-    if (googleFont === "sans") return '"Open Sans", system-ui, sans-serif';
-    return '"Roboto", "Roboto Flex", "Segoe UI", sans-serif';
-  };
+  const [googleWeight, setGoogleWeight] = useState<Weight>(400);
+  const [googleFont, setGoogleFont] = useState<keyof typeof GOOGLE_FAMILIES>("roboto");
+  const [googleSize, setGoogleSize] = useState<Size>(24);
 
   return (
     <section id="typography" className="scroll-mt-20 py-12 sm:py-16 bg-white dark:bg-black transition-colors overflow-hidden">
@@ -46,352 +173,87 @@ export default function DesignTypographyKit() {
             Typography systems.
             <br />
             <span className="text-[#6E6E73] dark:text-[#8E8E93] font-medium">
-              Interface typefaces and variable axes.
+              San Francisco and the Google Fonts web stack.
             </span>
           </h2>
           <p className="text-base sm:text-lg text-[#6E6E73] dark:text-[#A1A1A6] font-normal leading-relaxed">
-            A visual exploration of dynamic optical tracking, compact apertures, and continuous variable font axes across digital displays.
+            Change the cut, weight and size to see how each typeface behaves.
           </p>
         </div>
 
         {/* 1. Apple San Francisco */}
         <div className="space-y-8 sm:space-y-10">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-            <div className="max-w-3xl space-y-2">
-              <h3 className="text-2xl sm:text-4xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight">
-                Apple San Francisco
-              </h3>
-              <p className="text-sm sm:text-base text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                Dynamic optical tracking, compact apertures, and responsive weights engineered for Apple Retina screens.
-              </p>
-            </div>
+          <DesignSectionHeading
+            title="Apple San Francisco"
+            description="Apple's system typeface. Spacing and shapes adjust with size, from small labels to large titles."
+            href="https://developer.apple.com/fonts/"
+            linkLabel="Apple Developer Fonts"
+          />
 
-            {/* Link to Apple Developer Fonts */}
-            <a
-              href="https://developer.apple.com/fonts/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#0071E3] dark:text-[#2997FF] hover:underline shrink-0 group min-h-[44px]"
-            >
-              <span>Apple Developer Fonts</span>
-              <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
-          </div>
-
-          {/* Apple Interactive Visual Specimen */}
           <div className="space-y-6">
             <div className="flex flex-wrap items-center justify-between gap-4 py-2">
-              {/* Variant Toggles */}
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs font-semibold text-[#86868B] dark:text-[#8E8E93] mr-2">Cut</span>
-                {(["display", "text", "rounded"] as const).map((v) => (
-                  <button
-                    key={v}
-                    onClick={() => setAppleVariant(v)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium capitalize transition-all duration-200 min-h-[36px] ${
-                      appleVariant === v
-                        ? "bg-[#1D1D1F] dark:bg-white text-white dark:text-[#1D1D1F] shadow-xs"
-                        : "text-[#6E6E73] dark:text-[#A1A1A6] hover:text-[#1D1D1F] dark:hover:text-white"
-                    }`}
-                  >
-                    {v === "display" ? "SF Display" : v === "text" ? "SF Text" : "SF Rounded"}
-                  </button>
-                ))}
-              </div>
-
-              {/* Weight Toggles */}
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs font-semibold text-[#86868B] dark:text-[#8E8E93] mr-2">Weight</span>
-                {([300, 400, 600, 700] as const).map((w) => (
-                  <button
-                    key={w}
-                    onClick={() => setAppleWeight(w)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 min-h-[36px] ${
-                      appleWeight === w
-                        ? "bg-[#1D1D1F] dark:bg-white text-white dark:text-[#1D1D1F] shadow-xs"
-                        : "text-[#6E6E73] dark:text-[#A1A1A6] hover:text-[#1D1D1F] dark:hover:text-white"
-                    }`}
-                  >
-                    {w === 300 ? "Light 300" : w === 400 ? "Regular 400" : w === 600 ? "Semibold 600" : "Bold 700"}
-                  </button>
-                ))}
-              </div>
-
-              {/* Size Toggles */}
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs font-semibold text-[#86868B] dark:text-[#8E8E93] mr-2">Size</span>
-                {([18, 24, 40] as const).map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => setAppleSize(s)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 min-h-[36px] ${
-                      appleSize === s
-                        ? "bg-[#1D1D1F] dark:bg-white text-white dark:text-[#1D1D1F] shadow-xs"
-                        : "text-[#6E6E73] dark:text-[#A1A1A6] hover:text-[#1D1D1F] dark:hover:text-white"
-                    }`}
-                  >
-                    {s}px
-                  </button>
-                ))}
-              </div>
+              <DesignSpecimenToggle
+                label="Cut"
+                value={appleVariant}
+                onChange={setAppleVariant}
+                options={(Object.keys(APPLE_FAMILIES) as (keyof typeof APPLE_FAMILIES)[]).map((key) => ({
+                  value: key,
+                  label: APPLE_FAMILIES[key].label,
+                }))}
+              />
+              <DesignSpecimenToggle label="Weight" value={appleWeight} onChange={setAppleWeight} options={[...WEIGHT_OPTIONS]} />
+              <DesignSpecimenToggle label="Size" value={appleSize} onChange={setAppleSize} options={[...SIZE_OPTIONS]} />
             </div>
 
-            {/* Specimen Showcase Canvas */}
-            <div className="p-6 sm:p-10 rounded-3xl bg-[#F5F5F7]/70 dark:bg-[#141416]/70 space-y-6">
-              <div className="flex items-center justify-between text-xs text-[#86868B] dark:text-[#8E8E93]">
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">San Francisco</span>
-                  <span>·</span>
-                  <span>Apple Typography</span>
-                  <span>·</span>
-                  <span className="capitalize">{appleVariant}</span>
-                </div>
-                <span>Weight {appleWeight}</span>
-              </div>
-
-              <div
-                className="text-4xl sm:text-6xl text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight transition-all duration-300 break-words"
-                style={{
-                  fontFamily: getAppleFontFamily(),
-                  fontWeight: appleWeight,
-                }}
-              >
-                Aa Bb Gg Rr 123
-              </div>
-
-              <div
-                className="text-[#1D1D1F]/90 dark:text-[#F5F5F7]/90 transition-all duration-300 leading-snug"
-                style={{
-                  fontSize: appleSize,
-                  fontFamily: getAppleFontFamily(),
-                  fontWeight: appleWeight,
-                }}
-              >
-                Sphinx of black quartz, judge my vow
-              </div>
-
-              <div
-                className="text-xs text-[#86868B] dark:text-[#8E8E93] tracking-widest uppercase transition-all duration-300 pt-2"
-                style={{ fontFamily: getAppleFontFamily() }}
-              >
-                A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9
-              </div>
-            </div>
+            <Specimen
+              title="San Francisco"
+              caption="Apple Typography"
+              detail={APPLE_FAMILIES[appleVariant].label}
+              family={APPLE_FAMILIES[appleVariant].css}
+              weight={appleWeight}
+              size={appleSize}
+              note="San Francisco is licensed to Apple platforms, so it renders on Mac, iPhone and iPad. On other devices this specimen falls back to Inter."
+            />
           </div>
 
-          {/* 4 Apple Typography Principles */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 pt-2">
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2 text-[#1D1D1F] dark:text-[#F5F5F7]">
-                <Sliders className="w-4 h-4 text-[#0071E3] dark:text-[#2997FF]" />
-                <h4 className="text-sm font-semibold">Dynamic Tracking</h4>
-              </div>
-              <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                Negative letter spacing at display titles and generous tracking at body text sizes maintain effortless reading.
-              </p>
-            </div>
-
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2 text-[#1D1D1F] dark:text-[#F5F5F7]">
-                <Eye className="w-4 h-4 text-[#AF52DE]" />
-                <h4 className="text-sm font-semibold">Optical Cut Transitions</h4>
-              </div>
-              <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                Automatic interpolation between Text and Display cuts ensures characters never pinch or blur at any scale.
-              </p>
-            </div>
-
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2 text-[#1D1D1F] dark:text-[#F5F5F7]">
-                <Layers className="w-4 h-4 text-[#34C759]" />
-                <h4 className="text-sm font-semibold">Compact Proportions</h4>
-              </div>
-              <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                Engineered with tight ascenders and descenders to maximize information density inside navigation bars.
-              </p>
-            </div>
-
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2 text-[#1D1D1F] dark:text-[#F5F5F7]">
-                <Cpu className="w-4 h-4 text-[#FF9500]" />
-                <h4 className="text-sm font-semibold">Cross Platform Hierarchy</h4>
-              </div>
-              <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                A unified design grammar shared seamlessly across watchOS, iOS, iPadOS, and macOS ecosystems.
-              </p>
-            </div>
-          </div>
+          <DesignPrincipleGrid items={TYPE_PRINCIPLES_1} />
         </div>
 
         {/* 2. Google Fonts and Variable Systems */}
         <div className="space-y-8 sm:space-y-10">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-            <div className="max-w-3xl space-y-2">
-              <h3 className="text-2xl sm:text-4xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight">
-                Google Fonts and Variable Systems
-              </h3>
-              <p className="text-sm sm:text-base text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                Continuous weight axes, open counters, and universal font distribution engineered for global web surfaces.
-              </p>
-            </div>
+          <DesignSectionHeading
+            title="Google Fonts and Variable Systems"
+            description="Open-source variable fonts you can load on any site, with a continuous weight range."
+            href="https://fonts.google.com/"
+            linkLabel="Google Fonts Library"
+          />
 
-            {/* Link to Google Fonts */}
-            <a
-              href="https://fonts.google.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#0071E3] dark:text-[#2997FF] hover:underline shrink-0 group min-h-[44px]"
-            >
-              <span>Google Fonts Library</span>
-              <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
-          </div>
-
-          {/* Google Interactive Visual Specimen */}
           <div className="space-y-6">
             <div className="flex flex-wrap items-center justify-between gap-4 py-2">
-              {/* Typeface Toggles */}
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs font-semibold text-[#86868B] dark:text-[#8E8E93] mr-2">Family</span>
-                {(["roboto", "inter", "sans"] as const).map((f) => (
-                  <button
-                    key={f}
-                    onClick={() => setGoogleFont(f)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium capitalize transition-all duration-200 min-h-[36px] ${
-                      googleFont === f
-                        ? "bg-[#1D1D1F] dark:bg-white text-white dark:text-[#1D1D1F] shadow-xs"
-                        : "text-[#6E6E73] dark:text-[#A1A1A6] hover:text-[#1D1D1F] dark:hover:text-white"
-                    }`}
-                  >
-                    {f === "roboto" ? "Roboto Flex" : f === "inter" ? "Inter" : "Open Sans"}
-                  </button>
-                ))}
-              </div>
-
-              {/* Weight Toggles */}
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs font-semibold text-[#86868B] dark:text-[#8E8E93] mr-2">Weight</span>
-                {([300, 400, 600, 700] as const).map((w) => (
-                  <button
-                    key={w}
-                    onClick={() => setGoogleWeight(w)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 min-h-[36px] ${
-                      googleWeight === w
-                        ? "bg-[#1D1D1F] dark:bg-white text-white dark:text-[#1D1D1F] shadow-xs"
-                        : "text-[#6E6E73] dark:text-[#A1A1A6] hover:text-[#1D1D1F] dark:hover:text-white"
-                    }`}
-                  >
-                    {w === 300 ? "Light 300" : w === 400 ? "Regular 400" : w === 600 ? "Semibold 600" : "Bold 700"}
-                  </button>
-                ))}
-              </div>
-
-              {/* Size Toggles */}
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs font-semibold text-[#86868B] dark:text-[#8E8E93] mr-2">Size</span>
-                {([18, 24, 40] as const).map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => setGoogleSize(s)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 min-h-[36px] ${
-                      googleSize === s
-                        ? "bg-[#1D1D1F] dark:bg-white text-white dark:text-[#1D1D1F] shadow-xs"
-                        : "text-[#6E6E73] dark:text-[#A1A1A6] hover:text-[#1D1D1F] dark:hover:text-white"
-                    }`}
-                  >
-                    {s}px
-                  </button>
-                ))}
-              </div>
+              <DesignSpecimenToggle
+                label="Family"
+                value={googleFont}
+                onChange={setGoogleFont}
+                options={(Object.keys(GOOGLE_FAMILIES) as (keyof typeof GOOGLE_FAMILIES)[]).map((key) => ({
+                  value: key,
+                  label: GOOGLE_FAMILIES[key].label,
+                }))}
+              />
+              <DesignSpecimenToggle label="Weight" value={googleWeight} onChange={setGoogleWeight} options={[...WEIGHT_OPTIONS]} />
+              <DesignSpecimenToggle label="Size" value={googleSize} onChange={setGoogleSize} options={[...SIZE_OPTIONS]} />
             </div>
 
-            {/* Specimen Showcase Canvas */}
-            <div className="p-6 sm:p-10 rounded-3xl bg-[#F5F5F7]/70 dark:bg-[#141416]/70 space-y-6">
-              <div className="flex items-center justify-between text-xs text-[#86868B] dark:text-[#8E8E93]">
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">
-                    {googleFont === "roboto" ? "Roboto Flex" : googleFont === "inter" ? "Inter" : "Open Sans"}
-                  </span>
-                  <span>·</span>
-                  <span>Google Fonts Ecosystem</span>
-                  <span>·</span>
-                  <span>Variable Axis</span>
-                </div>
-                <span>Weight {googleWeight}</span>
-              </div>
-
-              <div
-                className="text-4xl sm:text-6xl text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight transition-all duration-300 break-words"
-                style={{
-                  fontFamily: getGoogleFontFamily(),
-                  fontWeight: googleWeight,
-                }}
-              >
-                Aa Bb Gg Rr 123
-              </div>
-
-              <div
-                className="text-[#1D1D1F]/90 dark:text-[#F5F5F7]/90 transition-all duration-300 leading-snug"
-                style={{
-                  fontSize: googleSize,
-                  fontFamily: getGoogleFontFamily(),
-                  fontWeight: googleWeight,
-                }}
-              >
-                The quick brown fox jumps over the lazy dog
-              </div>
-
-              <div
-                className="text-xs text-[#86868B] dark:text-[#8E8E93] tracking-widest uppercase transition-all duration-300 pt-2"
-                style={{ fontFamily: getGoogleFontFamily() }}
-              >
-                A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9
-              </div>
-            </div>
+            <Specimen
+              title={GOOGLE_FAMILIES[googleFont].label}
+              caption="Google Fonts"
+              detail="Variable"
+              family={GOOGLE_FAMILIES[googleFont].css}
+              weight={googleWeight}
+              size={googleSize}
+            />
           </div>
 
-          {/* 4 Google Fonts Principles */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 pt-2">
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2 text-[#1D1D1F] dark:text-[#F5F5F7]">
-                <Sliders className="w-4 h-4 text-[#0071E3] dark:text-[#2997FF]" />
-                <h4 className="text-sm font-semibold">Continuous Weight Axes</h4>
-              </div>
-              <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                Single font asset technology delivering infinite weight steps between one hundred and nine hundred.
-              </p>
-            </div>
-
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2 text-[#1D1D1F] dark:text-[#F5F5F7]">
-                <Sparkles className="w-4 h-4 text-[#AF52DE]" />
-                <h4 className="text-sm font-semibold">Open Geometry Counters</h4>
-              </div>
-              <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                Generous letter openings prevent visual clutter and eye strain across low resolution mobile viewports.
-              </p>
-            </div>
-
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2 text-[#1D1D1F] dark:text-[#F5F5F7]">
-                <Globe className="w-4 h-4 text-[#34C759]" />
-                <h4 className="text-sm font-semibold">Global Script Delivery</h4>
-              </div>
-              <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                Comprehensive unicode coverage spanning Latin, Cyrillic, Greek, and thousands of international scripts.
-              </p>
-            </div>
-
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2 text-[#1D1D1F] dark:text-[#F5F5F7]">
-                <Compass className="w-4 h-4 text-[#FF9500]" />
-                <h4 className="text-sm font-semibold">Open Universal Licensing</h4>
-              </div>
-              <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                Freely accessible typefaces engineered for seamless collaboration between designers and software engineers.
-              </p>
-            </div>
-          </div>
+          <DesignPrincipleGrid items={TYPE_PRINCIPLES_2} />
         </div>
       </div>
     </section>

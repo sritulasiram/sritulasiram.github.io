@@ -8,10 +8,11 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-## Design Reviews & Apple HIG Guidelines
+## Design
 
-For UI/UX design, visual audits, and component styling, follow [.agents/skills/apple-design/SKILL.md](file://.agents/skills/apple-design/SKILL.md).
-Route design topics using [.agents/skills/apple-design/references/hig-lookup.md](file://.agents/skills/apple-design/references/hig-lookup.md) and load relevant references before critiquing or writing UI components.
+For UI/UX design and component styling, follow the patterns on Apple's current product pages (apple.com): neutral white and light-gray section bands, one dark band, large two-tone headlines, and colour reserved for interactive and key elements. The old `apple-design` skill was removed because it is out of date.
+
+Project pages (`/projects/[id]`) take their accent from `src/data/projectTheme.ts`. Use the `--pa*` CSS variables (see `globals.css`) instead of hard-coded hex values, and keep body text at 4.5:1 contrast or better in light and dark mode.
 
 ## Page Title & Metadata Conventions
 

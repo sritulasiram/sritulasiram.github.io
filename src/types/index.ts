@@ -112,6 +112,15 @@ export interface DesignItem {
   figmaUrl?: string;
 }
 
+export interface DesignScreen {
+  id: string;
+  number: string;
+  title: string;
+  role: string;
+  description: string;
+  imageSrc: string;
+}
+
 export interface DesignCaseStudy {
   id: string;
   title: string;
@@ -121,6 +130,10 @@ export interface DesignCaseStudy {
   heroMetricLabel: string;
   imageSrc: string;
   logoSrc?: string;
+  /** "phone": imageSrc is a portrait app screen, shown in a phone frame. Default "landscape". */
+  heroLayout?: "phone" | "landscape";
+  /** Optional multi-screen flow, shown as a gallery under the hero. */
+  screens?: DesignScreen[];
   placeholderLabel: string;
   placeholderRatio: string;
   timeframe: string;
@@ -137,6 +150,7 @@ export interface DesignCaseStudy {
   githubUrl?: string;
   figmaUrl?: string;
   liveUrl?: string;
+  liveLabel?: string;
 }
 
 export type PhotoAlbumId = "all" | "coastal" | "urban" | "nature";

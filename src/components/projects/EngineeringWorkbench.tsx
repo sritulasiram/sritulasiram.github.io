@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 
 interface ToolItem {
@@ -41,54 +39,47 @@ export default function EngineeringWorkbench() {
     <section
       id="workbench"
       aria-label="Engineering Workbench"
-      className="scroll-mt-20 py-12 sm:py-16 bg-white dark:bg-black transition-colors overflow-hidden"
+      className="scroll-mt-20 py-16 sm:py-24 bg-white dark:bg-black transition-colors overflow-hidden"
     >
-      <div className="max-w-6xl mx-auto px-6 sm:px-8 space-y-8 sm:space-y-10">
-        {/* Section Header */}
-        <div className="space-y-2 max-w-2xl">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight leading-[1.08]">
-            Tools &amp; development suite
-          </h2>
-          <p className="text-base sm:text-lg text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-            The editors, toolchains and AI assistants I build with.
-          </p>
-        </div>
+      <div className="max-w-6xl mx-auto px-6 sm:px-8">
+        <h2 className="max-w-3xl text-3xl sm:text-5xl md:text-6xl font-semibold tracking-apple-tight leading-[1.05] text-[#1D1D1F] dark:text-[#F5F5F7] text-balance">
+          Tools &amp; development suite.{" "}
+          <span className="text-[#6E6E73] dark:text-[#A1A1A6]">The editors, toolchains and AI assistants I build with.</span>
+        </h2>
 
-        {/* 4-Item Open Grid (No Container Boxes) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
+        <ul className="mt-12 sm:mt-16 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           {WORKBENCH_TOOLS.map((tool) => {
             const isEmblem = tool.iconSrc.includes("arduino");
             return (
-              <div
+              <li
                 key={tool.name}
-                className="space-y-3.5 group select-none"
+                className="group flex flex-col rounded-[28px] bg-[#F5F5F7] dark:bg-[#1C1C1E] p-8 sm:p-10 min-h-[280px] transition-transform duration-300 ease-out motion-safe:hover:scale-[1.01]"
               >
-                <div className="relative w-12 h-12 rounded-[22%] overflow-hidden border border-black/[0.08] dark:border-white/[0.12] shadow-2xs shrink-0 bg-[#F5F5F7] dark:bg-[#1C1C1E] transition-transform duration-300 group-hover:scale-105">
+                <div className="relative w-16 h-16 rounded-[22%] overflow-hidden shadow-md bg-white dark:bg-[#2C2C2E] shrink-0">
                   <Image
                     src={tool.iconSrc}
-                    alt={`${tool.name} Icon`}
+                    alt=""
                     fill
-                    sizes="48px"
-                    className={isEmblem ? "object-contain p-1.5" : "object-cover"}
+                    sizes="64px"
+                    className={isEmblem ? "object-contain p-2" : "object-cover"}
                   />
                 </div>
-                <div className="space-y-1">
-                  <div className="text-[15px] sm:text-base font-bold text-[#1D1D1F] dark:text-white tracking-tight">
-                    {tool.name}
-                  </div>
-                  <span className="text-xs text-[#6E6E73] dark:text-[#8E8E93] font-medium block">
+                <div className="mt-auto pt-10">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#8E8E93]">
                     {tool.role}
-                  </span>
-                  <p className="text-xs sm:text-[13px] text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed pt-0.5">
+                  </p>
+                  <h3 className="mt-2 text-2xl sm:text-[28px] font-semibold tracking-apple-tight text-[#1D1D1F] dark:text-[#F5F5F7]">
+                    {tool.name}
+                  </h3>
+                  <p className="mt-2 max-w-md text-[17px] leading-[1.42] text-[#6E6E73] dark:text-[#A1A1A6]">
                     {tool.description}
                   </p>
                 </div>
-              </div>
+              </li>
             );
           })}
-        </div>
+        </ul>
       </div>
     </section>
   );
 }
-
