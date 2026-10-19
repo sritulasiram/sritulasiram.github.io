@@ -1,176 +1,139 @@
-# Sri Tulasi Ram — Engineering & Design Portfolio
+# Sri Tulasi Ram — Portfolio
 
-> Personal portfolio and interactive case studies showcasing embedded engineering platforms, internal automation systems, published IoT research, UI/UX design architectures, and optical photography.
+Source for [sritulasiram.my](https://sritulasiram.my): engineering case studies, UI/UX design work and photography from a support engineer at [Cytron Technologies](https://www.cytron.io) in Penang, Malaysia.
 
-[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat&logo=next.js)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19-blue?style=flat&logo=react)](https://react.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?style=flat&logo=tailwindcss)](https://tailwindcss.com/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?style=flat&logo=typescript)](https://www.typescriptlang.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+![Next.js 16](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
+![React 19](https://img.shields.io/badge/React-19-149eca?logo=react&logoColor=white)
+![Tailwind CSS 4](https://img.shields.io/badge/Tailwind_CSS-4-38bdf8?logo=tailwindcss&logoColor=white)
+![TypeScript 5.9](https://img.shields.io/badge/TypeScript-5.9-3178c6?logo=typescript&logoColor=white)
 
-* **Live Domain**: [sritulasiram.my](https://sritulasiram.my)
-* **GitHub Repository**: [github.com/sritulasiram/sritulasiram.github.io](https://github.com/sritulasiram/sritulasiram.github.io)
-* **Location**: Penang, Malaysia
-* **Role**: Support Engineer at [Cytron Technologies](https://www.cytron.io) (Official Raspberry Pi Approved Design Partner)
+## What's in the site
 
----
+| Section | Route | Contents |
+| :-- | :-- | :-- |
+| Home | `/` | Hero, selected systems, key numbers, design and photography teasers |
+| Projects | `/projects` | Directory, impact summary, side-by-side comparison |
+| Project case study | `/projects/[id]` | Background, architecture, outcomes, screens. Also `/specs` and `/compare` sub-pages |
+| Designs | `/designs` | Showcase with foundations, icons, typography and workflow kits |
+| Design case study | `/designs/[id]` | Phone and laptop walkthroughs of each design |
+| Photography | `/photography` | Gallery, lightbox and per-photo EXIF details |
+| About | `/about` | Journey timeline, credentials, recognition |
 
-## 🌟 Overview & Key Highlights
+**Features**
 
-This repository contains the source code for **Sri Tulasi Ram's personal engineering and design portfolio**, built with **Next.js 16 (App Router)**, **React 19**, **Tailwind CSS v4**, and **TypeScript**. 
+- **Spotlight-style search** (`⌘K` or `/`) across pages, projects, designs and photos, driven by [`src/data/searchData.ts`](src/data/searchData.ts).
+- **Light and dark themes** that follow the system setting, are remembered, and load without a flash.
+- **Per-project accent colours** from [`src/data/projectTheme.ts`](src/data/projectTheme.ts), exposed as `--pa*` CSS variables.
+- **EXIF pipeline** that reads camera, lens, exposure and timestamp from the photos into static JSON.
+- **Static export** (`output: "export"`), so the site is plain files with no server runtime.
+- **Maintenance mode** that publishes the whole site as an "upgrading" screen.
 
-Designed with Apple Human Interface Guidelines (HIG) aesthetic precision, the site features:
-* **Tactile Interactions & Fluid Layouts**: Fluid responsive physics, VisionOS/macOS-inspired translucent frosted materials, and subtle micro-interactions.
-* **Apple Spotlight Search (⌘K / `/`)**: Global instant search indexing projects, design prototypes, technical articles, and direct navigation targets with fuzzy text highlighting and keyboard navigation.
-* **Dual Color Themes**: Native system theme detection, light/dark mode persistence via CSS variables, and zero flash of unstyled content (FOUC).
-* **Automated EXIF Extraction Pipeline**: Custom Node.js optical extractor reading camera model, focal length, aperture, shutter speed, ISO, and timestamp directly from high-resolution photographs into static JSON.
-* **Accessible & Standard-Compliant**: WAI-ARIA 1.2 Combobox patterns, full keyboard navigability, 44×44 pt touch targets, and WCAG AA contrast.
+## Case studies
 
----
+**Projects**
 
-## 🛠️ Featured Engineering Projects
+| Id | Project |
+| :-- | :-- |
+| `warranty-rma` | Warranty & RMA Management System |
+| `raspberry-pi-diagnostics` | Raspberry Pi Diagnostic Suite |
+| `iot-fertiliser-mixing` | IoT-Based Fertiliser Mixing for Precision Farming |
+| `opencore-efi-hackintosh` | OpenCore EFI Hackintosh Architecture |
+| `rog-gaming-center` | ROG Gaming Center for macOS |
+| `cytron-hr-assistive-intelligence` | Cytron HR Assistive Intelligence |
 
-| Project | Focus Area | Technology Stack | Impact & Outcome |
-| :--- | :--- | :--- | :--- |
-| **[Cytron Warranty & RMA Management System](https://sritulasiram.my/projects/warranty-rma)** | Internal Support Operations & ERP Triage | Next.js, TypeScript, PostgreSQL, Node.js API | **40% reduction** in customer turnaround time; automated serial lifecycle tracking and diagnostics checklists. |
-| **[Cytron Raspberry Pi Diagnostic Suite](https://sritulasiram.my/projects/raspberry-pi-diagnostics)** | Automated Hardware QA & Board Triage | Python (Flask), RP1 `lgpio`, SQLite3, Vanilla JS SPA, Linux Kernel 6.6+ | **19 automated diagnostic vectors** executed in <60s (**95% triage reduction**); ISO/IEC 17025 SHA-256 cryptographic audit certificates. |
-| **[IoT-Based Fertiliser Mixing for Precision Farming](https://sritulasiram.my/projects/iot-fertiliser-mixing)** | Precision Agriculture & Industrial IoT | ESP32, Embedded C++, Blynk Cloud, Analog TDS & Flow Sensors | **99.6% TDS sensor accuracy**; peer-reviewed research published in the *International Journal of Integrated Engineering (IJIE · UTHM)*. |
-| **[OpenCore EFI Hackintosh Architecture](https://sritulasiram.my/projects/opencore-efi-hackintosh)** | UEFI Firmware & ACPI Patching | OpenCore, ACPI (SSDTs), AppleALC, WhateverGreen, Lilu | Native macOS Sonoma/Sequoia stability, fully mapped USB topology, and hardware NVRAM sleep/wake support on PC hardware. |
-| **[ROG Gaming Center macOS App](https://sritulasiram.my/projects/rog-gaming-center)** | Desktop System Utilities | Swift, AppKit, IOKit, smc-wrapper | Real-time CPU/GPU thermal telemetry, dynamic fan profile curves, and native menu bar ergonomics for ASUS ROG laptops on macOS. |
+**Designs:** `sage`, `recycle-ai`, `kopiesatu`, `pmc-clinic`, `void`.
 
----
+## Getting started
 
-## 🎨 Featured UI/UX Design Case Studies
+Requires Node.js 20 or later.
 
-| Case Study | Domain | Platform | Description |
-| :--- | :--- | :--- | :--- |
-| **[Sage](https://sritulasiram.my/designs/sage)** | Mental Wellness & Teletherapy | iOS / Figma | Trauma-informed digital health companion with botanical mood tracking, grounding exercises, and immediate emergency crisis routing. |
-| **[Recycle AI](https://sritulasiram.my/designs/recycle-ai)** | Circular Economy & Computer Vision | Mobile / Figma | Waste sorting platform leveraging computer vision classification, localized recycling streams, and circular marketplace incentives. |
-| **[KopieSatu](https://sritulasiram.my/designs/kopiesatu)** | Quick-Service Mobile Commerce | iOS / Figma | Tactical mobile coffee ordering and loyalty app with category horizontal rails, dual-column product cards, and frictionless checkout. |
-| **[Perak Medical Centre](https://sritulasiram.my/designs/pmc-clinic)** | Healthcare Intake & Specialist Directory | Responsive Web / Figma | Accessible patient intake portal with multi-language triage routing, doctor availability scheduling, and clinical department navigation. |
-| **[Void](https://sritulasiram.my/designs/void)** | Polytechnic Project Management | Mobile App / Figma | Academic collaboration platform featuring milestone tracking, team submission workflows, and faculty review dashboards. |
-
----
-
-## 📷 Photography & Optics Pipeline
-
-The photography section showcases curated visual work spanning landscape horizons, urban nightscapes, architecture, and avian wildlife.
-
-Photos are dynamically indexed with metadata extracted directly from EXIF tags using [`scripts/read-photo-metadata.mjs`](scripts/read-photo-metadata.mjs):
 ```bash
-npm run sync:photos
-```
-Extracted telemetry includes:
-- Camera Body (e.g., iPhone 16 Pro, Samsung Galaxy Note20 Ultra, Samsung Galaxy Note Edge)
-- Focal Length & 35mm Equivalent (e.g., 24mm, 120mm 5× optical telephoto)
-- Exposure Parameters: Aperture ($f$/1.78, $f$/2.8), Shutter Speed (1/2400s, 1/4s), ISO Sensitivity
-- Capture Timestamps & Optical Dimensions
-
----
-
-## 📂 Architecture & Directory Structure
-
-```
-├── public/
-│   ├── _headers                    # Security & caching headers
-│   ├── favicon.ico
-│   └── images/                     # Optimized WebP assets, screenshots & photography
-│       ├── apps/                   # Tool & technology vector icons
-│       ├── projects/               # Engineering diagrams & hardware schematics
-│       └── ...
-├── public/images/                  # Static assets, one folder per kind
-│   ├── photography/                # Gallery photos
-│   ├── projects/<project-id>/      # Case-study images; folder name matches the project id
-│   ├── designs/<design-id>/        # Design case-study screens
-│   ├── portraits/ logos/ certificates/ awards/ devices/ apps/
-├── scripts/
-│   └── read-photo-metadata.mjs     # Node.js optical EXIF metadata extraction script (reads public/images/photography)
-├── src/
-│   ├── app/                        # Next.js App Router
-│   │   ├── layout.tsx              # Root layout (Metadata, Google Fonts, Theme Provider)
-│   │   ├── page.tsx                # Homepage (Hero, Selected Work, Designs Teaser, About, Photography)
-│   │   ├── globals.css             # Tailwind CSS v4 design tokens, Apple typography
-│   │   ├── robots.ts               # Automated search engine robots.txt
-│   │   ├── sitemap.ts              # Dynamic XML sitemap generator
-│   │   ├── about/page.tsx          # Full About, career timeline & engineering credentials
-│   │   ├── designs/                # UI/UX Showcase & Deep Dives
-│   │   │   ├── page.tsx            # Design showcase hero & systems overview
-│   │   │   └── [id]/page.tsx       # Dynamic design case study page
-│   │   ├── photography/page.tsx    # Curated photography gallery with EXIF inspector
-│   │   └── projects/               # Engineering Projects Hub
-│   │       ├── page.tsx            # Project directory & specifications matrix
-│   │       └── [id]/page.tsx       # Engineering case study deep dives
-│   ├── components/                 # UI modules, grouped by feature
-│   │   ├── layout/                 # Site shell: Navigation, Footer, SearchModal, ThemeToggle, MaintenanceView
-│   │   ├── home/                   # Homepage sections: Hero, SelectedWork, DesignsTeaser, AboutTeaser, PhotographyStrip
-│   │   ├── projects/               # Projects page: ProjectsHeroStage, ProjectsDirectory, ProjectsStickySubnav, EngineeringWorkbench
-│   │   │   ├── case-studies/       # One layout per project case study
-│   │   │   └── visuals/            # Card and hero visuals (telemetry grids, pipeline diagram, MacBook frame)
-│   │   ├── designs/                # Design page: hero stage, sub-nav, marquee and the Foundations/Icons/Typography/Workflow kits
-│   │   ├── photography/            # Gallery, hero spotlight, lightbox, camera-optics section
-│   │   ├── shared/                 # Used by case studies and designs: breadcrumb, CTA icon, screen walkthrough
-│   │   ├── mockups/                # Device frames (IphoneFrame, MacbookPro, LaptopMockupCard)
-│   │   └── ui/                     # Primitives: ProjectImage, AppleCarouselController, DotShaderHalo
-│   ├── data/                       # Content models & structured data
-│   │   ├── content.ts              # Global copy, biography, and credentials
-│   │   ├── projectDetails.ts       # Detailed engineering project writeups
-│   │   ├── designDetails.ts        # UI/UX design case study data
-│   │   ├── searchData.ts           # Centralized Spotlight search index & quick links
-│   │   └── photo-metadata.json     # Auto-generated EXIF photography dataset
-│   ├── lib/
-│   │   └── cn.ts                   # Tailwind class merge utility
-│   └── types/
-│       └── index.ts                # TypeScript interfaces and type definitions
-├── eslint.config.mjs               # ESLint 9 configuration
-├── next.config.ts                  # Next.js configuration
-├── package.json                    # Project dependencies & build scripts
-├── tsconfig.json                   # TypeScript compiler configuration
-└── vercel.json                     # Vercel deployment & security headers
-```
-
----
-
-## ⚡ Development & Scripts
-
-### Prerequisites
-* **Node.js**: v20+ (recommended v24 LTS)
-* **npm**: v10+
-
-### Setup & Run
-```bash
-# 1. Clone repository & switch to dev branch
 git clone https://github.com/sritulasiram/sritulasiram.github.io.git
 cd sritulasiram.github.io
 git checkout dev
-
-# 2. Install dependencies
 npm install
-
-# 3. (Optional) Re-extract EXIF data from photos in public/images/photography
-npm run sync:photos
-
-# 4. Start local development server
 npm run dev
-
-# 5. Typecheck & lint
-npx tsc --noEmit
-npm run lint
-
-# 6. Build production bundle
-npm run build
 ```
 
----
+The dev server runs at <http://localhost:3000>.
 
-## 📄 License & Attribution
+| Command | What it does |
+| :-- | :-- |
+| `npm run dev` | Dev server (webpack) |
+| `npm run build` | Static export to `out/` |
+| `npm run start` | Serve a production build |
+| `npm run lint` | ESLint |
+| `npx tsc --noEmit` | Type check |
+| `npm run sync:photos` | Regenerate `src/data/photo-metadata.json` from `public/images/photography` |
 
-Designed and developed by **[Sri Tulasi Ram](https://sritulasiram.my)**.  
-Open-sourced under the [MIT License](LICENSE).
+### Maintenance mode
 
----
+```bash
+NEXT_PUBLIC_MAINTENANCE_MODE=true npm run build
+```
 
-## 🗂 Naming Conventions
+Every route renders the "upgrading" screen. The flag is read in [`src/app/layout.tsx`](src/app/layout.tsx).
 
-* **Components:** one component per file, `PascalCase.tsx`, and the file name matches the default export. Folders are by feature (`home`, `projects`, `designs`, `photography`), not by type. Keep the feature prefix when a name would otherwise be ambiguous (for example `DesignHeroStage` vs `ProjectsHeroStage`).
-* **Images:** `public/images/<kind>/<slug>/<descriptive-name>.<ext>` in lowercase kebab-case. A project's folder name equals its id in `src/data` (for example `projects/warranty-rma/`).
-* **Imports:** use the `@/` alias across folders and relative paths only inside the same folder.
+## Project structure
+
+```text
+public/
+  _headers, fonts/
+  images/<kind>/<slug>/       photography, projects, designs, portraits, logos, ...
+scripts/
+  read-photo-metadata.mjs     EXIF extraction (exifr)
+src/
+  app/                        App Router: home, about, projects, designs, photography, maintenance
+  components/
+    layout/                   Navigation, mega menu, footer, search modal, theme toggle
+    home/ projects/ designs/  Feature sections (projects/ has case-studies/ and visuals/)
+    about/ photography/       Feature sections
+    shared/ mockups/ ui/      Shared pieces, device frames, primitives
+  data/                       All content and structured data (see below)
+  lib/cn.ts                   Class-name helper
+  types/index.ts              Shared types
+```
+
+## Editing content
+
+Content lives in `src/data`, not in components.
+
+| To change | Edit |
+| :-- | :-- |
+| Bio, credentials, global copy | `content.ts` |
+| A project case study | `projectDetails.ts` (also `projectSpecs.ts`, `projectCompare.ts`, `projectTheme.ts`) |
+| A design case study | `designDetails.ts` |
+| Search results and quick links | `searchData.ts` |
+| Photo EXIF data | Add photos to `public/images/photography`, then run `npm run sync:photos` |
+
+To add a project, add an entry to `PROJECT_DETAILS`, put its images in `public/images/projects/<id>/`, give it an accent in `projectTheme.ts`, and add a search entry.
+
+## Conventions
+
+- **Components:** one per file, `PascalCase.tsx`, file name matches the default export. Folders are by feature, not by type. Keep the feature prefix when a name would otherwise be ambiguous (`DesignHeroStage` vs `ProjectsHeroStage`).
+- **Non-component modules** (constants, config, hooks, helpers, data): `camelCase.ts(x)`, such as `homeShared.tsx`, `appStudies.tsx`, `useMediaQuery.ts`, `projectDetails.ts`.
+- **Routes:** lowercase folder names under `src/app`; dynamic segments are `[id]`.
+- **Scripts:** kebab-case `.mjs` in `scripts/`.
+- **Images:** `public/images/<kind>/<slug>/<descriptive-name>.<ext>`, lowercase kebab-case. A project's folder name equals its id in `src/data`.
+- **Imports:** use the `@/` alias across folders; relative paths only within a folder.
+- **Colour:** use the `--pa*` variables on project pages instead of hex values. Body text must meet 4.5:1 contrast in both themes.
+- **Page titles:** the homepage tab is `Sri Tulasi Ram`. Subpages use the bare page title (`About`, `Projects`, `[Project Title]`) with no author suffix, and layouts keep `template: "%s"`.
+- **Design direction:** follow apple.com product pages: neutral light bands, one dark band, large two-tone headlines, colour only for interactive and key elements.
+
+## Deployment
+
+The site is a static export. [`vercel.json`](vercel.json) sets security and cache headers for Vercel, and [`public/_headers`](public/_headers) provides the same for hosts that read that format.
+
+## Notes for AI agents
+
+This repo uses a Next.js version with breaking changes. Read [`AGENTS.md`](AGENTS.md) and the guides in `node_modules/next/dist/docs/` before changing framework-level code.
+
+## Author
+
+Designed and built by [Sri Tulasi Ram](https://sritulasiram.my).
+
+## License
+
+Copyright © 2026 Sri Tulasi Ram. All rights reserved.
+
+This is a personal portfolio. The source is public so you can see how it's built, but it is not open source. You can read it, fork it on GitHub and run it locally to learn from it. Please don't deploy it, reuse its design or content for your own site, or use the photography, designs or writing without permission. See [LICENSE](LICENSE) for the full terms.
