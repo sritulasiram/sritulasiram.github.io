@@ -3,13 +3,6 @@ export { default as Navigation } from "./layout/Navigation";
 export { default as Footer } from "./layout/Footer";
 export { default as ThemeToggle } from "./layout/ThemeToggle";
 
-// Homepage Sections
-export { default as Hero } from "./home/Hero";
-export { default as SelectedWork } from "./home/SelectedWork";
-export { default as DesignsTeaser } from "./home/DesignsTeaser";
-export { default as AboutTeaser } from "./home/AboutTeaser";
-export { default as PhotographyStrip } from "./home/PhotographyStrip";
-
 // Shared UI & Display Primitives
 export { default as ProjectImage } from "./ui/ProjectImage";
 export { default as CaseStudyBreadcrumb } from "./shared/CaseStudyBreadcrumb";
@@ -27,9 +20,9 @@ export { default as PhotoPreviewModal } from "./photography/PhotoPreviewModal";
 export * from "./mockups";
 
 // Design System Showcase Components
-export { default as DesignStickySubnav } from "./designs/DesignStickySubnav";
 export { default as DesignHeroStage } from "./designs/DesignHeroStage";
 export { default as DesignFoundationsKit } from "./designs/DesignFoundationsKit";
+export { default as DesignWorkGrid } from "./designs/DesignWorkGrid";
 
 // Projects Showcase Components
 export * from "./projects";

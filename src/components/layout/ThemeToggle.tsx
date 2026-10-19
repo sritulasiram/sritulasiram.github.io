@@ -73,7 +73,7 @@ export default function ThemeToggle({ className = "" }: { className?: string }) 
       type="button"
       onClick={toggleTheme}
       suppressHydrationWarning
-      className={`relative w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-black/5 dark:hover:bg-white/10 active:scale-95 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0071E3] dark:focus-visible:ring-[#2997FF] cursor-pointer after:absolute after:-inset-1.5 after:content-[''] ${className}`}
+      className={`relative w-9 h-9 pointer-coarse:min-w-11 pointer-coarse:min-h-11 rounded-full flex items-center justify-center transition-all duration-200 text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-black/5 dark:hover:bg-white/10 active:scale-95 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0071E3] dark:focus-visible:ring-[#2997FF] cursor-pointer after:absolute after:-inset-1.5 after:content-[''] ${className}`}
       aria-label={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
       title={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
     >

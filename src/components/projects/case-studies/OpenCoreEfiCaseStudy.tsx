@@ -1,340 +1,322 @@
-"use client";
-
+import { LINK, PILL } from "@/components/ui/Button";
+import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowUpRight,
-  ChevronRight,
-  Code2,
-  Cpu,
-  ShieldCheck,
-  Terminal,
-  CheckCircle2,
-  AlertTriangle,
-  HardDrive,
-  Workflow,
-} from "lucide-react";
-import ProjectImage from "@/components/ui/ProjectImage";
-import ProjectScreenWalkthrough from "@/components/shared/ProjectScreenWalkthrough";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import CaseStudyBreadcrumb from "@/components/shared/CaseStudyBreadcrumb";
+import CountUp from "@/components/shared/CountUp";
+import Reveal from "@/components/shared/Reveal";
+import { MacbookPro } from "@/components/mockups/MacbookPro";
+import { PROJECTS_DATA } from "@/data/content";
+import { projectThemeStyle } from "@/data/projectTheme";
 import type { CaseStudy } from "@/types";
 
 interface Props {
   project: CaseStudy;
 }
 
-export default function OpenCoreEfiCaseStudy({ project }: Props) {
+const GRAY = "text-[#68686D] dark:text-[#A1A1A6]";
+const INK = "text-[#1D1D1F] dark:text-[#F5F5F7]";
+const WRAP = "max-w-5xl mx-auto w-full px-6 sm:px-8";
+const PANEL =
+  "rounded-[28px] bg-[var(--pa-tint)] p-6 sm:p-10 min-h-[320px] flex flex-col justify-center";
+const ROW = "flex items-center gap-3 rounded-2xl bg-[#FFFFFF] dark:bg-[#232326] px-4 py-3.5 shadow-xs";
+
+const IMG = "/images/projects/opencore-efi-hackintosh";
+
+/* ---------- Chapter visuals ---------- */
+
+function Pill({ children, tone = "accent" }: { children: React.ReactNode; tone?: "accent" | "muted" }) {
   return (
-    <div className="space-y-16 sm:space-y-24">
-      {/* 1. Firmware Engineering Hero Section */}
-      <section className="pt-24 sm:pt-28 px-6 sm:px-8 max-w-5xl mx-auto w-full">
-        {/* Semantic Accessible Breadcrumb */}
-        <CaseStudyBreadcrumb title="OpenCore EFI Hackintosh" />
+    <span
+      className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${
+        tone === "accent" ? "bg-[var(--pa-soft)] text-[var(--pa)]" : "bg-black/[0.06] dark:bg-white/10 " + GRAY
+      }`}
+    >
+      {children}
+    </span>
+  );
+}
 
-        {/* Headline & Description */}
-        <div className="space-y-4 max-w-4xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide uppercase bg-[#5E5CE6]/10 dark:bg-[#5E5CE6]/20 text-[#5E5CE6] dark:text-[#7D7AFF] border border-[#5E5CE6]/20 dark:border-[#5E5CE6]/40">
-            <Terminal className="w-3 h-3" />
-            <span>Firmware &amp; ACPI Systems</span>
+function GpuVisual() {
+  return (
+    <ul className="space-y-3">
+      <li className={`${ROW} justify-between`}>
+        <span className="min-w-0">
+          <span className={`block text-sm font-semibold ${INK}`}>Intel UHD Graphics 630</span>
+          <span className={`block text-xs ${GRAY}`}>Drives the display</span>
+        </span>
+        <Pill>Working</Pill>
+      </li>
+      <li className={`${ROW} justify-between`}>
+        <span className="min-w-0">
+          <span className={`block text-sm font-semibold ${INK}`}>NVIDIA GTX 1050 Ti Mobile</span>
+          <span className={`block text-xs ${GRAY}`}>Unsupported on macOS</span>
+        </span>
+        <Pill tone="muted">Powered down</Pill>
+      </li>
+      <li className={`${ROW} justify-between`}>
+        <span className={`text-sm font-medium ${GRAY}`}>SSDT-Disable_GPU_PEG0.aml</span>
+        <span className="shrink-0 font-mono text-xs font-semibold text-[var(--pa)]">_OFF</span>
+      </li>
+      <li className={`text-xs ${GRAY} pt-1`}>The card is switched off electrically, so it can’t drain the battery or heat the chassis.</li>
+    </ul>
+  );
+}
+
+function SleepVisual() {
+  const rows = [
+    { name: "SSDT-GPRW", note: "Stops USB devices waking the machine instantly" },
+    { name: "fix_sleep_pmset.sh", note: "Enforces clean S3 sleep and lid-close detection" },
+    { name: "15-port XHCI map", note: "Compliant USB mapping, no controller reset loops" },
+  ];
+  return (
+    <ul className="space-y-3">
+      {rows.map((row) => (
+        <li key={row.name} className={ROW}>
+          <span className="min-w-0">
+            <span className={`block font-mono text-xs font-semibold text-[var(--pa)]`}>{row.name}</span>
+            <span className={`block text-sm ${GRAY}`}>{row.note}</span>
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function TrackpadVisual() {
+  const rows = [
+    { name: "1 to 4 finger gestures", note: "Native Apple multi-touch" },
+    { name: "Smooth scrolling", note: "Through VoodooI2C and VoodooI2CHID" },
+    { name: "Palm rejection", note: "Enabled by correct GPIO pin interrupts" },
+  ];
+  return (
+    <ul className="space-y-3">
+      {rows.map((row) => (
+        <li key={row.name} className={`${ROW} justify-between`}>
+          <span className={`text-sm font-semibold ${INK}`}>{row.name}</span>
+          <span className={`text-sm text-right ${GRAY}`}>{row.note}</span>
+        </li>
+      ))}
+      <li className={`text-xs ${GRAY} pt-1`}>The fix is one table: SSDT-GPI0.</li>
+    </ul>
+  );
+}
+
+function KeysVisual() {
+  return (
+    <div className="space-y-3">
+      <div className={`${ROW} justify-between`}>
+        <span className="min-w-0">
+          <span className={`block text-sm font-semibold ${INK}`}>F1 to F12</span>
+          <span className={`block text-xs ${GRAY}`}>Physical legends and media hotkeys</span>
+        </span>
+        <span className="shrink-0 font-mono text-xs font-semibold text-[var(--pa)]">setup_function_keys.sh</span>
+      </div>
+      <div className={`${ROW} justify-between`}>
+        <span className="min-w-0">
+          <span className={`block text-sm font-semibold ${INK}`}>4-zone Aura RGB</span>
+          <span className={`block text-xs ${GRAY}`}>Handled by the companion app</span>
+        </span>
+        <Pill tone="muted">ROG Gaming Center</Pill>
+      </div>
+    </div>
+  );
+}
+
+const CHAPTERS: { problem: string; headline: string; body: string; visual: React.ReactNode }[] = [
+  {
+    problem: "A GPU macOS can’t use.",
+    headline: "Switched off at the firmware.",
+    body: "The laptop’s discrete NVIDIA GTX 1050 Ti has no macOS driver, and left on it burns battery and heats the chassis. A custom ACPI table runs the card’s _OFF routine at boot, so only the Intel graphics stay in use.",
+    visual: <GpuVisual />,
+  },
+  {
+    problem: "A laptop that wakes itself.",
+    headline: "Sleep that actually sleeps.",
+    body: "Sleep and wake are a classic Hackintosh weak spot. One table stops USB triggers waking the laptop instantly, a script enforces clean S3 sleep and lid-close detection, and a 15-port USB map avoids reset loops.",
+    visual: <SleepVisual />,
+  },
+  {
+    problem: "A trackpad that won’t gesture.",
+    headline: "Native multi-touch.",
+    body: "The I2C trackpad needs its GPIO pin interrupts routed correctly before macOS will see it. With that patched, VoodooI2C delivers Apple’s own gestures, scrolling and palm rejection.",
+    visual: <TrackpadVisual />,
+  },
+  {
+    problem: "Function keys gone quiet.",
+    headline: "Every key does its job.",
+    body: "A setup script restores the physical F1 to F12 legends and media hotkeys. Lighting control is left to the native companion app, which talks to the hardware directly.",
+    visual: <KeysVisual />,
+  },
+];
+
+/* ---------- Page ---------- */
+
+export default function OpenCoreEfiCaseStudy({ project }: Props) {
+  const rog = PROJECTS_DATA.find((p) => p.id === "rog-gaming-center");
+
+  return (
+    <div className="project-theme selection:bg-indigo-500/20" style={projectThemeStyle(project.id)}>
+      {/* 1. Hero */}
+      <section className="bg-[var(--pa-tint)] overflow-hidden">
+        <div className={`${WRAP} pt-24 sm:pt-28 text-center`}>
+          <div className="flex justify-center">
+            <CaseStudyBreadcrumb title="OpenCore EFI Hackintosh" />
           </div>
-
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.08]">
-            {project.title}
+          <p className="mt-4 text-sm font-semibold text-[var(--pa)]">macOS firmware engineering · OpenCore 1.0.7</p>
+          <h1 className={`mt-3 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold ${INK} tracking-apple-hero leading-[1.03]`}>
+            A Mac, <span className="sm:whitespace-nowrap">from a gaming laptop.</span>
           </h1>
-
-          <p className="text-xl sm:text-2xl text-[#6E6E73] dark:text-[#A1A1A6] font-normal leading-relaxed tracking-apple-subhead">
+          <p className={`mt-5 mx-auto max-w-2xl text-lg sm:text-xl ${GRAY} leading-relaxed tracking-apple-subhead`}>
             {project.tagline}
           </p>
-
-          {/* GitHub Repository Button */}
           {project.githubUrl && (
-            <div className="pt-2 flex flex-wrap items-center gap-3">
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
               <a
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="View the repository on GitHub (opens in a new tab)"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold text-white dark:text-[#1D1D1F] bg-[#1D1D1F] dark:bg-white hover:bg-black dark:hover:bg-neutral-200 transition-all duration-200 group shadow-sm hover:shadow-md border border-transparent dark:border-white/20 min-h-[44px]"
+                className={PILL}
               >
-                <Code2 className="w-3.5 h-3.5 text-white/80 dark:text-[#1D1D1F]/80" />
-                <span>View the repo on GitHub</span>
-                <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-white/80 dark:text-[#1D1D1F]/80" />
+                View the repo
+                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              </a>
+              <a href="#config" className={LINK}>
+                See the config
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </a>
             </div>
           )}
-        </div>
-
-        {/* Project Meta Bar */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mt-8">
-          <div className="space-y-1">
-            <p className="text-[11px] uppercase tracking-wider text-[#6E6E73] dark:text-[#86868B] font-semibold flex items-center gap-1.5">
-              <HardDrive className="w-3.5 h-3.5" /> Bootloader
-            </p>
-            <p className="text-sm font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">OpenCore 1.0.7 (UEFI 2.7+)</p>
+          <div className="mt-10 sm:mt-14 mx-auto w-full max-w-4xl">
+            <MacbookPro src={project.imageSrc} priority fit="cover" className="w-full h-auto drop-shadow-2xl" />
           </div>
-
-          <div className="space-y-1">
-            <p className="text-[11px] uppercase tracking-wider text-[#6E6E73] dark:text-[#86868B] font-semibold flex items-center gap-1.5">
-              <Cpu className="w-3.5 h-3.5" /> Target Silicon
-            </p>
-            <p className="text-sm font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">i7-8750H (6C/12T)</p>
-          </div>
-
-          <div className="space-y-1">
-            <p className="text-[11px] uppercase tracking-wider text-[#6E6E73] dark:text-[#86868B] font-semibold flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5" /> SMBIOS Identity
-            </p>
-            <p className="text-sm font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">MacBookPro16,4</p>
-          </div>
-
-          <div className="space-y-1">
-            <p className="text-[11px] uppercase tracking-wider text-[#5E5CE6] dark:text-[#7D7AFF] font-semibold flex items-center gap-1.5">
-              <Cpu className="w-3.5 h-3.5" /> macOS Support
-            </p>
-            <p className="text-sm font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">Sonoma · Sequoia · Tahoe</p>
-          </div>
-        </div>
-
-        {/* Hero Visual Viewport */}
-        <div className="mt-8 sm:mt-10 w-full rounded-2xl sm:rounded-3xl overflow-hidden aspect-[16/9] border border-[#E5E5EA] dark:border-[#2C2C2E] shadow-md bg-[#0F0F12]">
-          <ProjectImage
-            src={project.imageSrc}
-            alt={project.title}
-            placeholderLabel={project.placeholderLabel}
-            ratioText={project.placeholderRatio}
-            type="screenshot"
-            className="w-full h-full object-cover"
-            priority
-          />
         </div>
       </section>
 
-      {/* 2. Walkthrough Screen Deck */}
-      {project.screens && project.screens.length > 0 && (
-        <section className="px-6 sm:px-8 max-w-5xl mx-auto w-full">
-          <ProjectScreenWalkthrough
-            screens={project.screens}
-            eyebrow="Firmware &amp; Diagnostics"
-            title="Explore the environment."
-            subtitle="Deep dive into the OpenCore UEFI boot stages and dynamic ACPI overrides."
-          />
+      {/* 2. The problem, in one screen */}
+      <section className={`${WRAP} py-28 sm:py-40`}>
+        <Reveal>
+          <p className={`text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl ${GRAY}`}>
+            Hackintosh fixes are scattered across forum threads, old blog posts and buried repositories, and the drivers rarely agree.{" "}
+            <span className={INK}>
+              This EFI gathers the patches, quirks and configs into one tested build for the ASUS ROG Strix GL503GE.
+            </span>
+          </p>
+        </Reveal>
+      </section>
+
+      {/* 3. Chapters */}
+      <section aria-label="How it solves it" className="pb-12 sm:pb-20">
+        {CHAPTERS.map((chapter, i) => (
+          <div key={chapter.headline} className={`${WRAP} py-14 sm:py-24`}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+              <Reveal className={i % 2 ? "md:order-2" : ""}>
+                <h2 className="text-3xl sm:text-5xl font-semibold tracking-apple-hero leading-[1.08]">
+                  <span className={`block ${GRAY}`}>{chapter.problem}</span>
+                  <span className={`block ${INK}`}>{chapter.headline}</span>
+                </h2>
+                <p className={`mt-5 text-base sm:text-lg ${GRAY} leading-relaxed`}>{chapter.body}</p>
+              </Reveal>
+              <Reveal delay={120} className={i % 2 ? "md:order-1" : ""}>
+                <div className={PANEL}>{chapter.visual}</div>
+              </Reveal>
+            </div>
+          </div>
+        ))}
+      </section>
+
+      {/* 4. The config */}
+      <section id="config" aria-label="The configuration" className="scroll-mt-20 py-16 sm:py-24 bg-[var(--pa-tint)]">
+        <div className="max-w-6xl mx-auto w-full px-6 sm:px-8">
+          <Reveal>
+            <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero text-center`}>See what’s inside.</h2>
+            <p className={`mt-3 mb-10 text-lg ${GRAY} text-center max-w-2xl mx-auto`}>
+              The config.plist in OpenCore Configurator, with twelve custom ACPI tables loaded.
+            </p>
+            <div className="mx-auto max-w-4xl">
+              <Image
+                src={`${IMG}/configurator-app.png`}
+                alt="OpenCore Configurator showing config.plist with twelve SSDT tables enabled in the ACPI section"
+                width={1024}
+                height={575}
+                sizes="(max-width: 1024px) 100vw, 880px"
+                className="h-auto w-full"
+              />
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 5. Results */}
+      <section aria-label="Results" className="bg-[var(--pa-deep)] text-white py-24 sm:py-32">
+        <div className={WRAP}>
+          <Reveal>
+            <p className="text-sm font-semibold text-[#86868B]">Verified on this machine</p>
+            <h2 className="mt-2 text-3xl sm:text-5xl font-semibold tracking-apple-hero max-w-2xl leading-[1.08]">
+              Works like it was made for it.
+            </h2>
+          </Reveal>
+          <dl className="mt-14 grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-12">
+            {project.results.map((result, i) => (
+              <Reveal key={result.label} delay={i * 80}>
+                <dt className="text-sm font-semibold text-[var(--pa-d)]">{result.label}</dt>
+                <dd className="mt-1 text-6xl sm:text-7xl font-semibold tracking-apple-hero tabular-nums">
+                  <CountUp value={result.metric} />
+                </dd>
+                <dd className="mt-3 text-sm text-[#A1A1A6] leading-relaxed">{result.description}</dd>
+              </Reveal>
+            ))}
+          </dl>
+        </div>
+      </section>
+
+      {/* 6. Tech specs */}
+      <section aria-label="Technical stack" className={`${WRAP} py-20 sm:py-28`}>
+        <Reveal>
+          <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero`}>Under the hood.</h2>
+          <p className={`mt-3 text-lg ${GRAY} max-w-2xl`}>
+            {project.timeframe} · Tested against BIOS 319 on an ASUS ROG Strix GL503GE.
+          </p>
+        </Reveal>
+        <div className="mt-12 divide-y divide-black/[0.08] dark:divide-white/10 border-y border-black/[0.08] dark:border-white/10">
+          {project.techStack.map((group) => (
+            <Reveal key={group.category}>
+              <div className="grid grid-cols-1 gap-3 py-8 md:grid-cols-[14rem_1fr] md:gap-10">
+                <h3 className={`text-sm font-semibold ${INK}`}>{group.category}</h3>
+                <ul className="flex flex-wrap gap-x-3 gap-y-2">
+                  {group.items.map((item) => (
+                    <li
+                      key={item}
+                      className="rounded-full bg-[var(--pa-tint)] px-3.5 py-1.5 text-sm text-[#1D1D1F] dark:text-[#F5F5F7]"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* 7. Next project */}
+      {rog && (
+        <section aria-label="Next project" className={`${WRAP} pb-20 sm:pb-28`}>
+          <Link
+            href={`/projects/${rog.id}`}
+            className="group block rounded-[28px] bg-[var(--pa-tint)] p-8 sm:p-12 transition-transform duration-300 hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--pa)]"
+          >
+            <p className="text-sm font-semibold text-[var(--pa)]">The companion app</p>
+            <h2 className={`mt-2 text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero leading-[1.08]`}>{rog.title}</h2>
+            <p className={`mt-3 max-w-2xl text-lg ${GRAY} leading-relaxed`}>{rog.subtitle}</p>
+            <span className="mt-8 inline-flex items-center gap-1 text-[17px] text-[var(--pa)] group-hover:underline">
+              Explore the case study
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
+            </span>
+          </Link>
         </section>
       )}
-
-      {/* 3. Problem Statement & The Ecosystem Fragmentation */}
-      <section className="px-6 sm:px-8 max-w-5xl mx-auto w-full">
-        <div className="bg-[#F5F5F7] dark:bg-[#161618] rounded-2xl sm:rounded-3xl p-8 sm:p-12 border border-[#E5E5EA]/80 dark:border-white/[0.08] space-y-8 transition-colors">
-          <div className="space-y-3">
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#5E5CE6] dark:text-[#7D7AFF]">
-              Problem Statement &amp; Context
-            </p>
-            <h2 className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-headline">
-              Taming Community Fragmentation &amp; Low-Level Hardware Quirks
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-[#515154] dark:text-[#A1A1A6] leading-relaxed text-sm sm:text-base">
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
-                <div>
-                  <h3 className="font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] mb-1">Ecosystem Fragmentation</h3>
-                  <p className="text-xs sm:text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                    {project.background.problemStatement}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <Workflow className="w-5 h-5 text-[#5E5CE6] dark:text-[#7D7AFF] shrink-0 mt-0.5" />
-                <div>
-                  <h3 className="font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] mb-1">The Engineering Objective</h3>
-                  <p className="text-xs sm:text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                    {project.background.context}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Key Challenges Grid */}
-          <div className="pt-4 border-t border-[#E5E5EA] dark:border-[#2C2C2E]">
-            <p className="text-xs font-semibold uppercase tracking-wider text-[#6E6E73] dark:text-[#86868B] mb-4">
-              Core Technical Challenges
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {project.background.challenges.map((challenge, idx) => (
-                <div
-                  key={idx}
-                  className="bg-white dark:bg-[#1C1C1E] p-4 rounded-xl border border-[#E5E5EA] dark:border-[#2C2C2E] shadow-2xs flex items-start gap-2.5 transition-colors"
-                >
-                  <CheckCircle2 className="w-4 h-4 text-[#5E5CE6] dark:text-[#7D7AFF] shrink-0 mt-0.5" />
-                  <span className="text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7] leading-snug">
-                    {challenge}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. ACPI Bytecode & Architecture */}
-      <section className="px-6 sm:px-8 max-w-5xl mx-auto w-full space-y-8">
-        <div className="space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#86868B]">
-            System Architecture
-          </p>
-          <h2 className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-headline">
-            Deterministic UEFI &amp; ACPI Bytecode Engineering
-          </h2>
-          <p className="text-sm sm:text-base text-[#6E6E73] dark:text-[#A1A1A6] max-w-3xl">
-            {project.architecture.summary}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {project.architecture.components.map((comp, idx) => (
-            <div
-              key={idx}
-              className="p-6 rounded-2xl bg-white dark:bg-[#121214] border border-[#E5E5EA] dark:border-[#2C2C2E] shadow-2xs hover:shadow-sm transition-all space-y-2.5"
-            >
-              <div className="flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-[#5E5CE6]/10 dark:bg-[#5E5CE6]/20 text-[#5E5CE6] dark:text-[#7D7AFF] text-xs font-bold flex items-center justify-center">
-                  {idx + 1}
-                </span>
-                <h3 className="text-base font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">{comp.title}</h3>
-              </div>
-              <p className="text-xs sm:text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed pl-8">
-                {comp.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 5. Key Highlights */}
-      <section className="px-6 sm:px-8 max-w-5xl mx-auto w-full space-y-6">
-        <div className="space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#86868B]">
-            Firmware Capabilities
-          </p>
-          <h2 className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-headline">
-            Key Features &amp; Kernel Stabilization
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-          {project.keyFeatures.map((feat, idx) => (
-            <div
-              key={idx}
-              className="p-6 rounded-2xl bg-[#F5F5F7] dark:bg-[#1C1C1E] border border-[#E5E5EA] dark:border-[#2C2C2E] space-y-3 hover:border-[#D1D1D6] dark:hover:border-[#3A3A3C] transition-colors"
-            >
-              <div className="flex items-center justify-between">
-                <h3 className="text-base font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">{feat.title}</h3>
-                {feat.badge && (
-                  <span className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-white dark:bg-[#2C2C2E] text-[#5E5CE6] dark:text-[#7D7AFF] border border-[#5E5CE6]/20 dark:border-[#5E5CE6]/40">
-                    {feat.badge}
-                  </span>
-                )}
-              </div>
-              <p className="text-xs sm:text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                {feat.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 6. Hardware Status & Verified Coverage (Dark Accent Feature Block) */}
-      <section className="px-6 sm:px-8 max-w-5xl mx-auto w-full">
-        <div className="bg-[#1D1D1F] dark:bg-[#121214] text-white rounded-2xl sm:rounded-3xl p-8 sm:p-12 space-y-8 shadow-xl border border-black/[0.08] dark:border-white/[0.12] transition-colors">
-          <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#5E5CE6] dark:text-[#7D7AFF]">
-              Hardware Status &amp; Coverage
-            </p>
-            <h2 className="text-2xl sm:text-3xl font-semibold tracking-apple-headline text-white">
-              Verified System Scope &amp; Support
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4 border-t border-white/10">
-            {project.results.map((res, idx) => (
-              <div key={idx} className="space-y-1.5">
-                <div className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
-                  {res.metric}
-                </div>
-                <div className="text-xs uppercase tracking-wider font-semibold text-[#86868B]">
-                  {res.label}
-                </div>
-                <p className="text-xs text-white/70 leading-relaxed pt-1">
-                  {res.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 7. Complete Tech Stack Matrix */}
-      <section className="px-6 sm:px-8 max-w-5xl mx-auto w-full space-y-6">
-        <div className="space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#86868B]">
-            Firmware &amp; Toolchain
-          </p>
-          <h2 className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-headline">
-            Technical Stack
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {project.techStack.map((stack, idx) => (
-            <div
-              key={idx}
-              className="p-5 rounded-2xl bg-white dark:bg-[#121214] border border-[#E5E5EA] dark:border-[#2C2C2E] shadow-2xs space-y-3 transition-colors"
-            >
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#5E5CE6] dark:text-[#7D7AFF]">
-                {stack.category}
-              </h3>
-              <ul className="space-y-1.5">
-                {stack.items.map((item, itemIdx) => (
-                  <li
-                    key={itemIdx}
-                    className="text-xs text-[#515154] dark:text-[#A1A1A6] font-medium flex items-center gap-1.5"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#5E5CE6]/60 dark:bg-[#7D7AFF]/70 shrink-0" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 8. Next Project Navigation Banner */}
-      <section className="px-6 sm:px-8 max-w-5xl mx-auto w-full pb-16">
-        <Link
-          href="/projects/rog-gaming-center"
-          className="group block p-8 sm:p-12 rounded-2xl sm:rounded-3xl bg-[#F5F5F7] dark:bg-[#1C1C1E] hover:bg-[#E5E5EA]/70 dark:hover:bg-[#2C2C2E] border border-[#E5E5EA] dark:border-[#2C2C2E] transition-all duration-300"
-        >
-          <div className="flex items-center justify-between">
-            <div className="space-y-2">
-              <p className="text-xs font-semibold uppercase tracking-wider text-[#6E6E73] dark:text-[#86868B]">
-                Companion Software Case Study
-              </p>
-              <h3 className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] group-hover:text-[#5E5CE6] dark:group-hover:text-[#7D7AFF] transition-colors flex items-center gap-2">
-                <span>ROG Gaming Center macOS App</span>
-                <ChevronRight className="w-6 h-6 transition-transform group-hover:translate-x-1" />
-              </h3>
-              <p className="text-sm text-[#6E6E73] dark:text-[#A1A1A6] max-w-2xl">
-                Explore the native Swift &amp; SwiftUI desktop application that interfaces directly with IOKit USB HID microcontrollers and reads AppleSMC kernel telemetry.
-              </p>
-            </div>
-          </div>
-        </Link>
-      </section>
     </div>
   );
 }

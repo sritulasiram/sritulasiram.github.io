@@ -7,7 +7,6 @@ import dynamic from "next/dynamic";
 import { MacbookPro } from "@/components/mockups/MacbookPro";
 import { cn } from "@/lib/cn";
 import HrAssistiveMacbook from "./visuals/HrAssistiveMacbook";
-import { STAGE_PROJECTS } from "./ProjectsHeroStage";
 
 type ProjectStatus = "production" | "pilot" | "peer-reviewed" | "prototype" | "personal";
 
@@ -24,24 +23,10 @@ const PROJECT_STATUS: Record<string, ProjectStatus> = {
   "raspberry-pi-diagnostics": "production",
   "cytron-hr-assistive-intelligence": "pilot",
   "iot-fertiliser-mixing": "peer-reviewed",
-  "esp32-heart-saver": "prototype",
   "rog-gaming-center": "personal",
   "opencore-efi-hackintosh": "personal",
 };
 
-// Projects already showcased in the hero carousel are hidden from the grid on "All"
-const FEATURED_IDS = new Set(STAGE_PROJECTS.map((p) => p.id));
-
-const Esp32TrackerBentoGrid = dynamic(() => import("./visuals/Esp32TrackerBentoGrid"), {
-  loading: () => (
-    <div className="w-full h-full bg-[#0E0E11] rounded-xl flex items-center justify-center p-4">
-      <div className="text-center space-y-1">
-        <div className="text-xs font-semibold text-[#FF453A]">ESP32 Biometrics</div>
-        <div className="text-[10px] text-neutral-500 font-mono">Telemetry active</div>
-      </div>
-    </div>
-  ),
-});
 
 const TelemetryBentoGrid = dynamic(() => import("./visuals/TelemetryBentoGrid"), {
   loading: () => (
@@ -67,6 +52,8 @@ interface ProjectCardData {
   caseStudyUrl: string;
   badgeColor: string;
   stats?: string[];
+  /** Short, scannable list shown under the description. Full lists live on the case study. */
+  tech: string[];
 }
 
 const LINEUP_PROJECTS: ProjectCardData[] = [
@@ -77,11 +64,12 @@ const LINEUP_PROJECTS: ProjectCardData[] = [
     category: "Developed Systems",
     categoryId: "developed-systems",
     description:
-      "Runs 19 diagnostic checks on compute, power, storage and GPIO in under 60 seconds, then issues a formal RMA inspection report.",
+      "Runs 19 diagnostic checks on compute, power, storage and GPIO from one Run All button, then issues a formal RMA inspection report.",
     imageSrc: "/images/projects/raspberry-pi-diagnostics/cover.webp",
+    tech: ["Python", "Flask", "SQLite", "Raspberry Pi OS"],
     caseStudyUrl: "/projects/raspberry-pi-diagnostics",
     badgeColor: "#C51A4A",
-    stats: ["95% faster triage", "19 diagnostic checks", "Under 60 seconds"],
+    stats: ["19 diagnostic checks", "4 run phases", "Signed RMA report"],
   },
   {
     id: "warranty-rma",
@@ -92,6 +80,7 @@ const LINEUP_PROJECTS: ProjectCardData[] = [
     description:
       "Repair intake, thermal barcode labels and supplier claim manifests in one internal system, with secure remote access through Cloudflare Zero Trust.",
     imageSrc: "/images/projects/warranty-rma/system-intake.png",
+    tech: ["Flask", "SQLite", "Cloudflare Tunnel", "Thermal printing"],
     caseStudyUrl: "/projects/warranty-rma",
     badgeColor: "#0071E3",
   },
@@ -104,6 +93,7 @@ const LINEUP_PROJECTS: ProjectCardData[] = [
     description:
       "Pilot chat assistant that answers employee HR questions only from official documents. Every statement carries a numbered citation, and questions the documents don't cover are declined with a pointer to HR instead of a guess.",
     imageSrc: "",
+    tech: ["Python", "FastAPI", "ChromaDB", "React"],
     caseStudyUrl: "/projects/cytron-hr-assistive-intelligence",
     badgeColor: "#0F8B8D",
     stats: ["Cited answers", "Refuses to guess", "Pilot at Cytron"],
@@ -117,22 +107,10 @@ const LINEUP_PROJECTS: ProjectCardData[] = [
     description:
       "Closed-loop hydroponic dosing, published in IJIE (UTHM). 99.6% TDS accuracy, over 94% dosing precision from 250 to 1,000 ml, and live Blynk cloud monitoring.",
     imageSrc: "/images/projects/iot-fertiliser-mixing/fig-1-system-overview.png",
+    tech: ["ESP32", "Arduino C++", "Blynk"],
     caseStudyUrl: "/projects/iot-fertiliser-mixing",
     badgeColor: "#1E7E34",
     stats: ["99.6% TDS accuracy", ">94% dosing precision", "Peer-reviewed"],
-  },
-  {
-    id: "esp32-heart-saver",
-    name: "ESP32 Heart Saver",
-    tagline: "",
-    category: "Embedded Systems",
-    categoryId: "embedded-systems",
-    description:
-      "Prototype wearable that reads heart rate, then sends your GPS location by SMS when it spikes above 90 BPM. A manual SOS button overrides the sensor.",
-    imageSrc: "",
-    caseStudyUrl: "/projects/esp32-heart-saver",
-    badgeColor: "#FF453A",
-    stats: ["Auto-alert above 90 BPM", "GPS + GSM dispatch", "Manual SOS override"],
   },
   {
     id: "rog-gaming-center",
@@ -143,6 +121,7 @@ const LINEUP_PROJECTS: ProjectCardData[] = [
     description:
       "Native Swift utility for ASUS ROG and TUF laptops on macOS. Interfaces directly with USB HID microcontrollers for Aura RGB lighting, reads AppleSMC thermals, and applies display calibration without root daemons.",
     imageSrc: "/images/projects/rog-gaming-center/app.png",
+    tech: ["Swift", "SwiftUI", "IOKit", "USB HID"],
     caseStudyUrl: "/projects/rog-gaming-center",
     badgeColor: "#FF453A",
     stats: ["Pure Swift & SwiftUI", "No root daemons", "USB HID + AppleSMC"],
@@ -156,10 +135,18 @@ const LINEUP_PROJECTS: ProjectCardData[] = [
     description:
       "A working macOS setup for the ASUS GL503GE: 12 custom ACPI hotpatches, integrated-graphics routing, NVIDIA GPU power-gating, and stable sleep on Sonoma, Sequoia and Tahoe.",
     imageSrc: "/images/projects/opencore-efi-hackintosh/configurator-app.png",
+    tech: ["OpenCore", "ACPI", "UEFI"],
     caseStudyUrl: "/projects/opencore-efi-hackintosh",
     badgeColor: "#5856D6",
     stats: ["12 ACPI hotpatches", "17 components working", "macOS Sonoma to Tahoe"],
   },
+];
+
+/** Already shown large in the hero lineup above, so they go last here to avoid a repeat. */
+const HERO_IDS = new Set(["cytron-hr-assistive-intelligence", "raspberry-pi-diagnostics", "warranty-rma"]);
+const ORDERED_PROJECTS = [
+  ...LINEUP_PROJECTS.filter((p) => !HERO_IDS.has(p.id)),
+  ...LINEUP_PROJECTS.filter((p) => HERO_IDS.has(p.id)),
 ];
 
 const CATEGORIES: { id: ProjectCategory; label: string }[] = [
@@ -174,13 +161,8 @@ export default function ProjectsDirectory() {
 
   const filteredProjects =
     selectedFilter === "all"
-      ? LINEUP_PROJECTS.filter((p) => !FEATURED_IDS.has(p.id))
-      : LINEUP_PROJECTS.filter((p) => p.categoryId === selectedFilter);
-
-  const heading =
-    selectedFilter === "all"
-      ? "More projects."
-      : `${CATEGORIES.find((c) => c.id === selectedFilter)?.label}.`;
+      ? ORDERED_PROJECTS
+      : ORDERED_PROJECTS.filter((p) => p.categoryId === selectedFilter);
 
   const handleFilterKeyDown = (e: React.KeyboardEvent, index: number) => {
     let nextIndex = index;
@@ -203,19 +185,21 @@ export default function ProjectsDirectory() {
 
   return (
     <section
-      id="lineup"
-      aria-label="More projects"
-      className="scroll-mt-20 py-12 sm:py-16 bg-white dark:bg-black transition-colors overflow-hidden"
+      id="all-projects"
+      aria-label="All projects"
+      className="relative z-10 scroll-mt-20 py-12 sm:py-16 bg-white dark:bg-black transition-colors overflow-hidden"
     >
       <div className="max-w-6xl mx-auto px-6 sm:px-8 space-y-10 sm:space-y-12">
         {/* Section Header & Liquid Glass Filter Bar */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-2 max-w-2xl">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight leading-[1.08]">
-              {heading}
+            <h2 className="text-3xl sm:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight leading-[1.08]">
+              All projects.
             </h2>
-            <p className="text-base sm:text-lg text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-              Embedded telemetry, AI assistants, and native-app case studies beyond the featured work above.
+            <p aria-live="polite" className="text-base sm:text-lg text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
+              {filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projects"}
+              {selectedFilter === "all" ? "" : ` in ${CATEGORIES.find((c) => c.id === selectedFilter)?.label}`}
+              . Production systems, embedded hardware, and native-app case studies.
             </p>
           </div>
 
@@ -264,10 +248,6 @@ export default function ProjectsDirectory() {
                 >
                   {project.id === "cytron-hr-assistive-intelligence" ? (
                     <HrAssistiveMacbook className="w-full h-auto drop-shadow-xl" />
-                  ) : project.id === "esp32-heart-saver" ? (
-                    <div className="w-full aspect-[650/400] rounded-2xl sm:rounded-3xl overflow-hidden border border-black/[0.08] dark:border-white/[0.12] bg-[#0E0E11] shadow-xl p-2.5 sm:p-3">
-                      <Esp32TrackerBentoGrid />
-                    </div>
                   ) : project.id === "iot-fertiliser-mixing" ? (
                     <div className="w-full aspect-[650/400] rounded-2xl sm:rounded-3xl overflow-hidden border border-black/[0.08] dark:border-white/[0.12] bg-[#0E0E11] shadow-xl p-2.5 sm:p-3">
                       <TelemetryBentoGrid />
@@ -295,16 +275,6 @@ export default function ProjectsDirectory() {
 
                 {/* Dual-Sentence Apple Typography */}
                 <div className="pt-1">
-                  {PROJECT_STATUS[project.id] && (
-                    <span className="mb-2 inline-flex items-center gap-1.5 text-xs font-medium text-[#6E6E73] dark:text-[#A1A1A6]">
-                      <span
-                        aria-hidden="true"
-                        className="w-1.5 h-1.5 rounded-full"
-                        style={{ backgroundColor: STATUS_META[PROJECT_STATUS[project.id]].dot }}
-                      />
-                      {STATUS_META[PROJECT_STATUS[project.id]].label}
-                    </span>
-                  )}
                   <p className="text-[15px] sm:text-[16px] md:text-[17px] leading-[1.42] text-[#6E6E73] dark:text-[#A1A1A6]">
                     <Link href={project.caseStudyUrl} className="hover:underline">
                       <strong className="font-semibold text-[#1D1D1F] dark:text-white tracking-tight hover:text-[#0071E3] transition-colors">
@@ -312,6 +282,19 @@ export default function ProjectsDirectory() {
                       </strong>
                     </Link>
                     {project.description}
+                  </p>
+                  <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-[#6E6E73] dark:text-[#A1A1A6]">
+                    <span>{project.tech.join(" · ")}</span>
+                    {PROJECT_STATUS[project.id] && (
+                      <span className="inline-flex items-center gap-1.5 font-medium">
+                        <span
+                          aria-hidden="true"
+                          className="w-1.5 h-1.5 rounded-full"
+                          style={{ backgroundColor: STATUS_META[PROJECT_STATUS[project.id]].dot }}
+                        />
+                        {STATUS_META[PROJECT_STATUS[project.id]].label}
+                      </span>
+                    )}
                   </p>
                 </div>
               </div>

@@ -1,10 +1,13 @@
-import Hero from "@/components/home/Hero";
-import SelectedWork from "@/components/home/SelectedWork";
-import DesignsTeaser from "@/components/home/DesignsTeaser";
-import AboutTeaser from "@/components/home/AboutTeaser";
-import PhotographyStrip from "@/components/home/PhotographyStrip";
-import Footer from "@/components/layout/Footer";
 import type { Metadata } from "next";
+import Footer from "@/components/layout/Footer";
+import ScrollTypeText from "@/components/shared/ScrollTypeText";
+import HomeHero from "@/components/home/HomeHero";
+import HomeSystems from "@/components/home/HomeSystems";
+import HomeNumbers from "@/components/home/HomeNumbers";
+import HomeDesigns from "@/components/home/HomeDesigns";
+import HomePhotography from "@/components/home/HomePhotography";
+import { GRAY, INK, WRAP } from "@/components/home/homeShared";
+import { accentStyle } from "@/data/projectTheme";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -12,24 +15,34 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-white dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col">
+    <main
+      id="main-content"
+      tabIndex={-1}
+      style={accentStyle(["#0066CC", "#2997FF"])}
+      className="project-theme min-h-screen bg-white dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300 flex flex-col"
+    >
+      <HomeHero />
 
-      {/* 1. Hero Section */}
-      <Hero />
+      <section aria-label="Introduction" className={`${WRAP} py-28 sm:py-40`}>
+        <ScrollTypeText
+          className="text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl"
+          segments={[
+            {
+              text: "I'm a Support Engineer at Cytron Technologies, where hardware problems land every day. ",
+              className: GRAY,
+            },
+            {
+              text: "I build the internal tools that solve them faster, and design the interfaces that make them effortless.",
+              className: INK,
+            },
+          ]}
+        />
+      </section>
 
-      {/* 2. Selected Work Section (Engineering Systems) */}
-      <SelectedWork />
-
-      {/* 3. Designs Showcase (UI/UX Case Studies) */}
-      <DesignsTeaser />
-
-      {/* 4. About Teaser (Support Ops & Engineering Pillars) */}
-      <AboutTeaser />
-
-      {/* 5. Photography Strip (Personal Creative Craft) */}
-      <PhotographyStrip />
-
-      {/* 6. Footer & Contact Section */}
+      <HomeSystems />
+      <HomeNumbers />
+      <HomeDesigns />
+      <HomePhotography />
       <Footer />
     </main>
   );

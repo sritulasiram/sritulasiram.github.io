@@ -3,73 +3,12 @@
 import { useState, useRef } from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowLeft, ChevronRight } from "lucide-react";
-import IphoneFrame from "@/components/mockups/IphoneFrame";
+import StageDevice from "./StageDevice";
 import AppleCarouselController from "@/components/ui/AppleCarouselController";
+import Button from "@/components/ui/Button";
+import { APP_STUDIES } from "./appStudies";
 import { cn } from "@/lib/cn";
-
-interface StageDesign {
-  id: string;
-  name: string;
-  subtitle: string;
-  shortSubtitle: string;
-  category: string;
-  imageSrc: string;
-  caseStudyUrl: string;
-  buttonColor: string;
-}
-
-const DESIGNS: StageDesign[] = [
-  {
-    id: "kopiesatu",
-    name: "KopieSatu",
-    subtitle: "Tactile Mobile Coffee Ordering & Loyalty",
-    shortSubtitle: "Coffee & Loyalty",
-    category: "Consumer Mobile Commerce",
-    imageSrc: "/images/designs/kopiesatu/screen-preview.webp",
-    caseStudyUrl: "/designs/kopiesatu",
-    buttonColor: "#8D5B34", // Warm Caramel Espresso
-  },
-  {
-    id: "void",
-    name: "Void",
-    subtitle: "Polytechnic Project Management Architecture",
-    shortSubtitle: "Project Management",
-    category: "Academic Workflow Architecture",
-    imageSrc: "/images/designs/void/screen-home.png?v=3",
-    caseStudyUrl: "/designs/void",
-    buttonColor: "#234E6A", // Deep Ocean Slate Blue
-  },
-  {
-    id: "sage",
-    name: "Sage",
-    subtitle: "Trauma-Informed Teletherapy & Mental Wellness",
-    shortSubtitle: "Mental Wellness",
-    category: "Digital Health & Teletherapy",
-    imageSrc: "/images/designs/sage/screen-preview.webp",
-    caseStudyUrl: "/designs/sage",
-    buttonColor: "#3D7850", // Authentic Botanical Sage Green
-  },
-  {
-    id: "recycle-ai",
-    name: "Recycle AI",
-    subtitle: "Computer Vision & Waste Classification",
-    shortSubtitle: "Waste Classification",
-    category: "AI & Sustainability",
-    imageSrc: "/images/designs/recycle-ai/screen-preview.webp",
-    caseStudyUrl: "/designs/recycle-ai",
-    buttonColor: "#6C9438", // Vibrant Eco-Leaf Green
-  },
-  {
-    id: "pmc-clinic",
-    name: "Klinik PMC",
-    subtitle: "Accessible Clinical Intake & Specialist Portal",
-    shortSubtitle: "Clinical Portal",
-    category: "Healthcare Platform",
-    imageSrc: "/images/designs/pmc-clinic/app-ui.png?v=3",
-    caseStudyUrl: "/designs/pmc-clinic",
-    buttonColor: "#0E2A8C", // Sapphire Royal Clinical Navy
-  },
-];
+import { STAGE_DESIGNS as DESIGNS } from "./designStage";
 
 export default function DesignHeroStage() {
   const [activeIndex, setActiveIndex] = useState(2); // Starts with Sage or center item
@@ -171,7 +110,7 @@ export default function DesignHeroStage() {
   };
 
   return (
-    <section id="overview" className="scroll-mt-20 relative pt-24 sm:pt-28 pb-10 sm:pb-14 overflow-hidden">
+    <section data-section="overview" className="scroll-mt-20 relative pt-24 sm:pt-28 pb-10 sm:pb-14 overflow-hidden">
       {/* Background Ambient Glow */}
       <div
         aria-hidden="true"
@@ -192,7 +131,7 @@ export default function DesignHeroStage() {
               </Link>
             </li>
             <li aria-hidden="true">
-              <ChevronRight className="w-3.5 h-3.5 text-[#86868B] dark:text-[#8E8E93] shrink-0" />
+              <ChevronRight className="w-3.5 h-3.5 text-[#6E6E73] dark:text-[#8E8E93] shrink-0" />
             </li>
             <li>
               <span className="text-[#1D1D1F] dark:text-[#F5F5F7] font-semibold" aria-current="page">
@@ -204,14 +143,13 @@ export default function DesignHeroStage() {
 
         {/* Page Header matching Photography layout */}
         <div className="max-w-4xl mx-auto text-center space-y-4 mb-8 sm:mb-12">
-          <h1 className="text-5xl sm:text-6xl md:text-7xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.03]">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.03]">
             Design
-            <br />
-            <span className="text-[#6E6E73] dark:text-[#8E8E93] font-medium">Crafted for humans</span>
+            <span className="mt-3 block text-[0.36em] font-medium leading-[1.15] tracking-apple-tight text-[#6E6E73] dark:text-[#8E8E93] text-balance">Crafted for humans</span>
           </h1>
 
           <p className="text-lg sm:text-xl text-[#6E6E73] dark:text-[#A1A1A6] font-normal max-w-2xl mx-auto leading-relaxed tracking-apple-subhead">
-            Translating complex systems into intuitive interfaces, tactile interactions, and accessible digital experiences.
+            Five products across health, retail, education and sustainability. Each starts with a problem worth solving.
           </p>
         </div>
 
@@ -234,10 +172,21 @@ export default function DesignHeroStage() {
               <div
                 key={item.id}
                 onClick={() => setActiveIndex(idx)}
+                role={slot.isCenter ? undefined : "button"}
+                tabIndex={Math.abs(diff) === 1 ? 0 : -1}
+                aria-label={slot.isCenter ? undefined : `Show ${item.name}`}
+                aria-hidden={Math.abs(diff) > 1 ? true : undefined}
+                onKeyDown={(e) => {
+                  if (!slot.isCenter && (e.key === "Enter" || e.key === " ")) {
+                    e.preventDefault();
+                    setActiveIndex(idx);
+                  }
+                }}
                 className={cn(
                   "absolute top-1/2 left-1/2 w-[190px] sm:w-[245px] md:w-[275px] lg:w-[295px] origin-center transition-all duration-600 ease-[cubic-bezier(0.16,1,0.3,1)] select-none",
                   slot.opacityClass,
                   !slot.isCenter ? "cursor-pointer" : "cursor-default",
+                  !slot.isCenter && "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0071E3] rounded-[2.5rem]",
                 )}
                 style={{
                   transform: `translate(calc(-50% + ${slot.xPercent}%), -50%) scale(${slot.scale})`,
@@ -266,12 +215,7 @@ export default function DesignHeroStage() {
                     animatedCards.current.add(item.id);
                   }}
                 >
-                  <IphoneFrame
-                    src={item.imageSrc}
-                    theme="light"
-                    hideStatusBar={true}
-                    noShadow={true}
-                  />
+                  <StageDevice device={item.device} src={item.imageSrc} />
                 </div>
               </div>
             );
@@ -303,14 +247,14 @@ export default function DesignHeroStage() {
           </div>
 
           {/* Learn More Button Matching App Brand Color */}
-          <Link
+          <Button
             href={activeDesign.caseStudyUrl}
-            style={{ backgroundColor: activeDesign.buttonColor }}
-            className="h-9 sm:h-10 px-4 sm:px-5 inline-flex items-center justify-center gap-1.5 rounded-full text-xs sm:text-sm font-semibold text-white shadow-xs hover:brightness-110 active:scale-95 transition-all duration-300 shrink-0 whitespace-nowrap group"
+            accent={APP_STUDIES[activeDesign.id]?.accent}
+            icon={<ArrowRight className="h-4 w-4" aria-hidden="true" />}
+            className="shrink-0 whitespace-nowrap"
           >
-            <span>Learn more</span>
-            <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
-          </Link>
+            {activeDesign.cta}
+          </Button>
         </div>
       </div>
     </section>

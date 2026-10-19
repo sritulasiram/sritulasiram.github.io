@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, ChevronRight } from "lucide-react";
 import Footer from "@/components/layout/Footer";
+import SectionNav from "@/components/layout/SectionNav";
+import PhotographyIntroMorph from "@/components/photography/PhotographyIntroMorph";
 import PhotographyGallery from "@/components/photography/PhotographyGallery";
 import CameraOpticsKitBento from "@/components/photography/CameraOpticsKitBento";
 import { PHOTOGRAPHY_DATA } from "@/data/content";
@@ -12,6 +14,25 @@ export const metadata: Metadata = {
   description:
     "Curated photography frames by Sri Tulasi Ram. Exploring light, architecture, and street perspectives in Penang and beyond.",
 };
+
+// Lineup order, left to right (the first is also the first frame in the viewfinder).
+const INTRO_IDS = [
+  "photo-sunset",
+  "photo-fire",
+  "photo-petronas-twin-spires",
+  "photo-penang-breakwater-shore",
+  "photo-peacock",
+];
+const INTRO_PHOTOS = INTRO_IDS.map((id) => PHOTOGRAPHY_DATA.find((p) => p.id === id)).filter(
+  (p): p is (typeof PHOTOGRAPHY_DATA)[number] => Boolean(p),
+);
+
+const PHOTO_SECTIONS = [
+  { id: "overview", label: "Overview" },
+  { id: "gallery", label: "Gallery" },
+  { id: "shot-on-iphone", label: "Shot on iPhone" },
+  { id: "origins", label: "Origins" },
+];
 
 function InstagramIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
@@ -33,8 +54,14 @@ function InstagramIcon({ className = "w-4 h-4" }: { className?: string }) {
 
 export default function PhotographyPage() {
   return (
-    <main className="min-h-screen bg-white dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300 flex flex-col selection:bg-black/10 dark:selection:bg-white/15 selection:text-[#1D1D1F] dark:selection:text-[#F5F5F7]">
-      <div className="max-w-6xl mx-auto px-6 sm:px-8 pt-24 sm:pt-28 pb-16 flex-1 w-full text-center">
+    <main id="main-content" tabIndex={-1} className="min-h-screen bg-white dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300 flex flex-col selection:bg-black/10 dark:selection:bg-white/15 selection:text-[#1D1D1F] dark:selection:text-[#F5F5F7]">
+      {/* lg+ with motion: scroll-driven Camera intro. Otherwise the static header below. */}
+      <div className="hidden lg:motion-safe:block">
+        <PhotographyIntroMorph photos={INTRO_PHOTOS} />
+      </div>
+
+      <div id="overview" className="relative z-10 bg-white dark:bg-black max-w-6xl mx-auto px-6 sm:px-8 pt-24 sm:pt-28 lg:motion-safe:pt-8 pb-16 flex-1 w-full text-center">
+        <div className="lg:motion-safe:hidden">
         {/* Back Link Breadcrumb */}
         <nav aria-label="Breadcrumb" className="mb-5 sm:mb-6">
           <ol className="inline-flex items-center gap-1.5 text-xs font-medium text-[#6E6E73] dark:text-[#A1A1A6]">
@@ -60,10 +87,9 @@ export default function PhotographyPage() {
 
         {/* Page Header */}
         <div className="max-w-4xl mx-auto text-center space-y-4 mb-12 sm:mb-14">
-          <h1 className="text-5xl sm:text-6xl md:text-7xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.03]">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.03]">
             Photography
-            <br />
-            <span className="text-[#6E6E73] dark:text-[#8E8E93] font-medium">Perspective and light</span>
+            <span className="mt-3 block text-[0.36em] font-medium leading-[1.15] tracking-apple-tight text-[#6E6E73] dark:text-[#8E8E93] text-balance">Perspective and light</span>
           </h1>
           <p className="text-lg sm:text-xl text-[#6E6E73] dark:text-[#A1A1A6] font-normal max-w-2xl mx-auto leading-relaxed tracking-apple-subhead">
             Curated frames capturing coastal atmosphere, architectural geometry, and fleeting moments.
@@ -90,12 +116,16 @@ export default function PhotographyPage() {
           </div>
         </div>
 
+        </div>
+
         {/* Photography Grid with Album Filter Tabs & Lightbox */}
         <PhotographyGallery photos={PHOTOGRAPHY_DATA} />
 
         {/* Shot on iPhone 16 Pro Optical System Showcase */}
         <CameraOpticsKitBento />
       </div>
+
+      <SectionNav sections={PHOTO_SECTIONS} ariaLabel="Photography page chapters" />
 
       <Footer />
     </main>

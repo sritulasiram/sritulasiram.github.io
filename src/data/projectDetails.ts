@@ -7,8 +7,8 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
     id: "warranty-rma",
     title: "Warranty & RMA Management System",
     eyebrow: "Cytron Technologies · Internal Support Operations",
-    tagline: "Full-stack repair operations platform integrating thermal barcode printing, batch supplier RMA manifests, and Cloudflare Zero Trust telemetry.",
-    heroMetric: "v2.50.0",
+    tagline: "A repair operations platform that takes a unit from intake and the bench to supplier credit, with thermal labels, an SLA clock on every case and a Telegram assistant.",
+    heroMetric: "v2.52.1",
     heroMetricLabel: "Production System (WAL Mode)",
     imageSrc: "/images/projects/warranty-rma/cover.webp",
     placeholderLabel: "Replace: project-rma.webp",
@@ -58,7 +58,7 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
       {
         title: "Two-Card Intake & Lifecycle Engine",
         description:
-          "Split-card terminal for fast intake logging with linear state progression: PENDING ➔ DIAGNOSING ➔ REPAIRING ➔ TESTING ➔ COMPLETED ➔ CANCELLED.",
+          "Split-card terminal for fast intake logging. Cases move through PENDING, DIAGNOSING, REPAIRING, TESTING, WAITING_PARTS, SUPPLIER RMA, COMPLETED, COLLECTED or CANCELLED, and the list is configurable.",
         badge: "Workshop Core",
       },
       {
@@ -95,22 +95,22 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
     techStack: [
       { category: "Backend Architecture", items: ["Python 3", "Flask (Blueprints)", "SQLite (WAL Mode)", "Gunicorn", "systemd Daemons"] },
       { category: "Hardware & Peripherals", items: ["GP-1324D Thermal Printer", "I2C OLED 128×64 (SSD1306/SH1106)", "USB Barcode Scanners", "Code128 Barcodes"] },
-      { category: "Cloud, Sync & Security", items: ["Cloudflare Zero Trust", "Telegram Bot API", "Google Drive & Sheets API", "Google Cloud Storage", "Pytest (148 tests)"] },
+      { category: "Cloud, Sync & Security", items: ["Cloudflare Tunnel", "Telegram Bot API", "Google Gemini", "Google Drive & Sheets API", "Google Cloud Storage", "Pytest (300+ tests)"] },
     ],
     results: [
       {
-        metric: "148",
+        metric: "300+",
         label: "Automated Tests",
-        description: "Comprehensive pytest test suite covering storage backends, blueprints, auth, and versioning.",
+        description: "A pytest suite covering storage providers, routes, authentication, versioning, hardware configuration and the Telegram assistant.",
       },
       {
-        metric: "100%",
-        label: "Hardware Traceability",
-        description: "Every RMA unit, diagnostic report, and supplier manifest linked by scannable Code128 barcodes.",
+        metric: "24",
+        label: "Read-Only Assistant Tools",
+        description: "The Telegram assistant can look things up across cases, SLA, RMA, products and system health, but never change anything.",
       },
       {
-        metric: "2.50.0",
-        label: "Production Release",
+        metric: "2.52.1",
+        label: "Current Release",
         description: "Actively deployed internal system powering Cytron's regional support operations.",
       },
     ],
@@ -152,8 +152,8 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
     title: "Raspberry Pi Diagnostic Suite",
     eyebrow: "Cytron Technologies · Hardware QA & Automated RMA Platform",
     tagline: "Automated 19-vector hardware quality assurance, real-time telemetry, and standardized RMA triage for single-board computers.",
-    heroMetric: "40–55s",
-    heroMetricLabel: "19-Vector Automated Sweep",
+    heroMetric: "19",
+    heroMetricLabel: "Automated Test Vectors, One Click",
     imageSrc: "/images/projects/raspberry-pi-diagnostics/cover.webp",
     placeholderLabel: "pi-diagnostic.webp",
     placeholderRatio: "16:10 Diagnostic Dashboard (1920×1200)",
@@ -165,7 +165,7 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
       problemStatement:
         "Hardware bench technicians previously had to toggle each GPIO pin HIGH and LOW manually via CLI scripts and take voltage readings pin-by-pin using a multimeter, alongside manual peripheral plug-in checks. This took 15–20 minutes per board and risked probe slips destroying silicon.",
       context:
-        "The release of Raspberry Pi 5 introduced the custom RP1 southbridge, breaking legacy GPIO libraries (RPi.GPIO, early gpiozero) on Linux Kernel 6.6+ (Bookworm & Trixie). As an official Raspberry Pi Design Partner, Cytron needed an industrial workbench executing 19 automated diagnostic vectors in under a minute with standardized hardware test records.",
+        "The release of Raspberry Pi 5 introduced the custom RP1 southbridge, breaking legacy GPIO libraries (RPi.GPIO, early gpiozero) on Linux Kernel 6.6+ (Bookworm & Trixie). As an official Raspberry Pi Design Partner, Cytron needed an industrial workbench running 19 automated diagnostic vectors from one button with standardized hardware test records.",
       challenges: [
         "15–20 minute manual intake bottleneck: setting pins HIGH/LOW manually and probing 40 pins one-by-one with a multimeter",
         "Physical probe slip hazards: handheld DMM probe tips on dense 2.54mm headers risked bridging 3.3V GPIO directly to 5V rails",
@@ -175,34 +175,34 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
     },
     architecture: {
       summary:
-        "A high-performance three-tier embedded validation platform connecting a lightweight Vanilla JS SPA presentation engine, a concurrency-mutexed Flask backend with in-memory TTL caching, and low-level kernel drivers interfacing directly with the RP1 southbridge.",
+        "A vanilla JavaScript interface polling a Flask backend that runs tests in a thread pool behind a hardware lock, with low-level GPIO drivers for the Pi 5 RP1 southbridge.",
       components: [
         {
-          title: "Presentation Layer (Vanilla JS SPA Engine)",
+          title: "Presentation Layer (Vanilla JS)",
           description:
-            "Zero-dependency single-page architecture with GPU layer compositing (translateZ) delivering 60fps telemetry dials and an automated test report print engine under a 45MB RAM footprint.",
+            "A dependency-free JavaScript interface with a docked run bar, a card per test, and a printable report. Fonts, icons and charts are self-hosted, so it works fully offline.",
         },
         {
           title: "Core Workbench (Flask & Mutex Engine)",
           description:
-            "Thread-safe diagnostic daemon with hardware concurrency locks, SQLite B-Tree indexing, and 15-second in-memory TTL query caching to eliminate MicroSD flash memory wear.",
+            "Flask on gunicorn (one worker, eight threads). Hardware-bus tests are serialised by a lock, every test has a 180-second ceiling, and results are stored in SQLite in WAL mode.",
         },
         {
           title: "Multi-Generation Hardware Prober (RP1 lgpio)",
           description:
-            "Dynamic kernel chip auto-discovery (/dev/gpiochip4, 0, 1) for the RP1 southbridge via lgpio, with automatic fallback to gpiozero and RPi.GPIO on legacy Pi 4/3/Zero models.",
+            "Dynamic kernel chip auto-discovery (/dev/gpiochip4, 0, 1) for the RP1 southbridge via lgpio, with gpiozero and RPi.GPIO as fallbacks on older boards.",
         },
         {
-          title: "3-Stage Parametric Diagnostic Runner",
+          title: "4-Phase Diagnostic Runner",
           description:
-            "Executes 19 automated vectors categorized into Compute/Thermals, PMIC ADC Rail Telemetry (4.75V–5.25V), Storage Direct I/O, and Peripheral RF (USB 3.0, Gigabit, MIPI, ALSA).",
+            "Runs 19 tests in four phases: Platform & Ports, Radio & Network, Storage, and Compute & Power. The storage tests run apart from the network tests, and the power stress audit runs alone after the compute sweep, so neither skews readings.",
         },
       ],
     },
     keyFeatures: [
       {
         title: "19-Vector Automated Diagnostic Engine",
-        description: "Executes automated multi-subsystem sweeps across compute cores, PMIC rails, storage, and transceivers in 40–55 seconds.",
+        description: "Runs automated checks across the platform and its ports, radios, storage, compute and power from one Run All button, with live progress and a failures panel.",
         badge: "Core Engine",
       },
       {
@@ -217,54 +217,54 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
       },
       {
         title: "Standardized 2-Page RMA Manifest & Certificate",
-        description: "Generates official hardware test certificates with formal document reference IDs (DOC-RMA-YYYYMMDD-XXXX), 4-column UUT spec sheets, pin-level fault isolation, and SHA-256 tamper digests.",
+        description: "Generates official hardware test certificates with formal document reference IDs (DOC-RMA-YYYYMMDD-XXXX), 4-column UUT spec sheets, pin-level fault isolation, and an HMAC-SHA256 seal that changes if stored results are edited.",
         badge: "Hardware QA",
       },
       {
         title: "MicroSD Churn & Flash Endurance Protection",
-        description: "B-Tree database indexing with in-memory 15s TTL caching and SQLite WAL mode eliminates continuous flash write wear on bench test fixtures.",
+        description: "SQLite in WAL mode, a 15-second cache on throttle readings and a daily 90-day prune timer keep write wear on the bench SD card down.",
         badge: "Reliability",
       },
       {
-        title: "Hardware GPU Layer Compositing",
-        description: "GPU-accelerated CSS rendering offloaded to VideoCore / Mesa V3D ensures silky 60fps animations over remote VNC connections.",
-        badge: "Performance",
+        title: "Works Offline",
+        description: "Fonts, icons and charts are self-hosted, so the workbench interface runs fully on a bench network with no internet.",
+        badge: "Offline",
       },
     ],
     techStack: [
       { category: "Languages & Core", items: ["Python 3", "JavaScript (ES6+)", "Modern CSS3", "HTML5", "Bash"] },
-      { category: "Frameworks & Drivers", items: ["Flask 3.1", "Gunicorn (8 Threads)", "lgpio (RP1)", "gpiozero", "RPi.GPIO", "psutil", "pyudev", "SQLite (WAL Mode)"] },
-      { category: "Hardware & Protocols", items: ["Raspberry Pi 5 (RP1)", "Pi 4/3/Zero", "I2C", "SPI", "UART", "PCIe", "MIPI D-PHY", "USB 3.0", "Gigabit PHY", "Bluetooth 5.0"] },
-      { category: "Embedded Linux & QA", items: ["Raspberry Pi OS (Debian 12/13)", "Linux Kernel 6.6+", "Systemd Daemon", "vcgencmd", "Parametric Sweeps", "Official RMA Reports"] },
+      { category: "Frameworks & Drivers", items: ["Flask 3.1", "Gunicorn (8 Threads)", "lgpio (RP1)", "gpiozero", "RPi.GPIO", "psutil", "SQLite (WAL Mode)"] },
+      { category: "Hardware & Protocols", items: ["Raspberry Pi 5 (RP1)", "Pi 4/3/Zero", "I2C", "SPI", "UART", "PCIe", "MIPI CSI/DSI", "USB", "Ethernet", "Wi-Fi", "Bluetooth"] },
+      { category: "Embedded Linux & QA", items: ["Raspberry Pi OS (Debian 12/13)", "Systemd Service", "Gunicorn", "vcgencmd", "Parametric Sweeps", "Official RMA Reports"] },
     ],
     results: [
       {
-        metric: "19 Vectors",
-        label: "Subsystem Coverage",
-        description: "Automated sweeps across ARM compute cores, PMIC power rails, block storage, and RF transceivers.",
+        metric: "19",
+        label: "Diagnostic Vectors",
+        description: "Automated checks across the platform, ports, radios, storage, compute and power.",
       },
       {
-        metric: "100%",
-        label: "Electrical Safety",
-        description: "Zero component burnout achieved across production test cycles via forensic pull-up probing and strict resource release.",
+        metric: "4",
+        label: "Run Phases",
+        description: "Network tests run apart from the storage tests, and the power audit runs alone, so neither distorts the other.",
       },
       {
-        metric: "< 45MB",
-        label: "RAM Footprint",
-        description: "Ultra-low memory utilization on embedded ARM targets with < 1.5% CPU load via zero-dependency custom SPA engine.",
+        metric: "180s",
+        label: "Per-Test Ceiling",
+        description: "A hung test is reported as failed and releases the hardware lock instead of freezing the run.",
       },
     ],
     screens: [
       {
         id: "triage-console",
         title: "Automated Triage Sweeps",
-        description: "Real-time diagnostic terminal executing comprehensive compute stress, thermal tracking, PMIC rail integrity, and GPIO loopback sweeps in under 60 seconds.",
+        description: "Real-time diagnostic terminal executing comprehensive compute stress, thermal tracking, PMIC rail integrity, and GPIO pin probing.",
         imageSrc: "/images/projects/raspberry-pi-diagnostics/cover.webp",
       },
       {
         id: "silicon-telemetry",
-        title: "Thermal & PMIC Telemetry",
-        description: "Live silicon temperature tracking, CPU clock frequency throttling detection, and voltage rail stability validation across Raspberry Pi 5 and 4 boards.",
+        title: "Thermal & Power Telemetry",
+        description: "Live temperature tracking, throttling detection and an under-voltage check with a short all-core stress, across Raspberry Pi boards.",
         imageSrc: "/images/projects/raspberry-pi-diagnostics/hardware/pi-5.jpg",
       },
       {
@@ -275,8 +275,8 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
       },
       {
         id: "tamper-evident-cert",
-        title: "SHA-256 Validation Certificate",
-        description: "Automated generation of tamper-evident inspection certificates with cryptographic checksums, hardware serial verification, and printable customer reports.",
+        title: "Signed Validation Certificate",
+        description: "Printable inspection certificates with a reference ID, unit serial, pin-level fault isolation and an HMAC-SHA256 seal over the stored results.",
         imageSrc: "/images/projects/raspberry-pi-diagnostics/cover.webp",
       },
     ],
@@ -381,7 +381,7 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
       {
         metric: "99.6%",
         label: "TDS Precision",
-        description: "30-point median filter demonstrated 99.6% measurement accuracy across standard 100–1,000 ppm range.",
+        description: "Mean accuracy against a calibrated TDS meter across four standard solutions, from about 230 to 900 ppm.",
       },
       {
         metric: "> 94%",
@@ -392,113 +392,6 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
         metric: "Vol. 18(1)",
         label: "IJIE Journal",
         description: "Published research paper: pp. 186–201, International Journal of Integrated Engineering (2026). DOI: 10.30880/ijie.2026.18.01.014.",
-      },
-    ],
-  },
-  "esp32-heart-saver": {
-    id: "esp32-heart-saver",
-    title: "ESP32 Heart Saver",
-    eyebrow: "Embedded IoT · Autonomous Biometrics",
-    tagline: "Wearable optical pulse telemetry, real-time GPS coordinate fix, and SIM800L GSM cellular emergency dispatch.",
-    heroMetric: "> 90 BPM",
-    heroMetricLabel: "Automatic Distress Trigger",
-    imageSrc: "",
-    placeholderLabel: "esp32-heart-saver",
-    placeholderRatio: "16:10 Telemetry & Architecture Dashboard (1920×1200)",
-    timeframe: "Prototype & Field Firmware",
-    role: "Embedded Systems Developer",
-    organization: "Independent Engineering",
-    githubUrl: "https://github.com/sritulasiram/esp32-heart-saver",
-    githubLabel: "View the repo on GitHub",
-    background: {
-      problemStatement:
-        "Cardiac emergencies and acute tachycardiac events require immediate medical attention, but victims often lose consciousness before they can call emergency services or provide precise location coordinates.",
-      context:
-        "Engineered an autonomous wearable telemetry prototype integrating analog optical photoplethysmography, satellite geolocation, and direct cellular radio transmission into a unified FreeRTOS event loop.",
-      challenges: [
-        "Filtering high-frequency motion artifacts from raw optical analog pulse signals on GPIO 36",
-        "Stabilizing the SIM800L power rail against 2A transmission burst voltage dips that induce ESP32 brownouts",
-        "Ensuring reliable NMEA GPS coordinate acquisition without blocking the core sensor sampling loop",
-        "Implementing instant tactile SOS overrides with debounced hardware interrupt handling",
-      ],
-    },
-    architecture: {
-      summary:
-        "Built around an ESP32 38-pin microcontroller executing a non-blocking FreeRTOS state loop that arbitrates optical pulse ADC sampling, NMEA GPS sentence parsing via SoftwareSerial, and AT command dispatch to a SIM800L GSM transceiver over hardware UART2.",
-      components: [
-        {
-          title: "Optical Pulse Sensor ADC (GPIO 36)",
-          description:
-            "Direct analog signal acquisition on low-noise ADC1 channel with software threshold analysis for reliable peak detection and real-time BPM calculation.",
-        },
-        {
-          title: "NEO-6M GPS Receiver (9600 Baud)",
-          description:
-            "SoftwareSerial NMEA sentence parser on RX:14 / TX:15 continuously maintaining current latitude and longitude coordinate fix.",
-        },
-        {
-          title: "SIM800L Cellular Dispatcher (UART2)",
-          description:
-            "Hardware serial transceiver handling automated AT-command SMS composition, broadcasting precise GPS coordinates and heart rate telemetry to emergency contacts.",
-        },
-        {
-          title: "Isolated 3.7V–4.2V Power Delivery",
-          description:
-            "Dedicated high-discharge LiPo power rail with capacitive filtering designed to supply 2A instantaneous current spikes during GSM cellular bursts without triggering MCU brownout resets.",
-        },
-      ],
-    },
-    keyFeatures: [
-      {
-        title: "Automated Threshold Distress Trigger",
-        description:
-          "Continuously evaluates optical pulse readings and automatically initiates emergency dispatch sequence if heart rate exceeds 90 BPM.",
-        badge: "Biometric Core",
-      },
-      {
-        title: "Hardware Tactile SOS Override",
-        description:
-          "Debounced tactile pushbutton on GPIO 4 allowing immediate manual distress alert activation regardless of sensor state.",
-        badge: "Safety Override",
-      },
-      {
-        title: "Live GPS Geolocation Payload",
-        description:
-          "Packages live satellite coordinates into standardized SMS message payloads with direct Google Maps navigation links.",
-        badge: "Geolocation",
-      },
-      {
-        title: "Isolated High-Current Power Rail",
-        description:
-          "Decoupled 3.7V–4.2V power management preventing GSM transmission surges from destabilizing the core microcontroller.",
-        badge: "Hardware Power",
-      },
-    ],
-    techStack: [
-      { category: "Microcontroller & Firmware", items: ["ESP32 38-Pin MCU", "C++ / Arduino Core", "FreeRTOS Event Loop", "Hardware Interrupts"] },
-      { category: "Sensors & Geolocation", items: ["Optical Pulse Sensor", "NEO-6M GPS Module", "SoftwareSerial (9600 Baud)", "NMEA TinyGPS++"] },
-      { category: "Wireless & Power Rail", items: ["SIM800L GSM/GPRS", "UART2 (RX:16, TX:17)", "AT Command Engine", "3.7V–4.2V 2A Peak LiPo Rail"] },
-    ],
-    results: [
-      {
-        metric: "< 15s",
-        label: "Emergency Dispatch Latency",
-        description: "From critical pulse rate detection to outgoing SMS cellular transmission dispatch.",
-      },
-      {
-        metric: "±2.5m",
-        label: "Outdoor GPS Fix Accuracy",
-        description: "Satellite lock precision providing accurate rescue coordinates via NEO-6M receiver.",
-      },
-      {
-        metric: "0 Brownouts",
-        label: "Peak Current Isolation",
-        description: "Dedicated 3.7V–4.2V isolated rail delivering 2A GSM burst transmission spikes safely.",
-      },
-      {
-        metric: "100%",
-        label: "Tactile SOS Reliability",
-        description: "Debounced GPIO 4 hardware interrupt guaranteeing immediate dispatch on demand.",
       },
     ],
   },
@@ -521,7 +414,7 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
       problemStatement:
         "Building a reliable, daily-driver Hackintosh on a high-performance gaming laptop has historically been plagued by severe community fragmentation. Critical ACPI patches, kernel quirks, and UEFI configs are dispersed across unvetted forum threads, outdated blog posts, and buried GitHub repositories. Simultaneously, low-level drivers and kexts are maintained in silos without centralized coordination, leading to frequent kernel panics, broken sleep/wake states, non-functioning multi-touch trackpads, and severe idle battery drain and heat from unsupported discrete GPUs on muxless laptops.",
       context:
-        "The objective was to synthesize this fragmented landscape into a deterministic, community-tested OpenCore EFI distribution for the ASUS ROG Strix GL503GE laptop (Intel Core i7-8750H, Intel UHD Graphics 630). By decompiling raw DSDTs and writing modular ACPI SSDT tables, the project established verified hardware compatibility, native CPU frequency scaling, dGPU power-gating, and reliable S3 sleep/wake across macOS Sonoma (14.x), Sequoia (15.x), and Tahoe (16.x).",
+        "The objective was to synthesize this fragmented landscape into a deterministic, community-tested OpenCore EFI distribution for the ASUS ROG Strix GL503GE laptop (Intel Core i7-8750H, Intel UHD Graphics 630). By decompiling raw DSDTs and writing modular ACPI SSDT tables, the project established verified hardware compatibility, native CPU frequency scaling, dGPU power-gating, and reliable S3 sleep/wake across macOS Sonoma (14.x), Sequoia (15.x), and Tahoe (26.x).",
       challenges: [
         "Power-gating the unsupported discrete NVIDIA GeForce GTX 1050 Ti Mobile via SSDT-Disable_GPU_PEG0.aml to save battery power and prevent heat",
         "Achieving reliable S3 sleep and wake via SSDT-GPRW and fix_sleep_pmset.sh to eliminate wake crashes and instant waking",
@@ -589,7 +482,7 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
       {
         title: "macOS Sonoma, Sequoia & Tahoe Support",
         description:
-          "Thoroughly tested and verified across three major macOS generations (14.x Sonoma, 15.x Sequoia, and 16.x Tahoe) on BIOS version 319.",
+          "Thoroughly tested and verified across three major macOS generations (14.x Sonoma, 15.x Sequoia, and 26.x Tahoe) on BIOS version 319.",
         badge: "OS Compatibility",
       },
       {
@@ -832,7 +725,7 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
         id: "screen-rog-center-dash",
         title: "Native Systems Stage",
         description:
-          "Pure Swift 3-column dashboard reading live AppleSMC TC0P silicon thermals (64°C, 36% headroom), dual fan speed (2,448 RPM), 97% battery health, and 12.4W live power draw.",
+          "Pure Swift dashboard reading live AppleSMC TC0P silicon thermals (71°C, 29% headroom), dual fan speed (about 2,566 RPM), 99% battery health, and 11.3W live power draw.",
         imageSrc: "/images/projects/rog-gaming-center/app.png",
         badge: "SwiftUI App",
       },
@@ -856,14 +749,14 @@ PROJECT_DETAILS["cytron-hr-assistive-intelligence"] = {
   organization: "Cytron Technologies",
   background: {
     problemStatement:
-      "Employees need quick, reliable answers to HR questions, but the answers live in long documents that few people read end to end. A general-purpose chatbot is fast but can invent rules, which is unacceptable for HR guidance.",
+      "Cytron has a single HR person, and every employee question about policy arrives by chat or email. Answering them draws time away from productive HR work, and the documents behind the answers are confidential, so they cannot simply be placed in a public AI chat.",
     context:
-      "The assistant answers only from the organisation's official HR documents. Every statement carries a numbered citation that opens the source excerpt, and a question the documents don't cover returns a fixed 'not found' reply that points to HR, without ever calling the language model.",
+      "The assistant is designed to be modular when documentation changes, private, and as accurate as possible. It answers only from the organisation's official HR documents, every statement carries a numbered citation, and a question the documents don't cover returns a fixed 'not found' reply that points to HR without calling the language model.",
     challenges: [
-      "Preventing confident-sounding answers to questions the documents do not cover",
-      "Reading source documents whose content sits in floating text boxes and tables that common parsers skip",
+      "Taking routine policy questions off a single HR person's chat and inbox",
+      "Using confidential HR documents without placing them in a public AI chat",
       "Keeping answers current as documents change, without re-embedding everything or leaving a half-built index",
-      "Measuring whether a change to chunking, thresholds or models actually improved retrieval",
+      "Preventing confident-sounding answers to questions the documents do not cover, and measuring whether retrieval improves",
     ],
   },
   architecture: {
@@ -932,7 +825,7 @@ PROJECT_DETAILS["cytron-hr-assistive-intelligence"] = {
   ],
   techStack: [
     { category: "Backend & Retrieval", items: ["Python", "FastAPI", "ChromaDB", "SQLite", "Server-Sent Events"] },
-    { category: "AI Providers", items: ["Google Gemini", "OpenAI", "Embeddings", "Reranking", "Fallback models"] },
+    { category: "AI Providers", items: ["Google Gemini", "OpenAI", "Embeddings", "Optional reranking", "Fallback models"] },
     { category: "Interface", items: ["React 18", "Vite", "Tailwind CSS", "Markdown rendering", "Citation viewer"] },
   ],
   results: [

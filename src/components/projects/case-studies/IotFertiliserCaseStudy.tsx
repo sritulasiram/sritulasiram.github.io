@@ -1,31 +1,13 @@
-"use client";
-
-import { useState } from "react";
+import { LINK, PILL } from "@/components/ui/Button";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowUpRight,
-  Calendar,
-  Building2,
-  UserCheck,
-  Code2,
-  BookOpen,
-  FileText,
-  ExternalLink,
-  Cpu,
-  Layers,
-  Activity,
-  Check,
-  Copy,
-  Zap,
-  Droplets,
-  Gauge,
-  ShieldCheck,
-  Scale,
-  Clock,
-} from "lucide-react";
-import ProjectCtaIcon from "@/components/shared/ProjectCtaIcon";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import CaseStudyBreadcrumb from "@/components/shared/CaseStudyBreadcrumb";
+import CountUp from "@/components/shared/CountUp";
+import Reveal from "@/components/shared/Reveal";
+import CopyCitation from "@/components/projects/CopyCitation";
+import IotFigureTabs from "@/components/projects/IotFigureTabs";
+import { projectThemeStyle } from "@/data/projectTheme";
 import type { CaseStudy, ProjectItem } from "@/types";
 
 interface Props {
@@ -33,50 +15,17 @@ interface Props {
   nextProject: ProjectItem;
 }
 
-const NEXT_PROJECT_ACCENT: Record<string, { bg: string; hoverBg: string; textHover: string }> = {
-  "warranty-rma": {
-    bg: "bg-[#0071E3]",
-    hoverBg: "hover:bg-[#0077ED]",
-    textHover: "group-hover:text-[#0071E3] dark:group-hover:text-[#2997FF]",
-  },
-  "cytron-rma": {
-    bg: "bg-[#0071E3]",
-    hoverBg: "hover:bg-[#0077ED]",
-    textHover: "group-hover:text-[#0071E3] dark:group-hover:text-[#2997FF]",
-  },
-  "raspberry-pi-diagnostics": {
-    bg: "bg-[#C51A4A]",
-    hoverBg: "hover:bg-[#B01440]",
-    textHover: "group-hover:text-[#C51A4A] dark:group-hover:text-[#FF375F]",
-  },
-  "iot-fertiliser-mixing": {
-    bg: "bg-emerald-600",
-    hoverBg: "hover:bg-emerald-700",
-    textHover: "group-hover:text-emerald-600 dark:group-hover:text-emerald-400",
-  },
-  "esp32-heart-saver": {
-    bg: "bg-[#FF453A]",
-    hoverBg: "hover:bg-[#E0382E]",
-    textHover: "group-hover:text-[#FF453A] dark:group-hover:text-[#FF6961]",
-  },
-  "opencore-efi-hackintosh": {
-    bg: "bg-[#5E5CE6]",
-    hoverBg: "hover:bg-[#4F4CD7]",
-    textHover: "group-hover:text-[#5E5CE6] dark:group-hover:text-[#7D7AFF]",
-  },
-  "opencore-efi-gl503ge": {
-    bg: "bg-[#5E5CE6]",
-    hoverBg: "hover:bg-[#4F4CD7]",
-    textHover: "group-hover:text-[#5E5CE6] dark:group-hover:text-[#7D7AFF]",
-  },
-  "rog-gaming-center": {
-    bg: "bg-[#FF453A]",
-    hoverBg: "hover:bg-[#E0382E]",
-    textHover: "group-hover:text-[#FF453A] dark:group-hover:text-[#FF6961]",
-  },
-};
+const GRAY = "text-[#68686D] dark:text-[#A1A1A6]";
+const INK = "text-[#1D1D1F] dark:text-[#F5F5F7]";
+const WRAP = "max-w-5xl mx-auto w-full px-6 sm:px-8";
+const PANEL =
+  "rounded-[28px] bg-[var(--pa-tint)] p-6 sm:p-10 min-h-[320px] flex flex-col justify-center";
+const ROW = "flex items-center gap-3 rounded-2xl bg-[#FFFFFF] dark:bg-[#232326] px-4 py-3.5 shadow-xs";
 
-const BIBTEX_CITATION = `@article{rajalingam2026iot,
+const DOI = "https://doi.org/10.30880/ijie.2026.18.01.014";
+const PUBLISHER = "https://publisher.uthm.edu.my/ojs/index.php/ijie/article/view/24386";
+
+const BIBTEX = `@article{rajalingam2026iot,
   title     = {IoT-Based Fertiliser Mixing for Precision Farming},
   author    = {Rajalingam, Sri Tulasi Ram and Nadzri, Muhammad Muzakkir Mohd and Ahmad, Afandi and Ishak, Mohamad Khairi},
   journal   = {International Journal of Integrated Engineering},
@@ -89,806 +38,524 @@ const BIBTEX_CITATION = `@article{rajalingam2026iot,
   url       = {https://doi.org/10.30880/ijie.2026.18.01.014}
 }`;
 
-export default function IotFertiliserCaseStudy({ project, nextProject }: Props) {
-  const [copiedCitation, setCopiedCitation] = useState(false);
+const IMG = "/images/projects/iot-fertiliser-mixing";
 
-  const nextAccent = NEXT_PROJECT_ACCENT[nextProject.id] || {
-    bg: "bg-emerald-600",
-    hoverBg: "hover:bg-emerald-700",
-    textHover: "group-hover:text-emerald-600 dark:group-hover:text-emerald-400",
-  };
+/* ---------- Chapter visuals ---------- */
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(BIBTEX_CITATION);
-    setCopiedCitation(true);
-    setTimeout(() => setCopiedCitation(false), 2200);
-  };
+function EquationVisual() {
+  return (
+    <div className="rounded-2xl bg-[#FFFFFF] dark:bg-[#232326] p-6 shadow-xs space-y-5">
+      <div className="flex items-center justify-between gap-4">
+        <p className={`text-xs font-semibold ${GRAY}`}>Equation (1) · IJIE 2026, p. 191</p>
+        <span className="rounded-full bg-[var(--pa-soft)] px-3 py-1 text-xs font-semibold text-[var(--pa)]">Median-filtered</span>
+      </div>
+      <div className="overflow-x-auto py-1 text-center" role="img" aria-label="TDS equals the fraction 133.42 V cubed minus 255.86 V squared plus 857.39 V over 2, times F.">
+        <p className={`whitespace-nowrap font-mono text-[13px] ${INK}`} aria-hidden="true">
+          TDS ={" "}
+          <span className="inline-block align-middle text-left">
+            <span className="block border-b border-black/20 dark:border-white/20 pb-1">133.42V³ − 255.86V² + 857.39V</span>
+            <span className="block pt-1 text-center">2</span>
+          </span>{" "}
+          · F
+        </p>
+      </div>
+      <dl className={`space-y-2 border-t border-black/[0.06] dark:border-white/10 pt-4 text-xs leading-relaxed ${GRAY}`}>
+        <div>
+          <dt className={`inline font-semibold ${INK}`}>V, compensated voltage. </dt>
+          <dd className="inline">The voltage from the TDS sensor, after median filtering.</dd>
+        </div>
+        <div>
+          <dt className={`inline font-semibold ${INK}`}>F, calibration factor. </dt>
+          <dd className="inline">Set against a standard solution at a fixed ppm before each evaluation.</dd>
+        </div>
+      </dl>
+    </div>
+  );
+}
+
+function PhasesVisual() {
+  const phases = [
+    { name: "Boot & cloud handshake", note: "Wi-Fi, Blynk token, safe-low GPIO, ISRs" },
+    { name: "40 ms ADC sampling", note: "Circular buffer, 30-sample median" },
+    { name: "Atomic flow metering", note: "Solenoids and pumps run on command" },
+    { name: "Independent pump cut-off", note: "Each pump stops at its own target" },
+  ];
+  return (
+    <ol className="space-y-3">
+      {phases.map((phase, i) => (
+        <li key={phase.name} className={ROW}>
+          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--pa-soft)] text-xs font-semibold text-[var(--pa)]">
+            {i + 1}
+          </span>
+          <span className="min-w-0">
+            <span className={`block text-sm font-semibold ${INK}`}>{phase.name}</span>
+            <span className={`block text-xs ${GRAY}`}>{phase.note}</span>
+          </span>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+function DosingVisual() {
+  const rows = [
+    { name: "Flow sensors", pins: "GPIO 18 & 19", note: "5.25 and 5.50 ml per pulse" },
+    { name: "Dosing pumps", pins: "GPIO 16 & 17", note: "Switched off independently" },
+    { name: "Anti-backflow solenoids", pins: "GPIO 22 & 23", note: "Close with the pumps" },
+  ];
+  return (
+    <ul className="space-y-3">
+      {rows.map((row) => (
+        <li key={row.name} className={`${ROW} justify-between`}>
+          <span className="min-w-0">
+            <span className={`block text-sm font-semibold ${INK}`}>{row.name}</span>
+            <span className={`block text-xs ${GRAY}`}>{row.note}</span>
+          </span>
+          <span className="shrink-0 font-mono text-xs font-semibold text-[var(--pa)]">{row.pins}</span>
+        </li>
+      ))}
+      <li className={`text-xs ${GRAY} pt-1`}>Pulse counts are read inside atomic guards, so a multi-byte count is never torn.</li>
+    </ul>
+  );
+}
+
+const CHAPTERS: { problem: string; headline: string; body: string; visual: React.ReactNode }[] = [
+  {
+    problem: "A blocking delay stalls the board.",
+    headline: "It never stops listening.",
+    body: "Long dispensing cycles used to trip the watchdog timer and drop the connection. Version 1.1.0 swaps blocking delays for an asynchronous state machine, so the Blynk heartbeat keeps running while it samples.",
+    visual: <PhasesVisual />,
+  },
+  {
+    problem: "Pumps that overshoot.",
+    headline: "Each pump stops on its own.",
+    body: "Hardware interrupts count pulses from each flow sensor and switch its pump off the moment its target volume is reached. There is no volumetric overshoot, and the solenoids close with the pumps.",
+    visual: <DosingVisual />,
+  },
+  {
+    problem: "A noisy electrode.",
+    headline: "Thirty samples, one clean reading.",
+    body: "Pump motors spike the analog line. A circular buffer collects a sample every 40 ms, and a 30-sample running median strips the spikes before a third-order polynomial turns voltage into ppm.",
+    visual: <EquationVisual />,
+  },
+];
+
+/* ---------- Figures ---------- */
+
+const FIGURES = [
+  {
+    id: "architecture",
+    label: "Architecture",
+    title: "Three processes, one closed loop.",
+    description:
+      "Real-time monitoring, fertiliser mixing and the user interface, joined around a NodeMCU ESP32 that reads the sensors and drives the pumps and valves.",
+    src: `${IMG}/fig-1-system-overview.png`,
+    alt: "Overall IoT-based fertiliser mixing system processes: Real-Time Monitoring, Fertiliser Mixing System, and User-End Experience",
+    width: 1408,
+    height: 779,
+  },
+  {
+    id: "circuit",
+    label: "Circuit",
+    title: "The full wiring, on one page.",
+    description:
+      "The ESP32 expansion board, relay modules, an AC-to-12 V power supply, the TDS and water-level sensors, flow sensors, pumps and solenoid valves.",
+    src: `${IMG}/fig-3-circuit-design.png`,
+    alt: "Circuit design diagram showing full ESP32 wiring schematic, relay modules, buck converter, and sensors",
+    width: 1211,
+    height: 730,
+  },
+  {
+    id: "firmware",
+    label: "Firmware",
+    title: "A flowchart of the loop.",
+    description: "The decisions and operations of the code, from reading the sensors to acting on a command from the Blynk app.",
+    src: `${IMG}/fig-4-firmware-flowchart.png`,
+    alt: "Process flow of the prototype code implementation flowchart",
+    width: 1340,
+    height: 1001,
+    narrow: true,
+  },
+];
+
+/* ---------- Experiments ---------- */
+
+interface Experiment {
+  kicker: string;
+  lead: string;
+  result: string;
+  body: string;
+  images: { src: string; alt: string; width: number; height: number }[];
+  stats: { value: string; label: string; note: string; accent?: boolean }[];
+  note: string;
+}
+
+const EXPERIMENTS: Experiment[] = [
+  {
+    kicker: "Test 1 of 5",
+    lead: "TDS accuracy.",
+    result: "99.6% across four concentrations.",
+    body: "The TDS sensor against a calibrated TDS meter, at four solution strengths made by diluting a 900 ppm fertiliser AB solution. Each was measured three times.",
+    images: [
+      {
+        src: `${IMG}/fig-5-tds-test-setup.jpg`,
+        alt: "Accuracy test setup of the TDS sensor using 4 solution concentrations",
+        width: 1216,
+        height: 693,
+      },
+      {
+        src: `${IMG}/fig-6-tds-accuracy-chart.png`,
+        alt: "Graph of TDS sensor accuracy comparing sensor readings with calibrated meter",
+        width: 1463,
+        height: 870,
+      },
+    ],
+    stats: [
+      { value: "99.56%", label: "896.0 vs 898 ppm", note: "Concentrated, 900 ppm" },
+      { value: "99.90%", label: "666.7 vs 666 ppm", note: "First dilution" },
+      { value: "99.93%", label: "458.3 vs 458 ppm", note: "Second dilution" },
+      { value: "99.01%", label: "232.7 vs 235 ppm", note: "Third dilution" },
+    ],
+    note: "Mean accuracy of 99.60% across all four, with a maximum deviation of 4.0 ppm.",
+  },
+  {
+    kicker: "Test 2 of 5",
+    lead: "Calibration stability.",
+    result: "Seven days, under 2% drift.",
+    body: "A mineral-water reference labelled 258 ppm, measured at the same time every day for seven days and compared with the initial calibration value.",
+    images: [
+      {
+        src: `${IMG}/fig-7-blynk-calibration-setup.jpg`,
+        alt: "Setup for TDS calibration stability test with 258 ppm reference solution and Blynk IoT monitoring",
+        width: 991,
+        height: 468,
+      },
+      {
+        src: `${IMG}/fig-8-tds-stability-chart.png`,
+        alt: "Graph of TDS sensor reading stability over a 7-day monitoring period",
+        width: 1463,
+        height: 660,
+      },
+    ],
+    stats: [
+      { value: "256.4 ppm", label: "7-day mean reading", note: "Reference standard: 258.0 ppm" },
+      { value: "1.94%", label: "Maximum drift", note: "Observed on day 2, at 253 ppm" },
+      { value: "0.00%", label: "Drift on day 6", note: "An exact match with the initial calibration" },
+    ],
+    note: "Readings stayed within 2% of the initial 258 ppm calibration for the whole week.",
+  },
+  {
+    kicker: "Test 3 of 5",
+    lead: "Flow precision.",
+    result: "94% or better at every volume.",
+    body: "Both flow sensors across four target volumes, 250, 500, 750 and 1,000 ml. Tap water stood in for fertiliser, and each dose was checked in a calibrated container, three times.",
+    images: [
+      {
+        src: `${IMG}/fig-9-flow-sensor-testbench.jpg`,
+        alt: "Test-bench configuration for flow rate evaluation of dual sensors",
+        width: 1280,
+        height: 678,
+      },
+    ],
+    stats: [
+      {
+        value: "97.18%",
+        label: "Flow sensor 1, mean precision",
+        note: "235.0 ml at 250 (94.00%) · 478.3 at 500 (95.66%) · 746.6 at 750 (99.54%) · 995.0 at 1,000 (99.50%)",
+      },
+      {
+        value: "97.90%",
+        label: "Flow sensor 2, mean precision",
+        note: "236.7 ml at 250 (94.68%) · 501.7 at 500 (99.66%) · 756.7 at 750 (99.10%) · 1,018.3 at 1,000 (98.17%)",
+      },
+    ],
+    note: "Both sensors reached 94% accuracy or better at every volume tested.",
+  },
+  {
+    kicker: "Test 4 of 5",
+    lead: "Concentration adjustment.",
+    result: "From 103 to 800 ppm, step by step.",
+    body: "Measured amounts of concentrated AB fertiliser, 200, 300, 400 and 500 ml, added in turn to a hydroponic water store and mixed, with the sensor checked against a calibrated meter after each.",
+    images: [
+      {
+        src: `${IMG}/fig-10-hydroponic-rig-dispensing.jpg`,
+        alt: "Fertiliser dispensing process into the hydroponic water storage system",
+        width: 479,
+        height: 626,
+      },
+    ],
+    stats: [
+      { value: "96.00%", label: "103 → 200 ppm", note: "200 ml added · 187 ppm sensor, 192 meter" },
+      { value: "98.75%", label: "192 → 400 ppm", note: "300 ml added · 392 ppm sensor, 395 meter" },
+      { value: "92.83%", label: "395 → 600 ppm", note: "400 ml added · 559 ppm sensor, 557 meter" },
+      { value: "95.50%", label: "557 → 800 ppm", note: "500 ml added · 769 ppm sensor, 764 meter" },
+    ],
+    note: "Between 92.83% and 98.75% of the target at every step. The readings rose almost linearly with each addition.",
+  },
+  {
+    kicker: "Test 5 of 5",
+    lead: "Response time.",
+    result: "22.17 seconds, tap to delivery.",
+    body: "From a command in the Blynk app to the system acting on it, timed with a stopwatch over three trials per action.",
+    images: [
+      {
+        src: `${IMG}/fig-11-response-time-stopwatch.jpg`,
+        alt: "Dispensing fertiliser AB while recording response time with precision stopwatch",
+        width: 1206,
+        height: 675,
+      },
+    ],
+    stats: [
+      { value: "10.85s", label: "Solenoid valves open", note: "Average of three trials" },
+      { value: "1.07s", label: "Pump activation", note: "Average of three trials" },
+      { value: "10.79s", label: "Fertiliser dispensed", note: "Average of three trials" },
+      { value: "22.17s", label: "Total response time", note: "From the command being issued", accent: true },
+    ],
+    note: "A slight delay shows up during dispensing, but the system reacts quickly to user commands.",
+  },
+];
+
+function ExperimentBlock({ experiment, index }: { experiment: Experiment; index: number }) {
+  const { images, stats } = experiment;
+  const single = images.length === 1;
+  const portrait = single && images[0].height > images[0].width;
+  const gridCols = stats.length === 2 ? "sm:grid-cols-2" : stats.length === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2 lg:grid-cols-4";
 
   return (
-    <div className="space-y-20 sm:space-y-28 selection:bg-emerald-500/20 selection:text-emerald-950 dark:selection:text-emerald-100">
-      {/* ========================================================================= */}
-      {/* 1. HERO SECTION & PROTOTYPE SHOWCASE                                      */}
-      {/* ========================================================================= */}
-      <section className="pt-24 sm:pt-28 px-6 sm:px-8 max-w-5xl mx-auto w-full">
-        <CaseStudyBreadcrumb title="IoT Fertiliser Mixing" />
+    <div className={`${WRAP} py-14 sm:py-20`}>
+      <Reveal>
+        <p className="text-sm font-semibold text-[var(--pa)]">{experiment.kicker}</p>
+        <h3 className="mt-2 max-w-3xl text-3xl sm:text-5xl font-semibold tracking-apple-hero leading-[1.08]">
+          <span className={`block ${GRAY}`}>{experiment.lead}</span>
+          <span className={`block ${INK}`}>{experiment.result}</span>
+        </h3>
+        <p className={`mt-5 max-w-2xl text-base sm:text-lg ${GRAY} leading-relaxed`}>{experiment.body}</p>
+      </Reveal>
 
-        <div className="space-y-5 max-w-4xl">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11px] font-semibold uppercase tracking-wider text-emerald-800 dark:text-emerald-300 bg-emerald-100/80 dark:bg-emerald-950/60 border border-emerald-300/60 dark:border-emerald-800/60">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            Peer-Reviewed Journal Publication · IJIE Vol. 18(1), 2026
+      <Reveal delay={100}>
+        <div
+          className={`mt-10 rounded-[28px] bg-[var(--pa-tint)] p-4 sm:p-8 ${
+            single ? "flex justify-center" : "grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 items-center"
+          }`}
+        >
+          {images.map((img) => (
+            <Image
+              key={img.src}
+              src={img.src}
+              alt={img.alt}
+              width={img.width}
+              height={img.height}
+              priority={index === 0}
+              sizes={single ? (portrait ? "(max-width: 768px) 80vw, 360px" : "(max-width: 1024px) 100vw, 880px") : "(max-width: 768px) 100vw, 480px"}
+              className={`h-auto rounded-2xl dark:brightness-[0.93] dark:contrast-[1.02] ${
+                single ? (portrait ? "w-full max-w-xs sm:max-w-sm" : "w-full max-w-4xl") : "w-full"
+              }`}
+            />
+          ))}
+        </div>
+      </Reveal>
+
+      <dl className={`mt-10 grid grid-cols-1 gap-x-8 gap-y-8 ${gridCols}`}>
+        {stats.map((stat, i) => (
+          <Reveal key={stat.label} delay={i * 70}>
+            <dd className={`text-4xl sm:text-5xl font-semibold tracking-apple-hero tabular-nums ${stat.accent ? "text-[var(--pa)]" : INK}`}>
+              {stat.value}
+            </dd>
+            <dt className={`mt-2 text-sm font-semibold ${INK}`}>{stat.label}</dt>
+            <dd className={`mt-1 text-sm leading-relaxed ${GRAY}`}>{stat.note}</dd>
+          </Reveal>
+        ))}
+      </dl>
+      <p className={`mt-8 max-w-2xl text-[15px] leading-relaxed ${GRAY}`}>{experiment.note}</p>
+    </div>
+  );
+}
+
+export default function IotFertiliserCaseStudy({ project, nextProject }: Props) {
+  return (
+    <div className="project-theme selection:bg-emerald-500/20" style={projectThemeStyle(project.id)}>
+      {/* 1. Hero */}
+      {/* White in light mode so the photo, which has a white background, blends in. */}
+      <section className="bg-white dark:bg-[var(--pa-tint)] overflow-hidden">
+        <div className={`${WRAP} pt-24 sm:pt-28 text-center`}>
+          <div className="flex justify-center">
+            <CaseStudyBreadcrumb title="IoT Fertiliser Mixing" />
           </div>
-
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.08]">
-            {project.title}
+          <p className="mt-4 text-sm font-semibold text-[var(--pa)]">
+            Peer-reviewed · IJIE Vol. 18(1), 2026
+          </p>
+          <h1 className={`mt-3 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold ${INK} tracking-apple-hero leading-[1.03]`}>
+            Nutrients, <span className="whitespace-nowrap">to the millilitre.</span>
           </h1>
-
-          <p className="text-xl sm:text-2xl text-[#6E6E73] dark:text-[#A1A1A6] font-normal leading-relaxed tracking-apple-subhead">
+          <p className={`mt-5 mx-auto max-w-2xl text-lg sm:text-xl ${GRAY} leading-relaxed tracking-apple-subhead`}>
             {project.tagline}
           </p>
-
-          <div className="pt-2 flex flex-wrap items-center gap-3">
-            <a
-              href="https://doi.org/10.30880/ijie.2026.18.01.014"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="View official journal paper on IJIE via DOI (opens in a new tab)"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/50 hover:bg-emerald-200 dark:hover:bg-emerald-900/60 border border-emerald-300/60 dark:border-emerald-800/60 transition-all duration-200 group shadow-2xs min-h-[44px] focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-hidden"
-            >
-              <BookOpen className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400" />
-              <span>Read Published Journal (DOI: 10.30880)</span>
-              <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-emerald-700 dark:text-emerald-400" />
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
+            <a href={DOI} target="_blank" rel="noopener noreferrer" aria-label="Read the paper on IJIE via DOI (opens in a new tab)" className={PILL}>
+              Read the paper
+              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
             </a>
-
             {project.githubUrl && (
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="View firmware repository on GitHub (opens in a new tab)"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] bg-[#F5F5F7] dark:bg-[#1C1C1E] hover:bg-[#E5E5EA] dark:hover:bg-[#2C2C2E] border border-black/5 dark:border-white/10 transition-all duration-200 group shadow-2xs min-h-[44px] focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-hidden"
-              >
-                <Code2 className="w-3.5 h-3.5 text-[#6E6E73] dark:text-[#A1A1A6]" />
-                <span>Firmware Repository (v1.1.0)</span>
-                <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-[#6E6E73] dark:text-[#A1A1A6]" />
+              <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" aria-label="View the firmware on GitHub (opens in a new tab)" className={LINK}>
+                View the firmware
+                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
               </a>
             )}
           </div>
-        </div>
-
-        {/* Project Meta Details (Clean Typography, No Divider Line) */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 mt-10">
-          <div className="space-y-1">
-            <p className="text-[11px] uppercase tracking-wider text-[#6E6E73] dark:text-[#86868B] font-semibold flex items-center gap-1.5">
-              <Building2 className="w-3.5 h-3.5" /> Institution
-            </p>
-            <p className="text-sm font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">UTHM (Malaysia)</p>
-          </div>
-
-          <div className="space-y-1">
-            <p className="text-[11px] uppercase tracking-wider text-[#6E6E73] dark:text-[#86868B] font-semibold flex items-center gap-1.5">
-              <UserCheck className="w-3.5 h-3.5" /> Authorship
-            </p>
-            <p className="text-sm font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">First &amp; Lead Author</p>
-          </div>
-
-          <div className="space-y-1">
-            <p className="text-[11px] uppercase tracking-wider text-[#6E6E73] dark:text-[#86868B] font-semibold flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5" /> Citation Volume
-            </p>
-            <p className="text-sm font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">Vol. 18(1), pp. 186–201</p>
-          </div>
-
-          <div className="space-y-1">
-            <p className="text-[11px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1.5">
-              <FileText className="w-3.5 h-3.5" /> Journal Indexing
-            </p>
-            <p className="text-sm font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">Scopus / MyCite</p>
-          </div>
-        </div>
-
-        {/* Hero Image: Prototype Layout */}
-        <div className="mt-10 sm:mt-12 flex justify-center">
-          <Image
-            src="/images/projects/iot-fertiliser-mixing/fig-2a-prototype-layout.jpg"
-            alt="Prototype layout showing flow sensors, ESP32 expansion board, dual relay modules, and solenoid valves"
-            width={751}
-            height={581}
-            priority
-            sizes="(max-width: 768px) 100vw, 750px"
-            className="w-full max-w-2xl sm:max-w-3xl h-auto rounded-2xl sm:rounded-3xl"
-          />
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 2. AT-A-GLANCE TELEMETRY METRICS (APPLE TYPOGRAPHIC SPEC STYLE)           */}
-      {/* ========================================================================= */}
-      <section className="px-6 sm:px-8 max-w-5xl mx-auto w-full">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12 py-2">
-          <div className="space-y-1">
-            <p className="text-4xl sm:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight tabular-nums">99.60%</p>
-            <p className="text-sm font-medium text-[#1D1D1F] dark:text-[#F5F5F7] pt-1">TDS Sensing Accuracy</p>
-            <p className="text-xs text-[#6E6E73] dark:text-[#86868B]">100–1,000 ppm range</p>
-          </div>
-
-          <div className="space-y-1">
-            <p className="text-4xl sm:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight tabular-nums">&gt; 94%</p>
-            <p className="text-sm font-medium text-[#1D1D1F] dark:text-[#F5F5F7] pt-1">Flow Rate Accuracy</p>
-            <p className="text-xs text-[#6E6E73] dark:text-[#86868B]">250–1,000 ml range</p>
-          </div>
-
-          <div className="space-y-1">
-            <p className="text-4xl sm:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight tabular-nums">22.17s</p>
-            <p className="text-sm font-medium text-[#1D1D1F] dark:text-[#F5F5F7] pt-1">Mean Response Time</p>
-            <p className="text-xs text-[#6E6E73] dark:text-[#86868B]">Command to delivery</p>
-          </div>
-
-          <div className="space-y-1">
-            <p className="text-4xl sm:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight tabular-nums">92.8%–98.8%</p>
-            <p className="text-sm font-medium text-[#1D1D1F] dark:text-[#F5F5F7] pt-1">Target Achievement</p>
-            <p className="text-xs text-[#6E6E73] dark:text-[#86868B]">Closed-loop reservoir dosing</p>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 3. SYSTEM OVERVIEW SECTION & FIG. 1 SYSTEM DIAGRAM                        */}
-      {/* ========================================================================= */}
-      <section className="px-6 sm:px-8 max-w-5xl mx-auto w-full space-y-8">
-        <div className="space-y-2 max-w-3xl">
-          <h2 className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight">
-            End-to-End Closed-Loop Mixing Architecture
-          </h2>
-          <p className="text-base text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-            The automated system pairs an ESP32 microcontroller with analog TDS and dual-level water sensors, Hall-effect pulse flow meters, dual 12V submersible dosing pumps, and anti-backflow solenoid valves. Together with the Blynk IoT cloud platform, it provides closed-loop precision nutrient dosing and live telemetry for commercial hydroponic agriculture.
-          </p>
-        </div>
-
-        {/* System Overview Diagram */}
-        <div>
-          <Image
-            src="/images/projects/iot-fertiliser-mixing/fig-1-system-overview.png"
-            alt="Overall IoT-based fertiliser mixing system processes: Real-Time Monitoring, Fertiliser Mixing System, and User-End Experience"
-            width={1408}
-            height={779}
-            className="w-full h-auto rounded-2xl sm:rounded-3xl dark:brightness-[0.93] dark:contrast-[1.02]"
-          />
-        </div>
-
-        {/* 3 Core Architectural Pillars */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-2">
-          <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Layer 01</p>
-            <p className="font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] text-base">Submerged Sensing Bus</p>
-            <p className="text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-              Analog TDS probe on ADC1 VP line paired with dual conductive water level sensors and in-line Hall-effect flow turbine meters tracking fluid transfer with microsecond pulse accuracy.
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Layer 02</p>
-            <p className="font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] text-base">Actuation &amp; Silicon Isolation</p>
-            <p className="text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-              Optoisolated 12V relays powering 3 submersible pumps and dual solenoid shutoff valves. Firmware state engine decouples analog reads from Wi-Fi synthesis to protect sensor linearity.
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Layer 03</p>
-            <p className="font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] text-base">Cloud Telemetry Bridge</p>
-            <p className="text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-              Bidirectional Blynk IoT mobile stream managing target volume commands (V1), live dispensed tally (V2), real-time TDS ppm (V3), and multi-threshold reservoir indicators (V4, V5).
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 4. HARDWARE ARCHITECTURE (FIG. 3 SCHEMATIC + CLEAN SPEC LIST)             */}
-      {/* ========================================================================= */}
-      <section className="px-6 sm:px-8 max-w-5xl mx-auto w-full space-y-8">
-        <div className="space-y-2 max-w-3xl">
-          <h2 className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight">
-            Hardware Architecture &amp; Silicon RF Isolation
-          </h2>
-          <p className="text-base text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-            During prototyping, hardware validation revealed that all analog sensors must reside exclusively on <strong>ADC1 (GPIO 32–39)</strong>. Because the ESP32 ADC2 block shares silicon clock routing with the 2.4GHz Wi-Fi RF PLL synthesizer, active packet transmission severely corrupts ADC2 readings. Architecting TDS sampling strictly on GPIO 36 (VP pin) and reservoir water level monitoring on GPIO 34 and 35 guaranteed 100% measurement stability during live cloud synchronization.
-          </p>
-        </div>
-
-        {/* Circuit Design Diagram */}
-        <div>
-          <Image
-            src="/images/projects/iot-fertiliser-mixing/fig-3-circuit-design.png"
-            alt="Circuit design diagram showing full ESP32 wiring schematic, relay modules, buck converter, and sensors"
-            width={1211}
-            height={730}
-            className="w-full h-auto rounded-2xl sm:rounded-3xl dark:brightness-[0.93] dark:contrast-[1.02]"
-          />
-        </div>
-
-        {/* Pin Allocations & Electrical Architecture */}
-        <div className="space-y-4">
-          <p className="text-xs font-semibold uppercase tracking-wider text-[#6E6E73] dark:text-[#86868B]">
-            GPIO Pinout &amp; Electrical Topology
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="space-y-1">
-              <p className="text-sm font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">TDS Sensor</p>
-              <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400">GPIO 36 · ADC1 (VP Pin)</p>
-              <p className="text-xs text-[#6E6E73] dark:text-[#86868B] leading-relaxed">
-                30-point running median circular buffer filtering analog signal for noise-free ppm calculation.
-              </p>
-            </div>
-
-            <div className="space-y-1">
-              <p className="text-sm font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">Dual Water Level Probes</p>
-              <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400">GPIO 34 &amp; 35 · ADC1</p>
-              <p className="text-xs text-[#6E6E73] dark:text-[#86868B] leading-relaxed">
-                Calibrated three-tier threshold detection: Low (≤700), Medium (701–1200), and High (&gt;1200).
-              </p>
-            </div>
-
-            <div className="space-y-1">
-              <p className="text-sm font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">Dual Flow Sensors</p>
-              <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400">GPIO 18 &amp; 19 · IRAM ISRs</p>
-              <p className="text-xs text-[#6E6E73] dark:text-[#86868B] leading-relaxed">
-                Hardware interrupt routines with atomic pulse reads (5.25 ml/pulse and 5.50 ml/pulse calibration factors).
-              </p>
-            </div>
-
-            <div className="space-y-1">
-              <p className="text-sm font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">Dual 12V Dosing Pumps</p>
-              <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400">GPIO 16 &amp; 17 · 12V Relays</p>
-              <p className="text-xs text-[#6E6E73] dark:text-[#86868B] leading-relaxed">
-                Independent metering of Concentrated Nutrients A &amp; B into the hydroponic mixing reservoir.
-              </p>
-            </div>
-
-            <div className="space-y-1">
-              <p className="text-sm font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">Anti-Backflow Solenoids</p>
-              <p className="text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">GPIO 22 &amp; 23 · Directional</p>
-              <p className="text-xs text-[#6E6E73] dark:text-[#86868B] leading-relaxed">
-                Synchronized shutoff valves preventing fluid back-siphoning and line pressure transients.
-              </p>
-            </div>
-
-            <div className="space-y-1">
-              <p className="text-sm font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">Blynk Virtual Telemetry</p>
-              <p className="text-xs font-medium text-[#6E6E73] dark:text-[#86868B]">Virtual Pins V1–V5</p>
-              <p className="text-xs text-[#6E6E73] dark:text-[#86868B] leading-relaxed">
-                Target volume (V1), dispensed tally (V2), real-time TDS (V3), and dual-level status LEDs (V4, V5).
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 5. FIRMWARE & MATHEMATICAL FORMULATION (FIG. 4 + EQUATION 1 DERIVATION)   */}
-      {/* ========================================================================= */}
-      <section className="px-6 sm:px-8 max-w-5xl mx-auto w-full space-y-10">
-        <div className="space-y-2 max-w-3xl">
-          <h2 className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight">
-            Firmware State Machine &amp; Mathematical Formulation
-          </h2>
-          <p className="text-base text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-            To prevent ESP32 Watchdog Timer (WDT) lockups during prolonged liquid dispensing cycles, firmware version 1.1.0 replaces blocking delays with an asynchronous state machine loop. This maintains an uninterrupted Blynk cloud heartbeat while continuously sampling sensor inputs.
-          </p>
-        </div>
-
-        {/* Firmware Process Flowchart */}
-        <div className="flex justify-center">
-          <Image
-            src="/images/projects/iot-fertiliser-mixing/fig-4-firmware-flowchart.png"
-            alt="Process flow of the prototype code implementation flowchart"
-            width={1340}
-            height={1001}
-            sizes="(max-width: 768px) 100vw, 680px"
-            className="w-full max-w-2xl h-auto rounded-2xl sm:rounded-3xl dark:brightness-[0.93] dark:contrast-[1.02]"
-          />
-        </div>
-
-        {/* Clean 4-Stage Firmware Pipeline Narrative */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-2">
-          <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Phase 01</p>
-            <p className="font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] text-sm">Boot &amp; Cloud Handshake</p>
-            <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-              Connects to 2.4GHz Wi-Fi, validates Blynk authentication token, initiates GPIO safe-LOW states, and registers IRAM-cached ISR handlers.
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Phase 02</p>
-            <p className="font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] text-sm">40ms ADC Sampling</p>
-            <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-              Non-blocking circular buffer collects raw ADC samples every 40 ms. 30-sample running median filter strips pump motor inductive switching spikes.
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Phase 03</p>
-            <p className="font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] text-sm">Atomic Flow Metering</p>
-            <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-              Upon receiving target volume via V1, solenoids and pumps actuate. Multi-byte pulse counters are evaluated inside atomic interrupt guards.
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Phase 04</p>
-            <p className="font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] text-sm">Independent Pump Cutoff</p>
-            <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-              Pumps shut off independently once their respective target volume is met (5.25 ml and 5.50 ml per pulse), eliminating volumetric overshoot.
-            </p>
-          </div>
-        </div>
-
-        {/* Mathematical Derivation Box (Equation 1 from Published Paper) */}
-        <div className="p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-[#F5F5F7] dark:bg-[#161618] border border-black/[0.04] dark:border-white/[0.06] space-y-4">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
-              Mathematical Derivation · Equation (1)
-            </span>
-            <span className="text-xs font-mono text-[#6E6E73] dark:text-[#86868B]">IJIE (2026) p. 191</span>
-          </div>
-
-          <div className="py-4 px-6 rounded-xl bg-white dark:bg-[#111113] border border-black/[0.06] dark:border-white/[0.08] text-center overflow-x-auto">
-            <p className="text-lg sm:text-xl md:text-2xl font-mono text-[#1D1D1F] dark:text-[#F5F5F7] tracking-wide whitespace-nowrap">
-              TDS = <span className="inline-block align-middle text-left"><span className="block border-b border-black/20 dark:border-white/20 pb-1">133.42 · V³ − 255.86 · V² + 857.39 · V</span><span className="block pt-1 text-center">2</span></span> · F
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-[#6E6E73] dark:text-[#A1A1A6]">
-            <div>
-              <strong className="text-[#1D1D1F] dark:text-[#F5F5F7] font-semibold">Compensated Voltage (V):</strong> Normalized analog voltage derived from raw 12-bit ADC reads (0–4095) with reference voltage VREF = 3.3V.
-            </div>
-            <div>
-              <strong className="text-[#1D1D1F] dark:text-[#F5F5F7] font-semibold">Calibration Factor (F):</strong> Empirical scaling factor (F = 2.3) tuned against standardized 1,413 µS/cm mineral reference solutions.
-            </div>
-            <div>
-              <strong className="text-[#1D1D1F] dark:text-[#F5F5F7] font-semibold">Temperature Normalization:</strong> V<span className="text-[10px]">comp</span> = V / [1.0 + 0.02 · (T − 25°C)], normalizing thermal conductivity drift to 25.0°C baseline.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 6. EXPERIMENTAL FINDINGS & VALIDATION DATA (5 PUBLISHED STUDIES)          */}
-      {/* ========================================================================= */}
-      <section className="px-6 sm:px-8 max-w-5xl mx-auto w-full space-y-20 sm:space-y-24">
-        <div className="space-y-2 max-w-3xl">
-          <h2 className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight">
-            Experimental Findings &amp; Empirical Validation
-          </h2>
-          <p className="text-base text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-            Each subsystem underwent rigorous empirical testing to validate measurement accuracy, calibration stability, volumetric metering precision, and closed-loop actuation responsiveness as documented in the <em>International Journal of Integrated Engineering</em>.
-          </p>
-        </div>
-
-        {/* ----------------------------------------------------------------------- */}
-        {/* Subsection 6.1: TDS Sensor Accuracy                                     */}
-        {/* ----------------------------------------------------------------------- */}
-        <div className="space-y-6">
-          <div className="space-y-1.5">
-            <h3 className="text-xl sm:text-2xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">
-              1. TDS Sensor Accuracy across Solution Concentrations
-            </h3>
-            <p className="text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed max-w-3xl">
-              Accuracy evaluation of the submersible analog TDS sensor against a calibrated laboratory TDS meter across four standard solution concentrations using a 30-point running median filter.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-            <Image
-              src="/images/projects/iot-fertiliser-mixing/fig-5-tds-test-setup.jpg"
-              alt="Accuracy test setup of the TDS sensor using 4 solution concentrations"
-              width={1216}
-              height={693}
-              sizes="(max-width: 768px) 100vw, 500px"
-              className="w-full h-auto rounded-2xl sm:rounded-3xl"
-            />
-
-            <Image
-              src="/images/projects/iot-fertiliser-mixing/fig-6-tds-accuracy-chart.png"
-              alt="Graph of TDS sensor accuracy comparing sensor readings with calibrated meter"
-              width={1463}
-              height={870}
-              sizes="(max-width: 768px) 100vw, 500px"
-              className="w-full h-auto rounded-2xl sm:rounded-3xl dark:brightness-[0.93] dark:contrast-[1.02]"
-            />
-          </div>
-
-          {/* Sensor Accuracy Data Breakdown */}
-          <div className="pt-2">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
-              <div className="space-y-1">
-                <p className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tabular-nums">99.56%</p>
-                <p className="text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">896.0 vs. 898 ppm</p>
-                <p className="text-xs text-[#6E6E73] dark:text-[#86868B]">Concentrated (900 ppm)</p>
-              </div>
-
-              <div className="space-y-1">
-                <p className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tabular-nums">99.90%</p>
-                <p className="text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">666.7 vs. 666 ppm</p>
-                <p className="text-xs text-[#6E6E73] dark:text-[#86868B]">First Dilution (666 ppm)</p>
-              </div>
-
-              <div className="space-y-1">
-                <p className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tabular-nums">99.93%</p>
-                <p className="text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">458.3 vs. 458 ppm</p>
-                <p className="text-xs text-[#6E6E73] dark:text-[#86868B]">Second Dilution (458 ppm)</p>
-              </div>
-
-              <div className="space-y-1">
-                <p className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tabular-nums">99.01%</p>
-                <p className="text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">232.7 vs. 235 ppm</p>
-                <p className="text-xs text-[#6E6E73] dark:text-[#86868B]">Third Dilution (235 ppm)</p>
-              </div>
-            </div>
-            <p className="text-xs text-[#6E6E73] dark:text-[#86868B] pt-4">
-              Mean accuracy of <strong className="text-emerald-600 dark:text-emerald-400 font-semibold">99.60%</strong> across all concentrations, with maximum deviation capped at 4.0 ppm.
-            </p>
-          </div>
-        </div>
-
-        {/* ----------------------------------------------------------------------- */}
-        {/* Subsection 6.2: Calibration Stability 7-Day Test                         */}
-        {/* ----------------------------------------------------------------------- */}
-        <div className="space-y-6">
-          <div className="space-y-1.5">
-            <h3 className="text-xl sm:text-2xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">
-              2. Seven-Day Calibration Stability
-            </h3>
-            <p className="text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed max-w-3xl">
-              Evaluation of long-term sensor drift by sampling a sealed 258 ppm mineral water reference standard daily at identical conditions across seven consecutive days.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-            <Image
-              src="/images/projects/iot-fertiliser-mixing/fig-7-blynk-calibration-setup.jpg"
-              alt="Setup for TDS calibration stability test with 258 ppm reference solution and Blynk IoT monitoring"
-              width={991}
-              height={468}
-              sizes="(max-width: 768px) 100vw, 500px"
-              className="w-full h-auto rounded-2xl sm:rounded-3xl"
-            />
-
-            <Image
-              src="/images/projects/iot-fertiliser-mixing/fig-8-tds-stability-chart.png"
-              alt="Graph of TDS sensor reading stability over a 7-day monitoring period"
-              width={1463}
-              height={660}
-              sizes="(max-width: 768px) 100vw, 500px"
-              className="w-full h-auto rounded-2xl sm:rounded-3xl dark:brightness-[0.93] dark:contrast-[1.02]"
-            />
-          </div>
-
-          {/* Calibration Stability Metrics */}
-          <div className="pt-2">
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
-              <div className="space-y-1">
-                <p className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tabular-nums">256.4 ppm</p>
-                <p className="text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">7-Day Mean Reading</p>
-                <p className="text-xs text-[#6E6E73] dark:text-[#86868B]">Reference Standard: 258.0 ppm</p>
-              </div>
-
-              <div className="space-y-1">
-                <p className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tabular-nums">1.94%</p>
-                <p className="text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">Maximum Recorded Drift</p>
-                <p className="text-xs text-[#6E6E73] dark:text-[#86868B]">Observed on Day 2 (253 ppm)</p>
-              </div>
-
-              <div className="space-y-1">
-                <p className="text-2xl sm:text-3xl font-semibold text-emerald-600 dark:text-emerald-400 tabular-nums">0.00% Drift</p>
-                <p className="text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">Exact Match on Day 6</p>
-                <p className="text-xs text-[#6E6E73] dark:text-[#86868B]">Zero baseline recalibration needed</p>
-              </div>
-            </div>
-            <p className="text-xs text-[#6E6E73] dark:text-[#86868B] pt-4">
-              Sensor readings remained strictly within ±2% of factory calibration across 7 days of continuous monitoring in typical environmental conditions.
-            </p>
-          </div>
-        </div>
-
-        {/* ----------------------------------------------------------------------- */}
-        {/* Subsection 6.3: Flow Sensor Precision                                    */}
-        {/* ----------------------------------------------------------------------- */}
-        <div className="space-y-6">
-          <div className="space-y-1.5">
-            <h3 className="text-xl sm:text-2xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">
-              3. Flow Sensor Volumetric Precision
-            </h3>
-            <p className="text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed max-w-3xl">
-              Volumetric accuracy evaluation of Flow Sensor #1 and #2 across four target dosing volumes (250, 500, 750, and 1,000 ml) using laboratory graduated cylinders.
-            </p>
-          </div>
-
-          <div className="flex justify-center">
-            <Image
-              src="/images/projects/iot-fertiliser-mixing/fig-9-flow-sensor-testbench.jpg"
-              alt="Test-bench configuration for flow rate evaluation of dual sensors"
-              width={1280}
-              height={678}
-              sizes="(max-width: 1024px) 100vw, 896px"
-              className="w-full max-w-4xl h-auto rounded-2xl sm:rounded-3xl"
-            />
-          </div>
-
-          {/* Flow Sensor Precision Breakdown */}
-          <div className="pt-2">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="space-y-1">
-                <p className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tabular-nums">97.18%</p>
-                <p className="text-sm font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">Flow Sensor #1 Mean Precision</p>
-                <p className="text-xs text-[#6E6E73] dark:text-[#86868B] leading-relaxed">
-                  235.0 ml at 250 ml (94.00%) · 478.3 ml at 500 ml (95.66%) · 746.6 ml at 750 ml (99.54%) · 995.0 ml at 1,000 ml (99.50%).
-                </p>
-              </div>
-
-              <div className="space-y-1">
-                <p className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tabular-nums">97.90%</p>
-                <p className="text-sm font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">Flow Sensor #2 Mean Precision</p>
-                <p className="text-xs text-[#6E6E73] dark:text-[#86868B] leading-relaxed">
-                  236.7 ml at 250 ml (94.68%) · 501.7 ml at 500 ml (99.66%) · 756.7 ml at 750 ml (99.10%) · 1,018.3 ml at 1,000 ml (98.17%).
-                </p>
-              </div>
-            </div>
-            <p className="text-xs text-[#6E6E73] dark:text-[#86868B] pt-4">
-              Both sensors exceed the &gt;94% operational threshold across all volumes, reaching &gt;99% accuracy on doses of 500 ml and greater.
-            </p>
-          </div>
-        </div>
-
-        {/* ----------------------------------------------------------------------- */}
-        {/* Subsection 6.4: Closed-Loop Reservoir Dosing                            */}
-        {/* ----------------------------------------------------------------------- */}
-        <div className="space-y-6">
-          <div className="space-y-1.5">
-            <h3 className="text-xl sm:text-2xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">
-              4. Closed-Loop Reservoir Dosing &amp; Concentration Adjustment
-            </h3>
-            <p className="text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed max-w-3xl">
-              Closed-loop dosing evaluation determining the volume of concentrated AB fertiliser required to reach target ppm levels in the active hydroponic reservoir.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-            <div className="md:col-span-1 flex justify-center">
+          <div className="mt-10 sm:mt-14 pb-14 sm:pb-20 flex justify-center">
+            <div className="w-full max-w-3xl rounded-[28px] bg-[#FFFFFF] p-3 sm:p-6 shadow-sm ring-1 ring-black/[0.05] dark:ring-white/10">
               <Image
-                src="/images/projects/iot-fertiliser-mixing/fig-10-hydroponic-rig-dispensing.jpg"
-                alt="Fertiliser dispensing process into the hydroponic water storage system"
-                width={479}
-                height={626}
-                sizes="(max-width: 768px) 320px, 350px"
-                className="w-full max-w-xs sm:max-w-sm md:max-w-none h-auto rounded-2xl sm:rounded-3xl"
+                src={`${IMG}/fig-2a-prototype-layout.jpg`}
+                alt="Prototype layout showing flow sensors, ESP32 expansion board, dual relay modules, and solenoid valves"
+                width={751}
+                height={581}
+                priority
+                sizes="(max-width: 768px) 100vw, 720px"
+                className="h-auto w-full rounded-2xl"
               />
             </div>
+          </div>
+        </div>
+      </section>
 
-            {/* Dosing Target Progression */}
-            <div className="space-y-5 md:col-span-2">
-              <div className="grid grid-cols-2 gap-6">
-                <div className="space-y-1">
-                  <p className="text-xl sm:text-2xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tabular-nums">96.00%</p>
-                  <p className="text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">103 ➔ 200 ppm Target</p>
-                  <p className="text-xs text-[#6E6E73] dark:text-[#86868B]">200 ml added · 187 ppm sensor (192 ppm meter)</p>
-                </div>
+      {/* 2. The problem, in one screen */}
+      <section className={`${WRAP} py-28 sm:py-40`}>
+        <Reveal>
+          <p className={`text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl ${GRAY}`}>
+            In hydroponics, nutrient strength is held by hand: add fertiliser AB, check the TDS, adjust, repeat. It costs time, leaves room for error, and wastes resources.{" "}
+            <span className={INK}>
+              This prototype takes over. Enter a crop-specific ratio on your phone, and it mixes, measures and corrects the concentration for you.
+            </span>
+          </p>
+        </Reveal>
+      </section>
 
-                <div className="space-y-1">
-                  <p className="text-xl sm:text-2xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tabular-nums">98.75%</p>
-                  <p className="text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">192 ➔ 400 ppm Target</p>
-                  <p className="text-xs text-[#6E6E73] dark:text-[#86868B]">300 ml added · 392 ppm sensor (395 ppm meter)</p>
-                </div>
+      {/* 3. Chapters */}
+      <section aria-label="How it solves it" className="pb-12 sm:pb-20">
+        {CHAPTERS.map((chapter, i) => (
+          <div key={chapter.headline} className={`${WRAP} py-14 sm:py-24`}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+              <Reveal className={i % 2 ? "md:order-2" : ""}>
+                <h2 className="text-3xl sm:text-5xl font-semibold tracking-apple-hero leading-[1.08]">
+                  <span className={`block ${GRAY}`}>{chapter.problem}</span>
+                  <span className={`block ${INK}`}>{chapter.headline}</span>
+                </h2>
+                <p className={`mt-5 text-base sm:text-lg ${GRAY} leading-relaxed`}>{chapter.body}</p>
+              </Reveal>
+              <Reveal delay={120} className={i % 2 ? "md:order-1" : ""}>
+                <div className={PANEL}>{chapter.visual}</div>
+              </Reveal>
+            </div>
+          </div>
+        ))}
+      </section>
 
-                <div className="space-y-1">
-                  <p className="text-xl sm:text-2xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tabular-nums">92.83%</p>
-                  <p className="text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">395 ➔ 600 ppm Target</p>
-                  <p className="text-xs text-[#6E6E73] dark:text-[#86868B]">400 ml added · 559 ppm sensor (557 ppm meter)</p>
-                </div>
+      {/* 4. Figures from the paper */}
+      <section aria-label="Figures from the paper" className="py-16 sm:py-24 bg-[var(--pa-tint)]">
+        <div className="max-w-6xl mx-auto w-full px-6 sm:px-8">
+          <Reveal>
+            <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero text-center`}>See how it’s built.</h2>
+            <p className={`mt-3 mb-10 text-lg ${GRAY} text-center`}>Three figures from the published paper.</p>
+            <IotFigureTabs figures={FIGURES} />
+          </Reveal>
+        </div>
+      </section>
 
-                <div className="space-y-1">
-                  <p className="text-xl sm:text-2xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tabular-nums">95.50%</p>
-                  <p className="text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">557 ➔ 800 ppm Target</p>
-                  <p className="text-xs text-[#6E6E73] dark:text-[#86868B]">500 ml added · 769 ppm sensor (764 ppm meter)</p>
-                </div>
-              </div>
-              <p className="text-xs text-[#6E6E73] dark:text-[#86868B] leading-relaxed">
-                Linear range achievement: <strong className="text-emerald-600 dark:text-emerald-400 font-semibold">92.83% to 98.75%</strong>, verifying dependable incremental dosing from seedling nursery stages up to mature fruiting concentrations.
+      {/* 5. Validation */}
+      <section aria-label="Experimental validation" className="pt-16 sm:pt-24">
+        <div className={WRAP}>
+          <Reveal>
+            <h2 className={`text-3xl sm:text-5xl md:text-6xl font-semibold ${INK} tracking-apple-hero max-w-3xl leading-[1.08]`}>
+              Tested five ways.
+            </h2>
+            <p className={`mt-4 max-w-2xl text-lg ${GRAY} leading-relaxed`}>
+              Each subsystem was measured against a reference, as documented in the <em>International Journal of Integrated Engineering</em>.
+            </p>
+          </Reveal>
+        </div>
+        {EXPERIMENTS.map((experiment, i) => (
+          <ExperimentBlock key={experiment.kicker} experiment={experiment} index={i} />
+        ))}
+      </section>
+
+      {/* 6. Results */}
+      <section aria-label="Results" className="bg-[var(--pa-deep)] text-white py-24 sm:py-32">
+        <div className={WRAP}>
+          <Reveal>
+            <p className="text-sm font-semibold text-[#86868B]">The headline numbers</p>
+            <h2 className="mt-2 text-3xl sm:text-5xl font-semibold tracking-apple-hero max-w-2xl leading-[1.08]">
+              Precise, and peer-reviewed.
+            </h2>
+          </Reveal>
+          <dl className="mt-14 grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-12">
+            {project.results.map((result, i) => (
+              <Reveal key={result.label} delay={i * 80}>
+                <dt className="text-sm font-semibold text-[var(--pa-d)]">{result.label}</dt>
+                <dd className="mt-1 text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-apple-hero tabular-nums">
+                  <CountUp value={result.metric} />
+                </dd>
+                <dd className="mt-3 text-sm text-[#A1A1A6] leading-relaxed">{result.description}</dd>
+              </Reveal>
+            ))}
+          </dl>
+        </div>
+      </section>
+
+      {/* 7. Publication */}
+      <section aria-label="Publication" className="py-16 sm:py-24 bg-[var(--pa-tint)]">
+        <div className={WRAP}>
+          <Reveal>
+            <p className="text-sm font-semibold text-[var(--pa)]">Peer-reviewed · Scopus and MyCite indexed · Open access</p>
+            <h2 className={`mt-2 max-w-3xl text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero leading-[1.08]`}>
+              IoT-Based Fertiliser Mixing for Precision Farming.
+            </h2>
+            <div className={`mt-6 max-w-3xl space-y-1.5 text-base leading-relaxed ${GRAY}`}>
+              <p>
+                <strong className={`font-semibold ${INK}`}>Sri Tulasi Ram Rajalingam</strong> (first and lead author), Muhammad Muzakkir Mohd Nadzri, Afandi Ahmad (corresponding author) and Mohamad Khairi Ishak.
+              </p>
+              <p>Faculty of Electrical and Electronic Engineering, Universiti Tun Hussein Onn Malaysia (UTHM). Co-author affiliation: Department of Computer Engineering, University of Sharjah.</p>
+              <p className={`text-sm ${INK}`}>
+                <em>International Journal of Integrated Engineering</em>, Vol. 18, No. 1 (2026), pp. 186–201. DOI 10.30880/ijie.2026.18.01.014
               </p>
             </div>
-          </div>
-        </div>
-
-        {/* ----------------------------------------------------------------------- */}
-        {/* Subsection 6.5: Response Time Analysis                                   */}
-        {/* ----------------------------------------------------------------------- */}
-        <div className="space-y-6">
-          <div className="space-y-1.5">
-            <h3 className="text-xl sm:text-2xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">
-              5. System Response Time &amp; Operational Latency
-            </h3>
-            <p className="text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed max-w-3xl">
-              Precision timing analysis measuring the end-to-end operational latency from user input on the Blynk app to sequential solenoid valve opening, pump activation, and fluid delivery.
-            </p>
-          </div>
-
-          <div className="flex justify-center">
-            <Image
-              src="/images/projects/iot-fertiliser-mixing/fig-11-response-time-stopwatch.jpg"
-              alt="Dispensing fertiliser AB while recording response time with precision stopwatch"
-              width={1206}
-              height={675}
-              sizes="(max-width: 1024px) 100vw, 896px"
-              className="w-full max-w-4xl h-auto rounded-2xl sm:rounded-3xl"
-            />
-          </div>
-
-          {/* Operational Latency Breakdown */}
-          <div className="pt-2">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
-              <div className="space-y-1">
-                <p className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tabular-nums">10.85s</p>
-                <p className="text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">Solenoid Valves Open</p>
-                <p className="text-xs text-[#6E6E73] dark:text-[#86868B]">Hydraulic depressurization</p>
-              </div>
-
-              <div className="space-y-1">
-                <p className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tabular-nums">1.07s</p>
-                <p className="text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">Pumps Activation</p>
-                <p className="text-xs text-[#6E6E73] dark:text-[#86868B]">Relay closure &amp; acceleration</p>
-              </div>
-
-              <div className="space-y-1">
-                <p className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tabular-nums">10.79s</p>
-                <p className="text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">Fertiliser Dispense</p>
-                <p className="text-xs text-[#6E6E73] dark:text-[#86868B]">Volumetric line transfer</p>
-              </div>
-
-              <div className="space-y-1">
-                <p className="text-2xl sm:text-3xl font-semibold text-emerald-600 dark:text-emerald-400 tabular-nums">22.17s</p>
-                <p className="text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">Total Response Time</p>
-                <p className="text-xs text-[#6E6E73] dark:text-[#86868B]">Command to delivery</p>
-              </div>
+          </Reveal>
+          <Reveal delay={100}>
+            <div className="mt-8 max-w-3xl">
+              <CopyCitation text={BIBTEX} />
             </div>
-            <p className="text-xs text-[#6E6E73] dark:text-[#86868B] pt-4">
-              Mean response time of 22.17 seconds provides deterministic real-time control while safely dampening hydraulic water hammer transients.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 7. PEER-REVIEWED ACADEMIC PUBLICATION DOSSIER & CITATION                  */}
-      {/* ========================================================================= */}
-      <section className="px-6 sm:px-8 max-w-5xl mx-auto w-full">
-        <div className="p-8 sm:p-12 rounded-3xl bg-[#F5F5F7] dark:bg-[#161618] border border-black/[0.04] dark:border-white/[0.06] space-y-6">
-          <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
-              Peer-Reviewed Academic Publication · Scopus / MyCite Indexed · Open Access
-            </p>
-            <h3 className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight">
-              IoT-Based Fertiliser Mixing for Precision Farming
-            </h3>
-          </div>
-
-          <div className="space-y-1 text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-            <p>
-              <strong className="text-[#1D1D1F] dark:text-[#F5F5F7] font-medium">Sri Tulasi Ram Rajalingam</strong> (First &amp; Lead Author),{" "}
-              Muhammad Muzakkir Mohd Nadzri, Afandi Ahmad (Corresponding Author), &amp; Mohamad Khairi Ishak
-            </p>
-            <p>
-              Faculty of Electrical and Electronic Engineering, Universiti Tun Hussein Onn Malaysia (UTHM)
-            </p>
-            <p className="text-xs text-[#6E6E73] dark:text-[#86868B]">
-              Co-author affiliation: Department of Computer Engineering, University of Sharjah (M. K. Ishak)
-            </p>
-            <p className="text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7] pt-1">
-              <em>International Journal of Integrated Engineering (IJIE)</em>, Vol. 18, No. 1 (2026), pp. 186–201. DOI: 10.30880/ijie.2026.18.01.014
-            </p>
-          </div>
-
-          <div className="p-4 rounded-xl bg-white dark:bg-[#111113] border border-black/[0.06] dark:border-white/[0.08] space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6E6E73] dark:text-[#86868B]">
-                BibTeX Citation
-              </span>
-              <button
-                onClick={copyToClipboard}
-                type="button"
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7] bg-[#F5F5F7] dark:bg-[#1C1C1E] hover:bg-[#E5E5EA] dark:hover:bg-[#2C2C2E] transition-colors cursor-pointer"
-              >
-                {copiedCitation ? (
-                  <>
-                    <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                    <span className="text-emerald-600 dark:text-emerald-400">Copied</span>
-                  </>
-                ) : (
-                  <>
-                    <Copy className="w-3.5 h-3.5" />
-                    <span>Copy Citation</span>
-                  </>
-                )}
-              </button>
-            </div>
-            <pre className="text-xs font-mono text-[#6E6E73] dark:text-[#A1A1A6] overflow-x-auto p-2">
-              {BIBTEX_CITATION}
-            </pre>
-          </div>
-
-          <div className="pt-2 flex flex-wrap items-center gap-3">
-            <a
-              href="https://doi.org/10.30880/ijie.2026.18.01.014"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="View official published article in IJIE via DOI (opens in a new tab)"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 transition-all duration-200 shadow-xs group min-h-[44px] focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-hidden"
-            >
-              <BookOpen className="w-4 h-4" />
-              <span>Resolve via DOI: 10.30880</span>
-              <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
-
-            <a
-              href="https://publisher.uthm.edu.my/ojs/index.php/ijie/article/view/24386"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="View official published article on UTHM OJS Portal (opens in a new tab)"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] bg-white dark:bg-[#202023] hover:bg-[#E5E5EA] dark:hover:bg-[#2C2C2E] border border-black/5 dark:border-white/10 transition-all duration-200 group shadow-2xs min-h-[44px] focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-hidden"
-            >
-              <FileText className="w-4 h-4 text-[#6E6E73] dark:text-[#A1A1A6]" />
-              <span>Publisher Portal (UTHM OJS)</span>
-              <ExternalLink className="w-3.5 h-3.5 text-[#6E6E73] dark:text-[#A1A1A6]" />
-            </a>
-
-            {project.githubUrl && (
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Inspect open-source firmware on GitHub (opens in a new tab)"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] bg-white dark:bg-[#202023] hover:bg-[#E5E5EA] dark:hover:bg-[#2C2C2E] border border-black/5 dark:border-white/10 transition-all duration-200 group shadow-2xs min-h-[44px] focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-hidden"
-              >
-                <Code2 className="w-4 h-4 text-[#6E6E73] dark:text-[#A1A1A6]" />
-                <span>Firmware Repository (GitHub)</span>
-                <ExternalLink className="w-3.5 h-3.5 text-[#6E6E73] dark:text-[#A1A1A6]" />
+            <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-2">
+              <a href={DOI} target="_blank" rel="noopener noreferrer" aria-label="Resolve the paper via DOI (opens in a new tab)" className={PILL}>
+                Resolve via DOI
+                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
               </a>
-            )}
-          </div>
+              <a href={PUBLISHER} target="_blank" rel="noopener noreferrer" aria-label="Open the publisher portal at UTHM (opens in a new tab)" className={LINK}>
+                Publisher portal
+                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              </a>
+              {project.githubUrl && (
+                <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" aria-label="Inspect the firmware on GitHub (opens in a new tab)" className={LINK}>
+                  Firmware on GitHub
+                  <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                </a>
+              )}
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* ========================================================================= */}
-      {/* 8. NEXT PROJECT NAVIGATION (SEAMLESS CIRCULAR)                           */}
-      {/* ========================================================================= */}
-      <section className="px-6 sm:px-8 max-w-5xl mx-auto w-full pt-10 sm:pt-14 pb-20">
+      {/* 8. Next project */}
+      <section aria-label="Next project" className={`${WRAP} py-20 sm:py-28`}>
         <Link
           href={`/projects/${nextProject.id}`}
-          className="group block space-y-4 transition-colors focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-hidden rounded-3xl p-2 -m-2"
+          className="group block rounded-[28px] bg-[var(--pa-tint)] p-8 sm:p-12 transition-transform duration-300 hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--pa)]"
         >
-          <p className="text-xs font-semibold uppercase tracking-wider text-[#6E6E73] dark:text-[#86868B]">
-            Next Project
-          </p>
-
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="space-y-2 max-w-2xl">
-              <h3
-                className={`text-3xl sm:text-4xl md:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight ${nextAccent.textHover} transition-colors leading-[1.1]`}
-              >
-                {nextProject.title}
-              </h3>
-              <p className="text-base sm:text-lg text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                {nextProject.subtitle}
-              </p>
-            </div>
-
-            <div
-              className={`inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs sm:text-sm font-semibold text-white ${nextAccent.bg} ${nextAccent.hoverBg} transition-all duration-200 shadow-xs shrink-0`}
-            >
-              <span>{nextProject.ctaLabel || "Explore Case Study"}</span>
-              <ProjectCtaIcon projectId={nextProject.id} />
-            </div>
-          </div>
+          <p className="text-sm font-semibold text-[var(--pa)]">Next project</p>
+          <h2 className={`mt-2 text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero leading-[1.08]`}>{nextProject.title}</h2>
+          <p className={`mt-3 max-w-2xl text-lg ${GRAY} leading-relaxed`}>{nextProject.subtitle}</p>
+          <span className="mt-8 inline-flex items-center gap-1 text-[17px] text-[var(--pa)] group-hover:underline">
+            {nextProject.ctaLabel || "Explore the case study"}
+            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
+          </span>
         </Link>
       </section>
     </div>

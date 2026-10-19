@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect, useRef, useMemo, useSyncExternalStore, Fragment } from "react";
+import { useState, useEffect, useRef, useMemo, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { Search, X, ArrowRight } from "lucide-react";
-import { SEARCH_ITEMS, QUICK_LINKS, type SearchItem } from "@/data/searchData";
+import { QUICK_LINKS, type SearchItem } from "@/data/searchData";
+import { HighlightText, openSearchItem, searchSite } from "./nav/siteSearch";
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -12,37 +13,6 @@ interface SearchModalProps {
 }
 
 const emptySubscribe = () => () => {};
-
-/**
- * Text Match Highlighting Helper
- * Subtly bolds query substrings in Apple system font
- */
-function HighlightText({ text, query }: { text: string; query: string }) {
-  const clean = query.trim();
-  if (!clean) return <span>{text}</span>;
-
-  const escapedQuery = clean.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const regex = new RegExp(`(${escapedQuery})`, "gi");
-  const parts = text.split(regex);
-  const lowerQuery = clean.toLowerCase();
-
-  return (
-    <span>
-      {parts.map((part, index) =>
-        part.toLowerCase() === lowerQuery ? (
-          <mark
-            key={index}
-            className="bg-transparent text-[#0071E3] dark:text-[#2997FF] font-semibold"
-          >
-            {part}
-          </mark>
-        ) : (
-          <Fragment key={index}>{part}</Fragment>
-        )
-      )}
-    </span>
-  );
-}
 
 export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const router = useRouter();
@@ -119,21 +89,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
-  // Filter items based on query
-  const filteredItems = useMemo(() => {
-    const cleanQuery = query.trim().toLowerCase();
-    if (!cleanQuery) return [];
-
-    return SEARCH_ITEMS.filter((item) => {
-      const titleMatch = item.title.toLowerCase().includes(cleanQuery);
-      const subtitleMatch = item.subtitle.toLowerCase().includes(cleanQuery);
-      const descMatch = item.description.toLowerCase().includes(cleanQuery);
-      const tagMatch = item.tags.some((t) => t.toLowerCase().includes(cleanQuery));
-      const categoryMatch = item.category.toLowerCase().includes(cleanQuery);
-
-      return titleMatch || subtitleMatch || descMatch || tagMatch || categoryMatch;
-    });
-  }, [query]);
+  const filteredItems = useMemo(() => searchSite(query), [query]);
 
   const activeDisplayItems = query.trim() ? filteredItems : QUICK_LINKS;
 
@@ -146,17 +102,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
   const navigateToItem = (item: SearchItem) => {
     onClose();
-    if (item.url.startsWith("/#")) {
-      const hash = item.url.replace("/", "");
-      const el = document.querySelector(hash);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-      } else {
-        router.push(item.url);
-      }
-    } else {
-      router.push(item.url);
-    }
+    openSearchItem(item, (url) => router.push(url));
   };
 
   const handleInputKeyDown = (e: React.KeyboardEvent) => {

@@ -3,21 +3,12 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowLeft, ChevronRight } from "lucide-react";
-import dynamic from "next/dynamic";
 import { MacbookPro } from "@/components/mockups/MacbookPro";
+import HrAssistiveMacbook from "./visuals/HrAssistiveMacbook";
 import AppleCarouselController from "@/components/ui/AppleCarouselController";
+import Button from "@/components/ui/Button";
+import { PROJECT_ACCENTS } from "@/data/projectTheme";
 import { cn } from "@/lib/cn";
-
-const TelemetryBentoGrid = dynamic(() => import("./visuals/TelemetryBentoGrid"), {
-  loading: () => (
-    <div className="w-full h-full bg-[#0E0E11] rounded-xl flex items-center justify-center p-4">
-      <div className="text-center space-y-1">
-        <div className="text-xs font-semibold text-[#00D084]">IoT Mixing Telemetry</div>
-        <div className="text-[10px] text-neutral-500 font-mono">Sensors active</div>
-      </div>
-    </div>
-  ),
-});
 
 export interface StageProject {
   id: string;
@@ -28,11 +19,21 @@ export interface StageProject {
   categoryId: "all" | "developed-systems" | "embedded-systems" | "case-studies";
   imageSrc: string;
   caseStudyUrl: string;
-  buttonColor: string;
   ctaText: string;
 }
 
 export const STAGE_PROJECTS: StageProject[] = [
+  {
+    id: "cytron-hr-assistive-intelligence",
+    name: "Cytron HR Assistive Intelligence",
+    subtitle: "Internal HR Assistant · Retrieval-Augmented Generation",
+    shortSubtitle: "Cited HR Answers",
+    category: "Developed Systems",
+    categoryId: "developed-systems",
+    imageSrc: "",
+    caseStudyUrl: "/projects/cytron-hr-assistive-intelligence",
+    ctaText: "View retrieval architecture",
+  },
   {
     id: "raspberry-pi-diagnostics",
     name: "Raspberry Pi Diagnostics",
@@ -42,8 +43,7 @@ export const STAGE_PROJECTS: StageProject[] = [
     categoryId: "developed-systems",
     imageSrc: "/images/projects/raspberry-pi-diagnostics/cover.webp",
     caseStudyUrl: "/projects/raspberry-pi-diagnostics",
-    buttonColor: "#C51A4A",
-    ctaText: "View case study",
+    ctaText: "View hardware validation",
   },
   {
     id: "warranty-rma",
@@ -54,20 +54,7 @@ export const STAGE_PROJECTS: StageProject[] = [
     categoryId: "developed-systems",
     imageSrc: "/images/projects/warranty-rma/system-intake.png",
     caseStudyUrl: "/projects/warranty-rma",
-    buttonColor: "#0071E3",
-    ctaText: "View case study",
-  },
-  {
-    id: "iot-fertiliser-mixing",
-    name: "IoT Fertiliser Mixing",
-    subtitle: "Peer-Reviewed Smart Agriculture Automation",
-    shortSubtitle: "Precision Agriculture",
-    category: "Embedded Systems",
-    categoryId: "embedded-systems",
-    imageSrc: "/images/projects/iot-fertiliser-mixing/fig-1-system-overview.png",
-    caseStudyUrl: "/projects/iot-fertiliser-mixing",
-    buttonColor: "#1E7E34",
-    ctaText: "View case study",
+    ctaText: "View operations architecture",
   },
 ];
 
@@ -197,7 +184,7 @@ export default function ProjectsHeroStage() {
 
   return (
     <section
-      id="overview"
+      data-section="overview"
       ref={heroRef}
       className="scroll-mt-20 relative pt-24 sm:pt-28 pb-12 sm:pb-16 overflow-hidden"
     >
@@ -233,10 +220,9 @@ export default function ProjectsHeroStage() {
 
         {/* Page Header matching Design & Photography typography */}
         <div className="relative z-20 max-w-4xl mx-auto text-center space-y-2.5 sm:space-y-3 mb-8 sm:mb-10">
-          <h1 className="text-5xl sm:text-6xl md:text-7xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.03]">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.03]">
             Projects
-            <br />
-            <span className="text-[#6E6E73] dark:text-[#8E8E93] font-medium">Hardware, software and the space between.</span>
+            <span className="mt-3 block text-[0.36em] font-medium leading-[1.15] tracking-apple-tight text-[#6E6E73] dark:text-[#8E8E93] text-balance">Hardware, software and the space between.</span>
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl text-[#6E6E73] dark:text-[#A1A1A6] font-normal max-w-2xl mx-auto leading-relaxed tracking-apple-subhead">
@@ -309,29 +295,20 @@ export default function ProjectsHeroStage() {
                     });
                   }}
                 >
-                  <MacbookPro
-                    src={
-                      item.id === "iot-fertiliser-mixing"
-                        ? undefined
-                        : item.imageSrc
-                    }
-                    fit="fill"
-                    showNotch={false}
-                    priority={slot.isCenter}
-                    className="w-full h-full drop-shadow-2xl"
-                  >
-                    {item.id === "iot-fertiliser-mixing" ? (
-                      <div className="w-full h-full p-2 bg-[#0E0E11]">
-                        {Math.abs(diff) <= 1 ? (
-                          <TelemetryBentoGrid />
-                        ) : (
-                          <div className="w-full h-full bg-[#0E0E11] rounded-xl flex items-center justify-center">
-                            <span className="text-[11px] text-neutral-500 font-mono">IoT Telemetry</span>
-                          </div>
-                        )}
-                      </div>
-                    ) : null}
-                  </MacbookPro>
+                  {item.id === "cytron-hr-assistive-intelligence" ? (
+                    <HrAssistiveMacbook
+                      priority={slot.isCenter}
+                      className="w-full h-full drop-shadow-2xl"
+                    />
+                  ) : (
+                    <MacbookPro
+                      src={item.imageSrc}
+                      fit="fill"
+                      showNotch={false}
+                      priority={slot.isCenter}
+                      className="w-full h-full drop-shadow-2xl"
+                    />
+                  )}
                 </div>
               </div>
             );
@@ -363,14 +340,14 @@ export default function ProjectsHeroStage() {
           </div>
 
           {/* Action Link with Dynamic Descriptive CTA & Apple 44pt Touch Target */}
-          <Link
+          <Button
             href={activeProject.caseStudyUrl}
-            style={{ backgroundColor: activeProject.buttonColor }}
-            className="min-h-[44px] px-5 inline-flex items-center justify-center gap-1.5 rounded-full text-xs sm:text-sm font-semibold text-white shadow-xs hover:brightness-110 active:scale-95 transition-all duration-300 shrink-0 whitespace-nowrap group"
+            accent={PROJECT_ACCENTS[activeProject.id]}
+            icon={<ArrowRight className="h-4 w-4" aria-hidden="true" />}
+            className="shrink-0 whitespace-nowrap"
           >
-            <span>{activeProject.ctaText}</span>
-            <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
-          </Link>
+            {activeProject.ctaText}
+          </Button>
         </div>
       </div>
     </section>

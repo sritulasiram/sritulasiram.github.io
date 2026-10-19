@@ -11,6 +11,63 @@ import {
   Sliders,
   Compass,
 } from "lucide-react";
+import DesignPrincipleGrid, { type Principle } from "./DesignPrincipleGrid";
+
+// Apple Liquid Glass
+const FOUNDATION_PRINCIPLES_1: Principle[] = [
+  {
+    icon: Layers,
+    color: "text-[#0071E3] dark:text-[#2997FF]",
+    title: "Controls above content",
+    body: "Liquid Glass is for toolbars, sidebars and navigation. Content never uses it.",
+  },
+  {
+    icon: Sparkles,
+    color: "text-[#AF52DE]",
+    title: "Adapts to what's underneath",
+    body: "It has no color of its own. It blurs and adjusts to the content moving behind it.",
+  },
+  {
+    icon: Sliders,
+    color: "text-[#34C759]",
+    title: "Few tinted controls",
+    body: "At most one or two tinted primary actions per view. Labels stay monochrome.",
+  },
+  {
+    icon: Compass,
+    color: "text-[#FF9500]",
+    title: "Monochrome Restraint",
+    body: "Symbols and labels switch between light and dark to stay legible on any background.",
+  },
+];
+
+// Google Material 3 Expressive
+const FOUNDATION_PRINCIPLES_2: Principle[] = [
+  {
+    icon: Eye,
+    color: "text-[#0071E3] dark:text-[#2997FF]",
+    title: "Up to 4× Faster Focus",
+    body: "In Google's research across 46 studies, participants spotted key UI elements up to four times faster in Expressive designs.",
+  },
+  {
+    icon: Palette,
+    color: "text-[#AF52DE]",
+    title: "Color from your wallpaper",
+    body: "Material 3 dynamic color builds tonal palettes from the user's wallpaper, so each device feels personal.",
+  },
+  {
+    icon: Layers,
+    color: "text-[#34C759]",
+    title: "Rounded, grouped shapes",
+    body: "Large rounded corners (up to 28dp in Material 3) and pill contours group related elements clearly.",
+  },
+  {
+    icon: Heart,
+    color: "text-[#FF9500]",
+    title: "Preferred across ages",
+    body: "With more than 18,000 participants, Expressive designs were preferred by people of all ages, up to 87% among 18–24-year-olds.",
+  },
+];
 
 export default function DesignFoundationsKit() {
   return (
@@ -22,11 +79,11 @@ export default function DesignFoundationsKit() {
             Design languages.
             <br />
             <span className="text-[#6E6E73] dark:text-[#8E8E93] font-medium">
-              Apple and Android design systems.
+              Apple and Google design systems.
             </span>
           </h2>
           <p className="text-base sm:text-lg text-[#6E6E73] dark:text-[#A1A1A6] font-normal leading-relaxed">
-            A visual exploration of two distinct design philosophies. Apple&apos;s physical translucency and Google&apos;s research-backed Material 3 Expressive system.
+            Two ways to build an interface: Apple&apos;s translucent Liquid Glass and Google&apos;s color-led Material 3 Expressive.
           </p>
         </div>
 
@@ -38,7 +95,7 @@ export default function DesignFoundationsKit() {
                 Apple Liquid Glass
               </h3>
               <p className="text-sm sm:text-base text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                Translucent optical materials and floating functional controls designed to let rich content take center stage.
+                A translucent material for controls that float above content, so the content stays in focus.
               </p>
             </div>
 
@@ -56,7 +113,7 @@ export default function DesignFoundationsKit() {
 
           {/* Official Apple Liquid Glass Showcase Image */}
           <div className="w-full flex justify-center py-2 sm:py-4">
-            <div className="relative w-full max-w-5xl aspect-[16/9] sm:aspect-[16/8]">
+            <div className="relative w-full max-w-5xl aspect-[1024/481]">
               <Image
                 src="/images/designs/foundations/apple-liquid-glass.png"
                 alt="Apple Liquid Glass across Mac, iPad, and iPhone"
@@ -68,47 +125,7 @@ export default function DesignFoundationsKit() {
           </div>
 
           {/* 4 Apple Liquid Glass Principles */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 pt-2">
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2 text-[#1D1D1F] dark:text-[#F5F5F7]">
-                <Layers className="w-4 h-4 text-[#0071E3] dark:text-[#2997FF]" />
-                <h4 className="text-sm font-semibold">Functional Layer Separation</h4>
-              </div>
-              <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                Liquid Glass is reserved for floating toolbars, sidebars, and navigation, keeping primary content in clear focus.
-              </p>
-            </div>
-
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2 text-[#1D1D1F] dark:text-[#F5F5F7]">
-                <Sparkles className="w-4 h-4 text-[#AF52DE]" />
-                <h4 className="text-sm font-semibold">Dynamic Luminosity</h4>
-              </div>
-              <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                The material has no inherent color, dynamically blurring and adapting to rich visual media scrolling underneath.
-              </p>
-            </div>
-
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2 text-[#1D1D1F] dark:text-[#F5F5F7]">
-                <Sliders className="w-4 h-4 text-[#34C759]" />
-                <h4 className="text-sm font-semibold">Specular Edge Reflection</h4>
-              </div>
-              <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                Delicate one-pixel inner highlights define clear tactile physical planes without heavy dark drop shadows.
-              </p>
-            </div>
-
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2 text-[#1D1D1F] dark:text-[#F5F5F7]">
-                <Compass className="w-4 h-4 text-[#FF9500]" />
-                <h4 className="text-sm font-semibold">Monochrome Restraint</h4>
-              </div>
-              <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                Symbols and labels adapt between light and dark states automatically to ensure legibility across every surface.
-              </p>
-            </div>
-          </div>
+          <DesignPrincipleGrid items={FOUNDATION_PRINCIPLES_1} />
         </div>
 
         {/* 2. Middle Section Google Material 3 Expressive */}
@@ -119,7 +136,7 @@ export default function DesignFoundationsKit() {
                 Google Material 3 Expressive
               </h3>
               <p className="text-sm sm:text-base text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                Emotion-driven UX, dynamic color, and organic geometry rooted in Google design research.
+                Color, shape and motion tuned for emotion, based on Google&apos;s research with more than 18,000 people.
               </p>
             </div>
 
@@ -149,47 +166,7 @@ export default function DesignFoundationsKit() {
           </div>
 
           {/* 4 Google Expressive UX Pillars from Research */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 pt-2">
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2 text-[#1D1D1F] dark:text-[#F5F5F7]">
-                <Eye className="w-4 h-4 text-[#0071E3] dark:text-[#2997FF]" />
-                <h4 className="text-sm font-semibold">4× Faster Visual Focus</h4>
-              </div>
-              <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                Eye-tracking research across 46 studies showed users spot primary actions up to four times faster.
-              </p>
-            </div>
-
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2 text-[#1D1D1F] dark:text-[#F5F5F7]">
-                <Palette className="w-4 h-4 text-[#AF52DE]" />
-                <h4 className="text-sm font-semibold">Dynamic Color Extraction</h4>
-              </div>
-              <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                Tonal containers automatically adapt to user wallpapers, generating an intimate, personalized aesthetic.
-              </p>
-            </div>
-
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2 text-[#1D1D1F] dark:text-[#F5F5F7]">
-                <Layers className="w-4 h-4 text-[#34C759]" />
-                <h4 className="text-sm font-semibold">Organic Shape Containment</h4>
-              </div>
-              <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                Distinctive 28px rounded corners and pill contours group elements intuitively to reduce cognitive friction.
-              </p>
-            </div>
-
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2 text-[#1D1D1F] dark:text-[#F5F5F7]">
-                <Heart className="w-4 h-4 text-[#FF9500]" />
-                <h4 className="text-sm font-semibold">Emotion-Driven Usability</h4>
-              </div>
-              <p className="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                Tested across 18,000 global participants, expressive UX delivered an 87% preference boost among younger demographics.
-              </p>
-            </div>
-          </div>
+          <DesignPrincipleGrid items={FOUNDATION_PRINCIPLES_2} />
         </div>
       </div>
     </section>

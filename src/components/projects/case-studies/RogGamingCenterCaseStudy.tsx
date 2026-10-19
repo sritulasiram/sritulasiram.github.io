@@ -1,341 +1,382 @@
-"use client";
-
+import { LINK, PILL } from "@/components/ui/Button";
+import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowUpRight,
-  ChevronRight,
-  Code2,
-  Cpu,
-  Zap,
-  AppWindow,
-  Activity,
-  CheckCircle2,
-  AlertTriangle,
-  Layers,
-  Sparkles,
-} from "lucide-react";
-import ProjectImage from "@/components/ui/ProjectImage";
-import ProjectScreenWalkthrough from "@/components/shared/ProjectScreenWalkthrough";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import CaseStudyBreadcrumb from "@/components/shared/CaseStudyBreadcrumb";
+import CountUp from "@/components/shared/CountUp";
+import Reveal from "@/components/shared/Reveal";
+import WindowScreenViewer, { type WindowScreen } from "@/components/projects/WindowScreenViewer";
+import { PROJECTS_DATA } from "@/data/content";
+import { projectThemeStyle } from "@/data/projectTheme";
 import type { CaseStudy } from "@/types";
 
 interface Props {
   project: CaseStudy;
 }
 
-export default function RogGamingCenterCaseStudy({ project }: Props) {
+const GRAY = "text-[#68686D] dark:text-[#A1A1A6]";
+const INK = "text-[#1D1D1F] dark:text-[#F5F5F7]";
+const WRAP = "max-w-5xl mx-auto w-full px-6 sm:px-8";
+const PANEL =
+  "rounded-[28px] bg-[var(--pa-tint)] p-6 sm:p-10 min-h-[320px] flex flex-col justify-center";
+const ROW = "flex items-center gap-3 rounded-2xl bg-[#FFFFFF] dark:bg-[#232326] px-4 py-3.5 shadow-xs";
+
+/* ---------- Chapter visuals ---------- */
+
+function Mono({ children }: { children: React.ReactNode }) {
+  return <span className="shrink-0 font-mono text-xs font-semibold text-[var(--pa)]">{children}</span>;
+}
+
+function LightingVisual() {
+  const rows = [
+    { name: "Keyboard zones", note: "Controlled independently", value: "4" },
+    { name: "Modes", note: "Static, breathing, strobing, colour cycle", value: "4" },
+    { name: "USB feature report", note: "Reverse-engineered protocol", value: "17 bytes" },
+    { name: "Command queue", note: "Serialized, so the controller never locks up", value: "10 ms" },
+  ];
   return (
-    <div className="space-y-16 sm:space-y-24">
-      {/* 1. Systems Software Hero Section */}
-      <section className="pt-24 sm:pt-28 px-6 sm:px-8 max-w-5xl mx-auto w-full">
-        {/* Semantic Accessible Breadcrumb */}
-        <CaseStudyBreadcrumb title="ROG Gaming Center" />
+    <ul className="space-y-3">
+      {rows.map((row) => (
+        <li key={row.name} className={`${ROW} justify-between`}>
+          <span className="min-w-0">
+            <span className={`block text-sm font-semibold ${INK}`}>{row.name}</span>
+            <span className={`block text-xs ${GRAY}`}>{row.note}</span>
+          </span>
+          <Mono>{row.value}</Mono>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
-        {/* Headline & Description */}
-        <div className="space-y-4 max-w-4xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide uppercase bg-[#0071E3]/10 dark:bg-[#0071E3]/20 text-[#0071E3] dark:text-[#2997FF] border border-[#0071E3]/20 dark:border-[#0071E3]/40">
-            <AppWindow className="w-3 h-3" />
-            <span>macOS Systems Architecture · Swift 5.9</span>
+function ThermalsVisual() {
+  const rows = [
+    { name: "CPU die temperature", note: "Read from AppleSMC, no root needed", value: "TC0P" },
+    { name: "Fans", note: "Both blowers, in RPM", value: "2 fans" },
+    { name: "Battery charge limit", note: "Set through the AsusSMC driver", value: "60 · 80 · 100%" },
+  ];
+  return (
+    <ul className="space-y-3">
+      {rows.map((row) => (
+        <li key={row.name} className={`${ROW} justify-between`}>
+          <span className="min-w-0">
+            <span className={`block text-sm font-semibold ${INK}`}>{row.name}</span>
+            <span className={`block text-xs ${GRAY}`}>{row.note}</span>
+          </span>
+          <Mono>{row.value}</Mono>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function DisplayVisual() {
+  const modes = ["Vivid", "Cinema", "Eye Care", "FPS", "RTS / RPG", "Default"];
+  return (
+    <div>
+      <ul className="grid grid-cols-2 gap-3">
+        {modes.map((mode, i) => (
+          <li
+            key={mode}
+            className={`rounded-2xl px-4 py-3.5 text-sm font-semibold shadow-xs ${
+              i === 5 ? "bg-[var(--pa)] text-white dark:text-black" : `bg-[#FFFFFF] dark:bg-[#232326] ${INK}`
+            }`}
+          >
+            {mode}
+          </li>
+        ))}
+      </ul>
+      <p className={`mt-4 text-xs ${GRAY}`}>
+        Each mode uploads 256-sample red, green and blue curves, and the original is restored on quit or sleep.
+      </p>
+    </div>
+  );
+}
+
+function HotkeysVisual() {
+  const rows = [
+    { name: "Fn combinations", note: "Caught with a macOS event tap" },
+    { name: "Dedicated ROG key", note: "Raw HID report, UsagePage 0xFF31 · Usage 0x0038" },
+    { name: "Debounce", note: "250 ms, so one press is one action" },
+  ];
+  return (
+    <ul className="space-y-3">
+      {rows.map((row) => (
+        <li key={row.name} className={ROW}>
+          <span className="min-w-0">
+            <span className={`block text-sm font-semibold ${INK}`}>{row.name}</span>
+            <span className={`block text-xs ${GRAY}`}>{row.note}</span>
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+const CHAPTERS: { problem: string; headline: string; body: string; visual: React.ReactNode }[] = [
+  {
+    problem: "Lighting locked to Windows.",
+    headline: "Four zones, straight over USB.",
+    body: "The keyboard’s lighting controller speaks an undocumented 17-byte protocol. The app reverse-engineers it for several ROG and TUF models and drives it directly through IOKit, with a serialized queue so the controller never locks up.",
+    visual: <LightingVisual />,
+  },
+  {
+    problem: "Thermals you can’t see.",
+    headline: "Read from the silicon.",
+    body: "Die temperature and fan speed come straight from the AppleSMC registers, without root. The charge limit goes through the AsusSMC driver, so the battery can be held at 60, 80 or 100 percent.",
+    visual: <ThermalsVisual />,
+  },
+  {
+    problem: "Colours that never match.",
+    headline: "Six display modes.",
+    body: "GameVisual profiles are rebuilt as gamma curves and uploaded through CoreGraphics. Nothing is left changed: quitting the app, or putting the Mac to sleep, puts the original curve back.",
+    visual: <DisplayVisual />,
+  },
+  {
+    problem: "Keys nobody listens to.",
+    headline: "The ROG key, working.",
+    body: "A global event tap catches the Fn combinations, and the dedicated ROG key is read from raw USB reports, so the physical key launches the app. It works entirely in user space.",
+    visual: <HotkeysVisual />,
+  },
+];
+
+const SCREENS: WindowScreen[] = [
+  {
+    id: "dashboard",
+    label: "Dashboard",
+    title: "The machine at a glance.",
+    description:
+      "System and battery details, live CPU and memory load, die temperature with thermal headroom, fan speed, and quick controls for backlight, lighting and display profile.",
+    src: "/images/projects/rog-gaming-center/app.png",
+    alt: "The Dashboard tab: system architecture and battery, CPU and RAM load, silicon thermal engine and hardware quick controls.",
+    width: 1390,
+    height: 784,
+  },
+  {
+    id: "aura-core",
+    label: "Aura Core",
+    title: "Lighting you can see before you apply it.",
+    description:
+      "A live keyboard preview, five effects (Static, Breathing, Color Cycle, Rainbow and Strobing), brightness and tempo, then one button to send it to the keyboard.",
+    src: "/images/projects/rog-gaming-center/aura-core.png",
+    alt: "The Aura Core tab: a colourful keyboard preview, five lighting effect tiles, brightness and tempo controls and an Apply to Keyboard button.",
+    width: 1390,
+    height: 784,
+  },
+  {
+    id: "gamevisual",
+    label: "GameVisual",
+    title: "Six ways to see the same screen.",
+    description:
+      "Display profiles from Default Standard to FPS Mode and RTS / RPG, each with its own colour strip, plus a live preview with a baseline switch to compare.",
+    src: "/images/projects/rog-gaming-center/gamevisual.png",
+    alt: "The GameVisual tab: six display colour calibration profiles and a real-time visual simulation with a baseline toggle.",
+    width: 1390,
+    height: 784,
+  },
+  {
+    id: "settings",
+    label: "Settings",
+    title: "Set it once.",
+    description:
+      "Open at login, stay in the menu bar, pick the startup lighting, choose what the ROG key does, set a battery charge limit and look up the Fn key shortcuts.",
+    src: "/images/projects/rog-gaming-center/settings.png",
+    alt: "The Settings tab: system integration, lighting and controller behaviour, battery health and a function key reference.",
+    width: 1390,
+    height: 784,
+  },
+];
+
+const NOT_NEEDED = ["Electron", "Python", "Node.js", "libusb", "Bridging headers", "Root daemons", "Kext changes"];
+
+/* ---------- Page ---------- */
+
+export default function RogGamingCenterCaseStudy({ project }: Props) {
+  const next = PROJECTS_DATA.find((p) => p.id === "opencore-efi-hackintosh");
+
+  return (
+    <div className="project-theme selection:bg-red-500/20" style={projectThemeStyle(project.id)}>
+      {/* 1. Hero */}
+      <section className="bg-[var(--pa-tint)] overflow-hidden">
+        <div className={`${WRAP} pt-24 sm:pt-28 text-center`}>
+          <div className="flex justify-center">
+            <CaseStudyBreadcrumb title="ROG Gaming Center" />
           </div>
-
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.08]">
-            {project.title}
+          <p className="mt-4 text-sm font-semibold text-[var(--pa)]">Native macOS app · Swift &amp; SwiftUI</p>
+          <h1 className={`mt-3 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold ${INK} tracking-apple-hero leading-[1.03]`}>
+            Every ROG control. <span className="sm:whitespace-nowrap">Zero runtimes.</span>
           </h1>
-
-          <p className="text-xl sm:text-2xl text-[#6E6E73] dark:text-[#A1A1A6] font-normal leading-relaxed tracking-apple-subhead">
-            {project.tagline}
+          <p className={`mt-5 mx-auto max-w-2xl text-lg sm:text-xl ${GRAY} leading-relaxed tracking-apple-subhead`}>
+            A native app that controls the lighting, thermals, display and hotkeys of ASUS ROG and TUF laptops on macOS, without Electron or root daemons.
           </p>
-
-          {/* GitHub Repository Button */}
-          {project.githubUrl && (
-            <div className="pt-2 flex flex-wrap items-center gap-3">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
+            {project.githubUrl && (
               <a
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="View the repository on GitHub (opens in a new tab)"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold text-white dark:text-[#1D1D1F] bg-[#1D1D1F] dark:bg-white hover:bg-black dark:hover:bg-neutral-200 transition-all duration-200 group shadow-sm hover:shadow-md border border-transparent dark:border-white/20 min-h-[44px]"
+                className={PILL}
               >
-                <Code2 className="w-3.5 h-3.5 text-white/80 dark:text-[#1D1D1F]/80" />
-                <span>View the repo on GitHub</span>
-                <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-white/80 dark:text-[#1D1D1F]/80" />
+                View the repo
+                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
               </a>
-            </div>
-          )}
-        </div>
-
-        {/* Project Meta Bar */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mt-8">
-          <div className="space-y-1">
-            <p className="text-[11px] uppercase tracking-wider text-[#6E6E73] dark:text-[#86868B] font-semibold flex items-center gap-1.5">
-              <Layers className="w-3.5 h-3.5" /> Language &amp; UI
-            </p>
-            <p className="text-sm font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">Swift 5.9 · SwiftUI</p>
+            )}
+            <a href="#screens" className={LINK}>
+              See every screen
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </a>
           </div>
-
-          <div className="space-y-1">
-            <p className="text-[11px] uppercase tracking-wider text-[#6E6E73] dark:text-[#86868B] font-semibold flex items-center gap-1.5">
-              <Cpu className="w-3.5 h-3.5" /> Hardware Driver
-            </p>
-            <p className="text-sm font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">IOKit HID (VID 0x0B05)</p>
+          <div className="mt-10 sm:mt-14 pb-10 sm:pb-16 flex justify-center">
+            <Image
+              src={project.imageSrc}
+              alt="The ROG Gaming Center dashboard showing CPU load, memory, silicon temperature, battery health and quick controls for the keyboard backlight, Aura lighting and display profile"
+              width={1024}
+              height={576}
+              priority
+              sizes="(max-width: 768px) 100vw, 880px"
+              className="h-auto w-full max-w-4xl"
+            />
           </div>
-
-          <div className="space-y-1">
-            <p className="text-[11px] uppercase tracking-wider text-[#6E6E73] dark:text-[#86868B] font-semibold flex items-center gap-1.5">
-              <Activity className="w-3.5 h-3.5" /> Kernel Telemetry
-            </p>
-            <p className="text-sm font-medium text-[#1D1D1F] dark:text-[#F5F5F7]">AppleSMC (TC0P Die)</p>
-          </div>
-
-          <div className="space-y-1">
-            <p className="text-[11px] uppercase tracking-wider text-[#0071E3] dark:text-[#2997FF] font-semibold flex items-center gap-1.5">
-              <Zap className="w-3.5 h-3.5" /> Architecture
-            </p>
-            <p className="text-sm font-bold text-[#1D1D1F] dark:text-[#F5F5F7]">No Root Daemons</p>
-          </div>
-        </div>
-
-        {/* Hero Visual Viewport */}
-        <div className="mt-8 sm:mt-10 w-full rounded-2xl sm:rounded-3xl overflow-hidden aspect-[16/9] border border-[#E5E5EA] dark:border-[#2C2C2E] shadow-md bg-[#0F0F12]">
-          <ProjectImage
-            src={project.imageSrc}
-            alt={project.title}
-            placeholderLabel={project.placeholderLabel}
-            ratioText={project.placeholderRatio}
-            type="screenshot"
-            className="w-full h-full object-cover"
-            priority
-          />
         </div>
       </section>
 
-      {/* 2. Walkthrough Screen Deck */}
-      {project.screens && project.screens.length > 0 && (
-        <section className="px-6 sm:px-8 max-w-5xl mx-auto w-full">
-          <ProjectScreenWalkthrough
-            screens={project.screens}
-            eyebrow="Application Walkthrough"
-            title="Explore each screen."
-            subtitle="A screen-by-screen tour of hardware controls, sensor telemetry, and display calibration."
-          />
+      {/* 2. The problem, in one screen */}
+      <section className={`${WRAP} py-28 sm:py-40`}>
+        <Reveal>
+          <p className={`text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl ${GRAY}`}>
+            On macOS, a gaming laptop’s lighting, fans, display modes and battery limits stay locked inside Windows-only utilities.{" "}
+            <span className={INK}>
+              ROG Gaming Center talks to the hardware directly, in plain Swift, with no runtimes and no root daemons.
+            </span>
+          </p>
+        </Reveal>
+      </section>
+
+      {/* 3. Chapters */}
+      <section id="how" aria-label="How it works" className="scroll-mt-20 pb-12 sm:pb-20">
+        {CHAPTERS.map((chapter, i) => (
+          <div key={chapter.headline} className={`${WRAP} py-14 sm:py-24`}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+              <Reveal className={i % 2 ? "md:order-2" : ""}>
+                <h2 className="text-3xl sm:text-5xl font-semibold tracking-apple-hero leading-[1.08]">
+                  <span className={`block ${GRAY}`}>{chapter.problem}</span>
+                  <span className={`block ${INK}`}>{chapter.headline}</span>
+                </h2>
+                <p className={`mt-5 text-base sm:text-lg ${GRAY} leading-relaxed`}>{chapter.body}</p>
+              </Reveal>
+              <Reveal delay={120} className={i % 2 ? "md:order-1" : ""}>
+                <div className={PANEL}>{chapter.visual}</div>
+              </Reveal>
+            </div>
+          </div>
+        ))}
+      </section>
+
+      {/* 4. Every screen */}
+      <section id="screens" aria-label="Every screen" className="scroll-mt-20 py-16 sm:py-24 bg-[var(--pa-tint)]">
+        <div className="max-w-6xl mx-auto w-full px-6 sm:px-8">
+          <Reveal>
+            <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero text-center`}>See every screen.</h2>
+            <p className={`mt-3 mb-10 text-lg ${GRAY} text-center`}>Four tabs, one native app. Pick one to look closer.</p>
+            <WindowScreenViewer screens={SCREENS} label="App screens" />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 5. What it doesn't need */}
+      <section aria-label="Built without" className="py-16 sm:py-24">
+        <div className={WRAP}>
+          <Reveal>
+            <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero leading-[1.08]`}>
+              What it doesn’t need.
+            </h2>
+            <p className={`mt-3 max-w-2xl text-lg ${GRAY} leading-relaxed`}>
+              Everything is Swift and SwiftUI, running in user space. A small command-line tool, rogauracore, is included for controlling the lighting from shell scripts.
+            </p>
+          </Reveal>
+          <Reveal delay={100}>
+            <ul className="mt-10 flex flex-wrap gap-3">
+              {NOT_NEEDED.map((item) => (
+                <li
+                  key={item}
+                  className="rounded-full bg-[#FFFFFF] dark:bg-[#232326] px-5 py-2.5 text-base font-medium text-[#68686D] dark:text-[#A1A1A6] line-through decoration-[var(--pa)] decoration-2 shadow-xs"
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 5. Results */}
+      <section aria-label="Results" className="bg-[var(--pa-deep)] text-white py-24 sm:py-32">
+        <div className={WRAP}>
+          <Reveal>
+            <p className="text-sm font-semibold text-[#86868B]">At a glance</p>
+            <h2 className="mt-2 text-3xl sm:text-5xl font-semibold tracking-apple-hero max-w-2xl leading-[1.08]">
+              One app. Four controls.
+            </h2>
+          </Reveal>
+          <dl className="mt-14 grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-12">
+            {project.results.map((result, i) => (
+              <Reveal key={result.label} delay={i * 80}>
+                <dt className="text-sm font-semibold text-[var(--pa-d)]">{result.label}</dt>
+                <dd className="mt-1 text-6xl sm:text-7xl font-semibold tracking-apple-hero tabular-nums">
+                  <CountUp value={result.metric} />
+                </dd>
+                <dd className="mt-3 text-sm text-[#A1A1A6] leading-relaxed">{result.description}</dd>
+              </Reveal>
+            ))}
+          </dl>
+        </div>
+      </section>
+
+      {/* 6. Tech specs */}
+      <section aria-label="Technical stack" className={`${WRAP} py-20 sm:py-28`}>
+        <Reveal>
+          <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero`}>Under the hood.</h2>
+          <p className={`mt-3 text-lg ${GRAY} max-w-2xl`}>{project.timeframe} · v1.0 beta.</p>
+        </Reveal>
+        <div className="mt-12 divide-y divide-black/[0.08] dark:divide-white/10 border-y border-black/[0.08] dark:border-white/10">
+          {project.techStack.map((group) => (
+            <Reveal key={group.category}>
+              <div className="grid grid-cols-1 gap-3 py-8 md:grid-cols-[14rem_1fr] md:gap-10">
+                <h3 className={`text-sm font-semibold ${INK}`}>{group.category}</h3>
+                <ul className="flex flex-wrap gap-x-3 gap-y-2">
+                  {group.items.map((item) => (
+                    <li
+                      key={item}
+                      className="rounded-full bg-[var(--pa-tint)] px-3.5 py-1.5 text-sm text-[#1D1D1F] dark:text-[#F5F5F7]"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* 7. Next project */}
+      {next && (
+        <section aria-label="Next project" className={`${WRAP} pb-20 sm:pb-28`}>
+          <Link
+            href={`/projects/${next.id}`}
+            className="group block rounded-[28px] bg-[var(--pa-tint)] p-8 sm:p-12 transition-transform duration-300 hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--pa)]"
+          >
+            <p className="text-sm font-semibold text-[var(--pa)]">The firmware behind it</p>
+            <h2 className={`mt-2 text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero leading-[1.08]`}>{next.title}</h2>
+            <p className={`mt-3 max-w-2xl text-lg ${GRAY} leading-relaxed`}>{next.subtitle}</p>
+            <span className="mt-8 inline-flex items-center gap-1 text-[17px] text-[var(--pa)] group-hover:underline">
+              Explore the case study
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
+            </span>
+          </Link>
         </section>
       )}
-
-      {/* 3. Problem Statement & Context */}
-      <section className="px-6 sm:px-8 max-w-5xl mx-auto w-full">
-        <div className="bg-[#F5F5F7] dark:bg-[#161618] rounded-2xl sm:rounded-3xl p-8 sm:p-12 border border-[#E5E5EA]/80 dark:border-white/[0.08] space-y-8 transition-colors">
-          <div className="space-y-3">
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#0071E3] dark:text-[#2997FF]">
-              Problem Statement &amp; Context
-            </p>
-            <h2 className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-headline">
-              Unlocking Proprietary Gaming Hardware on macOS Without Bloat
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-[#515154] dark:text-[#A1A1A6] leading-relaxed text-sm sm:text-base">
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
-                <div>
-                  <h3 className="font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] mb-1">Vendor Utility Lock-In</h3>
-                  <p className="text-xs sm:text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                    {project.background.problemStatement}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <Sparkles className="w-5 h-5 text-[#0071E3] dark:text-[#2997FF] shrink-0 mt-0.5" />
-                <div>
-                  <h3 className="font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] mb-1">The Engineering Objective</h3>
-                  <p className="text-xs sm:text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                    {project.background.context}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Key Challenges Grid */}
-          <div className="pt-4 border-t border-[#E5E5EA] dark:border-[#2C2C2E]">
-            <p className="text-xs font-semibold uppercase tracking-wider text-[#6E6E73] dark:text-[#86868B] mb-4">
-              Core Technical Challenges
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {project.background.challenges.map((challenge, idx) => (
-                <div
-                  key={idx}
-                  className="bg-white dark:bg-[#1C1C1E] p-4 rounded-xl border border-[#E5E5EA] dark:border-[#2C2C2E] shadow-2xs flex items-start gap-2.5 transition-colors"
-                >
-                  <CheckCircle2 className="w-4 h-4 text-[#0071E3] dark:text-[#2997FF] shrink-0 mt-0.5" />
-                  <span className="text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7] leading-snug">
-                    {challenge}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. Native Systems Architecture */}
-      <section className="px-6 sm:px-8 max-w-5xl mx-auto w-full space-y-8">
-        <div className="space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#86868B]">
-            System Architecture
-          </p>
-          <h2 className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-headline">
-            Direct User-Space Hardware Interfacing
-          </h2>
-          <p className="text-sm sm:text-base text-[#6E6E73] dark:text-[#A1A1A6] max-w-3xl">
-            {project.architecture.summary}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {project.architecture.components.map((comp, idx) => (
-            <div
-              key={idx}
-              className="p-6 rounded-2xl bg-white dark:bg-[#121214] border border-[#E5E5EA] dark:border-[#2C2C2E] shadow-2xs hover:shadow-sm transition-all space-y-2.5"
-            >
-              <div className="flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-[#0071E3]/10 dark:bg-[#0071E3]/20 text-[#0071E3] dark:text-[#2997FF] text-xs font-bold flex items-center justify-center">
-                  {idx + 1}
-                </span>
-                <h3 className="text-base font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">{comp.title}</h3>
-              </div>
-              <p className="text-xs sm:text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed pl-8">
-                {comp.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 5. Key Highlights */}
-      <section className="px-6 sm:px-8 max-w-5xl mx-auto w-full space-y-6">
-        <div className="space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#86868B]">
-            Application Features
-          </p>
-          <h2 className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-headline">
-            Native Hardware Controls &amp; Calibration
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-          {project.keyFeatures.map((feat, idx) => (
-            <div
-              key={idx}
-              className="p-6 rounded-2xl bg-[#F5F5F7] dark:bg-[#1C1C1E] border border-[#E5E5EA] dark:border-[#2C2C2E] space-y-3 hover:border-[#D1D1D6] dark:hover:border-[#3A3A3C] transition-colors"
-            >
-              <div className="flex items-center justify-between">
-                <h3 className="text-base font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">{feat.title}</h3>
-                {feat.badge && (
-                  <span className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-white dark:bg-[#2C2C2E] text-[#0071E3] dark:text-[#2997FF] border border-[#0071E3]/20 dark:border-[#0071E3]/40">
-                    {feat.badge}
-                  </span>
-                )}
-              </div>
-              <p className="text-xs sm:text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-                {feat.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 6. System Architecture & Scope (Dark Accent Feature Block) */}
-      <section className="px-6 sm:px-8 max-w-5xl mx-auto w-full">
-        <div className="bg-[#1D1D1F] dark:bg-[#121214] text-white rounded-2xl sm:rounded-3xl p-8 sm:p-12 space-y-8 shadow-xl border border-black/[0.08] dark:border-white/[0.12] transition-colors">
-          <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#0071E3] dark:text-[#2997FF]">
-              Architecture &amp; Scope
-            </p>
-            <h2 className="text-2xl sm:text-3xl font-semibold tracking-apple-headline text-white">
-              Native Integration &amp; Hardware Scope
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4 border-t border-white/10">
-            {project.results.map((res, idx) => (
-              <div key={idx} className="space-y-1.5">
-                <div className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
-                  {res.metric}
-                </div>
-                <div className="text-xs uppercase tracking-wider font-semibold text-[#86868B]">
-                  {res.label}
-                </div>
-                <p className="text-xs text-white/70 leading-relaxed pt-1">
-                  {res.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 7. Complete Tech Stack Matrix */}
-      <section className="px-6 sm:px-8 max-w-5xl mx-auto w-full space-y-6">
-        <div className="space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#86868B]">
-            Systems Toolchain
-          </p>
-          <h2 className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-headline">
-            Technical Stack
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-          {project.techStack.map((stack, idx) => (
-            <div
-              key={idx}
-              className="p-5 rounded-2xl bg-white dark:bg-[#121214] border border-[#E5E5EA] dark:border-[#2C2C2E] shadow-2xs space-y-3 transition-colors"
-            >
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#0071E3] dark:text-[#2997FF]">
-                {stack.category}
-              </h3>
-              <ul className="space-y-1.5">
-                {stack.items.map((item, itemIdx) => (
-                  <li
-                    key={itemIdx}
-                    className="text-xs text-[#515154] dark:text-[#A1A1A6] font-medium flex items-center gap-1.5"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#0071E3]/60 dark:bg-[#2997FF]/70 shrink-0" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 8. Next Project Navigation Banner */}
-      <section className="px-6 sm:px-8 max-w-5xl mx-auto w-full pb-16">
-        <Link
-          href="/projects/opencore-efi-hackintosh"
-          className="group block p-8 sm:p-12 rounded-2xl sm:rounded-3xl bg-[#F5F5F7] dark:bg-[#1C1C1E] hover:bg-[#E5E5EA]/70 dark:hover:bg-[#2C2C2E] border border-[#E5E5EA] dark:border-[#2C2C2E] transition-all duration-300"
-        >
-          <div className="flex items-center justify-between">
-            <div className="space-y-2">
-              <p className="text-xs font-semibold uppercase tracking-wider text-[#6E6E73] dark:text-[#86868B]">
-                Companion Firmware Case Study
-              </p>
-              <h3 className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] group-hover:text-[#5E5CE6] dark:group-hover:text-[#7D7AFF] transition-colors flex items-center gap-2">
-                <span>OpenCore EFI Hackintosh Build</span>
-                <ChevronRight className="w-6 h-6 transition-transform group-hover:translate-x-1" />
-              </h3>
-              <p className="text-sm text-[#6E6E73] dark:text-[#A1A1A6] max-w-2xl">
-                Explore the low-level firmware engineering: custom ACPI AML bytecode power-gating, OpenCore UEFI bootloader configuration, and kernel extension harmonization.
-              </p>
-            </div>
-          </div>
-        </Link>
-      </section>
     </div>
   );
 }

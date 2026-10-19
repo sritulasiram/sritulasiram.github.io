@@ -29,6 +29,8 @@ export interface IphoneFrameProps extends HTMLAttributes<HTMLDivElement> {
   theme?: "light" | "dark";
   hideStatusBar?: boolean;
   noShadow?: boolean;
+  /** Cross-dissolve between `screens`. Turn off to swap instantly, with no light backing showing through. */
+  fade?: boolean;
 }
 
 /**
@@ -47,6 +49,7 @@ export default function IphoneFrame({
   theme = "light",
   hideStatusBar = false,
   noShadow = false,
+  fade = true,
   style,
   ...props
 }: IphoneFrameProps) {
@@ -217,7 +220,7 @@ export default function IphoneFrame({
               href={screen.src}
               style={{
                 opacity: screen.active ? 1 : 0,
-                transition: "opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
+                transition: fade ? "opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)" : "none",
                 pointerEvents: screen.active ? "auto" : "none",
               }}
             />

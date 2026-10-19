@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { RefreshCw, ArrowLeft, AlertCircle } from "lucide-react";
+import Button from "@/components/ui/Button";
 
 export default function ErrorBoundary({
   error,
@@ -17,7 +18,7 @@ export default function ErrorBoundary({
   }, [error]);
 
   return (
-    <main className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center px-6 py-20 text-center select-none bg-white dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300">
+    <main id="main-content" tabIndex={-1} className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center px-6 py-20 text-center select-none bg-white dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300">
       <div className="max-w-md w-full space-y-6">
         {/* Subtle Alert Badge */}
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-500/10 dark:bg-red-400/10 border border-red-500/20 dark:border-red-400/20 text-red-600 dark:text-red-400 text-xs font-semibold">
@@ -42,22 +43,14 @@ export default function ErrorBoundary({
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
           {/* Primary Action: Reset & Try Again */}
-          <button
-            onClick={() => reset()}
-            className="w-full sm:w-auto min-h-[44px] px-6 py-2.5 rounded-full bg-[#0071E3] hover:bg-[#0077ED] text-white font-semibold text-sm transition-all duration-200 inline-flex items-center justify-center gap-2 cursor-pointer active:scale-95 shadow-sm"
-          >
-            <RefreshCw className="w-3.5 h-3.5" />
-            <span>Try Again</span>
-          </button>
+          <Button onClick={() => reset()} iconBefore icon={<RefreshCw className="h-4 w-4" aria-hidden="true" />} className="w-full sm:w-auto">
+            Try again
+          </Button>
 
           {/* Secondary Action: Return Home */}
-          <Link
-            href="/"
-            className="w-full sm:w-auto min-h-[44px] px-6 py-2.5 rounded-full bg-[#F5F5F7] dark:bg-[#1C1C1E] text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-[#E8E8ED] dark:hover:bg-[#2C2C2E] border border-black/[0.04] dark:border-white/[0.08] font-semibold text-sm transition-all duration-200 inline-flex items-center justify-center gap-2"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Return Home</span>
-          </Link>
+          <Button variant="secondary" href="/" iconBefore icon={<ArrowLeft className="h-4 w-4" aria-hidden="true" />} className="w-full sm:w-auto">
+            Return home
+          </Button>
         </div>
 
         <div className="pt-4 text-xs text-[#86868B] dark:text-[#8E8E93]">

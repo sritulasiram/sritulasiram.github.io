@@ -2,20 +2,26 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
-  ArrowRight,
   ArrowUpRight,
   Calendar,
   Building2,
   UserCheck,
-  Code2,
   Layers,
-  Globe,
   ChevronRight,
 } from "lucide-react";
 import Footer from "@/components/layout/Footer";
+import Button from "@/components/ui/Button";
+import Image from "next/image";
 import ProjectImage from "@/components/ui/ProjectImage";
+import DesignPhoneStage from "@/components/designs/DesignPhoneStage";
+import { DESIGN_ACCENT } from "@/components/designs/designStage";
 import DesignScreensMarquee from "@/components/designs/DesignScreensMarquee";
+import AppCaseStudy from "@/components/designs/AppCaseStudy";
+import { APP_STUDIES } from "@/components/designs/appStudies";
+import WebCaseStudy from "@/components/designs/WebCaseStudy";
+import { WEB_STUDIES } from "@/components/designs/webStudies";
 import { DESIGN_DETAILS, DESIGNS_DATA } from "@/data/designDetails";
+import { accentStyle } from "@/data/projectTheme";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -57,8 +63,38 @@ export default async function DesignDetailPage({ params }: PageProps) {
   const nextDesign =
     DESIGNS_DATA[(currentIndex + 1) % DESIGNS_DATA.length];
 
+  const webStudy = WEB_STUDIES[id];
+  if (webStudy) {
+    return (
+      <main
+        id="main-content"
+        tabIndex={-1}
+        style={accentStyle(webStudy.accent)}
+        className="project-theme min-h-screen bg-white dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300 flex flex-col selection:bg-[#0071E3]/15 selection:text-[#1D1D1F] dark:selection:text-[#F5F5F7]"
+      >
+        <WebCaseStudy design={design} nextDesign={nextDesign} config={webStudy.config} />
+        <Footer />
+      </main>
+    );
+  }
+
+  const study = APP_STUDIES[id];
+  if (study) {
+    return (
+      <main
+        id="main-content"
+        tabIndex={-1}
+        style={accentStyle(study.accent)}
+        className="project-theme min-h-screen bg-white dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300 flex flex-col selection:bg-[#0071E3]/15 selection:text-[#1D1D1F] dark:selection:text-[#F5F5F7]"
+      >
+        <AppCaseStudy design={design} nextDesign={nextDesign} config={study.config} />
+        <Footer />
+      </main>
+    );
+  }
+
   return (
-    <main className="min-h-screen bg-white dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300 flex flex-col selection:bg-[#0071E3]/15 selection:text-[#1D1D1F] dark:selection:text-[#F5F5F7]">
+    <main id="main-content" tabIndex={-1} className="min-h-screen bg-white dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300 flex flex-col selection:bg-[#0071E3]/15 selection:text-[#1D1D1F] dark:selection:text-[#F5F5F7]">
       {/* 1. Case Study Hero Section */}
       <section className="pt-24 sm:pt-28 pb-10 sm:pb-12 px-6 sm:px-8 max-w-5xl mx-auto w-full">
         {/* Breadcrumb */}
@@ -79,10 +115,11 @@ export default async function DesignDetailPage({ params }: PageProps) {
           <div className="flex items-center gap-4 sm:gap-5">
             {design.logoSrc && (
               <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl sm:rounded-3xl overflow-hidden border border-[#E5E5EA] dark:border-white/10 bg-white dark:bg-[#161618] p-1 shadow-2xs shrink-0">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={design.logoSrc}
                   alt={`${design.title} Brand Logo`}
+                  width={64}
+                  height={64}
                   className="w-full h-full object-contain rounded-xl sm:rounded-2xl"
                 />
               </div>
@@ -99,39 +136,19 @@ export default async function DesignDetailPage({ params }: PageProps) {
           {(design.githubUrl || design.figmaUrl || design.liveUrl) && (
             <div className="pt-2 flex flex-wrap items-center gap-3">
               {design.figmaUrl && (
-                <a
-                  href={design.figmaUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold text-white bg-[#0071E3] hover:bg-[#0077ED] shadow-2xs transition-all duration-200 group min-h-[44px]"
-                >
-                  <span>Inspect in Figma</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </a>
+                <Button href={design.figmaUrl} icon={<ArrowUpRight className="h-4 w-4" aria-hidden="true" />}>
+                  Inspect in Figma
+                </Button>
               )}
               {design.liveUrl && (
-                <a
-                  href={design.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] bg-[#F5F5F7] dark:bg-[#1C1C1E] hover:bg-[#E5E5EA] dark:hover:bg-[#2C2C2E] border border-[#E5E5EA] dark:border-[#2C2C2E] transition-all duration-200 group shadow-2xs min-h-[44px]"
-                >
-                  <Globe className="w-3.5 h-3.5 text-[#0071E3] dark:text-[#2997FF]" />
-                  <span>Visit Live Clinic Website</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-[#6E6E73] dark:text-[#A1A1A6]" />
-                </a>
+                <Button variant="secondary" href={design.liveUrl} icon={<ArrowUpRight className="h-4 w-4" aria-hidden="true" />}>
+                  {design.liveLabel ?? "Visit live site"}
+                </Button>
               )}
               {design.githubUrl && (
-                <a
-                  href={design.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] bg-[#F5F5F7] dark:bg-[#1C1C1E] hover:bg-[#E5E5EA] dark:hover:bg-[#2C2C2E] border border-[#E5E5EA] dark:border-[#2C2C2E] transition-all duration-200 group shadow-2xs min-h-[44px]"
-                >
-                  <Code2 className="w-3.5 h-3.5 text-[#6E6E73] dark:text-[#A1A1A6]" />
-                  <span>View Repository on GitHub</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-[#6E6E73] dark:text-[#A1A1A6]" />
-                </a>
+                <Button variant="secondary" href={design.githubUrl} icon={<ArrowUpRight className="h-4 w-4" aria-hidden="true" />}>
+                  View repository on GitHub
+                </Button>
               )}
             </div>
           )}
@@ -171,24 +188,38 @@ export default async function DesignDetailPage({ params }: PageProps) {
 
       {/* 2. Full-Bleed 16:10 / 16:9 Hero Mockup Presentation */}
       <section className="px-6 sm:px-8 max-w-5xl mx-auto w-full mb-12 sm:mb-16">
-        <div className="aspect-[16/9] sm:aspect-[16/10] rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden border border-[#E5E5EA] dark:border-[#2C2C2E] bg-white dark:bg-[#121214] apple-card-shadow transition-colors">
-          <ProjectImage
-            src={design.imageSrc}
-            alt={design.title}
-            placeholderLabel={design.placeholderLabel}
-            ratioText={design.placeholderRatio}
-            type="screenshot"
-            className="w-full h-full"
-          />
+        <div className={`${design.heroLayout === "phone" ? "aspect-[4/3]" : "aspect-[16/9]"} sm:aspect-[16/10] rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden border border-[#E5E5EA] dark:border-[#2C2C2E] bg-white dark:bg-[#121214] apple-card-shadow transition-colors`}>
+          {design.heroLayout === "phone" ? (
+            <DesignPhoneStage
+              src={design.imageSrc}
+              alt={`${design.title} app screen`}
+              color={DESIGN_ACCENT[design.id] ?? "#0071E3"}
+              className="w-full h-full"
+            />
+          ) : (
+            <ProjectImage
+              src={design.imageSrc}
+              alt={design.title}
+              placeholderLabel={design.placeholderLabel}
+              ratioText={design.placeholderRatio}
+              type="screenshot"
+              className="w-full h-full"
+            />
+          )}
         </div>
       </section>
 
       {/* 2b. Moving Screen Preview Ribbon (Void App) */}
-      {design.id === "void" && (
+      {design.screens && design.screens.length > 0 && (
         <section className="max-w-6xl mx-auto w-full mb-20 sm:mb-28 px-6 sm:px-8">
           <DesignScreensMarquee
-            title="Interactive Mobile Screen Flow"
-            subtitle="Interactive mobile flow · Select any screen to inspect details"
+            screens={design.screens}
+            meta={[
+              { label: "Tools", value: design.tool },
+              { label: "Platform", value: design.platform },
+            ]}
+            title="Screen flow"
+            subtitle="Select a screen to inspect it."
           />
         </section>
       )}
@@ -198,10 +229,10 @@ export default async function DesignDetailPage({ params }: PageProps) {
         <div className="max-w-5xl mx-auto px-6 sm:px-8 space-y-12">
           <div className="max-w-3xl space-y-4">
             <p className="text-xs font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#86868B]">
-              The Problem &amp; UX Context
+              UX Context
             </p>
             <h2 className="text-3xl sm:text-4xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight">
-              Designing clarity into fragmented processes.
+              The problem.
             </h2>
             <p className="text-base sm:text-lg text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
               {design.background.problemStatement}
@@ -284,7 +315,7 @@ export default async function DesignDetailPage({ params }: PageProps) {
             Design Architecture
           </p>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight">
-            Structure and interaction tokens.
+            Structure and interaction.
           </h2>
           <p className="text-sm sm:text-base text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
             {design.architecture.summary}
@@ -316,7 +347,7 @@ export default async function DesignDetailPage({ params }: PageProps) {
               Core Capabilities
             </p>
             <h2 className="text-3xl sm:text-4xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight">
-              Crafted with focus.
+              Key features.
             </h2>
           </div>
 
@@ -350,7 +381,7 @@ export default async function DesignDetailPage({ params }: PageProps) {
             Specifications &amp; Tools
           </p>
           <h2 className="text-3xl sm:text-4xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight">
-            Design stack and deliverables.
+            Tools and deliverables.
           </h2>
         </div>
 
@@ -426,15 +457,14 @@ export default async function DesignDetailPage({ params }: PageProps) {
               <div className="space-y-2 max-w-2xl">
                 <h3 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight group-hover:text-[#0071E3] dark:group-hover:text-[#2997FF] transition-colors leading-[1.1]">
                   {nextDesign.title}
+                  <ChevronRight
+                    aria-hidden="true"
+                    className="inline-block w-7 h-7 sm:w-9 sm:h-9 ml-1 align-[-0.1em] text-[#6E6E73] dark:text-[#8E8E93] transition-transform duration-300 group-hover:translate-x-1"
+                  />
                 </h3>
                 <p className="text-base sm:text-lg text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
                   {nextDesign.subtitle}
                 </p>
-              </div>
-
-              <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs sm:text-sm font-semibold text-white bg-[#0071E3] hover:bg-[#0077ED] transition-all duration-200 shadow-xs shrink-0">
-                <span>Learn more</span>
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </div>
             </div>
           </Link>

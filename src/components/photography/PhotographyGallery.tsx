@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 import ProjectImage from "@/components/ui/ProjectImage";
 import PhotoPreviewModal from "./PhotoPreviewModal";
-import PhotographyHeroSpotlight from "./PhotographyHeroSpotlight";
 import type { PhotoItem, PhotoAlbumId } from "@/types";
 import { PHOTO_ALBUMS, PHOTO_SPECS } from "@/data/content";
 
@@ -214,12 +213,6 @@ export default function PhotographyGallery({ photos }: PhotographyGalleryProps) 
               <h4 className="text-xs sm:text-sm font-semibold text-white tracking-tight leading-snug truncate">
                 {photo.title}
               </h4>
-              {spec && (
-                <div className="pt-0.5 flex items-center gap-1 text-[10px] font-medium text-white/75 tabular-nums">
-                  <SlidersHorizontal className="w-3 h-3 text-white/80 shrink-0" />
-                  <span>{spec.focalLength.split(" ")[0]} · {spec.aperture}</span>
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -237,12 +230,6 @@ export default function PhotographyGallery({ photos }: PhotographyGalleryProps) 
               </p>
             )}
           </div>
-
-          {spec && (
-            <span className="text-[10px] font-medium text-[#6E6E73] dark:text-[#8E8E93] px-2 py-0.5 rounded-full bg-[#F5F5F7] dark:bg-[#1C1C1E] border border-black/[0.04] dark:border-white/[0.06] shrink-0 whitespace-nowrap tabular-nums">
-              {spec.focalLength.split(" ")[0]}
-            </span>
-          )}
         </div>
       </div>
     );
@@ -349,12 +336,6 @@ export default function PhotographyGallery({ photos }: PhotographyGalleryProps) 
 
   return (
     <div className="space-y-12 sm:space-y-16">
-      {/* Cinematic Hero Spotlight - Keynote highlighted frames */}
-      <PhotographyHeroSpotlight
-        photos={photos}
-        onSelectPhoto={handleOpenPreview}
-      />
-
       {/* Apple-Style Filter & View Switcher Toolbar */}
       <div id="gallery" className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-2 pt-2 scroll-mt-24">
         {/* Album Segmented Control */}
