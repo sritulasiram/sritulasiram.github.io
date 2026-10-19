@@ -3,122 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sri Tulasi Ram | Engineer</title>
+    <title>Sri Tulasi Ram</title>
+    <meta name="description" content="Engineering precision. Design intuition. See you at 11.11.">
+    <meta name="color-scheme" content="light dark">
     <style>
         :root {
-            --bg-color: #000000;
-            --text-main: #f5f5f7; 
-            --text-muted: #86868b; 
-            --accent: #2997ff; 
+            --bg: #ffffff;
+            --ink: #1d1d1f;
+            --muted: #86868b;
+            --body: #68686d;
+            --pill: #f5f5f7;
+            --btn-bg: #1d1d1f;
+            --btn-ink: #ffffff;
+            --btn2-bg: #f5f5f7;
+            --btn2-ink: #1d1d1f;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #000000;
+                --ink: #f5f5f7;
+                --muted: #6e6e73;
+                --body: #a1a1a6;
+                --pill: #1c1c1e;
+                --btn-bg: #f5f5f7;
+                --btn-ink: #000000;
+                --btn2-bg: #1c1c1e;
+                --btn2-ink: #f5f5f7;
+            }
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        header { padding: 20px 24px; }
+        header span { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; }
+
+        main {
+            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            overflow: hidden;
+            padding: 0 24px 64px;
         }
 
-        @keyframes fadeUpBlur {
-            0% { opacity: 0; transform: translateY(40px) scale(0.95); filter: blur(12px); }
-            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-        }
-
-        .animate-1 { animation: fadeUpBlur 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; opacity: 0; }
-        .animate-2 { animation: fadeUpBlur 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards; opacity: 0; }
-        .animate-3 { animation: fadeUpBlur 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards; opacity: 0; }
-
-        .badge {
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: -0.01em;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 24px;
+        .pill {
+            background: var(--pill);
+            color: var(--body);
+            font-size: 14px;
+            font-weight: 500;
+            padding: 6px 16px;
+            border-radius: 980px;
         }
 
         h1 {
-            font-size: clamp(44px, 8vw, 84px);
-            font-weight: 700;
-            letter-spacing: -0.04em; 
-            line-height: 1.05;
-            margin-bottom: 24px;
-            background: linear-gradient(180deg, #ffffff 0%, #86868b 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            max-width: 900px;
-            padding: 0 20px;
+            margin-top: 32px;
+            font-size: clamp(44px, 9vw, 96px);
+            font-weight: 600;
+            letter-spacing: -0.045em;
+            line-height: 1.03;
+            text-wrap: balance;
+        }
+        h1 .gray { color: var(--muted); }
+
+        .tagline {
+            margin-top: 24px;
+            max-width: 28rem;
+            font-size: clamp(18px, 2.4vw, 20px);
+            line-height: 1.35;
+            color: var(--body);
+            text-wrap: balance;
         }
 
-        p.subtitle {
-            font-size: clamp(19px, 3vw, 24px);
+        .countdown {
+            margin-top: 40px;
+            font-size: clamp(22px, 3vw, 30px);
             font-weight: 500;
-            color: var(--text-main);
-            margin-bottom: 40px;
-            letter-spacing: -0.015em;
+            letter-spacing: -0.02em;
+            color: var(--muted);
+            font-variant-numeric: tabular-nums;
         }
+        .countdown b { font-weight: 500; color: var(--ink); }
 
-        .cta-group {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-        }
+        footer { padding: 0 24px 32px; text-align: center; }
+
+        .cta-group { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; list-style: none; }
 
         .btn {
             display: inline-block;
-            border-radius: 980px; 
+            border-radius: 980px;
             padding: 12px 24px;
             font-size: 15px;
             font-weight: 500;
             letter-spacing: -0.01em;
             text-decoration: none;
-            transition: all 0.2s ease;
+            transition: transform 0.2s ease, opacity 0.2s ease;
         }
+        .btn:hover { transform: scale(1.02); opacity: 0.9; }
+        .btn:focus-visible { outline: 2px solid #0071e3; outline-offset: 2px; }
+        .btn-primary { background: var(--btn-bg); color: var(--btn-ink); }
+        .btn-secondary { background: var(--btn2-bg); color: var(--btn2-ink); }
 
-        .btn-primary {
-            background-color: var(--text-main);
-            color: var(--bg-color);
+        .copy { margin-top: 24px; font-size: 12px; color: var(--body); }
+
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(24px); filter: blur(8px); }
+            to { opacity: 1; transform: none; filter: blur(0); }
         }
+        .rise { opacity: 0; animation: rise 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .d1 { animation-delay: 0.1s; } .d2 { animation-delay: 0.25s; }
+        .d3 { animation-delay: 0.4s; } .d4 { animation-delay: 0.55s; }
 
-        .btn-primary:hover {
-            background-color: #ffffff;
-            transform: scale(1.02);
-        }
-
-        .btn-secondary {
-            background-color: rgba(255, 255, 255, 0.08);
-            color: var(--text-main);
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(255, 255, 255, 0.15);
+        @media (prefers-reduced-motion: reduce) {
+            .rise { animation: none; opacity: 1; }
+            .btn { transition: none; }
         }
     </style>
 </head>
 <body>
-    <div class="badge animate-1">COMING SOON</div>
-    
-    <h1 class="animate-1">Engineering precision.<br>Design intuition.</h1>
-    
-    <p class="subtitle animate-2">Sri Tulasi Ram</p>
-    
-    <div class="cta-group animate-3">
-        <a href="https://www.linkedin.com/in/sritulasiram" target="_blank" class="btn btn-primary">Connect on LinkedIn</a>
-        <a href="mailto:sritulasiram27@gmail.com" class="btn btn-secondary">Send an Email</a>
-    </div>
+    <header><span>Sri Tulasi Ram</span></header>
+
+    <main id="main-content">
+        <p class="pill rise d1">Coming soon</p>
+        <h1 class="rise d2">See you <span class="gray">at 11.11.</span></h1>
+        <p class="tagline rise d3">Engineering precision. Design intuition.</p>
+        <p class="countdown rise d4" id="countdown" role="timer" aria-label="Time left until 11.11">
+            <span aria-hidden="true" id="countdown-text"><b>--</b>d <b>--</b>h <b>--</b>m <b>--</b>s</span>
+        </p>
+    </main>
+
+    <footer>
+        <ul class="cta-group">
+            <li><a href="mailto:sritulasiram27@gmail.com" class="btn btn-primary">Send an Email</a></li>
+            <li><a href="https://www.linkedin.com/in/sritulasiram" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Connect on LinkedIn</a></li>
+        </ul>
+        <p class="copy">&copy; <span id="year">2026</span> Sri Tulasi Ram. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // 11 November 2026, 00:00 in Malaysia (UTC+8), wherever the visitor is.
+        var LAUNCH_AT = new Date("2026-11-11T00:00:00+08:00").getTime();
+        var out = document.getElementById("countdown-text");
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+        function pad(n) { return String(n).padStart(2, "0"); }
+
+        function tick() {
+            var t = Math.floor(Math.max(0, LAUNCH_AT - Date.now()) / 1000);
+            var parts = [
+                [Math.floor(t / 86400), "d"],
+                [Math.floor((t % 86400) / 3600), "h"],
+                [Math.floor((t % 3600) / 60), "m"],
+                [t % 60, "s"]
+            ];
+            out.innerHTML = parts.map(function (p) { return "<b>" + pad(p[0]) + "</b>" + p[1]; }).join(" ");
+        }
+
+        tick();
+        setInterval(tick, 1000);
+    </script>
 </body>
 </html>
