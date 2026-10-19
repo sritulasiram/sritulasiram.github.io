@@ -79,7 +79,7 @@ export default function ProjectScreenWalkthrough({
             </span>
           )}
           {title && (
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[#1D1D1F] dark:text-white tracking-apple-tight leading-tight">
+            <h2 className="text-3xl sm:text-5xl font-semibold text-[#1D1D1F] dark:text-white tracking-apple-tight leading-tight">
               {title}
             </h2>
           )}

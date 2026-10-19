@@ -113,7 +113,7 @@ export default function PhotoPreviewModal({
     if (!photo) return;
 
     // Explicitly hide the navbar while preview is open
-    const nav = document.querySelector("header");
+    const nav = document.getElementById("main-navigation");
     const originalNavDisplay = nav ? nav.style.display : "";
     if (nav) nav.style.display = "none";
 
@@ -395,15 +395,11 @@ export default function PhotoPreviewModal({
                   </div>
                 </div>
 
-                {/* Film Profile & Metering */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                {/* Capture pipeline */}
+                <div className="grid grid-cols-1 gap-2 text-xs">
                   <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-white/5">
                     <span className="text-white/70 font-medium text-[10px] sm:text-[11px]">Capture Pipeline</span>
                     <span className="text-white/90 font-medium truncate ml-2">{spec.filmStock}</span>
-                  </div>
-                  <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-white/5">
-                    <span className="text-white/70 font-medium text-[10px] sm:text-[11px]">Metering</span>
-                    <span className="text-white/90 font-medium truncate ml-2">{spec.metering}</span>
                   </div>
                 </div>
 

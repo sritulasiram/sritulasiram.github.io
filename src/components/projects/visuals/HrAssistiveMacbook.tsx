@@ -1,23 +1,21 @@
 import { MacbookPro } from "@/components/mockups/MacbookPro";
-import RagPipelineDiagram from "./RagPipelineDiagram";
+
+const DIR = "/images/projects/cytron-hr-assistive-intelligence";
 
 /**
- * Set to the screenshot path once it is uploaded, e.g. "/images/projects/cytron-hr-assistive-intelligence/chat-ui.png"
- * (16:10, sanitised: no real HR document content). While null, the MacBook shows the
- * architecture diagram instead.
+ * The HR assistant's chat screen on a MacBook, in the visitor's colour scheme. Both screenshots
+ * are 16:9; they are padded to the display's own shape (edge pixels extended) so there are no bars.
  */
-const HR_SCREENSHOT_SRC: string | null = null;
-
 export default function HrAssistiveMacbook({ className, priority }: { className?: string; priority?: boolean }) {
-  if (HR_SCREENSHOT_SRC) {
-    return <MacbookPro src={HR_SCREENSHOT_SRC} fit="fill" showNotch={false} priority={priority} className={className} />;
-  }
-
   return (
-    <MacbookPro showNotch={false} className={className}>
-      <div className="w-full h-full bg-[#0E0E11] p-2">
-        <RagPipelineDiagram />
+    <>
+      {/* MacbookPro sets an inline display, so the switch lives on `contents` wrappers. */}
+      <div className="contents dark:hidden">
+        <MacbookPro src={`${DIR}/chat-light.png`} fit="fill" showNotch={false} priority={priority} className={className} />
       </div>
-    </MacbookPro>
+      <div className="hidden dark:contents">
+        <MacbookPro src={`${DIR}/chat-dark.png`} fit="fill" showNotch={false} priority={priority} className={className} />
+      </div>
+    </>
   );
 }

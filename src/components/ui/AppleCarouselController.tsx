@@ -11,6 +11,8 @@ interface AppleCarouselControllerProps {
   activeColor?: string; // custom progress bar color, defaults to Apple monochrome
   className?: string;
   ariaLabel?: string;
+  /** false = no auto-advance and no play/pause button; the dots stay as manual navigation. */
+  autoplay?: boolean;
 }
 
 /**
@@ -29,6 +31,7 @@ export default function AppleCarouselController({
   activeColor,
   className = "",
   ariaLabel = "Carousel controls",
+  autoplay = true,
 }: AppleCarouselControllerProps) {
   const [isPlaying, setIsPlaying] = useState(true);
 
@@ -58,6 +61,7 @@ export default function AppleCarouselController({
   }, []);
 
   useEffect(() => {
+    if (!autoplay) return;
     const isReduced =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -115,12 +119,12 @@ export default function AppleCarouselController({
         rafIdRef.current = null;
       }
     };
-  }, [isPlaying, isVisible, activeIndex, itemCount, onSelectIndex, slideDuration]);
+  }, [autoplay, isPlaying, isVisible, activeIndex, itemCount, onSelectIndex, slideDuration]);
 
   const handleDotClick = (idx: number) => {
     elapsedRef.current = 0;
     lastTimeRef.current = null;
-    if (progressRef.current) {
+    if (autoplay && progressRef.current) {
       progressRef.current.style.transform = "scaleX(0)";
     }
     onSelectIndex(idx);
@@ -166,7 +170,7 @@ export default function AppleCarouselController({
                       activeColor ? "" : "bg-[#1D1D1F] dark:bg-white"
                     }`}
                     style={{
-                      transform: "scaleX(0)",
+                      transform: autoplay ? "scaleX(0)" : "scaleX(1)",
                       transformOrigin: "left center",
                       willChange: "transform",
                       backgroundColor: activeColor || undefined,
@@ -180,6 +184,7 @@ export default function AppleCarouselController({
       </div>
 
       {/* Circular Play / Pause Toggle Button */}
+      {autoplay && (
       <button
         type="button"
         onClick={togglePlay}
@@ -192,6 +197,7 @@ export default function AppleCarouselController({
           <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
         )}
       </button>
+      )}
     </div>
   );
 }

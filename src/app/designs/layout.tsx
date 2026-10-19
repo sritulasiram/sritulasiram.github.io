@@ -1,4 +1,21 @@
 import type { Metadata } from "next";
+import { Open_Sans, Roboto_Flex } from "next/font/google";
+
+// Only the Designs page specimens use these, so they are scoped to this route and
+// not preloaded: each file downloads the first time its family is selected.
+const robotoFlex = Roboto_Flex({
+  subsets: ["latin"],
+  display: "swap",
+  preload: false,
+  variable: "--font-roboto-flex",
+});
+
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  preload: false,
+  variable: "--font-open-sans",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -15,5 +32,5 @@ export default function DesignsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return <div className={`${robotoFlex.variable} ${openSans.variable}`}>{children}</div>;
 }

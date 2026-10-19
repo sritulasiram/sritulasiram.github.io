@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Instrument_Serif } from "next/font/google";
+import MaintenanceScreen from "@/components/layout/MaintenanceScreen";
 import Navigation from "@/components/layout/Navigation";
 import "./globals.css";
 
@@ -65,9 +66,6 @@ export const metadata: Metadata = {
     description:
       "Support Engineer at Cytron Technologies. Solving technical problems, refining internal operations, and crafting digital tools.",
     images: ["/images/portraits/sri-portrait.webp"],
-  },
-  icons: {
-    icon: "/favicon.ico",
   },
   appleWebApp: {
     capable: true,
@@ -148,6 +146,12 @@ const personSchema = {
   ]
 };
 
+/**
+ * Build with NEXT_PUBLIC_MAINTENANCE_MODE=true to publish the whole site as the "upgrading" screen.
+ * It is a build-time switch because the site is exported as static files.
+ */
+const MAINTENANCE_MODE = process.env.NEXT_PUBLIC_MAINTENANCE_MODE === "true";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -203,10 +207,22 @@ export default function RootLayout({
             __html: JSON.stringify(personSchema),
           }}
         />
-        <Navigation />
-        <div className="animate-page-enter min-h-screen flex flex-col">
-          {children}
-        </div>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-[#1D1D1F] focus:shadow-lg dark:focus:bg-[#1C1C1E] dark:focus:text-white focus-visible:outline-2 focus-visible:outline-[#0071E3]"
+        >
+          Skip to content
+        </a>
+        {MAINTENANCE_MODE ? (
+          <MaintenanceScreen variant="upgrade" />
+        ) : (
+          <>
+            <Navigation />
+            <div className="animate-page-enter min-h-screen flex flex-col">
+              {children}
+            </div>
+          </>
+        )}
       </body>
     </html>
   );
