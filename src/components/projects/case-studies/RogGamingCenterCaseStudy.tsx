@@ -1,4 +1,5 @@
 import { LINK, PILL } from "@/components/ui/Button";
+import UnlockStatement from "@/components/projects/UnlockStatement";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
@@ -121,19 +122,19 @@ const CHAPTERS: { problem: string; headline: string; body: string; visual: React
     visual: <LightingVisual />,
   },
   {
-    problem: "Thermals you can’t see.",
-    headline: "Read from the silicon.",
-    body: "Die temperature and fan speed come straight from the AppleSMC registers, without root. The charge limit goes through the AsusSMC driver, so the battery can be held at 60, 80 or 100 percent.",
-    visual: <ThermalsVisual />,
-  },
-  {
     problem: "Colours that never match.",
     headline: "Six display modes.",
     body: "GameVisual profiles are rebuilt as gamma curves and uploaded through CoreGraphics. Nothing is left changed: quitting the app, or putting the Mac to sleep, puts the original curve back.",
     visual: <DisplayVisual />,
   },
   {
-    problem: "Keys nobody listens to.",
+    problem: "Thermals you can’t see.",
+    headline: "Read from the silicon.",
+    body: "Die temperature and fan speed come straight from the AppleSMC registers, without root. The charge limit goes through the AsusSMC driver, so the battery can be held at 60, 80 or 100 percent.",
+    visual: <ThermalsVisual />,
+  },
+  {
+    problem: "One key, one app.",
     headline: "The ROG key, working.",
     body: "A global event tap catches the Fn combinations, and the dedicated ROG key is read from raw USB reports, so the physical key launches the app. It works entirely in user space.",
     visual: <HotkeysVisual />,
@@ -243,14 +244,17 @@ export default function RogGamingCenterCaseStudy({ project }: Props) {
 
       {/* 2. The problem, in one screen */}
       <section className={`${WRAP} py-28 sm:py-40`}>
-        <Reveal>
-          <p className={`text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl ${GRAY}`}>
-            On macOS, a gaming laptop’s lighting, fans, display modes and battery limits stay locked inside Windows-only utilities.{" "}
-            <span className={INK}>
-              ROG Gaming Center talks to the hardware directly, in plain Swift, with no runtimes and no root daemons.
-            </span>
-          </p>
-        </Reveal>
+        <UnlockStatement
+          className="text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl"
+          problem="On macOS, a gaming laptop’s lighting, fans, display modes and battery limits stay locked inside utilities that only run on Windows."
+          answer="Here, ROG Gaming Center, GameVisual and Aura Core are merged into one native app, in plain Swift."
+          marks={[
+            { phrase: "lighting", kind: "rgb" },
+            { phrase: "fans", kind: "rpm" },
+            { phrase: "display modes", kind: "profile" },
+            { phrase: "battery limits", kind: "battery" },
+          ]}
+        />
       </section>
 
       {/* 3. Chapters */}

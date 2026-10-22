@@ -339,11 +339,11 @@ export default function PhotographyGallery({ photos }: PhotographyGalleryProps) 
       {/* Apple-Style Filter & View Switcher Toolbar */}
       <div id="gallery" className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-2 pt-2 scroll-mt-24">
         {/* Album Segmented Control */}
-        <div className="flex items-center gap-2 max-w-full overflow-x-auto no-scrollbar">
+        <div className="flex items-center gap-2 w-full sm:w-auto max-w-full sm:overflow-x-auto no-scrollbar">
           <div
             role="tablist"
             aria-label="Photography Albums"
-            className="inline-flex p-1 rounded-full bg-[#EEEEF0] dark:bg-[#1C1C1E] border border-black/[0.04] dark:border-white/[0.08] shadow-2xs no-scrollbar overflow-x-auto"
+            className="grid w-full grid-cols-2 gap-1 p-1 rounded-3xl bg-[#EEEEF0] dark:bg-[#1C1C1E] border border-black/[0.04] dark:border-white/[0.08] shadow-2xs no-scrollbar sm:inline-flex sm:w-auto sm:gap-0 sm:rounded-full sm:overflow-x-auto"
           >
             {PHOTO_ALBUMS.map((album) => {
               const isActive = selectedAlbum === album.id;
@@ -356,7 +356,7 @@ export default function PhotographyGallery({ photos }: PhotographyGalleryProps) 
                   onClick={() => {
                     setSelectedAlbum(album.id);
                   }}
-                  className={`px-3.5 sm:px-4 py-1.5 rounded-full text-xs transition-all duration-200 whitespace-nowrap select-none min-h-[32px] cursor-pointer ${
+                  className={`px-3.5 sm:px-4 py-1.5 rounded-full text-xs text-center transition-all duration-200 whitespace-nowrap select-none min-h-[36px] sm:min-h-[32px] cursor-pointer ${
                     isActive
                       ? "bg-white dark:bg-[#2C2C2E] text-[#1D1D1F] dark:text-[#F5F5F7] shadow-xs font-semibold"
                       : "text-[#6E6E73] dark:text-[#8E8E93] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] font-medium"

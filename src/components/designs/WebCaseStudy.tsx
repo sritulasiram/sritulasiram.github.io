@@ -7,6 +7,7 @@ import CountUp from "@/components/shared/CountUp";
 import Reveal from "@/components/shared/Reveal";
 import Button from "@/components/ui/Button";
 import ScrollTypeText from "@/components/shared/ScrollTypeText";
+import StrikeStatement from "@/components/designs/StrikeStatement";
 import IphoneFrame from "@/components/mockups/IphoneFrame";
 import { MacbookPro } from "@/components/mockups/MacbookPro";
 import LaptopFlow from "@/components/designs/LaptopFlow";
@@ -48,6 +49,8 @@ export interface WebStudyConfig {
   visual: { gray: string; ink: string; swatches: StudySwatch[]; sample: ReactNode };
   featureIcons: LucideIcon[];
   resultsHeadline: string;
+  /** A custom reveal for the problem statement: a marker sweeps behind each phrase. */
+  statement?: { kind: "highlight"; phrases: string[] };
 }
 
 const delay = (s: number): CSSProperties => ({ "--d": `${s}s` }) as CSSProperties;
@@ -154,13 +157,24 @@ export default function WebCaseStudy({
 
       {/* 3. The problem, typed out as you scroll */}
       <section aria-label="The problem" className={`${WRAP} py-28 sm:py-40`}>
-        <ScrollTypeText
-          className="text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl"
-          segments={[
-            { text: `${design.background.problemStatement} `, className: GRAY },
-            { text: design.background.context, className: INK },
-          ]}
-        />
+        {config.statement ? (
+          <StrikeStatement
+            marker="highlight"
+            className="text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl"
+            problem={design.background.problemStatement}
+            strike={config.statement.phrases}
+            answer={design.background.context}
+          />
+        ) : (
+          <ScrollTypeText
+            mode="words"
+            className="text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl"
+            segments={[
+              { text: `${design.background.problemStatement} `, className: GRAY },
+              { text: design.background.context, className: INK },
+            ]}
+          />
+        )}
       </section>
 
       {/* 4. The flow, pinned */}

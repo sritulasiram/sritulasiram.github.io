@@ -1,3 +1,4 @@
+import AiStatement from "@/components/projects/AiStatement";
 import { BookOpenCheck, Database, EyeOff, FolderCog, LineChart, MessageSquareReply, ShieldCheck, type LucideIcon } from "lucide-react";
 import CardCarousel from "@/components/shared/CardCarousel";
 import BeforeAfter from "@/components/shared/BeforeAfter";
@@ -187,14 +188,11 @@ export default function HrAssistiveIntelligenceCaseStudy({ project, nextProject 
 
       {/* 2. The problem, in one screen */}
       <section className={`${WRAP} py-28 sm:py-40`}>
-        <Reveal>
-          <p className={`text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl ${GRAY}`}>
-            Cytron has one HR person, and every question lands in their chat or inbox.{" "}
-            <span className={INK}>
-              That time is taken from real HR work, and the documents are too confidential to paste into a public AI chat.
-            </span>
-          </p>
-        </Reveal>
+        <AiStatement
+          className="text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl"
+          problem="Cytron has one HR person, and every question lands in their chat or inbox."
+          answer="That pulls them from real HR work, and the documents are too confidential for a public AI chat."
+        />
       </section>
 
       {/* 3. Chapters: each challenge paired with its fix */}

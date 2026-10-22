@@ -3,7 +3,7 @@ import type { CSSProperties } from "react";
 /** Accent per product page: [light mode, dark mode]. Dark values are brighter for contrast. */
 export const PROJECT_ACCENTS: Record<string, [string, string]> = {
   "cytron-hr-assistive-intelligence": ["#0D7678", "#40CBE0"],
-  "warranty-rma": ["#0066CC", "#2997FF"],
+  "warranty-rma": ["#0A6CB8", "#4DB5F0"],
   "raspberry-pi-diagnostics": ["#A8324F", "#EC6A85"],
   "iot-fertiliser-mixing": ["#1E7E34", "#30D158"],
   "opencore-efi-hackintosh": ["#5856D6", "#7D7AFF"],

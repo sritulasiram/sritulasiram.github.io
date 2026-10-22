@@ -6,6 +6,10 @@ import CountUp from "@/components/shared/CountUp";
 import Reveal from "@/components/shared/Reveal";
 import Button from "@/components/ui/Button";
 import ScrollTypeText from "@/components/shared/ScrollTypeText";
+import StrikeStatement from "@/components/designs/StrikeStatement";
+import FocusStatement from "@/components/designs/FocusStatement";
+import BreatheStatement from "@/components/designs/BreatheStatement";
+import TicketStatement from "@/components/designs/TicketStatement";
 import IphoneFrame from "@/components/mockups/IphoneFrame";
 import PhoneFlow from "@/components/designs/PhoneFlow";
 import type { DesignCaseStudy, DesignItem } from "@/types";
@@ -40,6 +44,13 @@ export interface AppStudyConfig {
   visual: { gray: string; ink: string; swatches: StudySwatch[]; sample: ReactNode };
   featureIcons: LucideIcon[];
   resultsHeadline: string;
+  /**
+   * A custom reveal for the problem statement. "strike" crosses out each phrase; "focus" puts each
+   * phrase in a viewfinder. Without it, the words rise in one after another.
+   */
+  statement?: { kind: "strike" | "focus" | "breathe" | "ticket"; phrases?: string[]; badge?: string };
+  /** A soft glow behind the hero phones that rises and falls like breathing. */
+  heroGlow?: boolean;
 }
 
 const delay = (s: number): CSSProperties => ({ "--d": `${s}s` }) as CSSProperties;
@@ -91,8 +102,14 @@ export default function AppCaseStudy({
   return (
     <div>
       {/* 1. Hero */}
-      <section className="bg-[var(--pa-tint)] overflow-hidden">
-        <div className={`${WRAP} pt-24 sm:pt-32 text-center`}>
+      <section className="relative bg-[var(--pa-tint)] overflow-hidden">
+        {config.heroGlow && (
+          <div
+            aria-hidden="true"
+            className="breathe-glow pointer-events-none absolute bottom-0 left-1/2 h-[70%] w-[min(900px,90%)] -translate-x-1/2 rounded-full blur-2xl"
+          />
+        )}
+        <div className={`${WRAP} relative pt-24 sm:pt-32 text-center`}>
           <p className={`story-rise text-xl sm:text-2xl font-semibold ${INK} tracking-apple-tight`} style={delay(0)}>{design.title}</p>
           <h1 className={`mt-2 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold ${INK} tracking-apple-hero leading-[1.03]`}>
             <span className="story-rise block" style={delay(0.1)}>{config.headline[0]}</span>
@@ -144,13 +161,46 @@ export default function AppCaseStudy({
 
       {/* 3. The problem, typed out as you scroll */}
       <section aria-label="The problem" className={`${WRAP} py-28 sm:py-40`}>
-        <ScrollTypeText
-          className="text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl"
-          segments={[
-            { text: `${design.background.problemStatement} `, className: GRAY },
-            { text: design.background.context, className: INK },
-          ]}
-        />
+        {config.statement ? (
+          config.statement.kind === "focus" ? (
+            <FocusStatement
+              className="text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl"
+              problem={design.background.problemStatement}
+              focus={config.statement.phrases ?? []}
+              answer={design.background.context}
+            />
+          ) : config.statement.kind === "breathe" ? (
+            <BreatheStatement
+              className="text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl"
+              problem={design.background.problemStatement}
+              answer={design.background.context}
+            />
+          ) : config.statement.kind === "ticket" ? (
+            <TicketStatement
+              className="text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl"
+              problem={design.background.problemStatement}
+              numbered={config.statement.phrases ?? []}
+              answer={design.background.context}
+              badge={config.statement.badge ?? ""}
+            />
+          ) : (
+            <StrikeStatement
+              className="text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl"
+              problem={design.background.problemStatement}
+              strike={config.statement.phrases ?? []}
+              answer={design.background.context}
+            />
+          )
+        ) : (
+          <ScrollTypeText
+            mode="words"
+            className="text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl"
+            segments={[
+              { text: `${design.background.problemStatement} `, className: GRAY },
+              { text: design.background.context, className: INK },
+            ]}
+          />
+        )}
       </section>
 
       {/* 4. The flow, pinned */}

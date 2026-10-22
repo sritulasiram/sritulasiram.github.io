@@ -26,9 +26,20 @@ export default function WindowScreenViewer({ screens, label }: { screens: Window
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const current = screens[active];
 
-  // On narrow screens the tab bar scrolls; keep the selected tab in view.
+  // On narrow screens the tab bar scrolls; keep the selected tab in view. This moves only the tab bar
+  // sideways. scrollIntoView would also scroll the whole page down to the viewer on load.
+  const firstRun = useRef(true);
   useEffect(() => {
-    tabRefs.current[active]?.scrollIntoView({ inline: "nearest", block: "nearest" });
+    if (firstRun.current) {
+      firstRun.current = false;
+      return;
+    }
+    const tab = tabRefs.current[active];
+    const bar = tab?.parentElement;
+    if (!tab || !bar) return;
+    const left = tab.offsetLeft - bar.offsetLeft;
+    if (left < bar.scrollLeft) bar.scrollLeft = left;
+    else if (left + tab.offsetWidth > bar.scrollLeft + bar.clientWidth) bar.scrollLeft = left + tab.offsetWidth - bar.clientWidth;
   }, [active]);
 
   const onKeyDown = (event: React.KeyboardEvent) => {

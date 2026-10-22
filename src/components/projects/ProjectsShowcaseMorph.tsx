@@ -27,7 +27,7 @@ const ASPECT = 400 / 650; // laptop height / width
 const TRACK_VH = 260;
 const TOP_INSET = 64;
 // Fixed so the server-rendered fan (CSS) and the measured fan (JS) agree exactly.
-const HEADER_H = 340;
+const HEADER_H = 392;
 const TILE_GAP = 32;
 const CAPTION_H = 96;
 const WORK_ANCHOR = 0.9;
@@ -289,14 +289,14 @@ export default function ProjectsShowcaseMorph() {
             </ol>
           </nav>
           <div className="max-w-4xl mx-auto space-y-3">
-            <h1 className="text-5xl xl:text-6xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.03]">
+            <h1 className="text-5xl lg:text-6xl xl:text-7xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.03]">
               Projects
               <br />
-              <span className="block mt-1 text-3xl xl:text-4xl text-[#6E6E73] dark:text-[#8E8E93] font-medium">
+              <span className="block mt-1 text-3xl lg:text-4xl xl:text-5xl text-[#6E6E73] dark:text-[#8E8E93] font-medium">
                 Hardware, software and the space between.
               </span>
             </h1>
-            <p className="text-lg text-[#6E6E73] dark:text-[#A1A1A6] max-w-2xl mx-auto leading-relaxed tracking-apple-subhead">
+            <p className="text-lg xl:text-xl text-[#6E6E73] dark:text-[#A1A1A6] max-w-2xl mx-auto leading-relaxed tracking-apple-subhead">
               Hardware and software engineered as one.
               <br />
               From low-level silicon to production platforms.
@@ -313,7 +313,7 @@ export default function ProjectsShowcaseMorph() {
           <h2 className="text-4xl xl:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight leading-[1.08] text-balance">
             Selected projects.
             <br />
-            <span className="text-[#6E6E73] dark:text-[#8E8E93] font-medium">
+            <span className="block mt-1 text-3xl lg:text-4xl xl:text-5xl text-[#6E6E73] dark:text-[#8E8E93] font-medium">
               Two in production, one in pilot.
             </span>
           </h2>

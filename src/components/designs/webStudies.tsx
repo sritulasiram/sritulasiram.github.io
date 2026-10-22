@@ -81,6 +81,7 @@ const PMC: WebStudyConfig = {
       </div>
     ),
   },
+  statement: { kind: "highlight", phrases: ["what do you offer", "who will treat me", "where do I go"] },
   featureIcons: [Stethoscope, BadgeCheck, Building2, MapPin],
   resultsHeadline: "A whole website, designed.",
 };

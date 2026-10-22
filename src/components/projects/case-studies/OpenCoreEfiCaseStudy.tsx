@@ -1,7 +1,8 @@
+import BootLogStatement from "@/components/projects/BootLogStatement";
 import { LINK, PILL } from "@/components/ui/Button";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
 import CaseStudyBreadcrumb from "@/components/shared/CaseStudyBreadcrumb";
 import CountUp from "@/components/shared/CountUp";
 import Reveal from "@/components/shared/Reveal";
@@ -9,6 +10,15 @@ import { MacbookPro } from "@/components/mockups/MacbookPro";
 import { PROJECTS_DATA } from "@/data/content";
 import { projectThemeStyle } from "@/data/projectTheme";
 import type { CaseStudy } from "@/types";
+
+const ALSO_WORKS: { name: string; note: string }[] = [
+  { name: "Audio", note: "Speakers, microphone and headphone jack, plus the native startup chime." },
+  { name: "Wi-Fi and Bluetooth", note: "Intel radios, through OCLP-Mod patching and firmware kexts." },
+  { name: "Ethernet", note: "Realtek gigabit, handled by RealtekRTL8111." },
+  { name: "Display and HDMI", note: "120 Hz with native brightness and HiDPI scaling, and 4K over HDMI." },
+  { name: "Webcam", note: "The built-in USB camera, with native macOS support." },
+  { name: "Card reader", note: "Supported through Sinetek-rtsx. Insert the card before boot or wake." },
+];
 
 interface Props {
   project: CaseStudy;
@@ -163,7 +173,7 @@ export default function OpenCoreEfiCaseStudy({ project }: Props) {
           <div className="flex justify-center">
             <CaseStudyBreadcrumb title="OpenCore EFI Hackintosh" />
           </div>
-          <p className="mt-4 text-sm font-semibold text-[var(--pa)]">macOS firmware engineering · OpenCore 1.0.7</p>
+          <p className="mt-4 text-sm font-semibold text-[var(--pa)]">macOS firmware engineering · OpenCore 1.0.8</p>
           <h1 className={`mt-3 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold ${INK} tracking-apple-hero leading-[1.03]`}>
             A Mac, <span className="sm:whitespace-nowrap">from a gaming laptop.</span>
           </h1>
@@ -196,14 +206,23 @@ export default function OpenCoreEfiCaseStudy({ project }: Props) {
 
       {/* 2. The problem, in one screen */}
       <section className={`${WRAP} py-28 sm:py-40`}>
-        <Reveal>
-          <p className={`text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl ${GRAY}`}>
-            Hackintosh fixes are scattered across forum threads, old blog posts and buried repositories, and the drivers rarely agree.{" "}
-            <span className={INK}>
-              This EFI gathers the patches, quirks and configs into one tested build for the ASUS ROG Strix GL503GE.
-            </span>
-          </p>
-        </Reveal>
+        <BootLogStatement
+          className="text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl"
+          problem="Hackintosh fixes are scattered across forum threads, old blog posts and buried repositories, and the drivers rarely agree."
+          answer="This EFI gathers the patches, quirks and configs into one tested build for the ASUS ROG Strix GL503GE."
+          problemMarks={[
+            { phrase: "forum threads", kind: "src" },
+            { phrase: "old blog posts", kind: "src" },
+            { phrase: "buried repositories", kind: "src" },
+            { phrase: "rarely agree", kind: "clash" },
+          ]}
+          answerMarks={[
+            { phrase: "patches", kind: "ok" },
+            { phrase: "quirks", kind: "ok" },
+            { phrase: "configs", kind: "ok" },
+            { phrase: "one tested build", kind: "build" },
+          ]}
+        />
       </section>
 
       {/* 3. Chapters */}
@@ -224,6 +243,37 @@ export default function OpenCoreEfiCaseStudy({ project }: Props) {
             </div>
           </div>
         ))}
+      </section>
+
+      {/* 3b. The rest of the laptop */}
+      <section aria-label="What else works" className={`${WRAP} py-16 sm:py-24`}>
+        <Reveal>
+          <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero leading-[1.08]`}>
+            The rest of the laptop.
+            <span className={`block ${GRAY}`}>Working too.</span>
+          </h2>
+        </Reveal>
+        <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {ALSO_WORKS.map((item, i) => (
+            <li key={item.name}>
+              <Reveal delay={i * 70} className="h-full">
+                <div className="flex h-full flex-col rounded-[28px] bg-[var(--pa-tint)] p-7">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--pa)] text-white dark:text-black">
+                    <Check className="h-5 w-5" strokeWidth={3} aria-hidden="true" />
+                  </span>
+                  <h3 className={`mt-5 text-2xl font-semibold tracking-apple-tight ${INK}`}>{item.name}</h3>
+                  <p className={`mt-2 text-[15px] leading-relaxed ${GRAY}`}>{item.note}</p>
+                </div>
+              </Reveal>
+            </li>
+          ))}
+        </ul>
+        <Reveal delay={120}>
+          <p className={`mt-8 max-w-3xl text-base leading-relaxed ${GRAY}`}>
+            <span className={`font-semibold ${INK}`}>What it can’t do.</span> AirDrop, Handoff, Universal Clipboard and Universal Control need
+            Apple’s AWDL wireless link, which the laptop’s Intel Wi-Fi card doesn’t have.
+          </p>
+        </Reveal>
       </section>
 
       {/* 4. The config */}

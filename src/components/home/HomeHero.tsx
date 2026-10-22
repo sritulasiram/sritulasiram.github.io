@@ -16,10 +16,10 @@ const delay = (s: number): CSSProperties => ({ "--d": `${s}s` }) as CSSPropertie
 export default function HomeHero() {
   return (
     <section id="hero" className="relative overflow-hidden bg-white dark:bg-black">
-      {/* Soft studio light behind the portrait */}
+      {/* Soft studio light behind the portrait (light mode only: the dark portrait carries its own spotlight) */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-[12%] h-[70%] w-[min(900px,100%)] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.95),transparent_65%)] dark:bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.07),transparent_65%)]"
+        className="pointer-events-none absolute left-1/2 top-[12%] h-[70%] w-[min(900px,100%)] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.95),transparent_65%)] dark:hidden"
       />
 
       <div className="relative mx-auto grid min-h-[100dvh] max-w-[1400px] grid-cols-1 gap-y-6 px-6 pb-28 pt-28 sm:px-10 lg:min-h-[92vh] lg:grid-cols-[1fr_minmax(0,460px)_1fr] lg:gap-x-6 lg:pt-24 xl:px-14">

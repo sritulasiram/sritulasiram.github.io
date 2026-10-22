@@ -10,7 +10,16 @@ import type { ViewerScreen } from "./ScreenViewer";
  * Scroll-driven showcase: on desktop the screen stays pinned while the steps scroll past and the
  * screen swaps to match; on small screens each step shows its own screenshot above its text.
  */
-export default function PinnedScreens({ screens, tone = "dark" }: { screens: ViewerScreen[]; tone?: "dark" | "light" }) {
+export default function PinnedScreens({
+  screens,
+  tone = "dark",
+  fitWidth = false,
+}: {
+  screens: ViewerScreen[];
+  tone?: "dark" | "light";
+  /** The screens are 16:9 captures: fill the stage edge to edge instead of floating in a padded frame. */
+  fitWidth?: boolean;
+}) {
   const [active, setActive] = useState(0);
   const [zoom, setZoom] = useState(false);
   const stepRefs = useRef<(HTMLLIElement | null)[]>([]);
@@ -36,18 +45,18 @@ export default function PinnedScreens({ screens, tone = "dark" }: { screens: Vie
     <div className="md:grid md:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)] md:gap-10 lg:gap-14">
       {/* Pinned stage (desktop) */}
       <div className="hidden md:block [container-type:inline-size]">
-        <div className="sticky top-[max(72px,calc(50vh_+_26px_-_31.25cqw))]">
-          <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[28px] bg-[var(--pa-tint)] p-5">
+        <div className={fitWidth ? "sticky top-[max(72px,calc(50vh_+_26px_-_28.125cqw))]" : "sticky top-[max(72px,calc(50vh_+_26px_-_31.25cqw))]"}>
+          <div className={`relative w-full overflow-hidden rounded-[28px] bg-[var(--pa-tint)] ${fitWidth ? "aspect-video" : "aspect-[16/10] p-5"}`}>
             {screens.map((screen, i) => (
               <div
                 key={screen.id}
                 aria-hidden={i !== active}
-                className={`absolute inset-5 transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
+                className={`absolute ${fitWidth ? "inset-0" : "inset-5"} transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
                   i === active ? "opacity-100 scale-100" : "pointer-events-none opacity-0 scale-[0.985]"
                 }`}
               >
-                <div className={frame}>
-                  <Image src={screen.src} alt={screen.alt} fill sizes="640px" className="object-contain object-top" />
+                <div className={fitWidth ? "relative h-full w-full overflow-hidden" : frame}>
+                  <Image src={screen.src} alt={screen.alt} fill sizes="(max-width: 1280px) 60vw, 780px" className={fitWidth ? "object-cover" : "object-contain object-top"} />
                 </div>
               </div>
             ))}
@@ -81,9 +90,9 @@ export default function PinnedScreens({ screens, tone = "dark" }: { screens: Vie
                 i === active ? "md:opacity-100" : "md:opacity-35"
               }`}
             >
-              <div className="relative mb-6 aspect-[16/10] overflow-hidden rounded-[22px] bg-[var(--pa-tint)] p-4 md:hidden">
-                <div className={frame}>
-                  <Image src={screen.src} alt={screen.alt} fill sizes="100vw" className="object-contain object-top" />
+              <div className={`relative mb-6 overflow-hidden rounded-[22px] bg-[var(--pa-tint)] md:hidden ${fitWidth ? "aspect-video" : "aspect-[16/10] p-4"}`}>
+                <div className={fitWidth ? "relative h-full w-full overflow-hidden" : frame}>
+                  <Image src={screen.src} alt={screen.alt} fill sizes="100vw" className={fitWidth ? "object-cover" : "object-contain object-top"} />
                 </div>
               </div>
               <p className="text-sm font-semibold text-[var(--pa)]">{screen.label}</p>

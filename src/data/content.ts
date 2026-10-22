@@ -35,7 +35,7 @@ export const PROJECTS_DATA: ProjectItem[] = [
     subtitle: "Internal Support Operations & Case Management",
     outcome:
       "Takes repairs from intake and the bench through to supplier credit, with thermal labels, an SLA clock on every case and a Telegram assistant.",
-    imageSrc: "/images/projects/warranty-rma/cover.webp",
+    imageSrc: "/images/projects/warranty-rma/screen-intake-laptop.jpg",
     placeholderLabel: "Replace: project-rma.webp",
     placeholderRatio: "16:10 UI Screenshot (e.g. 1920×1200)",
     techStack: ["Flask 3.1", "SQLite (WAL Mode)", "GP-1324D Thermal Printer", "Cloudflare Tunnel", "Telegram Bot API", "Google Drive & Sheets Sync"],
@@ -141,7 +141,7 @@ export const PROJECTS_DATA: ProjectItem[] = [
     imageSrc: "/images/projects/opencore-efi-hackintosh/cover.png",
     placeholderLabel: "project-opencore-uefi.png",
     placeholderRatio: "16:10 Telemetry & Architecture Dashboard (1920×1200)",
-    techStack: ["OpenCore 1.0.7", "UEFI 2.7+", "ACPI AML (SSDT)", "Lilu & VirtualSMC", "VoodooI2C", "macOS Tahoe/Sequoia"],
+    techStack: ["OpenCore 1.0.8", "UEFI 2.7+", "ACPI AML (SSDT)", "Lilu & VirtualSMC", "VoodooI2C", "macOS Tahoe/Sequoia"],
     overview:
       "Optimized OpenCore UEFI bootloader configuration, ACPI AML bytecode power-gating, and custom kernel extension harmonization for ASUS ROG Strix GL503GE hardware across macOS Sonoma, Sequoia, and Tahoe with full native sleep/wake and Apple multi-touch trackpad gestures.",
     highlights: [

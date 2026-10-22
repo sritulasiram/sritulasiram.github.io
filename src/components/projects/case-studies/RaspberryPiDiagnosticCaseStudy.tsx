@@ -1,3 +1,4 @@
+import RecordGapStatement from "@/components/projects/RecordGapStatement";
 import BeforeAfter from "@/components/shared/BeforeAfter";
 import CountUp from "@/components/shared/CountUp";
 import ExploreMore from "@/components/shared/ExploreMore";
@@ -180,9 +181,10 @@ function StepList({ items }: { items: string[] }) {
 
 const CHAPTERS: { problem?: string; challenge?: string; headline: string; body: string; fn?: number; visual: React.ReactNode }[] = [
   {
-    problem: "15–20 minutes by hand.",
+    problem: "Up to 20 minutes by hand.",
     headline: "19 checks. One button.",
     body: "Technicians used to toggle pins from the command line and probe a 40-pin header with a multimeter, then plug in each peripheral by hand. Run All now works through the platform, radios, storage, compute and power in four phases.",
+    fn: 1,
     visual: (
       <BeforeAfter
         before={
@@ -201,15 +203,15 @@ const CHAPTERS: { problem?: string; challenge?: string; headline: string; body: 
     visual: <PiPinMap />,
   },
   {
-    problem: "The Pi 5 broke the old tools.",
+    problem: "Every board, one tool.",
     headline: "One suite for every Pi.",
     body: "On a Pi 5 it talks to the RP1 directly and finds the right GPIO chip on its own. On older boards it falls back to the libraries they already support.",
     visual: <DriverVisual />,
   },
   {
-    problem: "No record you can trust.",
+    problem: "Nothing on record.",
     headline: "A signed report for every board.",
-    body: "Each session produces a two-page manifest and certificate with a reference ID, a spec sheet for the unit, per-test results and a technician sign-off. An HMAC-SHA256 seal covers the whole record and changes if stored results are edited.",
+    body: "Every session is stored against the board’s serial number, so a unit’s whole test history is one click away. Each one prints as a two-page manifest and certificate with a technician sign-off, sealed with an HMAC-SHA256 that changes if stored results are edited.",
     fn: 2,
     visual: <CertificateVisual />,
   },
@@ -236,14 +238,18 @@ export default function RaspberryPiDiagnosticCaseStudy({ project, nextProject }:
 
       {/* 2. The problem, in one screen */}
       <section className={`${WRAP} py-28 sm:py-40`}>
-        <Reveal>
-          <p className={`text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl ${GRAY}`}>
-            Testing a returned Raspberry Pi meant 15–20 minutes of probing pins by hand.<Fn n={1} />{" "}
-            <span className={INK}>
-              One slip could destroy the board, and the new Pi 5 had already broken the tools that came before it.
-            </span>
-          </p>
-        </Reveal>
+        <RecordGapStatement
+          className="text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl"
+          problem="Every test on a returned Raspberry Pi was done by hand, and one slip could short circuit the board."
+          answer="None of it was recorded, so there was no database and no history to check."
+          marks={[
+            { phrase: "by hand", kind: "hand" },
+            { phrase: "short circuit", kind: "danger" },
+            { phrase: "no database", kind: "ghost" },
+            { phrase: "no history", kind: "ghost" },
+          ]}
+          badge="0 records"
+        />
       </section>
 
       {/* 3. Chapters: each challenge paired with its fix */}

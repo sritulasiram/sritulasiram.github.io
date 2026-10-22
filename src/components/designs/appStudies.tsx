@@ -1,4 +1,5 @@
 import { BookOpen, CalendarCheck, FileUp, Users, ClipboardCheck, Coins, Hash, LifeBuoy, Library, MessageCircle, Pencil, ScanLine, ShoppingBag, Truck, Wallet } from "lucide-react";
+import PlayOnView from "@/components/shared/PlayOnView";
 import type { AppStudyConfig } from "./AppCaseStudy";
 
 const KOPIE = "/images/designs/kopiesatu";
@@ -70,30 +71,41 @@ const VOID: AppStudyConfig = {
       { name: "Alert Red", hex: "#BA2727", note: "Delete", fg: "#FFFFFF" },
     ],
     sample: (
-      <div className="rounded-2xl bg-[#202125] p-8 h-full flex flex-col justify-between gap-8 min-h-[320px] ring-1 ring-black/5 dark:ring-white/10">
-        <p className="text-xs font-semibold text-[#A1A1A6]">Components</p>
-        <div className="space-y-3">
-          <div className="flex h-12 items-center justify-center rounded-full bg-[#14318F] text-sm font-semibold tracking-wide text-white">LOGIN</div>
-          <div className="flex items-center justify-between rounded-2xl bg-[#2C2D31] px-4 py-3 text-white">
-            <div>
-              <p className="text-sm font-semibold">DEM 5A</p>
-              <p className="text-xs text-[#A1A1A6]">10 Groups</p>
+      <PlayOnView className="void-demo h-full">
+        <div className="rounded-2xl bg-[#202125] p-8 h-full flex flex-col justify-between gap-8 min-h-[320px] ring-1 ring-black/5 dark:ring-white/10">
+          <p className="text-xs font-semibold text-[#A1A1A6]">Components</p>
+          <div className="space-y-3">
+            <div className="flex h-12 items-center justify-center rounded-full bg-[#14318F] text-sm font-semibold tracking-wide text-white">LOGIN</div>
+            <div className="flex items-center justify-between rounded-2xl bg-[#2C2D31] px-4 py-3 text-white">
+              <div>
+                <p className="text-sm font-semibold">DEM 5A</p>
+                <p className="text-xs text-[#A1A1A6]">10 Groups</p>
+              </div>
+              <span
+                className="void-ring flex h-11 w-11 items-center justify-center rounded-full text-[11px] font-semibold"
+                style={{ ["--to" as string]: 85 }}
+              >
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#2C2D31]">85%</span>
+              </span>
             </div>
-            <span
-              className="flex h-11 w-11 items-center justify-center rounded-full text-[11px] font-semibold"
-              style={{ background: "conic-gradient(#04E013 0 85%, #3A3B40 85% 100%)" }}
-            >
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#2C2D31]">85%</span>
-            </span>
-          </div>
-          <div className="flex items-center justify-between rounded-2xl bg-[#2C2D31] px-4 py-3 text-white">
-            <p className="text-sm font-semibold">P1 E Form</p>
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#BA2727] text-xs" aria-hidden="true">✕</span>
+            {["P1 A Form", "P1 B Form", "P1 C Form"].map((form, i) => (
+              <div key={form} className="flex items-center justify-between rounded-2xl bg-[#2C2D31] px-4 py-3 text-white">
+                <p className="text-sm font-semibold">{form}</p>
+                <span
+                  className="void-tick flex h-7 w-7 items-center justify-center rounded-full border border-white/70 text-xs"
+                  style={{ ["--i" as string]: i }}
+                  aria-hidden="true"
+                >
+                  ✓
+                </span>
+              </div>
+            ))}
           </div>
         </div>
-      </div>
+      </PlayOnView>
     ),
   },
+  statement: { kind: "strike", phrases: ["paper forms", "scattered messages", "announcements that reach people late"] },
   featureIcons: [FileUp, Users, MessageCircle, BookOpen],
   resultsHeadline: "A whole system, designed.",
 };
@@ -138,17 +150,42 @@ const KOPIESATU: AppStudyConfig = {
       { name: "Quiet Gray", hex: "#6B6B70", note: "Prices and secondary text", fg: "#FFFFFF" },
     ],
     sample: (
-      <div className="rounded-2xl bg-white dark:bg-[#1C1C1E] p-8 h-full flex flex-col justify-between min-h-[320px]">
-        <p className={`text-xs font-semibold ${GRAY}`}>Poppins</p>
-        <div>
-          <p className="text-7xl sm:text-8xl font-semibold tracking-apple-hero text-[#221F5A] dark:text-[#F5F5F7]">Aa</p>
-          <p className="mt-4 text-2xl font-semibold text-[#221F5A] dark:text-[#F5F5F7]">Cappuccino</p>
-          <p className={`text-base ${GRAY}`}>RM 10.90</p>
-          <p className={`mt-4 text-sm ${GRAY}`}>Semibold for names and actions, regular for prices and notes.</p>
+      <PlayOnView className="kopie-demo h-full">
+        <div className="relative flex h-full min-h-[320px] flex-col justify-between overflow-hidden rounded-2xl bg-white p-8 dark:bg-[#1C1C1E]">
+          <p className={`text-xs font-semibold ${GRAY}`}>Add to cart</p>
+          <span
+            className="kp-cup pointer-events-none absolute z-10 text-4xl"
+            style={{ left: "70%", top: "18%", transform: "translate(-50%, -50%)" }}
+            aria-hidden="true"
+          >
+            ☕
+          </span>
+          <div className="space-y-5">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="text-2xl font-semibold text-[#221F5A] dark:text-[#F5F5F7]">Cappuccino</p>
+                <p className={`text-base ${GRAY}`}>RM 10.90</p>
+              </div>
+              <div className="kp-press flex h-12 items-center rounded-full bg-[#221F5A] px-5 text-sm font-semibold text-white">
+                Add To Cart
+              </div>
+            </div>
+            <div className="flex items-end justify-around rounded-2xl bg-[#F5F5F7] px-4 py-3 text-xs font-medium text-[#221F5A] dark:bg-[#2C2C2E] dark:text-[#F5F5F7]">
+              <span>Menu</span>
+              <span className="relative">
+                Cart
+                <span className="kp-badge absolute -right-4 -top-3 flex h-4 w-4 items-center justify-center rounded-full bg-[#C0291E] text-[10px] font-semibold text-white">
+                  3
+                </span>
+              </span>
+              <span>Orders</span>
+            </div>
+          </div>
         </div>
-      </div>
+      </PlayOnView>
     ),
   },
+  statement: { kind: "ticket", phrases: ["queueing", "shouting names", "guessing when a drink will be ready"], badge: "#128" },
   featureIcons: [ShoppingBag, Pencil, Wallet, Hash],
   resultsHeadline: "Designed end to end.",
 };
@@ -220,6 +257,8 @@ const SAGE: AppStudyConfig = {
       </div>
     ),
   },
+  statement: { kind: "breathe" },
+  heroGlow: true,
   featureIcons: [ClipboardCheck, LifeBuoy, CalendarCheck, Library],
   resultsHeadline: "A whole support app, designed.",
 };
@@ -276,24 +315,45 @@ const RELIFE: AppStudyConfig = {
       { name: "Bark", hex: "#6C584C", note: "Text, chips, secondary buttons", fg: "#FFFFFF" },
     ],
     sample: (
-      <div className="rounded-2xl bg-[#F0EAD2] p-8 h-full flex flex-col justify-between gap-8 min-h-[320px] ring-1 ring-black/5 dark:ring-white/10">
-        <p className="text-xs font-semibold text-[#6C584C]">Components</p>
-        <div className="space-y-4">
-          <div className="flex h-12 items-center justify-center rounded-full bg-[#ADC178] text-sm font-semibold text-white">Sign In</div>
-          <div className="flex h-12 items-center justify-center rounded-full border border-[#ADC178] text-sm font-semibold text-[#6C584C]">Create account</div>
-          <div className="flex flex-wrap gap-2">
-            <span className="rounded-full bg-[#ADC178] px-4 py-1.5 text-xs font-semibold text-white">Plastic</span>
-            <span className="rounded-full bg-[#6C584C] px-4 py-1.5 text-xs font-semibold text-white">Metal</span>
-            <span className="rounded-full bg-[#6C584C] px-4 py-1.5 text-xs font-semibold text-white">Pickup only</span>
-          </div>
-          <div className="rounded-2xl bg-[#DDE5B6] p-4">
-            <p className="text-sm font-semibold text-[#6C584C]">Item Name</p>
-            <p className="text-xs text-[#6C584C]/80">RM30</p>
+      <PlayOnView className="relife-demo h-full">
+        <div className="rounded-2xl bg-[#F0EAD2] p-8 h-full flex flex-col justify-between gap-6 min-h-[320px] ring-1 ring-black/5 dark:ring-white/10">
+          <p className="text-xs font-semibold text-[#6C584C]">Scan to list</p>
+          <div className="space-y-3">
+            <div className="relative flex h-32 items-center justify-center rounded-2xl bg-[#6C584C]">
+              <span
+                className="scan-corners relative inline-block h-20 w-20 text-[40px]"
+                style={{ ["--scan-color" as string]: "#ADC178" }}
+                aria-hidden="true"
+              />
+              <span className="rl-tag absolute bottom-3 rounded-full bg-[#ADC178] px-3 py-1 text-xs font-semibold text-white">
+                Glass bottle · Recyclable ✓
+              </span>
+            </div>
+            {[
+              ["Category", "Glass"],
+              ["Price", "RM 12.45"],
+            ].map(([label, value], i) => (
+              <div
+                key={label}
+                className="rl-row flex items-center justify-between rounded-xl bg-[#DDE5B6] px-4 py-3 text-sm text-[#6C584C]"
+                style={{ ["--i" as string]: i }}
+              >
+                <span className="font-medium">{label}</span>
+                <span className="font-semibold">{value}</span>
+              </div>
+            ))}
+            <div
+              className="rl-row flex h-11 items-center justify-center rounded-full bg-[#ADC178] text-sm font-semibold text-white"
+              style={{ ["--i" as string]: 2 }}
+            >
+              Done
+            </div>
           </div>
         </div>
-      </div>
+      </PlayOnView>
     ),
   },
+  statement: { kind: "focus", phrases: ["take photos", "pick a category", "write a description"] },
   featureIcons: [ScanLine, Coins, Truck, MessageCircle],
   resultsHeadline: "A whole marketplace, designed.",
 };

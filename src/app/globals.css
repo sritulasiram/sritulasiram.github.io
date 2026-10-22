@@ -1002,3 +1002,451 @@ html.dark { --btn-accent: #2997ff; }
 @media (prefers-reduced-motion: reduce) {
   .animate-ribbon { animation: none; }
 }
+
+
+/* Void: struck-through problem statement. Only animates when motion is allowed; otherwise the
+   page simply shows the final state (lines drawn, answer visible). */
+.strike-stmt .ss-line {
+  background: linear-gradient(var(--pa), var(--pa)) no-repeat 0 58% / 100% 0.085em;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .strike-stmt .ss-fade { opacity: 0; transform: translateY(0.35em); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
+  .strike-stmt[data-play] .ss-fade { opacity: 1; transform: none; }
+  .strike-stmt .ss-line { background-size: 0% 0.085em; }
+  .strike-stmt[data-play] .ss-line {
+    background-size: 100% 0.085em;
+    transition: background-size 0.5s cubic-bezier(0.65, 0, 0.35, 1) calc(0.9s + var(--i) * 0.45s);
+  }
+  .strike-stmt .ss-word { opacity: 0; transform: translateY(0.4em); transition: opacity 0.6s ease-out var(--d), transform 0.6s ease-out var(--d); }
+  .strike-stmt[data-play] .ss-word { opacity: 1; transform: none; }
+}
+
+/* Void: progress ring and tick marks that play when their card scrolls into view. */
+@property --ring {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+.void-ring {
+  --ring: var(--to, 85);
+  background: conic-gradient(#04e013 calc(var(--ring) * 1%), #3a3b40 0);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .void-demo .void-ring { --ring: 0; }
+  .void-demo[data-play] .void-ring { --ring: var(--to, 85); transition: --ring 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s; }
+  .void-demo .void-tick { opacity: 0; transform: scale(0.4); }
+  .void-demo[data-play] .void-tick { opacity: 1; transform: none; transition: opacity 0.3s ease-out calc(0.5s + var(--i) * 0.45s), transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) calc(0.5s + var(--i) * 0.45s); }
+}
+
+
+/* ReLife: viewfinder corner marks, drawn as eight gradient strokes so they follow any box. Kept close
+   to the text and short, so neighbouring frames and lines never touch. */
+.scan-corners::before {
+  content: "";
+  position: absolute;
+  inset: 0.02em -0.1em -0.03em;
+  pointer-events: none;
+  --c: var(--scan-color, var(--pa));
+  background:
+    linear-gradient(var(--c), var(--c)) 0 0 / 0.2em 0.055em no-repeat,
+    linear-gradient(var(--c), var(--c)) 0 0 / 0.055em 0.2em no-repeat,
+    linear-gradient(var(--c), var(--c)) 100% 0 / 0.2em 0.055em no-repeat,
+    linear-gradient(var(--c), var(--c)) 100% 0 / 0.055em 0.2em no-repeat,
+    linear-gradient(var(--c), var(--c)) 0 100% / 0.2em 0.055em no-repeat,
+    linear-gradient(var(--c), var(--c)) 0 100% / 0.055em 0.2em no-repeat,
+    linear-gradient(var(--c), var(--c)) 100% 100% / 0.2em 0.055em no-repeat,
+    linear-gradient(var(--c), var(--c)) 100% 100% / 0.055em 0.2em no-repeat;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .scan-stmt .sc-fade { opacity: 0; transition: opacity 0.7s ease-out; }
+  .scan-stmt[data-play] .sc-fade { opacity: 1; }
+  .scan-stmt .sc-chore::before { opacity: 0; transform: scale(1.18); }
+  .scan-stmt[data-play] .sc-chore::before {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.25s ease-out calc(0.9s + var(--i) * 0.5s), transform 0.45s cubic-bezier(0.34, 1.3, 0.64, 1) calc(0.9s + var(--i) * 0.5s);
+  }
+  .scan-stmt .sc-word { opacity: 0; filter: blur(9px); transition: opacity 0.55s ease-out var(--d), filter 0.55s ease-out var(--d); }
+  .scan-stmt[data-play] .sc-word { opacity: 1; filter: none; }
+
+  .relife-demo .scan-corners::before { opacity: 0; transform: scale(1.25); }
+  .relife-demo[data-play] .scan-corners::before { opacity: 1; transform: none; transition: opacity 0.25s ease-out 0.3s, transform 0.5s cubic-bezier(0.34, 1.3, 0.64, 1) 0.3s; }
+  .relife-demo .rl-tag { opacity: 0; transform: translateY(0.5em) scale(0.9); }
+  .relife-demo[data-play] .rl-tag { opacity: 1; transform: none; transition: opacity 0.3s ease-out 1s, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 1s; }
+  .relife-demo .rl-row { opacity: 0; transform: translateY(0.6em); }
+  .relife-demo[data-play] .rl-row { opacity: 1; transform: none; transition: opacity 0.4s ease-out calc(1.4s + var(--i) * 0.3s), transform 0.4s ease-out calc(1.4s + var(--i) * 0.3s); }
+}
+
+
+/* PMC: the same statement, with a marker highlight in place of the strike-through. The band sits behind
+   the lower two-thirds of the letters, and each phrase stays on one line so it reads as one marker stroke. */
+.strike-stmt--hl .ss-line {
+  white-space: nowrap;
+  padding: 0 0.08em;
+  margin: 0 -0.08em;
+  background: linear-gradient(color-mix(in srgb, var(--pa) 30%, transparent), color-mix(in srgb, var(--pa) 30%, transparent)) no-repeat 0 72% / 100% 0.6em;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .strike-stmt--hl .ss-line { background-size: 0% 0.6em; }
+  .strike-stmt--hl[data-play] .ss-line { background-size: 100% 0.6em; }
+}
+
+/* Sage: words arrive like a slow breath. */
+@media (prefers-reduced-motion: no-preference) {
+  .breathe-stmt .br-word { opacity: 0; filter: blur(10px); transform: scale(0.97); transition: opacity 1.3s ease-in-out var(--d), filter 1.3s ease-in-out var(--d), transform 1.3s ease-in-out var(--d); }
+  .breathe-stmt[data-play] .br-word { opacity: 1; filter: none; transform: none; }
+}
+/* Sage: a soft mist behind the hero phones that rises and falls like breathing. */
+.breathe-glow {
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--pa) 26%, transparent), transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .breathe-glow { animation: breathe 9s ease-in-out infinite; }
+}
+@keyframes breathe {
+  0%, 100% { transform: translate(-50%, 0) scale(0.9); opacity: 0.55; }
+  50% { transform: translate(-50%, 0) scale(1.12); opacity: 1; }
+}
+
+/* KopieSatu: order numbers and the pickup badge pop in; a cup flies into the cart. */
+@media (prefers-reduced-motion: no-preference) {
+  .ticket-stmt .tk-fade { opacity: 0; transition: opacity 0.6s ease-out; }
+  .ticket-stmt[data-play] .tk-fade { opacity: 1; }
+  .ticket-stmt .tk-pop { opacity: 0; scale: 0.2; }
+  .ticket-stmt[data-play] .tk-pop { opacity: 1; scale: 1; transition: opacity 0.2s ease-out var(--d), scale 0.45s cubic-bezier(0.34, 1.7, 0.64, 1) var(--d); }
+  .ticket-stmt .tk-word { opacity: 0; transform: translateY(0.4em); transition: opacity 0.5s ease-out var(--d), transform 0.5s ease-out var(--d); }
+  .ticket-stmt[data-play] .tk-word { opacity: 1; transform: none; }
+
+  .kopie-demo .kp-cup { opacity: 0; }
+  .kopie-demo[data-play] .kp-cup { animation: kopieFly 1.5s cubic-bezier(0.5, 0, 0.2, 1) 0.5s both; }
+  .kopie-demo .kp-badge { opacity: 0; scale: 0.2; }
+  .kopie-demo[data-play] .kp-badge { opacity: 1; scale: 1; transition: opacity 0.2s ease-out 2s, scale 0.45s cubic-bezier(0.34, 1.7, 0.64, 1) 2s; }
+  .kopie-demo[data-play] .kp-press { animation: kopiePress 0.35s ease-out 0.35s both; }
+}
+@keyframes kopieFly {
+  0% { opacity: 0; left: 70%; top: 18%; transform: translate(-50%, -50%) scale(1); }
+  12% { opacity: 1; }
+  100% { opacity: 0; left: 50%; top: 86%; transform: translate(-50%, -50%) scale(0.35); }
+}
+@keyframes kopiePress {
+  50% { transform: scale(0.94); }
+}
+
+
+/* IoT Fertiliser: the manual routine is underlined step by step while a needle overshoots the target,
+   then settles. Final state (no motion): steps underlined, needle on target, answer and ticks shown. */
+.gauge-stmt .gs-step {
+  background: linear-gradient(var(--pa), var(--pa)) no-repeat 0 100% / 100% 0.07em;
+}
+.gauge-stmt .gs-needle { left: 50%; }
+@media (prefers-reduced-motion: no-preference) {
+  .gauge-stmt .gs-step { background-size: 0% 0.07em; }
+  .gauge-stmt[data-play] .gs-step { background-size: 100% 0.07em; transition: background-size 0.35s ease-out var(--d); }
+  .gauge-stmt .gs-needle { left: 10%; }
+  .gauge-stmt[data-play] .gs-needle { animation: gaugeSwing 3.6s cubic-bezier(0.4, 0, 0.3, 1) 0.4s both; }
+  .gauge-stmt .gs-word { opacity: 0; transform: translateY(0.4em); transition: opacity 0.5s ease-out var(--d), transform 0.5s ease-out var(--d); }
+  .gauge-stmt[data-play] .gs-word { opacity: 1; transform: none; }
+  .gauge-stmt .gs-tick { opacity: 0; scale: 0.2; }
+  .gauge-stmt[data-play] .gs-tick { opacity: 1; scale: 1; transition: opacity 0.2s ease-out var(--d), scale 0.4s cubic-bezier(0.34, 1.7, 0.64, 1) var(--d); }
+}
+@keyframes gaugeSwing {
+  0% { left: 10%; }
+  14% { left: 88%; }
+  30% { left: 18%; }
+  46% { left: 72%; }
+  62% { left: 38%; }
+  78% { left: 56%; }
+  100% { left: 50%; }
+}
+
+
+/* HR Assistive Intelligence: the statement as an AI answer. Skeleton lines shimmer while it "thinks",
+   then the words stream in and a citation lands after each sentence. Final state (no motion): skeleton
+   hidden, text and citations visible, status reads "Answered". */
+.ai-stmt .ai-skel { display: none; }
+.ai-stmt .ai-thinking { opacity: 0; }
+.ai-stmt .ai-bar {
+  background: linear-gradient(90deg, rgba(0,0,0,0.07) 25%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.07) 75%);
+  background-size: 200% 100%;
+}
+html.dark .ai-stmt .ai-bar {
+  background: linear-gradient(90deg, rgba(255,255,255,0.08) 25%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0.08) 75%);
+  background-size: 200% 100%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ai-stmt .ai-skel { display: block; opacity: 1; }
+  .ai-stmt[data-play] .ai-skel { opacity: 0; transition: opacity 0.35s ease-out 1.55s; }
+  .ai-stmt .ai-bar { animation: aiShimmer 1.2s linear infinite; }
+  .ai-stmt .ai-thinking { opacity: 1; }
+  .ai-stmt[data-play] .ai-thinking { opacity: 0; transition: opacity 0.25s ease-out var(--done); }
+  .ai-stmt .ai-answered { opacity: 0; }
+  .ai-stmt[data-play] .ai-answered { opacity: 1; transition: opacity 0.3s ease-out calc(var(--done) + 0.15s); }
+  .ai-stmt .ai-dot { animation: aiDot 1s ease-in-out infinite; animation-delay: calc(var(--i) * 0.15s); }
+  .ai-stmt .ai-word { opacity: 0; filter: blur(6px); transition: opacity 0.2s ease-out var(--d), filter 0.2s ease-out var(--d); }
+  .ai-stmt[data-play] .ai-word { opacity: 1; filter: none; }
+  .ai-stmt .ai-cite { opacity: 0; scale: 0.3; }
+  .ai-stmt[data-play] .ai-cite { opacity: 1; scale: 1; transition: opacity 0.2s ease-out calc(var(--done) + var(--c) * 0.2s - 0.1s), scale 0.4s cubic-bezier(0.34, 1.7, 0.64, 1) calc(var(--done) + var(--c) * 0.2s - 0.1s); }
+}
+@keyframes aiShimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+@keyframes aiDot {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+  40% { transform: translateY(-3px); opacity: 1; }
+}
+
+
+/* Warranty & RMA: the first sentence's words start scattered and tilted, then drift together; the
+   second sentence arrives lined up, and the four loose ends take the accent. Final state (no motion):
+   everything in place, the four phrases in the accent colour. */
+.scatter-stmt .sc2-mark { color: var(--pa); }
+@media (prefers-reduced-motion: no-preference) {
+  .scatter-stmt .sc2-word {
+    opacity: 0;
+    transform: translate(var(--x), var(--y)) rotate(var(--r));
+    filter: blur(3px);
+  }
+  .scatter-stmt[data-play] .sc2-word {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: opacity 0.5s ease-out var(--d), transform 1.1s cubic-bezier(0.22, 1, 0.36, 1) var(--d), filter 0.7s ease-out var(--d);
+  }
+  .scatter-stmt .sc2-aligned { opacity: 0; transform: translateY(0.4em); }
+  .scatter-stmt[data-play] .sc2-aligned {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.5s ease-out var(--d), transform 0.5s ease-out var(--d);
+  }
+  .scatter-stmt .sc2-mark { color: inherit; }
+  .scatter-stmt[data-play] .sc2-mark { color: var(--pa); transition: opacity 0.5s ease-out var(--d), transform 0.5s ease-out var(--d), color 0.5s ease-out var(--m); }
+}
+
+
+/* Raspberry Pi Diagnostics: work done by hand with no paper trail. "By hand" is underlined, the short
+   circuit risk shakes and is underlined in red, and "no database" and "no history" fade to ghosts next
+   to an empty "0 records" pill. Final state (no motion): underlines drawn, ghosts faded, pill shown. */
+.recgap-stmt .rg-hand {
+  background: linear-gradient(var(--pa), var(--pa)) no-repeat 0 100% / 100% 0.07em;
+}
+.recgap-stmt .rg-danger {
+  background: linear-gradient(#e5362f, #e5362f) no-repeat 0 100% / 100% 0.07em;
+}
+.recgap-stmt .rg-ghost { opacity: 0.4; text-decoration: line-through; text-decoration-thickness: 0.06em; }
+@media (prefers-reduced-motion: no-preference) {
+  .recgap-stmt .rg-word { opacity: 0; transform: translateY(0.4em); }
+  .recgap-stmt[data-play] .rg-word { opacity: 1; transform: none; transition: opacity 0.5s ease-out var(--d), transform 0.5s ease-out var(--d); }
+  .recgap-stmt .rg-hand, .recgap-stmt .rg-danger { background-size: 0% 0.07em; }
+  .recgap-stmt[data-play] .rg-hand, .recgap-stmt[data-play] .rg-danger { background-size: 100% 0.07em; transition: background-size 0.5s ease-out calc(var(--r) + 0.4s); }
+  .recgap-stmt[data-play] .rg-danger > .rg-word { animation: rgShake 0.6s ease-in-out calc(var(--r) + 0.4s) both; }
+  .recgap-stmt .rg-ghost { opacity: 1; text-decoration-color: transparent; }
+  .recgap-stmt[data-play] .rg-ghost { opacity: 0.4; text-decoration-color: currentColor; transition: opacity 0.7s ease-out var(--r), text-decoration-color 0.5s ease-out var(--r); }
+  .recgap-stmt .rg-badge { opacity: 0; scale: 0.4; }
+  .recgap-stmt[data-play] .rg-badge { opacity: 1; scale: 1; transition: opacity 0.25s ease-out var(--d), scale 0.4s cubic-bezier(0.34, 1.7, 0.64, 1) var(--d); }
+}
+@keyframes rgShake {
+  0%, 100% { transform: none; }
+  15% { transform: translateX(-0.07em) rotate(-5deg); }
+  35% { transform: translateX(0.07em) rotate(5deg); }
+  55% { transform: translateX(-0.05em) rotate(-3deg); }
+  75% { transform: translateX(0.04em) rotate(2deg); }
+}
+
+/* ROG Gaming Center: the locked words come alive. "Lighting" flows through an RGB wave, "display modes"
+   cycles through the colour profiles, "fans" and "battery limits" count up a readout, and each padlock
+   opens as its word plays. Final state (no motion): the sentence with every lock open and no tags. */
+@property --rg-a { syntax: "<integer>"; inherits: false; initial-value: 0; }
+@property --rg-b { syntax: "<integer>"; inherits: false; initial-value: 0; }
+@property --rg-d { syntax: "<integer>"; inherits: false; initial-value: 0; }
+
+.unlock-stmt { --g: #68686d; }
+html.dark .unlock-stmt { --g: #a1a1a6; }
+.unlock-stmt .un-phrase { background: linear-gradient(var(--pa), var(--pa)) no-repeat 0 100% / 100% 0.07em; }
+.unlock-stmt .un-lock { color: var(--pa); }
+.unlock-stmt .un-locked { opacity: 0; }
+.unlock-stmt .un-tag { display: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .unlock-stmt .un-fade { opacity: 0; transform: translateY(0.35em); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+  .unlock-stmt[data-play] .un-fade { opacity: 1; transform: none; }
+  .unlock-stmt .un-word { opacity: 0; transform: translateY(0.4em); }
+  .unlock-stmt[data-play] .un-word { opacity: 1; transform: none; transition: opacity 0.5s ease-out var(--d), transform 0.5s ease-out var(--d); }
+
+  /* Locks: closed and grey until their word comes alive, then open in the accent. */
+  .unlock-stmt .un-phrase { background-size: 0% 0.07em; }
+  .unlock-stmt[data-play] .un-phrase { background-size: 100% 0.07em; transition: background-size 0.5s ease-out var(--u); }
+  .unlock-stmt .un-lock { color: #86868b; }
+  .unlock-stmt[data-play] .un-lock { color: var(--pa); transition: color 0.3s ease-out var(--u); }
+  .unlock-stmt .un-locked { opacity: 1; }
+  .unlock-stmt .un-open { opacity: 0; }
+  .unlock-stmt[data-play] .un-locked { opacity: 0; transition: opacity 0.2s ease-out var(--u); }
+  .unlock-stmt[data-play] .un-open { opacity: 1; transition: opacity 0.2s ease-out var(--u); }
+
+  /* The tag floats above its word while it plays, then goes. */
+  .unlock-stmt .un-tag {
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 100%;
+    margin-bottom: -0.1em;
+    padding: 0.3em 0.75em;
+    border-radius: 999px;
+    background: var(--pa);
+    color: #fff;
+    font-size: 0.3em;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+  }
+  html.dark .unlock-stmt .un-tag { color: #000; }
+  .unlock-stmt[data-play] .un-tag { animation: unTag 2.2s ease-in-out var(--u) both; }
+  .unlock-stmt[data-play] .un-tag-rgb { animation-duration: 1.8s; }
+  .unlock-stmt[data-play] .un-tag-rpm, .unlock-stmt[data-play] .un-tag-battery { animation-duration: 2s; }
+
+  /* 1. RGB: the word flows through the colours of a rainbow, then settles. */
+  .unlock-stmt[data-play] .un-phrase-rgb { animation: unRainbow 1.8s linear var(--u) forwards; }
+
+  /* 2. Colour profiles: the word takes each profile's tint in turn, and the tag names it. */
+  .unlock-stmt[data-play] .un-phrase-profile { animation: unProfile 2.1s steps(1, end) var(--u) forwards; }
+  .unlock-stmt .un-names { display: grid; }
+  .unlock-stmt .un-name { grid-area: 1 / 1; opacity: 0; }
+  .unlock-stmt[data-play] .un-name { animation: unName 0.35s steps(1, end) calc(var(--u) + var(--i) * 0.35s) forwards; }
+
+  /* 3. Readouts count up. */
+  .unlock-stmt .un-count-rpm { --rg-a: 0; --rg-b: 0; counter-reset: ra var(--rg-a) rb var(--rg-b); }
+  .unlock-stmt .un-count-rpm::after { content: counter(ra) "." counter(rb) "k rpm"; }
+  .unlock-stmt .un-count-bat { --rg-d: 0; counter-reset: rd var(--rg-d); }
+  .unlock-stmt .un-count-bat::after { content: counter(rd) "% health"; }
+  .unlock-stmt[data-play] .un-count-rpm { animation: unRpm 1.5s cubic-bezier(0.3, 0, 0.2, 1) var(--u) both; }
+  .unlock-stmt[data-play] .un-count-bat { animation: unBat 1.5s cubic-bezier(0.3, 0, 0.2, 1) var(--u) both; }
+}
+@keyframes unTag {
+  0% { opacity: 0; transform: translateY(0.4em) scale(0.9); }
+  12%, 85% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: translateY(-0.2em); }
+}
+@keyframes unRainbow {
+  0% { color: #ff2d55; } 16% { color: #ff9f0a; } 33% { color: #d4a900; } 50% { color: #30b652; }
+  66% { color: #1fa8d8; } 83% { color: #a14ee0; } 100% { color: var(--g); }
+}
+@keyframes unProfile {
+  0% { color: var(--g); } 17% { color: #e0357a; } 33% { color: #d9902a; } 50% { color: #5b6bd6; }
+  67% { color: #1fa8d8; } 83% { color: #3ea04a; } 100% { color: var(--g); }
+}
+@keyframes unName { 0%, 99% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes unRpm { from { --rg-a: 0; --rg-b: 0; } to { --rg-a: 2; --rg-b: 6; } }
+@keyframes unBat { from { --rg-d: 0; } to { --rg-d: 99; } }
+
+
+/* OpenCore EFI: the scattered sources are boxed as separate tabs, the disagreement is flagged in red,
+   then each thing the EFI gathers gets an "OK" like a boot log line, ending on "boots". Final state
+   (no motion): tabs boxed, red wavy underline, the gathered words in the accent, no tags. */
+.bootlog-stmt .bl-src {
+  border: 0.04em dashed color-mix(in srgb, currentColor 55%, transparent);
+  border-radius: 0.2em;
+  padding: 0 0.16em;
+  margin: 0 0.04em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+/* A red wave under the words, drawn as a repeating image so it follows the text. */
+.bootlog-stmt .bl-clash::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.07em;
+  height: 0.2em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='4' viewBox='0 0 8 4'%3E%3Cpath d='M0 3 Q2 0 4 2 T8 2' fill='none' stroke='%23e5362f' stroke-width='1.5'/%3E%3C/svg%3E") repeat-x 0 100% / 0.5em 0.2em;
+  pointer-events: none;
+}
+.bootlog-stmt .bl-ok { color: var(--pa); }
+.bootlog-stmt .bl-build {
+  color: var(--pa);
+  background: color-mix(in srgb, var(--pa) 14%, transparent);
+  border-radius: 0.2em;
+  padding: 0 0.16em;
+  margin: 0 -0.04em;
+}
+.bootlog-stmt .bl-tag { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .bootlog-stmt .bl-word { opacity: 0; transform: translateY(0.4em); }
+  .bootlog-stmt[data-play] .bl-word { opacity: 1; transform: none; transition: opacity 0.5s ease-out var(--d), transform 0.5s ease-out var(--d); }
+
+  .bootlog-stmt .bl-src { border-color: transparent; }
+  .bootlog-stmt[data-play] .bl-src { border-color: color-mix(in srgb, currentColor 55%, transparent); transition: border-color 0.3s ease-out var(--r); }
+  .bootlog-stmt .bl-clash::after { opacity: 0; }
+  .bootlog-stmt[data-play] .bl-clash::after { opacity: 1; transition: opacity 0.4s ease-out var(--r); }
+  .bootlog-stmt[data-play] .bl-clash > .bl-word { animation: blShake 0.6s ease-in-out var(--r) both; }
+
+  .bootlog-stmt .bl-ok { color: inherit; }
+  .bootlog-stmt[data-play] .bl-ok { color: var(--pa); transition: color 0.4s ease-out var(--r); }
+  .bootlog-stmt .bl-build { color: inherit; background-color: transparent; }
+  .bootlog-stmt[data-play] .bl-build { color: var(--pa); background-color: color-mix(in srgb, var(--pa) 14%, transparent); transition: color 0.4s ease-out var(--r), background-color 0.4s ease-out var(--r); }
+
+  .bootlog-stmt .bl-tag {
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 100%;
+    margin-bottom: -0.15em;
+    padding: 0.3em 0.7em;
+    border-radius: 999px;
+    background: #30a14e;
+    color: #fff;
+    font: 600 0.3em/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .bootlog-stmt[data-play] .bl-tag { animation: blTag 1.5s ease-in-out var(--r) both; }
+  .bootlog-stmt[data-play] .bl-build > .bl-tag { animation-duration: 2.2s; }
+}
+@keyframes blTag {
+  0% { opacity: 0; transform: translateY(0.4em) scale(0.9); }
+  15%, 80% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: translateY(-0.2em); }
+}
+@keyframes blShake {
+  0%, 100% { transform: none; }
+  20% { transform: translateX(-0.04em); }
+  40% { transform: translateX(0.04em); }
+  60% { transform: translateX(-0.03em); }
+  80% { transform: translateX(0.02em); }
+}
+
+/* The intro's stick figure: springs up from behind the word, waves, lowers its arm. */
+@keyframes stick-pop {
+  0% { transform: translateY(104%) scaleY(0.9); }
+  55% { transform: translateY(-9%) scaleY(1.05); }
+  78% { transform: translateY(2%) scaleY(0.98); }
+  100% { transform: translateY(0) scaleY(1); }
+}
+@keyframes stick-wave {
+  0% { transform: rotate(93deg); }
+  14% { transform: rotate(-8deg); }
+  26% { transform: rotate(14deg); }
+  38% { transform: rotate(-12deg); }
+  50% { transform: rotate(14deg); }
+  62% { transform: rotate(-12deg); }
+  74% { transform: rotate(10deg); }
+  100% { transform: rotate(93deg); }
+}
+@keyframes stick-bubble {
+  0% { opacity: 0; transform: scale(0.3) translateY(6px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* The intro's first beat: a corrected word settles into place. */
+@keyframes word-snap {
+  0% { transform: translateY(-0.08em) scale(1.06); }
+  100% { transform: none; }
+}
+
+
+

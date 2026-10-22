@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import Footer from "@/components/layout/Footer";
-import ScrollTypeText from "@/components/shared/ScrollTypeText";
 import HomeHero from "@/components/home/HomeHero";
 import HomeSystems from "@/components/home/HomeSystems";
 import HomeNumbers from "@/components/home/HomeNumbers";
 import HomeDesigns from "@/components/home/HomeDesigns";
+import IntroScroller from "@/components/home/IntroScroller";
 import HomePhotography from "@/components/home/HomePhotography";
-import { GRAY, INK, WRAP } from "@/components/home/homeShared";
 import { accentStyle } from "@/data/projectTheme";
 
 export const metadata: Metadata = {
@@ -23,21 +22,7 @@ export default function Home() {
     >
       <HomeHero />
 
-      <section aria-label="Introduction" className={`${WRAP} py-28 sm:py-40`}>
-        <ScrollTypeText
-          className="text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl"
-          segments={[
-            {
-              text: "I'm a Support Engineer at Cytron Technologies, where hardware problems land every day. ",
-              className: GRAY,
-            },
-            {
-              text: "I build the internal tools that solve them faster, and design the interfaces that make them effortless.",
-              className: INK,
-            },
-          ]}
-        />
-      </section>
+      <IntroScroller />
 
       <HomeSystems />
       <HomeNumbers />

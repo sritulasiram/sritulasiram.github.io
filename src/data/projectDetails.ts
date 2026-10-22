@@ -10,7 +10,7 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
     tagline: "A repair operations platform that takes a unit from intake and the bench to supplier credit, with thermal labels, an SLA clock on every case and a Telegram assistant.",
     heroMetric: "v2.52.1",
     heroMetricLabel: "Production System (WAL Mode)",
-    imageSrc: "/images/projects/warranty-rma/cover.webp",
+    imageSrc: "/images/projects/warranty-rma/screen-intake-laptop.jpg",
     placeholderLabel: "Replace: project-rma.webp",
     placeholderRatio: "16:10 Full Dashboard Screenshot (1920×1200)",
     timeframe: "Active Internal Production System",
@@ -18,9 +18,9 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
     organization: "Cytron Technologies",
     background: {
       problemStatement:
-        "Handling customer warranty claims, technician diagnostic triage, supplier RMA claims, and physical hardware printing across hundreds of electronics products was historically managed through fragmented ticketing tools and manual spreadsheets.",
+        "Repairs, supplier returns and warranty claims lived in separate tools and spreadsheets.",
       context:
-        "As Malaysia's leading robotics and electronics provider and official Raspberry Pi Design Partner, Cytron required an industrial, highly reliable internal platform to manage multi-item repair intake, batch vendor returns, thermal barcode labeling, and real-time cloud spreadsheet synchronization.",
+        "Nothing tied a unit’s label to its bench notes, its supplier batch, or the last time it came back.",
       challenges: [
         "Tracking multi-item hardware units with disparate warranties and post-warranty service tiers under single customer orders",
         "Reconciling vendor-bound RMA shipments across multiple supplier invoices without lost documentation",
@@ -119,31 +119,31 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
         id: "intake-terminal",
         title: "Two-Card Intake Terminal",
         description: "Split-card terminal for rapid intake logging with real-time WYSIWYG Code128 barcode twin preview, grouping multiple items under a single Customer Order ID with linear state tracking.",
-        imageSrc: "/images/projects/warranty-rma/cover.webp",
+        imageSrc: "/images/projects/warranty-rma/screen-intake.jpg",
       },
       {
         id: "pulse-deck",
         title: "Operations Pulse Deck",
         description: "4-card real-time KPI monitor tracking live bench tickets, active duty technicians, intake rates, and SLA turnaround thresholds across active workshop shifts.",
-        imageSrc: "/images/projects/warranty-rma/cover.webp",
+        imageSrc: "/images/projects/warranty-rma/screen-analytics.jpg",
       },
       {
         id: "label-generator",
         title: "Thermal Barcode Label Twin",
         description: "Direct CUPS/raw driver integration printing high-contrast 60×40mm thermal adhesive labels with tracking identifiers, eliminating manual label transcription errors.",
-        imageSrc: "/images/projects/warranty-rma/cover.webp",
+        imageSrc: "/images/projects/warranty-rma/screen-intake.jpg",
       },
       {
         id: "supplier-rma",
         title: "Supplier RMA Manifest Engine",
         description: "Multi-invoice vendor consolidation engine grouping repair units by original purchase invoices with automated printable shipment packing slips and Code128 barcodes.",
-        imageSrc: "/images/projects/warranty-rma/cover.webp",
+        imageSrc: "/images/projects/warranty-rma/screen-rma.jpg",
       },
       {
         id: "telegram-bot",
         title: "Telegram Alert Telemetry",
         description: "Automated webhook integration pushing status triggers, SLA escalation warnings, and interactive ticket lookups directly to duty technicians' mobile devices.",
-        imageSrc: "/images/projects/warranty-rma/cover.webp",
+        imageSrc: "/images/projects/warranty-rma/screen-settings.jpg",
       },
     ],
   },
@@ -426,12 +426,12 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
     },
     architecture: {
       summary:
-        "A deterministic UEFI bootloader architecture utilizing OpenCore 1.0.7, custom-compiled ACPI AML SSDT tables, MacBookPro16,4 SMBIOS profiling, and targeted kernel extension injection tested against BIOS version 319.",
+        "A deterministic UEFI bootloader architecture utilizing OpenCore 1.0.8, custom-compiled ACPI AML SSDT tables, MacBookPro16,4 SMBIOS profiling, and targeted kernel extension injection tested against BIOS version 319.",
       components: [
         {
           title: "UEFI Boot Stage & NVRAM Runtime",
           description:
-            "OpenCore 1.0.7 boot environment configuring memory map quirks, UEFI runtime drivers, deliberate Secure Boot disablement per BIOS guide, and native 300-series NVRAM persistence (SSDT-PMC).",
+            "OpenCore 1.0.8 boot environment configuring memory map quirks, UEFI runtime drivers, deliberate Secure Boot disablement per BIOS guide, and native 300-series NVRAM persistence (SSDT-PMC).",
         },
         {
           title: "ACPI Bytecode & dGPU Power-Gating",
@@ -496,7 +496,7 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
       {
         category: "Bootloader & Firmware",
         items: [
-          "OpenCore 1.0.7",
+          "OpenCore 1.0.8",
           "UEFI 2.7+",
           "SMBIOS (MacBookPro16,4)",
           "NVRAM (SSDT-PMC)",
@@ -569,7 +569,7 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
         id: "screen-opencore-firmware",
         title: "UEFI Telemetry & Power Gating",
         description:
-          "OpenCore 1.0.7 environment managing ACPI table overrides, dGPU power-gating, and compliant 15-port XHCI USB topology.",
+          "OpenCore 1.0.8 environment managing ACPI table overrides, dGPU power-gating, and compliant 15-port XHCI USB topology.",
         imageSrc: "/images/projects/opencore-efi-hackintosh/cover.png",
         badge: "OpenCore EFI",
       },

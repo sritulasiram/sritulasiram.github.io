@@ -148,7 +148,7 @@ export default function DesignHeroStage() {
             <span className="mt-3 block text-[0.36em] font-medium leading-[1.15] tracking-apple-tight text-[#6E6E73] dark:text-[#8E8E93] text-balance">Crafted for humans</span>
           </h1>
 
-          <p className="text-lg sm:text-xl text-[#6E6E73] dark:text-[#A1A1A6] font-normal max-w-2xl mx-auto leading-relaxed tracking-apple-subhead">
+          <p className="text-lg sm:text-xl lg:text-2xl text-[#6E6E73] dark:text-[#A1A1A6] font-normal max-w-2xl mx-auto leading-relaxed tracking-apple-subhead">
             Five products across health, retail, education and sustainability. Each starts with a problem worth solving.
           </p>
         </div>

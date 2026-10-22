@@ -221,7 +221,7 @@ export const DESIGN_DETAILS: Record<string, DesignCaseStudy> = {
       problemStatement:
         "Asking for help is the hardest step. A stressed student shouldn’t have to face a clinical form, a long menu or a loud interface to take it.",
       context:
-        "Sage keeps the first step small: say hello, take a short check-in, or just talk. Booking a counsellor and crisis support are there when they’re needed, never in the way.",
+        "Sage keeps the first step small: say hello, take a short check-in, or just talk. Booking a counsellor and crisis support are there when needed, never in the way.",
       challenges: [
         "Keeping every screen low-stimulation for someone who may already be overwhelmed",
         "Making the check-ins feel supportive rather than clinical, and clear that a result is not a diagnosis",
@@ -418,9 +418,9 @@ export const DESIGN_DETAILS: Record<string, DesignCaseStudy> = {
     platform: "iOS & Android Mobile App",
     background: {
       problemStatement:
-        "Listing a second-hand item is a chore: take photos, work out the category, write a description. Most people never get past step one.",
+        "Listing a second-hand item is a chore: take photos, pick a category, write a description.",
       context:
-        "ReLife puts an AI scanner at the centre of the tab bar. It identifies the item and its material, so selling something takes one photo and one tap.",
+        "ReLife puts an AI scanner in the middle of the tab bar, so selling takes one photo and a tap.",
       challenges: [
         "Making the scan-to-listing path feel shorter than filling in a form by hand",
         "Giving buyers and sellers one consistent visual language across browsing, selling, chat and payment",
@@ -579,7 +579,7 @@ export const DESIGN_DETAILS: Record<string, DesignCaseStudy> = {
       problemStatement:
         "Ordering at a busy coffee counter means queueing, shouting names and guessing when a drink will be ready.",
       context:
-        "KopieSatu is a local coffee brand with a navy-and-kraft identity. The app lets customers order from their phone while keeping payment at the cashier, so the café needs no payment gateway and the flow stays short.",
+        "KopieSatu lets customers order from their phone and pay at the cashier, then shows a countdown and a pickup number.",
       challenges: [
         "Keeping the full flow (menu, customise, cart, pay, wait, collect) to a few steps a customer can finish on one hand",
         "Making a long menu with many similar drinks easy to scan, using category icons and large product photography",
@@ -732,7 +732,7 @@ export const DESIGN_DETAILS: Record<string, DesignCaseStudy> = {
       problemStatement:
         "A clinic group's website has to answer three questions fast: what do you offer, who will treat me, and where do I go?",
       context:
-        "Perak Medical Centre runs several clinics across Perak, from primary care to physiotherapy and wound care. The website gives each audience its own clear page: patients, corporate and insurance partners, and people looking for work.",
+        "Perak Medical Centre runs several clinics across Perak. The site gives patients, corporate and insurance partners, and job seekers each a clear page.",
       challenges: [
         "Presenting a wide range of services without overwhelming a first-time visitor",
         "Building trust with credentials: doctors, authorisations and certifications",
@@ -946,9 +946,9 @@ export const DESIGN_DETAILS: Record<string, DesignCaseStudy> = {
     platform: "Android & iOS Mobile App (Android first)",
     background: {
       problemStatement:
-        "Final year engineering projects suffer from severe administrative friction: scattered physical forms, uncoordinated meetings across dozens of groups, lost documentation, and delayed coordinator announcements.",
+        "Final year projects run on paper forms, scattered messages and announcements that reach people late.",
       context:
-        "Developed by Group DEM5C-G6 for the Mechanical Engineering Department at Polytechnic Ungku Omar, Void is a single mobile hub where students and coordinators can see where every group stands.",
+        "Void puts forms, groups and chat in one app, so students and coordinators can see where every group stands.",
       challenges: [
         "Eliminating reliance on paper-based project submission forms and physical sign-offs",
         "Designing distinct workflows for students and coordinators within one consistent interface",

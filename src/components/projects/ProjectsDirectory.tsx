@@ -79,7 +79,7 @@ const LINEUP_PROJECTS: ProjectCardData[] = [
     categoryId: "developed-systems",
     description:
       "Repair intake, thermal barcode labels and supplier claim manifests in one internal system, with secure remote access through Cloudflare Zero Trust.",
-    imageSrc: "/images/projects/warranty-rma/system-intake.png",
+    imageSrc: "/images/projects/warranty-rma/screen-intake-laptop.jpg",
     tech: ["Flask", "SQLite", "Cloudflare Tunnel", "Thermal printing"],
     caseStudyUrl: "/projects/warranty-rma",
     badgeColor: "#0071E3",

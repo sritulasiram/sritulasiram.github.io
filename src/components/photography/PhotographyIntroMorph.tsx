@@ -35,7 +35,7 @@ const TRACK_VH = 280;
 const TOP_INSET = 64;
 // The lineup heading sits lower than the intro headline so it clears the nav bar.
 const WORK_TOP_INSET = 96;
-const HEADER_H = 324;
+const HEADER_H = 364;
 const TILE_GAP = 16;
 const CAPTION_H = 64;
 const MORPH_DONE = 0.85;
@@ -90,7 +90,6 @@ function CameraPhone({
             alt=""
             fill
             sizes="320px"
-            priority={i === 0}
             className="object-cover"
             style={{ opacity: i === index ? 1 : 0, transition: "opacity 0.35s ease-out" }}
           />
@@ -126,7 +125,7 @@ function CameraPhone({
       </div>
 
       {/* Camera app chrome: zoom pills, modes, shutter and flip */}
-      <Image src={CAMERA_UI} alt="" fill sizes="700px" className="object-contain" priority />
+      <Image src={CAMERA_UI} alt="" fill sizes="700px" className="object-contain" />
 
       {/* Last shot, bottom left */}
       <span
@@ -415,12 +414,12 @@ export default function PhotographyIntroMorph({ photos }: { photos: PhotoItem[] 
             </ol>
           </nav>
           <div className="max-w-4xl mx-auto space-y-3">
-            <h1 className="text-5xl xl:text-6xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.03]">
+            <h1 className="text-5xl lg:text-6xl xl:text-7xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.03]">
               Photography
               <br />
-              <span className="text-[#6E6E73] dark:text-[#8E8E93] font-medium">Perspective and light</span>
+              <span className="block mt-1 text-3xl lg:text-4xl xl:text-5xl text-[#6E6E73] dark:text-[#8E8E93] font-medium">Perspective and light</span>
             </h1>
-            <p className="text-lg text-[#6E6E73] dark:text-[#A1A1A6] max-w-2xl mx-auto leading-relaxed tracking-apple-subhead">
+            <p className="text-lg xl:text-xl text-[#6E6E73] dark:text-[#A1A1A6] max-w-2xl mx-auto leading-relaxed tracking-apple-subhead">
               Curated frames capturing coastal atmosphere, architectural geometry, and fleeting moments.
             </p>
           </div>
@@ -435,7 +434,7 @@ export default function PhotographyIntroMorph({ photos }: { photos: PhotoItem[] 
           <h2 className="text-4xl xl:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight leading-[1.08] text-balance">
             Selected frames.
             <br />
-            <span className="text-[#6E6E73] dark:text-[#8E8E93] font-medium">Shot on iPhone 16 Pro.</span>
+            <span className="block mt-1 text-3xl lg:text-4xl xl:text-5xl text-[#6E6E73] dark:text-[#8E8E93] font-medium">Shot on iPhone 16 Pro.</span>
           </h2>
         </div>
 

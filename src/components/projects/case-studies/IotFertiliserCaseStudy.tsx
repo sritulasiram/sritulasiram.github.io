@@ -1,3 +1,4 @@
+import GaugeStatement from "@/components/projects/GaugeStatement";
 import { LINK, PILL } from "@/components/ui/Button";
 import Image from "next/image";
 import Link from "next/link";
@@ -420,14 +421,13 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
 
       {/* 2. The problem, in one screen */}
       <section className={`${WRAP} py-28 sm:py-40`}>
-        <Reveal>
-          <p className={`text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl ${GRAY}`}>
-            In hydroponics, nutrient strength is held by hand: add fertiliser AB, check the TDS, adjust, repeat. It costs time, leaves room for error, and wastes resources.{" "}
-            <span className={INK}>
-              This prototype takes over. Enter a crop-specific ratio on your phone, and it mixes, measures and corrects the concentration for you.
-            </span>
-          </p>
-        </Reveal>
+        <GaugeStatement
+          className="text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl"
+          problem="In hydroponics, nutrient strength is held by hand. Add fertiliser AB, check the TDS, adjust, repeat."
+          steps={["Add fertiliser AB", "check the TDS", "adjust", "repeat"]}
+          answer="This prototype takes over. Set a ratio for your crop on your phone, and it mixes, measures and corrects the concentration for you."
+          ticks={["mixes", "measures", "corrects"]}
+        />
       </section>
 
       {/* 3. Chapters */}
