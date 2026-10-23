@@ -10,7 +10,9 @@ The full site is being rebuilt. Until it launches, this repository serves a sing
 
 - **Countdown** to **11 November 2026, 00:00 Malaysia time (UTC+8)**, shown in the visitor's own clock.
 - **Plain HTML and CSS** in one `index.html`, with a small inline script for the timer. No build step, no dependencies, no tracking.
-- Respects light and dark mode and is built to be readable on any screen.
+- Respects light and dark mode, reduced-motion settings and screen readers, and meets AA text contrast.
+- Switches to a "Launching now" message when the countdown ends, so it never sits frozen at zero.
+- Link previews show a share card when the page is posted on social apps and chats.
 - Hosted on GitHub Pages with the custom domain in `CNAME`.
 
 ## What's coming
@@ -24,6 +26,9 @@ Engineering case studies, UI/UX design work and photography from a support engin
 | `index.html` | The coming-soon page and countdown |
 | `CNAME` | Custom domain for GitHub Pages |
 | `.nojekyll` | Serves the files as they are, without Jekyll |
+| `icon.svg`, `apple-touch-icon.png` | Favicon and home-screen icon |
+| `og.png` | Share card for link previews (Open Graph and Twitter) |
+| `robots.txt`, `sitemap.xml` | Crawler rules and a one-URL sitemap |
 
 ## Connect
 
