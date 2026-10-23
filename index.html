@@ -6,11 +6,31 @@
     <title>Sri Tulasi Ram</title>
     <meta name="description" content="Engineering precision. Design intuition. See you at 11.11.">
     <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <meta name="author" content="Sri Tulasi Ram">
+    <link rel="canonical" href="https://sritulasiram.my/">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Sri Tulasi Ram">
+    <meta property="og:title" content="Sri Tulasi Ram">
+    <meta property="og:description" content="Engineering precision. Design intuition. See you at 11.11.">
+    <meta property="og:url" content="https://sritulasiram.my/">
+    <meta property="og:image" content="https://sritulasiram.my/og.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="See you at 11.11. Sri Tulasi Ram, engineering precision and design intuition.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sri Tulasi Ram">
+    <meta name="twitter:description" content="Engineering precision. Design intuition. See you at 11.11.">
+    <meta name="twitter:image" content="https://sritulasiram.my/og.png">
     <style>
         :root {
             --bg: #ffffff;
             --ink: #1d1d1f;
-            --muted: #86868b;
+            --muted: #6e6e73;
             --body: #68686d;
             --pill: #f5f5f7;
             --btn-bg: #1d1d1f;
@@ -23,7 +43,7 @@
             :root {
                 --bg: #000000;
                 --ink: #f5f5f7;
-                --muted: #6e6e73;
+                --muted: #8e8e93;
                 --body: #a1a1a6;
                 --pill: #1c1c1e;
                 --btn-bg: #f5f5f7;
@@ -98,6 +118,20 @@
         }
         .countdown b { font-weight: 500; color: var(--ink); }
 
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .countdown a { color: var(--ink); text-underline-offset: 4px; }
+        .countdown a:focus-visible { outline: 2px solid #0071e3; outline-offset: 4px; border-radius: 4px; }
+
         footer { padding: 0 24px 32px; text-align: center; }
 
         .cta-group { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; list-style: none; }
@@ -137,11 +171,12 @@
     <header><span>Sri Tulasi Ram</span></header>
 
     <main id="main-content">
-        <p class="pill rise d1">Coming soon</p>
-        <h1 class="rise d2">See you <span class="gray">at 11.11.</span></h1>
+        <p class="pill rise d1" id="pill">Coming soon</p>
+        <h1 class="rise d2" id="headline">See you <span class="gray">at 11.11.</span></h1>
         <p class="tagline rise d3">Engineering precision. Design intuition.</p>
-        <p class="countdown rise d4" id="countdown" role="timer" aria-label="Time left until 11.11">
-            <span aria-hidden="true" id="countdown-text"><b>--</b>d <b>--</b>h <b>--</b>m <b>--</b>s</span>
+        <p class="countdown rise d4" id="countdown">
+            <span class="sr-only">Launching on 11 November 2026, 12:00 am Malaysia time.</span>
+            <span aria-hidden="true" id="countdown-text"><b>11</b> November <b>2026</b></span>
         </p>
     </main>
 
@@ -157,12 +192,22 @@
         // 11 November 2026, 00:00 in Malaysia (UTC+8), wherever the visitor is.
         var LAUNCH_AT = new Date("2026-11-11T00:00:00+08:00").getTime();
         var out = document.getElementById("countdown-text");
+        var timer;
         document.getElementById("year").textContent = new Date().getFullYear();
 
         function pad(n) { return String(n).padStart(2, "0"); }
 
+        function launched() {
+            clearInterval(timer);
+            document.getElementById("pill").textContent = "Launching now";
+            document.getElementById("headline").innerHTML = 'It\u2019s <span class="gray">11.11.</span>';
+            out.removeAttribute("aria-hidden");
+            out.innerHTML = '<a href="/">Refresh to see the new site</a>';
+        }
+
         function tick() {
-            var t = Math.floor(Math.max(0, LAUNCH_AT - Date.now()) / 1000);
+            var t = Math.floor((LAUNCH_AT - Date.now()) / 1000);
+            if (t <= 0) { launched(); return; }
             var parts = [
                 [Math.floor(t / 86400), "d"],
                 [Math.floor((t % 86400) / 3600), "h"],
@@ -173,7 +218,9 @@
         }
 
         tick();
-        setInterval(tick, 1000);
+        timer = setInterval(tick, 1000);
+        // Timers are throttled in background tabs, so catch up as soon as the tab is visible again.
+        document.addEventListener("visibilitychange", function () { if (!document.hidden) tick(); });
     </script>
 </body>
 </html>
