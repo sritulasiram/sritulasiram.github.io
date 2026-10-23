@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageSocial } from "@/lib/seo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -48,6 +49,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: design.title,
     description: design.tagline,
     alternates: { canonical: `/designs/${id}` },
+    ...pageSocial({
+      title: design.title,
+      description: design.tagline,
+      path: `/designs/${id}`,
+      image: design.imageSrc,
+    }),
   };
 }
 
