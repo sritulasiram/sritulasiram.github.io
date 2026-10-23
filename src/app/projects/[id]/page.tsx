@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { projectThemeStyle } from "@/data/projectTheme";
 import Footer from "@/components/layout/Footer";
+import { FOOTER_COPY } from "@/data/footerCopy";
 import WarrantyRmaCaseStudy from "@/components/projects/case-studies/WarrantyRmaCaseStudy";
 import IotFertiliserCaseStudy from "@/components/projects/case-studies/IotFertiliserCaseStudy";
 import RaspberryPiDiagnosticCaseStudy from "@/components/projects/case-studies/RaspberryPiDiagnosticCaseStudy";
@@ -103,7 +104,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
       )}
 
       {/* Footer */}
-      <Footer />
+      <Footer {...FOOTER_COPY.projects} />
     </main>
   );
 }

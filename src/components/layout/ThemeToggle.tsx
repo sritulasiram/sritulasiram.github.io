@@ -61,7 +61,14 @@ export default function ThemeToggle({ className = "" }: { className?: string }) 
 
       const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if ("startViewTransition" in document && !prefersReduced) {
-        (document as Document & { startViewTransition: (cb: () => void) => void }).startViewTransition(applyChange);
+        const root = document.documentElement;
+        root.classList.add("theme-switching");
+        const vt = (
+          document as Document & {
+            startViewTransition: (cb: () => void) => { finished: Promise<void> };
+          }
+        ).startViewTransition(applyChange);
+        vt.finished.finally(() => root.classList.remove("theme-switching"));
       } else {
         applyChange();
       }

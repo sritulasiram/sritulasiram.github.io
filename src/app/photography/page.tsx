@@ -2,11 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, ChevronRight } from "lucide-react";
 import Footer from "@/components/layout/Footer";
+import { FOOTER_COPY } from "@/data/footerCopy";
 import SectionNav from "@/components/layout/SectionNav";
 import PhotographyIntroMorph from "@/components/photography/PhotographyIntroMorph";
 import PhotographyGallery from "@/components/photography/PhotographyGallery";
+import PhotographyHighlights from "@/components/photography/PhotographyHighlights";
 import CameraOpticsKitBento from "@/components/photography/CameraOpticsKitBento";
 import { PHOTOGRAPHY_DATA } from "@/data/content";
+import { HIGHLIGHT_PHOTOS } from "@/data/photoHighlights";
 
 export const metadata: Metadata = {
   title: "Photography",
@@ -15,20 +18,12 @@ export const metadata: Metadata = {
     "Curated photography frames by Sri Tulasi Ram. Exploring light, architecture, and street perspectives in Penang and beyond.",
 };
 
-// Lineup order, left to right (the first is also the first frame in the viewfinder).
-const INTRO_IDS = [
-  "photo-sunset",
-  "photo-fire",
-  "photo-petronas-twin-spires",
-  "photo-penang-breakwater-shore",
-  "photo-peacock",
-];
-const INTRO_PHOTOS = INTRO_IDS.map((id) => PHOTOGRAPHY_DATA.find((p) => p.id === id)).filter(
-  (p): p is (typeof PHOTOGRAPHY_DATA)[number] => Boolean(p),
-);
+// The camera takes the Highlights frames and they land on the shelf below.
+const INTRO_PHOTOS = HIGHLIGHT_PHOTOS;
 
 const PHOTO_SECTIONS = [
   { id: "overview", label: "Overview" },
+  { id: "highlights", label: "Highlights" },
   { id: "gallery", label: "Gallery" },
   { id: "shot-on-iphone", label: "Shot on iPhone" },
   { id: "origins", label: "Origins" },
@@ -60,7 +55,7 @@ export default function PhotographyPage() {
         <PhotographyIntroMorph photos={INTRO_PHOTOS} />
       </div>
 
-      <div id="overview" className="relative z-10 bg-white dark:bg-black max-w-6xl mx-auto px-6 sm:px-8 pt-24 sm:pt-28 lg:motion-safe:pt-8 pb-16 flex-1 w-full text-center">
+      <div id="overview" className="relative z-10 bg-white dark:bg-black max-w-6xl mx-auto px-6 sm:px-8 pt-24 sm:pt-28 lg:motion-safe:hidden w-full text-center">
         <div className="lg:motion-safe:hidden">
         {/* Back Link Breadcrumb */}
         <nav aria-label="Breadcrumb" className="mb-5 sm:mb-6">
@@ -117,7 +112,13 @@ export default function PhotographyPage() {
         </div>
 
         </div>
+      </div>
 
+      <div className="lg:motion-safe:hidden">
+        <PhotographyHighlights photos={HIGHLIGHT_PHOTOS} />
+      </div>
+
+      <div className="relative z-10 bg-white dark:bg-black max-w-6xl mx-auto px-6 sm:px-8 pt-16 sm:pt-24 pb-16 flex-1 w-full text-center">
         {/* Photography Grid with Album Filter Tabs & Lightbox */}
         <PhotographyGallery photos={PHOTOGRAPHY_DATA} />
 
@@ -127,7 +128,7 @@ export default function PhotographyPage() {
 
       <SectionNav sections={PHOTO_SECTIONS} ariaLabel="Photography page chapters" />
 
-      <Footer />
+      <Footer {...FOOTER_COPY.photography} />
     </main>
   );
 }

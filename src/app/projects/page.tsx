@@ -1,4 +1,5 @@
 import Footer from "@/components/layout/Footer";
+import { FOOTER_COPY } from "@/data/footerCopy";
 import SectionNav from "@/components/layout/SectionNav";
 import { ProjectsLineup, ProjectsImpact, EngineeringWorkbench } from "@/components/projects";
 
@@ -26,7 +27,7 @@ export default function ProjectsPage() {
       <EngineeringWorkbench />
 
       {/* 6. Bottom Contact Banner */}
-      <Footer />
+      <Footer {...FOOTER_COPY.projects} />
     </main>
   );
 }

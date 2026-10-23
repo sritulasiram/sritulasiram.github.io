@@ -88,8 +88,8 @@ export default function ProjectsShowcaseMorph() {
   const trackRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-  const crumbRef = useRef<HTMLElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
+  const crumbRef = useRef<HTMLElement>(null);
   const workHeaderRef = useRef<HTMLDivElement>(null);
   const deviceRefs = useRef<(HTMLDivElement | null)[]>([]);
   const tileRefs = useRef<(HTMLAnchorElement | null)[]>([]);
@@ -191,11 +191,11 @@ export default function ProjectsShowcaseMorph() {
 
       const hp = clamp(p / 0.2);
       header.style.opacity = String(1 - hp);
+      if (glowRef.current) glowRef.current.style.opacity = String(1 - hp);
       header.style.transform = `translateY(${-hp * 40}px)`;
       if (crumbRef.current) {
         crumbRef.current.style.visibility = hp >= 1 ? "hidden" : "visible";
       }
-      if (glowRef.current) glowRef.current.style.opacity = String(1 - hp);
 
       const wp = clamp((p - 0.58) / 0.22);
       workHeader.style.opacity = String(wp);
@@ -258,7 +258,7 @@ export default function ProjectsShowcaseMorph() {
         <div
           ref={glowRef}
           aria-hidden="true"
-          className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[920px] h-[480px] rounded-full bg-gradient-to-b from-[#0071E3]/12 via-[#2997FF]/6 to-transparent blur-3xl"
+          className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[920px] h-[480px] rounded-full bg-gradient-to-b from-[#1D1D1F]/8 via-[#6E6E73]/4 to-transparent dark:from-white/10 dark:via-white/5 blur-3xl"
         />
 
         {/* Headline (p = 0) */}
