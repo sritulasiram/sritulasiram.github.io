@@ -111,12 +111,6 @@ export default function DesignHeroStage() {
 
   return (
     <section data-section="overview" className="scroll-mt-20 relative pt-24 sm:pt-28 pb-10 sm:pb-14 overflow-hidden">
-      {/* Background Ambient Glow */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[680px] sm:w-[920px] h-[480px] rounded-full bg-gradient-to-b from-[#0071E3]/12 via-[#2997FF]/6 to-transparent blur-3xl -z-10"
-      />
-
       <div className="max-w-6xl mx-auto px-6 sm:px-8 text-center">
         {/* Back Link Breadcrumb matching Photography layout */}
         <nav aria-label="Breadcrumb" className="mb-5 sm:mb-6">
@@ -145,7 +139,7 @@ export default function DesignHeroStage() {
         <div className="max-w-4xl mx-auto text-center space-y-4 mb-8 sm:mb-12">
           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.03]">
             Design
-            <span className="mt-3 block text-[0.36em] font-medium leading-[1.15] tracking-apple-tight text-[#6E6E73] dark:text-[#8E8E93] text-balance">Crafted for humans</span>
+            <span className="mt-3 block text-[0.36em] font-medium leading-[1.15] tracking-apple-tight text-[#6E6E73] dark:text-[#8E8E93] text-balance">Effortlessly natural</span>
           </h1>
 
           <p className="text-lg sm:text-xl lg:text-2xl text-[#6E6E73] dark:text-[#A1A1A6] font-normal max-w-2xl mx-auto leading-relaxed tracking-apple-subhead">
@@ -153,11 +147,34 @@ export default function DesignHeroStage() {
           </p>
         </div>
 
+        {/* Phones: one featured design in place of the carousel */}
+        {(() => {
+          const featured = DESIGNS.find((d) => d.id === "sage") ?? DESIGNS[0];
+          const accent = APP_STUDIES[featured.id]?.accent?.[0] ?? "#0071E3";
+          return (
+            <div className="sm:hidden mt-8 text-left">
+              <Link href={featured.caseStudyUrl} aria-hidden="true" tabIndex={-1} className="block px-10 h-[380px] overflow-hidden">
+                <StageDevice device={featured.device} src={featured.imageSrc} />
+              </Link>
+              <div className="pt-6 space-y-1">
+                <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: accent }}>Featured · {featured.category}</p>
+                <h2 className="text-2xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight">{featured.name}</h2>
+                <p className="text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">{featured.subtitle}</p>
+                <div className="pt-3">
+                  <Button href={featured.caseStudyUrl} accent={APP_STUDIES[featured.id]?.accent} icon={<ArrowRight className="h-4 w-4" aria-hidden="true" />}>
+                    {featured.cta}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
+
         {/* Phone Fan Staging Viewport */}
         <div
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
-          className="mt-6 sm:mt-12 relative w-full max-w-5xl mx-auto h-[460px] sm:h-[540px] md:h-[600px] lg:h-[650px] flex items-center justify-center overflow-x-clip overflow-y-visible touch-pan-y"
+          className="hidden sm:flex mt-6 sm:mt-12 relative w-full max-w-5xl mx-auto h-[540px] md:h-[600px] lg:h-[650px] items-center justify-center overflow-x-clip overflow-y-visible touch-pan-y"
         >
           {DESIGNS.map((item, idx) => {
             const diff = getSlot(idx);
@@ -223,7 +240,7 @@ export default function DesignHeroStage() {
         </div>
 
         {/* Unified Side-by-Side Control Bar: Title, Dot Play Scrubber, Learn More Button */}
-        <div className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4 px-4">
+        <div className="mt-8 sm:mt-10 hidden sm:flex flex-wrap items-center justify-center gap-3 sm:gap-4 px-4">
           {/* Reduced Title Content */}
           <div className="flex items-center gap-1.5 shrink-0">
             <span className="text-sm sm:text-base font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight">

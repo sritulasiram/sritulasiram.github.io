@@ -788,19 +788,30 @@ html.dark .apple-ambient-glow {
   }
 }
 
-/* Native View Transitions (Hardware-Accelerated Apple-Grade Crossfade) */
+/* Native View Transitions: the old frame stays opaque underneath while the new one fades in,
+   so the page never dips through half-transparent. */
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation-duration: 0.3s;
-  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-timing-function: ease-out;
+  mix-blend-mode: normal;
 }
 
 ::view-transition-old(root) {
-  animation-name: appleThemeFadeOut;
+  animation: none;
+  z-index: 1;
 }
 
 ::view-transition-new(root) {
   animation-name: appleThemeFadeIn;
+  z-index: 2;
+}
+
+/* Set by ThemeToggle for the swap so per-element colour transitions don't fight the crossfade. */
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition: none !important;
 }
 
 @keyframes appleThemeFadeOut {
@@ -968,8 +979,9 @@ html.dark .project-theme {
   from { opacity: 0; transform: translateY(28px); }
   to { opacity: 1; transform: none; }
 }
+/* Starts at 0.01, not 0: the portrait is the LCP element and Chrome ignores it while fully transparent. */
 @keyframes storyPhoneIn {
-  from { opacity: 0; transform: translateY(64px) scale(0.94); }
+  from { opacity: 0.01; transform: translateY(64px) scale(0.94); }
   to { opacity: 1; transform: none; }
 }
 .story-rise { animation: storyRise 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s) both; }
@@ -1421,10 +1433,26 @@ html.dark .unlock-stmt { --g: #a1a1a6; }
 }
 
 /* The intro's stick figure: springs up from behind the word, waves, lowers its arm. */
-@keyframes stick-pop {
-  0% { transform: translateY(104%) scaleY(0.9); }
-  55% { transform: translateY(-9%) scaleY(1.05); }
-  78% { transform: translateY(2%) scaleY(0.98); }
+/* Nav: the name slides out from behind the logo. */
+@keyframes name-reveal {
+  0% { opacity: 0; transform: translateX(-1.5rem); clip-path: inset(0 100% 0 0); }
+  100% { opacity: 1; transform: none; clip-path: inset(0 0 0 0); }
+}
+
+/* The figure's head rises over the word, then it hops up onto the letters. */
+@keyframes stick-peek {
+  0% { transform: translateY(104%); }
+  100% { transform: translateY(58%); }
+}
+@keyframes stick-glance {
+  0%, 100% { transform: translateX(0); }
+  25%, 40% { transform: translateX(-2px); }
+  65%, 80% { transform: translateX(2px); }
+}
+@keyframes stick-hop {
+  0% { transform: translateY(58%) scaleY(0.92); }
+  45% { transform: translateY(-16%) scaleY(1.05); }
+  75% { transform: translateY(2%) scaleY(0.95); }
   100% { transform: translateY(0) scaleY(1); }
 }
 @keyframes stick-wave {
@@ -1450,3 +1478,25 @@ html.dark .unlock-stmt { --g: #a1a1a6; }
 
 
 
+
+@keyframes emailChipIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes emailChipOut {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.92);
+  }
+}

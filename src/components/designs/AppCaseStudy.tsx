@@ -12,6 +12,7 @@ import BreatheStatement from "@/components/designs/BreatheStatement";
 import TicketStatement from "@/components/designs/TicketStatement";
 import IphoneFrame from "@/components/mockups/IphoneFrame";
 import PhoneFlow from "@/components/designs/PhoneFlow";
+import YouTubeEmbed from "@/components/shared/YouTubeEmbed";
 import type { DesignCaseStudy, DesignItem } from "@/types";
 
 const ACCENT = "text-[var(--pa)]";
@@ -213,6 +214,25 @@ export default function AppCaseStudy({
         </Reveal>
         <PhoneFlow screens={screens} />
       </section>
+
+      {/* 4b. Videos */}
+      {design.videos && design.videos.length > 0 && (
+        <section aria-label="Videos" className="max-w-6xl mx-auto w-full px-6 sm:px-8 pb-20 sm:pb-32">
+          <Reveal>
+            <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero text-center`}>
+              See it <span className={GRAY}>in motion.</span>
+            </h2>
+          </Reveal>
+          <div className={`mt-10 sm:mt-14 grid grid-cols-1 gap-6 ${design.videos.length > 1 ? "md:grid-cols-2" : "max-w-3xl mx-auto"}`}>
+            {design.videos.map((video, i) => (
+              <Reveal key={video.id} delay={i * 120}>
+                <YouTubeEmbed id={video.id} title={video.title} />
+                <p className={`mt-4 text-sm sm:text-base ${GRAY} leading-snug`}>{video.title}</p>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* 5. Chapters */}
       <section aria-label="Design decisions" className="pb-12 sm:pb-20">

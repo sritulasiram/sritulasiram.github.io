@@ -10,7 +10,7 @@ import { WRAP } from "@/components/home/homeShared";
 const BEATS = [FixStatement, MeetSri, DesignStatement, PhotographyStatement];
 const COUNT = BEATS.length;
 /** How far you scroll, in screen heights, to move from one beat to the next. */
-const STEP_SVH = 70;
+const STEP_SVH = 45;
 
 const READ_OUT =
   "I've always felt inspired when exploring solutions. Not just fixing what's broken, but asking what else is possible. That's me, Sri. That curiosity taught me precision, because the details are what make a solution great. Then I discovered design, and it changed how I see everything. It's not enough for something to work. It has to feel natural, like home. And through photography, I explore nature's magic and freeze the moments that only happen once.";
@@ -97,7 +97,7 @@ export default function IntroScroller() {
           {BEATS.map((_, i) => (
             <span
               key={i}
-              className="w-1 rounded-full bg-[var(--pa)] transition-[height,opacity] duration-500"
+              className="w-1 rounded-full bg-[#1D1D1F] dark:bg-[#F5F5F7] transition-[height,opacity] duration-500"
               style={{ height: i === active ? 22 : 6, opacity: i === active ? 1 : 0.25 }}
             />
           ))}

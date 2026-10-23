@@ -6,20 +6,21 @@ import { GRAY, INK } from "@/components/home/homeShared";
 
 // How long after the beat scrolls in each step happens.
 const NAME_AT_MS = 500;
-const POP_AT_MS = 1000;
-const WAVE_AT_MS = 1550;
-const DETAIL_AT_MS = 3500;
+const PEEK_AT_MS = 1000;
+const HOP_AT_MS = 2100;
+const WAVE_AT_MS = 2650;
+const DETAIL_AT_MS = 4500;
 
-type Step = 0 | 1 | 2 | 3 | 4;
+type Step = 0 | 1 | 2 | 3 | 4 | 5;
 
 /**
- * "That's me, Sri." The line writes itself in, and a stick figure springs up from behind the word
- * "Sri.", waves hello to the reader, then the line about precision follows. Reduced-motion visitors get
- * everything at once, with the figure standing still.
+ * "That's me, Sri." The line writes itself in, then a stick figure peeks over the word "Sri.",
+ * glances left and right, hops up onto the letters and waves hello, before the line about
+ * precision follows. Reduced-motion visitors get everything at once, with the figure standing still.
  */
 export default function MeetSri() {
   const rootRef = useRef<HTMLDivElement>(null);
-  // 0 nothing, 1 "That's me,", 2 + "Sri.", 3 the figure pops up, 4 it waves and says hi.
+  // 0 nothing, 1 "That's me,", 2 + "Sri.", 3 the figure peeks over, 4 it hops up, 5 it waves and says hi.
   const [step, setStep] = useState<Step>(0);
   const [detail, setDetail] = useState(false);
   const [still, setStill] = useState(false);
@@ -29,7 +30,7 @@ export default function MeetSri() {
     if (!root) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setStill(true);
-      setStep(3);
+      setStep(5);
       setDetail(true);
       return;
     }
@@ -41,8 +42,9 @@ export default function MeetSri() {
         setStep(1);
         timers.push(
           setTimeout(() => setStep(2), NAME_AT_MS),
-          setTimeout(() => setStep(3), POP_AT_MS),
-          setTimeout(() => setStep(4), WAVE_AT_MS),
+          setTimeout(() => setStep(3), PEEK_AT_MS),
+          setTimeout(() => setStep(4), HOP_AT_MS),
+          setTimeout(() => setStep(5), WAVE_AT_MS),
           setTimeout(() => setDetail(true), DETAIL_AT_MS),
         );
       },
@@ -60,8 +62,14 @@ export default function MeetSri() {
     transform: on ? "none" : "translateY(0.3em)",
     transition: "opacity 500ms ease-out, transform 600ms cubic-bezier(0.16, 1, 0.3, 1)",
   });
-  const popped = step >= 3;
-  const waving = step >= 4;
+  const peeking = step === 3;
+  const hopped = step >= 4;
+  const waving = step >= 5;
+  const body = still || hopped
+    ? { transform: "none", animation: hopped && !still ? "stick-hop 650ms cubic-bezier(0.3, 0.8, 0.4, 1) both" : undefined }
+    : peeking
+      ? { transform: "translateY(58%)", animation: "stick-peek 600ms cubic-bezier(0.16, 1, 0.3, 1) both" }
+      : { transform: "translateY(104%)" };
   const stroke = "stroke-[#1D1D1F] dark:stroke-[#F5F5F7]";
 
   return (
@@ -83,8 +91,7 @@ export default function MeetSri() {
               style={{
                 transformBox: "view-box",
                 transformOrigin: "40px 84px",
-                transform: popped ? "none" : "translateY(104%)",
-                animation: popped && !still ? "stick-pop 650ms cubic-bezier(0.3, 0.8, 0.4, 1) both" : undefined,
+                ...body,
               }}
               fill="none"
               strokeWidth="4"
@@ -108,8 +115,11 @@ export default function MeetSri() {
               </g>
               {/* head */}
               <circle cx="40" cy="13" r="10" className={`${stroke} fill-white dark:fill-black`} />
-              <circle cx="36.5" cy="11.5" r="1.1" className="fill-[#1D1D1F] stroke-none dark:fill-[#F5F5F7]" />
-              <circle cx="43.5" cy="11.5" r="1.1" className="fill-[#1D1D1F] stroke-none dark:fill-[#F5F5F7]" />
+              {/* eyes glance left and right while peeking */}
+              <g style={{ animation: peeking ? "stick-glance 1000ms ease-in-out 100ms both" : undefined }}>
+                <circle cx="36.5" cy="11.5" r="1.1" className="fill-[#1D1D1F] stroke-none dark:fill-[#F5F5F7]" />
+                <circle cx="43.5" cy="11.5" r="1.1" className="fill-[#1D1D1F] stroke-none dark:fill-[#F5F5F7]" />
+              </g>
               <path d="M36 16.5 Q40 20 44 16.5" strokeWidth="2.4" className={stroke} />
             </svg>
             <span

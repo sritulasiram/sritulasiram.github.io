@@ -89,6 +89,20 @@ export const NAV_MENUS: Record<NavMenu["id"], NavMenu> = {
           { label: "Void", href: "/designs/void" },
         ],
       },
+      {
+        heading: "Design systems & code",
+        span: 4,
+        variant: "small",
+        links: [
+          { label: "Material Design 3 (Google)", href: "https://m3.material.io", external: true },
+          {
+            label: "Human Interface Guidelines (Apple)",
+            href: "https://developer.apple.com/design/human-interface-guidelines",
+            external: true,
+          },
+          { label: "Void App (GitHub)", href: "https://github.com/sritulasiram/Void-App", external: true },
+        ],
+      },
     ],
   },
 };
