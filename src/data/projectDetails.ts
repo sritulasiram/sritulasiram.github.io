@@ -160,7 +160,6 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
     timeframe: "Production Workbench Platform",
     role: "Support Engineer (Warranty & RMA)",
     organization: "Cytron Technologies",
-    githubUrl: "https://github.com/sritulasiram/RaspberryPiDiganostic",
     background: {
       problemStatement:
         "Hardware bench technicians previously had to toggle each GPIO pin HIGH and LOW manually via CLI scripts and take voltage readings pin-by-pin using a multimeter, alongside manual peripheral plug-in checks. This took 15–20 minutes per board and risked probe slips destroying silicon.",

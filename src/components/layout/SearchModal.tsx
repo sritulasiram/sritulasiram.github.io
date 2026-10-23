@@ -178,7 +178,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
               type="button"
               onClick={onClose}
               aria-label="Close search"
-              className="relative w-8 h-8 rounded-full flex items-center justify-center text-[#86868B] hover:text-[#1D1D1F] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 active:scale-95 transition-all duration-200 cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0071E3] dark:focus-visible:ring-[#2997FF] after:absolute after:-inset-1.5 after:content-['']"
+              className="relative w-8 h-8 rounded-full flex items-center justify-center text-[#86868B] hover:text-[#1D1D1F] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 active:scale-95 transition-all duration-200 cursor-pointer focus:outline-hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)] after:absolute after:-inset-1.5 after:content-['']"
             >
               <X className="w-4 h-4 stroke-[1.5]" />
             </button>

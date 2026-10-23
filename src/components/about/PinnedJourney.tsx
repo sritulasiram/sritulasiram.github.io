@@ -18,56 +18,138 @@ export interface JourneyStep {
   honors?: string[];
 }
 
-function YearCard({ steps, active, compact }: { steps: JourneyStep[]; active: number; compact?: boolean }) {
+/** A number whose digits roll to their new value instead of swapping, like an odometer. */
+function RollingYear({ value }: { value: string }) {
+  return (
+    <>
+      <span className="sr-only">{value}</span>
+      <span aria-hidden="true" className="inline-flex">
+        {value.split("").map((ch, i) => {
+          const digit = Number(ch);
+          if (Number.isNaN(digit)) return <span key={i}>{ch}</span>;
+          return (
+            <span key={i} className="inline-block h-[1em] overflow-hidden align-top">
+              <span
+                className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none"
+                style={{ transform: `translateY(${-digit}em)` }}
+              >
+                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((d) => (
+                  <span key={d} className="block h-[1em]">
+                    {d}
+                  </span>
+                ))}
+              </span>
+            </span>
+          );
+        })}
+      </span>
+    </>
+  );
+}
+
+/** Layers stacked in one cell, so a change crossfades in place and the cell keeps the widest size. */
+const STACK = "grid [&>*]:[grid-area:1/1]";
+const FADE =
+  "transition-[opacity,filter,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none";
+const fade = (on: boolean) =>
+  on ? "opacity-100 blur-0 translate-y-0" : "pointer-events-none opacity-0 blur-[6px] translate-y-1.5";
+
+function YearCard({
+  steps,
+  active,
+  year,
+  compact,
+}: {
+  steps: JourneyStep[];
+  active: number;
+  /** The year counting with the scroll; null shows the current step's own year. */
+  year: number | null;
+  compact?: boolean;
+}) {
   return (
     <div
-      className={`relative w-full overflow-hidden rounded-[28px] bg-[var(--pa-tint)] ${compact ? "h-[27svh]" : "aspect-[4/3]"}`}
+      className={`relative w-full overflow-hidden rounded-[32px] bg-[var(--pa-tint)] ${compact ? "h-[27svh] p-5 pb-7" : "aspect-[4/3] p-9 pb-11"} flex flex-col justify-between`}
     >
-      {steps.map((step, i) => (
-        <div
-          key={step.id}
-          aria-hidden={i !== active}
-          className={`absolute inset-0 flex flex-col justify-between transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
-            compact ? "p-5" : "p-8"
-          } ${i === active ? "opacity-100 translate-y-0" : "pointer-events-none opacity-0 translate-y-2"}`}
+      {/* Who: the logo tile stays put while the logos and names crossfade inside it */}
+      <div className={`flex items-center ${compact ? "gap-3" : "gap-5"}`}>
+        <span
+          className={`relative shrink-0 bg-[#ffffff] shadow-sm ring-1 ring-black/5 ${
+            compact ? "h-14 w-14 rounded-2xl" : "h-24 w-24 rounded-[26px]"
+          }`}
         >
-          <div className="flex items-center gap-3">
-            {step.logoSrc && (
-              <span
-                className={`flex items-center justify-center rounded-xl bg-[#ffffff] p-1.5 ring-1 ring-black/10 ${
-                  compact ? "h-10 w-10" : "h-12 w-12"
-                }`}
-              >
-                <Image src={step.logoSrc} alt={step.logoAlt ?? step.organization} width={36} height={36} className="h-full w-full object-contain" />
-              </span>
-            )}
-            <p className="text-sm font-semibold text-[#68686D] dark:text-[#A1A1A6] leading-snug">{step.organization}</p>
-          </div>
-          <div>
-            <p
-              className={`font-semibold leading-none tracking-apple-hero text-[var(--pa)] dark:text-white tabular-nums ${
-                compact ? "text-[clamp(48px,17cqw,72px)]" : "text-[clamp(72px,11cqw,128px)]"
+          {steps.map((step, i) =>
+            step.logoSrc ? (
+              <Image
+                key={step.id}
+                src={step.logoSrc}
+                alt={step.logoAlt ?? step.organization}
+                aria-hidden={i !== active}
+                width={96}
+                height={96}
+                className={`absolute object-contain ${
+                  compact ? "inset-2 h-[calc(100%-1rem)] w-[calc(100%-1rem)]" : "inset-3.5 h-[calc(100%-1.75rem)] w-[calc(100%-1.75rem)]"
+                } ${FADE} ${i === active ? "opacity-100 blur-0 scale-100" : "opacity-0 blur-[6px] scale-90"}`}
+              />
+            ) : null,
+          )}
+        </span>
+        <p className={`${STACK} items-center`}>
+          {steps.map((step, i) => (
+            <span
+              key={step.id}
+              aria-hidden={i !== active}
+              className={`font-semibold leading-tight text-[#1D1D1F] dark:text-[#F5F5F7] ${FADE} ${fade(i === active)} ${
+                compact ? "text-sm" : "text-xl"
               }`}
             >
-              {step.year}
-            </p>
-            <p className={`font-medium text-[#1D1D1F] dark:text-[#F5F5F7] ${compact ? "mt-2 text-sm" : "mt-3 text-base"}`}>{step.period}</p>
-          </div>
-        </div>
-      ))}
-      <ol className={`absolute flex items-center gap-2 ${compact ? "bottom-5 right-5" : "bottom-7 right-8"}`} aria-hidden="true">
+              {step.organization}
+            </span>
+          ))}
+        </p>
+      </div>
+
+      {/* When: one number that counts with the scroll, and the period crossfading under it */}
+      <div>
+        <p
+          className={`font-semibold leading-none tracking-apple-hero text-[var(--pa)] dark:text-white tabular-nums ${
+            compact ? "text-[clamp(48px,17cqw,72px)]" : "text-[clamp(72px,12cqw,136px)]"
+          }`}
+        >
+          <RollingYear value={String(year ?? steps[active]?.year ?? "")} />
+        </p>
+        <p
+          className={`${STACK} font-medium text-[#68686D] dark:text-[#A1A1A6] ${compact ? "mt-2 text-sm" : "mt-4 text-lg"}`}
+        >
+          {steps.map((step, i) => (
+            <span key={step.id} aria-hidden={i !== active} className={`${FADE} ${fade(i === active)}`}>
+              {step.period}
+            </span>
+          ))}
+        </p>
+      </div>
+
+      {/* Progress: one segment per step along the bottom edge */}
+      <ol
+        className={`absolute flex gap-1.5 ${compact ? "inset-x-5 bottom-3" : "inset-x-9 bottom-5"}`}
+        aria-hidden="true"
+      >
         {steps.map((step, i) => (
-          <li
-            key={step.id}
-            className={`h-1.5 rounded-full transition-all duration-500 motion-reduce:transition-none ${
-              i === active ? "w-6 bg-[var(--pa)]" : "w-1.5 bg-[#68686D]/40"
-            }`}
-          />
+          <li key={step.id} className="h-[3px] flex-1 overflow-hidden rounded-full bg-[#68686D]/25">
+            {/* Filled by PinnedJourney as you scroll through this step (scaleX 0 to 1) */}
+            <span
+              data-fill={i}
+              className="block h-full origin-left rounded-full bg-[var(--pa)]"
+              style={{ transform: `scaleX(${i < active ? 1 : 0})` }}
+            />
+          </li>
         ))}
       </ol>
     </div>
   );
 }
+
+/** How far through a step (its progress bar) the year waits before it starts counting to the next. */
+const COUNT_FROM = 0.7;
 
 /**
  * Signature scroll moment: a pinned card shows the year and place while the steps scroll past.
@@ -76,43 +158,86 @@ function YearCard({ steps, active, compact }: { steps: JourneyStep[]; active: nu
  */
 export default function PinnedJourney({ steps }: { steps: JourneyStep[] }) {
   const [active, setActive] = useState(0);
+  const [year, setYear] = useState<number | null>(null);
   const refs = useRef<(HTMLLIElement | null)[]>([]);
+  const rootRef = useRef<HTMLDivElement>(null);
 
+  // One reading line drives both the card and the year: the middle of the screen, lower on phones.
+  // The card switches to the next step as the progress bar fills, and the big number counts
+  // over the last stretch of the bar, so it lands on the new year as the new card appears
+  // (2017 to 2020 reads 2018, 2019 on the way). Reduced motion keeps each step's own year.
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 768px)");
-    let io: IntersectionObserver | undefined;
-    const observe = () => {
-      io?.disconnect();
-      io = new IntersectionObserver(
-        (entries) => {
-          for (const entry of entries) {
-            if (entry.isIntersecting) setActive(Number((entry.target as HTMLElement).dataset.step));
-          }
-        },
-        // Desktop: the middle of the viewport. Phones: just below the pinned card.
-        { rootMargin: mq.matches ? "-45% 0px -45% 0px" : "-52% 0px -38% 0px" },
-      );
-      refs.current.forEach((el) => el && io!.observe(el));
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const years = steps.map((step) => Number(step.year));
+    const countYears = !reduceMotion && !years.some(Number.isNaN);
+    let raf = 0;
+
+    const update = () => {
+      raf = 0;
+      const els = refs.current;
+      if (els.length < steps.length || els.some((el) => !el)) return;
+      const line = window.innerHeight * (mq.matches ? 0.5 : 0.55);
+      const rects = els.map((el) => el!.getBoundingClientRect());
+
+      // Progress bar: each segment fills as the reading line passes through its step.
+      const fills = rects.map((r) => Math.min(1, Math.max(0, (line - r.top) / r.height)));
+      rootRef.current?.querySelectorAll<HTMLElement>("[data-fill]").forEach((bar) => {
+        bar.style.transform = `scaleX(${fills[Number(bar.dataset.fill)] ?? 0})`;
+      });
+
+      // The card switches when the reading line reaches the next step's top, which is also when
+      // the current step's bar is full.
+      let current = 0;
+      for (let i = 1; i < rects.length; i++) {
+        if (line >= rects[i].top) current = i;
+      }
+      setActive(current);
+      if (!countYears) return;
+
+      // The year holds while the bar fills to COUNT_FROM, then counts on to the next step's year,
+      // arriving as the bar completes and the card switches.
+      const ease = (t: number) => t * t * (3 - 2 * t);
+      const progress = (from: number, to: number) =>
+        Math.min(1, Math.max(0, (fills[current] - from) / (to - from)));
+
+      let value = years[current];
+      if (current + 1 < rects.length) {
+        value += (years[current + 1] - years[current]) * ease(progress(COUNT_FROM, 1));
+      }
+      // An ongoing last step ("2024 — Present") keeps counting on to the current year, passing
+      // 2025 and 2026, and reaches it as its bar completes.
+      const last = rects.length - 1;
+      if (current === last && last > 0 && /present/i.test(steps[last].period)) {
+        value += (new Date().getFullYear() - years[last]) * ease(progress(COUNT_FROM, 1));
+      }
+      setYear(Math.round(value));
     };
-    observe();
-    mq.addEventListener("change", observe);
+
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     return () => {
-      mq.removeEventListener("change", observe);
-      io?.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [steps]);
 
   return (
-    <div className="md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] md:gap-12 lg:gap-16">
+    <div ref={rootRef} className="md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] md:gap-12 lg:gap-16">
       {/* Pinned year card (phones) */}
       <div className="sticky top-14 z-10 -mx-6 bg-white px-6 pb-3 pt-2 dark:bg-black md:hidden [container-type:inline-size]">
-        <YearCard steps={steps} active={active} compact />
+        <YearCard steps={steps} active={active} year={year} compact />
       </div>
 
       {/* Pinned year card (desktop) */}
       <div className="hidden md:block [container-type:inline-size]">
         <div className="sticky top-[max(72px,calc(50vh_+_26px_-_37.5cqw))]">
-          <YearCard steps={steps} active={active} />
+          <YearCard steps={steps} active={active} year={year} />
         </div>
       </div>
 
@@ -126,7 +251,7 @@ export default function PinnedJourney({ steps }: { steps: JourneyStep[] }) {
             }}
             data-step={i}
             id={`journey-step-${i}`}
-            className="scroll-mt-24 py-8 md:flex md:min-h-[60vh] md:items-center md:py-0"
+            className="scroll-mt-24 py-8 md:py-[10svh]"
           >
             <div className={`transition-opacity duration-500 motion-reduce:transition-none ${i === active ? "opacity-100" : "opacity-35"}`}>
               <h3 className="text-3xl sm:text-4xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.1]">
@@ -147,7 +272,7 @@ export default function PinnedJourney({ steps }: { steps: JourneyStep[] }) {
               )}
 
               <details className="group mt-4">
-                <summary className="inline-flex min-h-11 cursor-pointer list-none items-center gap-1 text-sm font-medium text-[var(--pa)] hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--pa)] rounded-xs [&::-webkit-details-marker]:hidden">
+                <summary className="inline-flex min-h-11 cursor-pointer list-none items-center gap-1 text-sm font-medium text-[var(--pa)] hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)] rounded-xs [&::-webkit-details-marker]:hidden">
                   <span className="group-open:hidden">More about this</span>
                   <span className="hidden group-open:inline">Show less</span>
                   <ArrowRight className="h-4 w-4 transition-transform group-open:rotate-90" aria-hidden="true" />

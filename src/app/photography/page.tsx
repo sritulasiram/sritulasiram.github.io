@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, ArrowUpRight, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronRight } from "lucide-react";
+import Button from "@/components/ui/Button";
+import InstagramIcon from "@/components/photography/InstagramIcon";
 import Footer from "@/components/layout/Footer";
 import { FOOTER_COPY } from "@/data/footerCopy";
 import SectionNav from "@/components/layout/SectionNav";
@@ -28,24 +30,6 @@ const PHOTO_SECTIONS = [
   { id: "shot-on-iphone", label: "Shot on iPhone" },
   { id: "origins", label: "Origins" },
 ];
-
-function InstagramIcon({ className = "w-4 h-4" }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.75"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-    </svg>
-  );
-}
 
 export default function PhotographyPage() {
   return (
@@ -86,28 +70,19 @@ export default function PhotographyPage() {
             Photography
             <span className="mt-3 block text-[0.36em] font-medium leading-[1.15] tracking-apple-tight text-[#6E6E73] dark:text-[#8E8E93] text-balance">Perspective and light</span>
           </h1>
-          <p className="text-lg sm:text-xl lg:text-2xl text-[#6E6E73] dark:text-[#A1A1A6] font-normal max-w-2xl mx-auto leading-relaxed tracking-apple-subhead">
-            Curated frames capturing coastal atmosphere, architectural geometry, and fleeting moments.
-          </p>
-
-          <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
-            <a
+          <div className="pt-3 flex flex-col items-center justify-center gap-1 sm:flex-row sm:gap-3">
+            <Button
+              variant="secondary"
               href="https://instagram.com/iamsritulasiram"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 min-h-[44px] rounded-full text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] bg-[#F5F5F7] dark:bg-[#1C1C1E] hover:bg-[#E5E5EA] dark:hover:bg-[#2C2C2E] border border-[#E5E5EA] dark:border-[#2C2C2E] transition-colors shadow-2xs"
+              icon={<InstagramIcon className="h-4 w-4" />}
+              iconBefore
+              className="border-black bg-black text-white hover:bg-[#1D1D1F] dark:border-white dark:bg-white dark:text-black dark:hover:bg-[#E8E8ED]"
             >
-              <InstagramIcon className="w-4 h-4 text-[#6E6E73] dark:text-[#8E8E93]" />
-              <span>Follow @iamsritulasiram</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </a>
-            <a
-              href="#shot-on-iphone"
-              className="inline-flex items-center gap-1 px-4 py-2.5 min-h-[44px] rounded-full text-xs font-medium text-[#6E6E73] dark:text-[#A1A1A6] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] hover:bg-[#F5F5F7] dark:hover:bg-[#1C1C1E] transition-colors"
-            >
-              <span>Shot on iPhone 16 Pro</span>
-              <ChevronRight className="w-3.5 h-3.5" />
-            </a>
+              iamsritulasiram
+            </Button>
+            <Button variant="link" href="#shot-on-iphone" className="text-[#1D1D1F]! dark:text-[#F5F5F7]!">
+              Shot on iPhone 16 Pro
+            </Button>
           </div>
         </div>
 

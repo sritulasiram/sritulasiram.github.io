@@ -291,15 +291,9 @@ export default function ProjectsShowcaseMorph() {
           <div className="max-w-4xl mx-auto space-y-3">
             <h1 className="text-5xl lg:text-6xl xl:text-7xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.03]">
               Projects
-              <br />
-              <span className="block mt-1 text-3xl lg:text-4xl xl:text-5xl text-[#6E6E73] dark:text-[#8E8E93] font-medium">
-                Hardware, software and the space between.
-              </span>
             </h1>
-            <p className="text-lg xl:text-xl text-[#6E6E73] dark:text-[#A1A1A6] max-w-2xl mx-auto leading-relaxed tracking-apple-subhead">
-              Hardware and software engineered as one.
-              <br />
-              From low-level silicon to production platforms.
+            <p className="text-2xl xl:text-3xl font-medium text-[#6E6E73] dark:text-[#A1A1A6] max-w-2xl mx-auto leading-snug tracking-apple-tight text-balance">
+              Hardware and software, engineered as one.
             </p>
           </div>
         </div>
@@ -328,7 +322,7 @@ export default function ProjectsShowcaseMorph() {
             }}
             href={project.caseStudyUrl}
             aria-label={`${project.name}: ${project.subtitle}`}
-            className="group absolute z-[5] block rounded-3xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0071E3]"
+            className="group absolute z-[5] block rounded-3xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus-ring)]"
             style={{ visibility: "hidden", pointerEvents: "none" }}
           >
             <div

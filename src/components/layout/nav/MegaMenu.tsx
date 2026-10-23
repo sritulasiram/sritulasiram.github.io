@@ -14,9 +14,9 @@ const STAGGER = [
 const HEADING =
   "text-[11px] font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#8E8E93] apple-stagger-1";
 const PRIMARY =
-  "block font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] hover:text-black dark:hover:text-white hover:bg-[#F5F5F7] dark:hover:bg-[#1C1C1E] px-2.5 -mx-2.5 py-1 rounded-xl transition-all duration-150 tracking-apple-tight hover:translate-x-0.5 motion-reduce:hover:translate-x-0 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0071E3] dark:focus-visible:ring-[#2997FF]";
+  "block font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] hover:text-black dark:hover:text-white hover:bg-[#F5F5F7] dark:hover:bg-[#1C1C1E] px-2.5 -mx-2.5 py-1 rounded-xl transition-all duration-150 tracking-apple-tight hover:translate-x-0.5 motion-reduce:hover:translate-x-0 focus:outline-hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]";
 const SMALL =
-  "block text-xs text-[#6E6E73] dark:text-[#A1A1A6] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] hover:bg-[#F5F5F7] dark:hover:bg-[#1C1C1E] px-2.5 py-1 rounded-lg transition-all duration-150 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0071E3] dark:focus-visible:ring-[#2997FF]";
+  "block text-xs text-[#6E6E73] dark:text-[#A1A1A6] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] hover:bg-[#F5F5F7] dark:hover:bg-[#1C1C1E] px-2.5 py-1 rounded-lg transition-all duration-150 focus:outline-hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]";
 
 function MegaLink({
   link,

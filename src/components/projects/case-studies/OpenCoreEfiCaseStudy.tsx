@@ -1,10 +1,10 @@
 import BootLogStatement from "@/components/projects/BootLogStatement";
 import { LINK, PILL } from "@/components/ui/Button";
 import Image from "next/image";
-import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
 import CaseStudyBreadcrumb from "@/components/shared/CaseStudyBreadcrumb";
 import CountUp from "@/components/shared/CountUp";
+import ExploreMore from "@/components/shared/ExploreMore";
 import Reveal from "@/components/shared/Reveal";
 import { MacbookPro } from "@/components/mockups/MacbookPro";
 import { PROJECTS_DATA } from "@/data/content";
@@ -168,8 +168,8 @@ export default function OpenCoreEfiCaseStudy({ project }: Props) {
   return (
     <div className="project-theme selection:bg-indigo-500/20" style={projectThemeStyle(project.id)}>
       {/* 1. Hero */}
-      <section className="bg-[var(--pa-tint)] overflow-hidden">
-        <div className={`${WRAP} pt-24 sm:pt-28 text-center`}>
+      <section className="hero-glow hero-glow-opencore overflow-hidden">
+        <div className={`${WRAP} pt-10 sm:pt-14 text-center`}>
           <div className="flex justify-center">
             <CaseStudyBreadcrumb title="OpenCore EFI Hackintosh" />
           </div>
@@ -277,7 +277,7 @@ export default function OpenCoreEfiCaseStudy({ project }: Props) {
       </section>
 
       {/* 4. The config */}
-      <section id="config" aria-label="The configuration" className="scroll-mt-20 py-16 sm:py-24 bg-[var(--pa-tint)]">
+      <section id="config" aria-label="The configuration" className="scroll-mt-20 py-16 sm:py-24">
         <div className="max-w-6xl mx-auto w-full px-6 sm:px-8">
           <Reveal>
             <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero text-center`}>See what’s inside.</h2>
@@ -350,23 +350,8 @@ export default function OpenCoreEfiCaseStudy({ project }: Props) {
         </div>
       </section>
 
-      {/* 7. Next project */}
-      {rog && (
-        <section aria-label="Next project" className={`${WRAP} pb-20 sm:pb-28`}>
-          <Link
-            href={`/projects/${rog.id}`}
-            className="group block rounded-[28px] bg-[var(--pa-tint)] p-8 sm:p-12 transition-transform duration-300 hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--pa)]"
-          >
-            <p className="text-sm font-semibold text-[var(--pa)]">The companion app</p>
-            <h2 className={`mt-2 text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero leading-[1.08]`}>{rog.title}</h2>
-            <p className={`mt-3 max-w-2xl text-lg ${GRAY} leading-relaxed`}>{rog.subtitle}</p>
-            <span className="mt-8 inline-flex items-center gap-1 text-[17px] text-[var(--pa)] group-hover:underline">
-              Explore the case study
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
-            </span>
-          </Link>
-        </section>
-      )}
+      {/* 7. Keep exploring */}
+      {rog && <ExploreMore projectId={project.id} nextProject={rog} nextKicker="The companion app" />}
     </div>
   );
 }

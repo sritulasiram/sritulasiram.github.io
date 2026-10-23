@@ -29,7 +29,7 @@ export default function DesignSpecimenToggle<T extends string | number | boolean
             type="button"
             onClick={() => onChange(option.value)}
             aria-pressed={selected}
-            className={`px-3 py-1.5 rounded-full whitespace-nowrap text-xs font-medium transition-all duration-200 min-h-[38px] sm:min-h-[32px] cursor-pointer focus-visible:outline-2 focus-visible:outline-[#0071E3] ${
+            className={`px-3 py-1.5 rounded-full whitespace-nowrap text-xs font-medium transition-all duration-200 min-h-[38px] sm:min-h-[32px] cursor-pointer focus-visible:outline-2 focus-visible:outline-[var(--focus-ring)] ${
               selected
                 ? "bg-white dark:bg-[#2C2C2E] text-[#1D1D1F] dark:text-white shadow-xs"
                 : "text-[#6E6E73] dark:text-[#A1A1A6] hover:text-[#1D1D1F] dark:hover:text-white"

@@ -55,7 +55,6 @@ const ORIGINS = [
       "Where mobile framing first took root. The curved edge screen carried camera settings beside the viewfinder, opening the door to spontaneous handheld street perspectives.",
     image: "/images/devices/samsung-note-edge.png",
     alt: "Samsung Galaxy Note Edge with S-Pen",
-    width: "w-44",
   },
   {
     year: "2017",
@@ -66,7 +65,6 @@ const ORIGINS = [
       "The first dual-camera leap, with dedicated 2x telephoto optics. It built the foundation for focal compression, subject isolation and architectural symmetry.",
     image: "/images/devices/samsung-note-8.png",
     alt: "Samsung Galaxy Note 8 with S-Pen",
-    width: "w-40",
   },
   {
     year: "2020",
@@ -77,7 +75,6 @@ const ORIGINS = [
       "A 108MP sensor with 5x folded telephoto reach. Where I learned manual exposure control, low-light RAW capture and isolating distant wildlife.",
     image: "/images/devices/samsung-note-20-ultra.png",
     alt: "Samsung Galaxy Note 20 Ultra Mystic Bronze with S-Pen",
-    width: "w-52",
   },
 ];
 
@@ -177,39 +174,39 @@ export default function CameraOpticsKitBento() {
         </ul>
       </div>
 
-      {/* Origins */}
+      {/* Origins: the three Galaxy Note phones, side by side like Apple's compare view */}
       <div id="origins" className="scroll-mt-24 mt-24 sm:mt-32">
         <Reveal>
           <h2 className="max-w-3xl text-3xl font-semibold leading-[1.05] tracking-apple-tight text-balance sm:text-5xl">
             <span className={INK}>Where it started.</span>{" "}
             <span className="text-[#6E6E73] dark:text-[#A1A1A6]">
-              Years of handheld instincts, forged on Samsung&rsquo;s Galaxy Note series.
+              Three Galaxy Notes. One way of seeing.
             </span>
           </h2>
         </Reveal>
 
-        <ol className="mt-12 grid grid-cols-1 gap-4 sm:mt-16 md:grid-cols-3 md:gap-6">
+        <ol className="-mx-6 mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 no-scrollbar sm:-mx-8 sm:mt-16 sm:px-8 md:mx-0 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:px-0 md:pb-0">
           {ORIGINS.map((device, i) => (
-            <li key={device.name}>
+            <li key={device.name} className="w-[82%] shrink-0 snap-center sm:w-[60%] md:w-auto">
               <Reveal delay={i * 100} className="h-full">
-                <div className={`${TILE} group flex h-full flex-col p-8`}>
-                  <p className="text-5xl font-semibold tabular-nums tracking-apple-hero text-[#86868B] dark:text-[#6E6E73] sm:text-6xl">
-                    {device.year}
-                  </p>
-                  <div className="relative my-8 flex h-64 items-center justify-center">
-                    <div
-                      className={`relative h-full ${device.width} transition-transform duration-500 ease-out drop-shadow-[0_20px_30px_rgba(0,0,0,0.18)] group-hover:-translate-y-2 dark:drop-shadow-none`}
-                    >
-                      <Image src={device.image} alt={device.alt} fill sizes="220px" className="object-contain" />
-                    </div>
+                <article className={`${TILE} group flex h-full flex-col overflow-hidden px-7 pt-8 pb-9`}>
+                  <p className="text-sm font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#8E8E93]">{device.tag}</p>
+                  <p className={`mt-1 text-6xl font-semibold tabular-nums leading-none tracking-apple-hero ${INK}`}>{device.year}</p>
+
+                  <div className="relative mx-auto my-8 h-72 w-full">
+                    <Image
+                      src={device.image}
+                      alt={device.alt}
+                      fill
+                      sizes="(max-width: 768px) 70vw, 300px"
+                      className="object-contain drop-shadow-[0_24px_32px_rgba(0,0,0,0.18)] transition-transform duration-500 ease-out motion-safe:group-hover:-translate-y-2 dark:drop-shadow-none"
+                    />
                   </div>
-                  <p className="text-xs font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#8E8E93]">
-                    {device.tag}
-                  </p>
-                  <h3 className={`mt-2 text-2xl font-semibold tracking-apple-tight ${INK}`}>{device.name}</h3>
+
+                  <h3 className={`text-2xl font-semibold tracking-apple-tight ${INK}`}>{device.name}</h3>
                   <p className={`mt-1 text-sm font-medium ${GRAY}`}>{device.spec}</p>
-                  <p className={`mt-4 text-[15px] leading-relaxed ${GRAY}`}>{device.story}</p>
-                </div>
+                  <p className={`mt-5 text-[15px] leading-relaxed ${GRAY}`}>{device.story}</p>
+                </article>
               </Reveal>
             </li>
           ))}

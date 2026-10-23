@@ -26,7 +26,7 @@ export default function YouTubeEmbed({ id, title }: { id: string; title: string 
           type="button"
           onClick={() => setPlaying(true)}
           aria-label={`Play video: ${title}`}
-          className="group absolute inset-0 cursor-pointer focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-[var(--pa)]"
+          className="group absolute inset-0 cursor-pointer focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-[var(--focus-ring)]"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img

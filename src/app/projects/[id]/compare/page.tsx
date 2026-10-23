@@ -7,19 +7,20 @@ import ProjectLocalNav from "@/components/projects/ProjectLocalNav";
 import ProjectCompare from "@/components/projects/ProjectCompare";
 import { PROJECT_DETAILS } from "@/data/projectDetails";
 import { PROJECT_SPECS, SHOWCASE_PROJECT_IDS } from "@/data/projectSpecs";
+import { hasCompare } from "@/data/projectCompare";
 
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
 export async function generateStaticParams() {
-  return SHOWCASE_PROJECT_IDS.map((id) => ({ id }));
+  return SHOWCASE_PROJECT_IDS.filter(hasCompare).map((id) => ({ id }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
   const project = PROJECT_DETAILS[id];
-  if (!project || !PROJECT_SPECS[id]) return { title: "Project Not Found" };
+  if (!project || !PROJECT_SPECS[id] || !hasCompare(id)) return { title: "Project Not Found" };
 
   return {
     title: project.title,
@@ -31,7 +32,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function ProjectComparePage({ params }: PageProps) {
   const { id } = await params;
   const project = PROJECT_DETAILS[id];
-  if (!project || !PROJECT_SPECS[id]) notFound();
+  if (!project || !PROJECT_SPECS[id] || !hasCompare(id)) notFound();
 
   return (
     <main id="main-content" tabIndex={-1} style={projectThemeStyle(id)} className="project-theme min-h-screen bg-white dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300 flex flex-col pt-12 selection:bg-[#0071E3]/15 selection:text-[#1D1D1F] dark:selection:text-[#F5F5F7]">

@@ -359,16 +359,6 @@ export const SEARCH_ITEMS: SearchItem[] = [
     tags: ["gallery", "photos", "albums", "frames", "grid"],
     iconType: "photo",
   },
-  {
-    id: "photo-origins",
-    title: "Camera Origins",
-    subtitle: "Samsung Galaxy Note heritage",
-    description: "Where the photography started: Galaxy Note Edge, Note 8 and Note 20 Ultra.",
-    category: "Photography",
-    url: "/photography#origins",
-    tags: ["samsung", "galaxy", "note", "heritage", "history", "origins", "camera", "edge"],
-    iconType: "photo",
-  },
 ];
 
 // Curated Quick Links matching Apple.com
@@ -451,6 +441,16 @@ export const QUICK_LINKS: SearchItem[] = [
     category: "Photography",
     url: "/photography",
     tags: ["photography", "photos", "gallery", "coastal", "penang"],
+    iconType: "photo",
+  },
+  {
+    id: "photo-origins",
+    title: "Camera Origins",
+    subtitle: "Samsung Galaxy Note heritage",
+    description: "Where the photography started: Galaxy Note Edge, Note 8 and Note 20 Ultra.",
+    category: "Photography",
+    url: "/photography#origins",
+    tags: ["samsung", "galaxy", "note", "heritage", "history", "origins", "camera", "edge"],
     iconType: "photo",
   },
 ];

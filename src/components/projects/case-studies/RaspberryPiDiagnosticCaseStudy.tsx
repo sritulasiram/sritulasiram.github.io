@@ -221,11 +221,11 @@ export default function RaspberryPiDiagnosticCaseStudy({ project, nextProject }:
   return (
     <div className="selection:bg-rose-500/20">
       {/* 1. Hero */}
-      <section className="bg-[var(--pa-tint)] overflow-hidden">
+      <section className="hero-glow hero-glow-pi overflow-hidden">
         <div className={`${WRAP} pt-14 sm:pt-20 text-center`}>
           <p className={`text-xl sm:text-2xl font-semibold ${INK} tracking-apple-tight`}>{project.title}</p>
           <h1 className={`mt-2 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold ${INK} tracking-apple-hero leading-[1.03]`}>
-            Every board. <span className="whitespace-nowrap">19 checks.</span>
+            Every board. <span className="whitespace-nowrap text-[var(--pa)]">19 checks.</span>
           </h1>
           <p className={`mt-5 mx-auto max-w-2xl text-lg sm:text-xl ${GRAY} leading-relaxed tracking-apple-subhead`}>
             {project.tagline}
@@ -255,7 +255,7 @@ export default function RaspberryPiDiagnosticCaseStudy({ project, nextProject }:
       {/* 3. Chapters: each challenge paired with its fix */}
       <section aria-label="How it solves it" className="pb-12 sm:pb-20">
         {CHAPTERS.map((chapter, i) => (
-          <div key={chapter.headline} className={`${WRAP} py-14 sm:py-24`}>
+          <div key={chapter.headline} className={`${WRAP} py-14 sm:py-16`}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
               <Reveal className={i % 2 ? "md:order-2" : ""}>
                 <h2 className="text-3xl sm:text-5xl font-semibold tracking-apple-hero leading-[1.08]">
@@ -284,7 +284,7 @@ export default function RaspberryPiDiagnosticCaseStudy({ project, nextProject }:
       </section>
 
       {/* 5. Supported boards */}
-      <section aria-label="Supported boards" className="py-16 sm:py-24 bg-[var(--pa-tint)]">
+      <section aria-label="Supported boards" className="py-16 sm:py-24">
         <div className={WRAP}>
           <Reveal>
             <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero`}>Works with the whole fleet.</h2>

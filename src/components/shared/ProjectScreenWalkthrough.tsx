@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import ImageLightbox from "@/components/shared/ImageLightbox";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { ProjectScreen } from "@/types";
 
@@ -31,7 +32,8 @@ export default function ProjectScreenWalkthrough({
   const trackRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
-  const [selectedImage, setSelectedImage] = useState<ProjectScreen | null>(null);
+  // Index of the screen open in the viewer, or null when closed.
+  const [selectedAt, setSelectedAt] = useState<number | null>(null);
 
   const updateScrollButtons = useCallback(() => {
     if (!trackRef.current) return;
@@ -126,7 +128,7 @@ export default function ProjectScreenWalkthrough({
           >
             {/* Top: Clean Single Rounded Screenshot Card (Edge-to-Edge 16:9) */}
             <div
-              onClick={() => setSelectedImage(screen)}
+              onClick={() => setSelectedAt(idx)}
               className="relative w-full aspect-[16/9] rounded-2xl sm:rounded-3xl overflow-hidden border border-[#E5E5EA] dark:border-white/10 shadow-xs hover:shadow-md transition-all duration-300 bg-[#F5F5F7] dark:bg-[#161617] cursor-pointer"
             >
               <Image
@@ -149,47 +151,22 @@ export default function ProjectScreenWalkthrough({
         ))}
       </div>
 
-      {/* 3. Fullscreen Inspection Modal */}
-      {selectedImage && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          onClick={() => setSelectedImage(null)}
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-in fade-in duration-200 cursor-zoom-out"
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="relative max-w-5xl w-full bg-neutral-900 rounded-2xl sm:rounded-3xl overflow-hidden border border-white/15 shadow-2xl flex flex-col cursor-default"
-          >
-            {/* Modal Header Bar */}
-            <div className="flex items-center justify-between px-5 py-3.5 bg-neutral-950/80 border-b border-white/10 text-white">
-              <div className="space-y-0.5">
-                <p className="text-sm font-semibold">{selectedImage.title}</p>
-                <p className="text-xs text-neutral-400">{selectedImage.description}</p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setSelectedImage(null)}
-                aria-label="Close preview"
-                className="w-8 h-8 rounded-full bg-neutral-800 hover:bg-neutral-700 flex items-center justify-center text-white text-xs font-semibold cursor-pointer"
-              >
-                ✕
-              </button>
-            </div>
-
-            {/* Modal Image Viewport */}
-            <div className="relative w-full aspect-[16/9] max-h-[75vh] bg-black">
-              <Image
-                src={selectedImage.imageSrc}
-                alt={selectedImage.title}
-                fill
-                sizes="100vw"
-                className="object-contain"
-                priority
-              />
-            </div>
-          </div>
-        </div>
+      {/* 3. Full-size viewer */}
+      {selectedAt !== null && (
+        <ImageLightbox
+          src={screens[selectedAt].imageSrc}
+          alt={screens[selectedAt].title}
+          onClose={() => setSelectedAt(null)}
+          index={selectedAt}
+          count={screens.length}
+          onPrev={() => setSelectedAt((selectedAt - 1 + screens.length) % screens.length)}
+          onNext={() => setSelectedAt((selectedAt + 1) % screens.length)}
+          caption={
+            <p className="text-sm leading-relaxed text-white/70 sm:text-base">
+              <span className="font-semibold text-white">{screens[selectedAt].title}</span> {screens[selectedAt].description}
+            </p>
+          }
+        />
       )}
     </section>
   );

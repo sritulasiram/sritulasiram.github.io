@@ -5,7 +5,7 @@ import { NAV_DIRECT_LINKS, NAV_MENUS, isActivePath, type NavLink } from "./navDa
 
 const TOP_LEVEL = "text-[26px] sm:text-[28px] font-semibold tracking-apple-tight transition-colors";
 const RING =
-  "focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0071E3] dark:focus-visible:ring-[#2997FF]";
+  "focus:outline-hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]";
 
 interface MobileMenuProps {
   open: boolean;

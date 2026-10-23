@@ -216,13 +216,10 @@ export default function ProjectsHeroStage() {
         <div className="relative z-20 max-w-4xl mx-auto text-center space-y-2.5 sm:space-y-3 mb-8 sm:mb-10">
           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.03]">
             Projects
-            <span className="mt-3 block text-[0.36em] font-medium leading-[1.15] tracking-apple-tight text-[#6E6E73] dark:text-[#8E8E93] text-balance">Hardware, software and the space between.</span>
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-[#6E6E73] dark:text-[#A1A1A6] font-normal max-w-2xl mx-auto leading-relaxed tracking-apple-subhead">
-            Hardware and software engineered as one.
-            <br />
-            From low-level silicon to production platforms.
+          <p className="text-xl sm:text-2xl md:text-3xl font-medium text-[#6E6E73] dark:text-[#A1A1A6] max-w-2xl mx-auto leading-snug tracking-apple-tight text-balance">
+            Hardware and software, engineered as one.
           </p>
         </div>
 
@@ -237,7 +234,7 @@ export default function ProjectsHeroStage() {
             </p>
             <h2 className="text-2xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight">{STAGE_PROJECTS[0].name}</h2>
             <p className="text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">{STAGE_PROJECTS[0].subtitle}</p>
-            <div className="pt-3">
+            <div className="pt-3 flex justify-center">
               <Button
                 href={STAGE_PROJECTS[0].caseStudyUrl}
                 accent={PROJECT_ACCENTS[STAGE_PROJECTS[0].id]}
@@ -282,7 +279,7 @@ export default function ProjectsHeroStage() {
                 className={cn(
                   "stage-slide absolute inset-0 origin-center transition-all duration-[450ms] ease-[cubic-bezier(0.16,1,0.3,1)] select-none",
                   slot.opacityClass,
-                  !slot.isCenter ? "cursor-pointer hover:brightness-95 focus-visible:outline-2 focus-visible:outline-[#0071E3] rounded-3xl" : "cursor-default",
+                  !slot.isCenter ? "cursor-pointer hover:brightness-95 focus-visible:outline-2 focus-visible:outline-[var(--focus-ring)] rounded-3xl" : "cursor-default",
                 )}
                 style={{
                   transform: `translateX(${slot.xPercent}%) scale(${slot.scale})`,

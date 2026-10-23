@@ -24,7 +24,7 @@ export default function CopyCitation({ text }: { text: string }) {
         <button
           type="button"
           onClick={copy}
-          className="inline-flex min-h-9 items-center gap-1.5 rounded-full bg-[#F5F5F7] dark:bg-[#323236] px-3.5 text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors hover:bg-[#E8E8ED] dark:hover:bg-[#3A3A3E] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--pa)]"
+          className="inline-flex min-h-9 items-center gap-1.5 rounded-full bg-[#F5F5F7] dark:bg-[#323236] px-3.5 text-xs font-medium text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors hover:bg-[#E8E8ED] dark:hover:bg-[#3A3A3E] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
         >
           {copied ? <Check className="h-3.5 w-3.5 text-[var(--pa)]" aria-hidden="true" /> : <Copy className="h-3.5 w-3.5" aria-hidden="true" />}
           <span aria-live="polite">{copied ? "Copied" : "Copy"}</span>

@@ -1,12 +1,13 @@
 import { LINK, PILL } from "@/components/ui/Button";
 import UnlockStatement from "@/components/projects/UnlockStatement";
 import Image from "next/image";
-import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import CaseStudyBreadcrumb from "@/components/shared/CaseStudyBreadcrumb";
 import CountUp from "@/components/shared/CountUp";
+import ExploreMore from "@/components/shared/ExploreMore";
 import Reveal from "@/components/shared/Reveal";
-import WindowScreenViewer, { type WindowScreen } from "@/components/projects/WindowScreenViewer";
+import PinnedScreens from "@/components/shared/PinnedScreens";
+import type { ViewerScreen } from "@/components/shared/ScreenViewer";
 import { PROJECTS_DATA } from "@/data/content";
 import { projectThemeStyle } from "@/data/projectTheme";
 import type { CaseStudy } from "@/types";
@@ -141,7 +142,7 @@ const CHAPTERS: { problem: string; headline: string; body: string; visual: React
   },
 ];
 
-const SCREENS: WindowScreen[] = [
+const SCREENS: ViewerScreen[] = [
   {
     id: "dashboard",
     label: "Dashboard",
@@ -150,8 +151,6 @@ const SCREENS: WindowScreen[] = [
       "System and battery details, live CPU and memory load, die temperature with thermal headroom, fan speed, and quick controls for backlight, lighting and display profile.",
     src: "/images/projects/rog-gaming-center/app.png",
     alt: "The Dashboard tab: system architecture and battery, CPU and RAM load, silicon thermal engine and hardware quick controls.",
-    width: 1390,
-    height: 784,
   },
   {
     id: "aura-core",
@@ -161,8 +160,6 @@ const SCREENS: WindowScreen[] = [
       "A live keyboard preview, five effects (Static, Breathing, Color Cycle, Rainbow and Strobing), brightness and tempo, then one button to send it to the keyboard.",
     src: "/images/projects/rog-gaming-center/aura-core.png",
     alt: "The Aura Core tab: a colourful keyboard preview, five lighting effect tiles, brightness and tempo controls and an Apply to Keyboard button.",
-    width: 1390,
-    height: 784,
   },
   {
     id: "gamevisual",
@@ -172,8 +169,6 @@ const SCREENS: WindowScreen[] = [
       "Display profiles from Default Standard to FPS Mode and RTS / RPG, each with its own colour strip, plus a live preview with a baseline switch to compare.",
     src: "/images/projects/rog-gaming-center/gamevisual.png",
     alt: "The GameVisual tab: six display colour calibration profiles and a real-time visual simulation with a baseline toggle.",
-    width: 1390,
-    height: 784,
   },
   {
     id: "settings",
@@ -183,8 +178,6 @@ const SCREENS: WindowScreen[] = [
       "Open at login, stay in the menu bar, pick the startup lighting, choose what the ROG key does, set a battery charge limit and look up the Fn key shortcuts.",
     src: "/images/projects/rog-gaming-center/settings.png",
     alt: "The Settings tab: system integration, lighting and controller behaviour, battery health and a function key reference.",
-    width: 1390,
-    height: 784,
   },
 ];
 
@@ -198,8 +191,8 @@ export default function RogGamingCenterCaseStudy({ project }: Props) {
   return (
     <div className="project-theme selection:bg-red-500/20" style={projectThemeStyle(project.id)}>
       {/* 1. Hero */}
-      <section className="bg-[var(--pa-tint)] overflow-hidden">
-        <div className={`${WRAP} pt-24 sm:pt-28 text-center`}>
+      <section className="hero-glow hero-glow-rog overflow-hidden">
+        <div className={`${WRAP} pt-10 sm:pt-14 text-center`}>
           <div className="flex justify-center">
             <CaseStudyBreadcrumb title="ROG Gaming Center" />
           </div>
@@ -278,12 +271,12 @@ export default function RogGamingCenterCaseStudy({ project }: Props) {
       </section>
 
       {/* 4. Every screen */}
-      <section id="screens" aria-label="Every screen" className="scroll-mt-20 py-16 sm:py-24 bg-[var(--pa-tint)]">
+      <section id="screens" aria-label="Every screen" className="scroll-mt-20 py-16 sm:py-24">
         <div className="max-w-6xl mx-auto w-full px-6 sm:px-8">
           <Reveal>
             <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero text-center`}>See every screen.</h2>
-            <p className={`mt-3 mb-10 text-lg ${GRAY} text-center`}>Four tabs, one native app. Pick one to look closer.</p>
-            <WindowScreenViewer screens={SCREENS} label="App screens" />
+            <p className={`mt-3 mb-10 text-lg ${GRAY} text-center`}>Four tabs, one native app. Scroll to see each one.</p>
+            <PinnedScreens screens={SCREENS} fitWidth />
           </Reveal>
         </div>
       </section>
@@ -364,23 +357,8 @@ export default function RogGamingCenterCaseStudy({ project }: Props) {
         </div>
       </section>
 
-      {/* 7. Next project */}
-      {next && (
-        <section aria-label="Next project" className={`${WRAP} pb-20 sm:pb-28`}>
-          <Link
-            href={`/projects/${next.id}`}
-            className="group block rounded-[28px] bg-[var(--pa-tint)] p-8 sm:p-12 transition-transform duration-300 hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--pa)]"
-          >
-            <p className="text-sm font-semibold text-[var(--pa)]">The firmware behind it</p>
-            <h2 className={`mt-2 text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero leading-[1.08]`}>{next.title}</h2>
-            <p className={`mt-3 max-w-2xl text-lg ${GRAY} leading-relaxed`}>{next.subtitle}</p>
-            <span className="mt-8 inline-flex items-center gap-1 text-[17px] text-[var(--pa)] group-hover:underline">
-              Explore the case study
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
-            </span>
-          </Link>
-        </section>
-      )}
+      {/* 7. Keep exploring */}
+      {next && <ExploreMore projectId={project.id} nextProject={next} nextKicker="The firmware behind it" />}
     </div>
   );
 }

@@ -27,7 +27,7 @@ export default function BeforeAfter({
       className={`min-h-9 rounded-full px-4 text-sm font-medium transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 ${
         view === id
           ? "bg-[var(--pa)] text-white dark:text-[#0B0B0C] focus-visible:outline-[#1D1D1F] dark:focus-visible:outline-white"
-          : "text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-black/[0.06] dark:hover:bg-white/10 focus-visible:outline-[var(--pa)]"
+          : "text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-black/[0.06] dark:hover:bg-white/10 focus-visible:outline-[var(--focus-ring)]"
       }`}
     >
       {label}

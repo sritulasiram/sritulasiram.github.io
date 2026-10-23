@@ -31,14 +31,14 @@ const COLUMNS: Column[] = [
 ];
 
 const LINK =
-  "text-[#424245] dark:text-[#A1A1A6] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] hover:underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0071E3] dark:focus-visible:outline-[#2997FF] rounded-xs";
+  "text-[#424245] dark:text-[#A1A1A6] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] hover:underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)] rounded-xs";
 
 /** Apple-style sitemap footer: a quiet band of link columns with the legal line underneath. */
 export default function SitemapFooter() {
   return (
     <div className="bg-white dark:bg-black transition-colors duration-300">
       <nav aria-label="Site map" className="max-w-6xl mx-auto px-6 sm:px-8 pt-10 sm:pt-12 pb-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-8 pb-8 border-b border-[#D2D2D7] dark:border-[#3A3A3C]">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-8 pb-6 md:flex md:justify-center md:gap-x-16 lg:gap-x-24">
           {COLUMNS.map((col) => (
             <div key={col.heading}>
               <h2 className="text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">

@@ -30,7 +30,7 @@ export default function HomePhotoRibbon() {
       tabIndex={copy ? -1 : 0}
       aria-hidden={copy || undefined}
       aria-label={copy ? undefined : `Open photo: ${photo.title ?? photo.altText}`}
-      className="group w-[240px] shrink-0 cursor-pointer text-left sm:w-[300px] md:w-[340px] rounded-[28px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--pa)]"
+      className="group w-[240px] shrink-0 cursor-pointer text-left sm:w-[300px] md:w-[340px] rounded-[28px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus-ring)]"
     >
       <div className="relative aspect-[4/5] overflow-hidden rounded-[28px] bg-[var(--pa-tint)]">
         <Image

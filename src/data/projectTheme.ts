@@ -4,7 +4,7 @@ import type { CSSProperties } from "react";
 export const PROJECT_ACCENTS: Record<string, [string, string]> = {
   "cytron-hr-assistive-intelligence": ["#0D7678", "#40CBE0"],
   "warranty-rma": ["#0A6CB8", "#4DB5F0"],
-  "raspberry-pi-diagnostics": ["#A8324F", "#EC6A85"],
+  "raspberry-pi-diagnostics": ["#C51A4A", "#F0587F"],
   "iot-fertiliser-mixing": ["#1E7E34", "#30D158"],
   "opencore-efi-hackintosh": ["#5856D6", "#7D7AFF"],
   "rog-gaming-center": ["#C62828", "#FF6961"],

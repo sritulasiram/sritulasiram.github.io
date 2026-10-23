@@ -9,12 +9,17 @@ const INK = "text-[#1D1D1F] dark:text-[#F5F5F7]";
 
 /**
  * Scroll-driven walkthrough for web pages: on desktop one laptop stays pinned while the steps scroll
- * past and its page swaps to match, instantly, so the frame never flashes. On small screens each step
+ * past and its page fades to match, with no dip between pages. On small screens each step
  * carries its own laptop above its text.
  */
 export default function LaptopFlow({ screens }: { screens: DesignScreen[] }) {
   const [active, setActive] = useState(0);
   const stepRefs = useRef<(HTMLLIElement | null)[]>([]);
+
+  // The page shown before the current one, kept under the incoming page while it fades in.
+  const shown = useRef<{ cur: number; prev?: number }>({ cur: active });
+  if (shown.current.cur !== active) shown.current = { cur: active, prev: shown.current.cur };
+  const prev = shown.current.prev;
 
   useEffect(() => {
     const io = new IntersectionObserver(
@@ -34,12 +39,24 @@ export default function LaptopFlow({ screens }: { screens: DesignScreen[] }) {
       {/* Pinned stage (desktop) */}
       <div className="hidden md:block">
         <div className="sticky top-[max(72px,calc(50vh-220px))]">
-          <div className="relative w-full" role="img" aria-label={`${screens[active].title} page`}>
+          {/* All pages stay loaded in one stack. The previous page stays fully opaque while the new one
+              fades in over it, so the laptop never dips to the background between two pages. The shadow
+              comes from the stack underneath, so the incoming page adds none of its own. */}
+          <div className="relative grid w-full" role="img" aria-label={`${screens[active].title} page`}>
             {screens.map((screen, i) => (
-              <div key={screen.id} className={i === active ? "" : "invisible absolute inset-0"} aria-hidden={i !== active}>
+              <div
+                key={screen.id}
+                aria-hidden="true"
+                className={`col-start-1 row-start-1 ${i === (prev ?? active) ? "opacity-100" : "opacity-0"}`}
+              >
                 <MacbookPro src={screen.imageSrc} width="100%" height="auto" className="h-auto w-full drop-shadow-2xl" />
               </div>
             ))}
+            {prev !== undefined && (
+              <div key={`in-${active}`} aria-hidden="true" className="screen-fade-in col-start-1 row-start-1">
+                <MacbookPro src={screens[active].imageSrc} width="100%" height="auto" className="h-auto w-full" />
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -53,7 +70,7 @@ export default function LaptopFlow({ screens }: { screens: DesignScreen[] }) {
               stepRefs.current[i] = el;
             }}
             data-step={i}
-            className="py-10 md:flex md:min-h-[42vh] md:items-center md:py-0"
+            className="py-10 md:flex md:min-h-[30vh] md:items-center md:py-0"
           >
             <div
               className={`transition-opacity duration-500 motion-reduce:transition-none ${

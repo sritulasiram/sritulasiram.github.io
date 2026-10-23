@@ -7,7 +7,6 @@ import { ArrowRight, Search, X } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 import SearchModal from "./SearchModal";
 import { QUICK_LINKS, type SearchItem } from "@/data/searchData";
-import { isShowcaseProject } from "@/data/projectSpecs";
 import MegaMenu from "./nav/MegaMenu";
 import MobileMenu from "./nav/MobileMenu";
 import { NAV_DIRECT_LINKS, NAV_MENUS, isActivePath, type NavMenu } from "./nav/navData";
@@ -15,7 +14,7 @@ import { HighlightText, openSearchItem, searchSite } from "./nav/siteSearch";
 import { useMediaQuery } from "./nav/useMediaQuery";
 
 const TRIGGER_BASE =
-  "h-7.5 pointer-coarse:min-h-11 px-3.5 inline-flex items-center justify-center rounded-full text-[13px] font-medium leading-none transition-all duration-200 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0071E3] dark:focus-visible:ring-[#2997FF]";
+  "press nav-focus h-7.5 pointer-coarse:min-h-11 px-3.5 inline-flex items-center justify-center rounded-full text-[13px] font-medium leading-none transition-all duration-200 focus:outline-hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]";
 const TRIGGER_ON = "text-[#1D1D1F] dark:text-[#F5F5F7] bg-[#1D1D1F]/5 dark:bg-white/10";
 const TRIGGER_OFF =
   "text-[#6E6E73] dark:text-[#A1A1A6] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] hover:bg-[#1D1D1F]/5 dark:hover:bg-white/10";
@@ -26,8 +25,6 @@ export default function Navigation() {
   const [activeDropdown, setActiveDropdown] = useState<"projects" | "designs" | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<Record<string, boolean>>({});
   const [searchOpen, setSearchOpen] = useState(false);
-  // Bumped when the logo is clicked; changing the key replays the name's reveal.
-  const [nameReveal, setNameReveal] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const pathname = usePathname();
@@ -289,7 +286,7 @@ export default function Navigation() {
   }
 
   // Product pages (Overview / Tech Specs) scroll this bar away so the local nav can take the top edge.
-  const scrollsAway = /^\/projects\/[^/]+(\/specs|\/compare)?\/?$/.test(pathname) && isShowcaseProject(pathname.split("/")[2]);
+  const scrollsAway = /^\/projects\/[^/]+(\/specs|\/compare)?\/?$/.test(pathname);
 
   return (
     <>
@@ -323,16 +320,15 @@ export default function Navigation() {
             {/* Brand / Logo (functions as Home link) */}
             <Link prefetch={false}
               href="/"
-              className="group h-8 pointer-coarse:min-h-11 flex items-center gap-2 rounded-lg focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0071E3] dark:focus-visible:ring-[#2997FF] focus-visible:ring-offset-2 z-20"
+              className="group h-8 pointer-coarse:min-h-11 flex items-center gap-2 rounded-lg press nav-focus focus:outline-hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)] z-20"
               onClick={() => {
                 if (pathname === "/") {
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }
                 setMobileMenuOpen(false);
-                setNameReveal((n) => n + 1);
               }}
             >
-              <svg viewBox="0 0 128 128" className="size-7 shrink-0" fill="none" aria-hidden="true">
+              <svg viewBox="0 0 128 128" className="size-7 shrink-0 drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)] transition-[filter] duration-300 group-active:drop-shadow-none group-active:duration-100 motion-reduce:transition-none" fill="none" aria-hidden="true">
                 <circle cx="60" cy="60" r="52" className="fill-[#1D1D1F] dark:fill-[#C7C7CC]" />
                 <path
                   d="M60.05 78.96Q63.98 78.96 66.43 78.1Q71.07 76.44 71.07 71.94Q71.07 69.31 68.77 67.87Q66.46 66.46 61.53 65.38L55.91 64.12Q47.63 62.25 44.46 60.05Q39.09 56.38 39.09 48.57Q39.09 41.44 44.28 36.72Q49.47 32 59.51 32Q67.9 32 73.83 36.45Q79.75 40.9 80.04 49.36H69.38Q69.09 44.57 65.2 42.55Q62.61 41.22 58.76 41.22Q54.47 41.22 51.92 42.95Q49.36 44.68 49.36 47.77Q49.36 50.62 51.88 52.02Q53.5 52.96 58.79 54.22L67.94 56.42Q73.95 57.86 77.02 60.27Q81.77 64.02 81.77 71.11Q81.77 78.38 76.21 83.19Q70.64 88 60.49 88Q50.11 88 44.17 83.26Q38.23 78.53 38.23 70.25H48.82Q49.32 73.88 50.8 75.68Q53.5 78.96 60.05 78.96Z"
@@ -342,13 +338,7 @@ export default function Navigation() {
                 />
                 <circle cx="108" cy="108" r="12" className="fill-[#0071E3] dark:fill-[#2997FF]" />
               </svg>
-              {/* The name replays its reveal each time it is clicked. */}
-              <span
-                key={nameReveal}
-                className={`font-semibold text-[15px] sm:text-base tracking-apple-tight text-[#1D1D1F] dark:text-[#F5F5F7] leading-none ${
-                  nameReveal > 0 ? "motion-safe:animate-[name-reveal_700ms_cubic-bezier(0.16,1,0.3,1)_both]" : ""
-                }`}
-              >
+              <span className="font-semibold text-[15px] sm:text-base tracking-apple-tight text-[#1D1D1F] dark:text-[#F5F5F7] leading-none">
                 Sri Tulasi Ram
               </span>
             </Link>
@@ -416,7 +406,7 @@ export default function Navigation() {
                 onClick={openSearch}
                 aria-label="Search portfolio (⌘K)"
                 title="Search (⌘K)"
-                className="relative w-9 h-9 pointer-coarse:min-w-11 pointer-coarse:min-h-11 rounded-full flex items-center justify-center transition-all duration-200 text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-black/5 dark:hover:bg-white/10 active:scale-95 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0071E3] dark:focus-visible:ring-[#2997FF] focus-visible:ring-offset-2 cursor-pointer"
+                className="press nav-focus relative w-9 h-9 pointer-coarse:min-w-11 pointer-coarse:min-h-11 rounded-full flex items-center justify-center transition-all duration-200 text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-black/5 dark:hover:bg-white/10 focus:outline-hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)] cursor-pointer"
               >
                 <Search className="w-[17px] h-[17px] stroke-[1.65]" />
               </button>
@@ -425,7 +415,7 @@ export default function Navigation() {
               <Link prefetch={false}
                 href="/#contact"
                 onClick={handleContact}
-                className="h-7.5 pointer-coarse:min-h-11 px-3.5 inline-flex items-center justify-center rounded-full text-[13px] font-medium text-white dark:text-[#1D1D1F] bg-[#1D1D1F] dark:bg-white hover:bg-black dark:hover:bg-[#F5F5F7] shadow-xs hover:shadow-sm transition-all duration-200 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0071E3] dark:focus-visible:ring-[#2997FF] focus-visible:ring-offset-2 leading-none"
+                className="press nav-focus h-7.5 pointer-coarse:min-h-11 px-3.5 inline-flex items-center justify-center rounded-full text-[13px] font-medium text-white dark:text-[#1D1D1F] bg-[#1D1D1F] dark:bg-white hover:bg-black dark:hover:bg-[#F5F5F7] shadow-xs hover:shadow-sm transition-all duration-200 focus:outline-hidden leading-none"
               >
                 <span>Let&apos;s Talk</span>
               </Link>
@@ -439,7 +429,7 @@ export default function Navigation() {
                 onClick={openSearch}
                 aria-label="Search portfolio"
                 title="Search"
-                className="relative w-9 h-9 pointer-coarse:min-w-11 pointer-coarse:min-h-11 rounded-full flex items-center justify-center transition-all duration-200 text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-black/5 dark:hover:bg-white/10 active:scale-95 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0071E3] dark:focus-visible:ring-[#2997FF] cursor-pointer after:absolute after:-inset-1.5 after:content-['']"
+                className="press nav-focus relative w-9 h-9 pointer-coarse:min-w-11 pointer-coarse:min-h-11 rounded-full flex items-center justify-center transition-all duration-200 text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-black/5 dark:hover:bg-white/10 focus:outline-hidden cursor-pointer after:absolute after:-inset-1.5 after:content-['']"
               >
                 <Search className="w-[17px] h-[17px] stroke-[1.65]" />
               </button>
@@ -451,7 +441,7 @@ export default function Navigation() {
                 aria-expanded={mobileMenuOpen}
                 aria-controls="mobile-menu"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="relative w-9 h-9 pointer-coarse:min-w-11 pointer-coarse:min-h-11 flex flex-col items-center justify-center gap-[5px] text-[#1D1D1F] dark:text-[#F5F5F7] rounded-full hover:bg-black/5 dark:hover:bg-white/10 active:scale-95 transition-all duration-200 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0071E3] dark:focus-visible:ring-[#2997FF] after:absolute after:-inset-1.5 after:content-['']"
+                className="press nav-focus relative w-9 h-9 pointer-coarse:min-w-11 pointer-coarse:min-h-11 flex flex-col items-center justify-center gap-[5px] text-[#1D1D1F] dark:text-[#F5F5F7] rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-all duration-200 focus:outline-hidden after:absolute after:-inset-1.5 after:content-['']"
               >
                 <span
                   className={`w-[17px] h-[1.5px] bg-current rounded-full transition-transform duration-380 ease-[cubic-bezier(0.32,0.72,0,1)] origin-center ${
@@ -502,7 +492,7 @@ export default function Navigation() {
               aria-label="Search"
               autoComplete="off"
               spellCheck="false"
-              className="w-full bg-transparent font-sans antialiased text-[16px] sm:text-[17px] font-semibold placeholder:font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] placeholder-[#86868B] dark:placeholder-[#8E8E93] focus:outline-hidden tracking-[-0.015em] py-2 leading-none caret-[#0071E3] dark:caret-[#2997FF]"
+              className="no-focus-ring w-full bg-transparent font-sans antialiased text-[16px] sm:text-[17px] font-semibold placeholder:font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] placeholder-[#86868B] dark:placeholder-[#8E8E93] focus:outline-hidden focus-visible:outline-hidden tracking-[-0.015em] py-2 leading-none caret-[#0071E3] dark:caret-[#2997FF]"
             />
 
             {/* Close / Cancel Button */}
@@ -511,7 +501,7 @@ export default function Navigation() {
               onClick={closeSearch}
               aria-label="Close search"
               title="Close search (Esc)"
-              className="w-8 h-8 pointer-coarse:min-w-11 pointer-coarse:min-h-11 rounded-full flex items-center justify-center text-[#6E6E73] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] hover:bg-black/5 dark:hover:bg-white/10 active:scale-95 transition-all focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0071E3] dark:focus-visible:ring-[#2997FF] cursor-pointer shrink-0"
+              className="press nav-focus w-8 h-8 pointer-coarse:min-w-11 pointer-coarse:min-h-11 rounded-full flex items-center justify-center text-[#6E6E73] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] hover:bg-black/5 dark:hover:bg-white/10 transition-all focus:outline-hidden cursor-pointer shrink-0"
             >
               <X className="w-4 h-4 stroke-[2]" />
             </button>

@@ -29,7 +29,7 @@ export default function HomeSystems() {
               <Reveal key={project.id} delay={i * 80} className={wide ? "md:col-span-2" : ""}>
                 <Link
                   href={`/projects/${project.id}`}
-                  className={`group relative flex h-full overflow-hidden rounded-[28px] bg-[var(--pa-tint)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--pa)] ${
+                  className={`group relative flex h-full overflow-hidden rounded-[28px] bg-[var(--pa-tint)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus-ring)] ${
                     wide ? "min-h-[460px] flex-col md:flex-row md:min-h-[520px]" : "min-h-[480px] flex-col"
                   }`}
                 >
@@ -67,7 +67,13 @@ export default function HomeSystems() {
         </div>
 
         <div className="mt-8 text-center">
-          <Button variant="secondary" href="/projects">View all projects</Button>
+          <Button
+            variant="secondary"
+            href="/projects"
+            className="border-black bg-black text-white hover:bg-[#1D1D1F] dark:border-white dark:bg-white dark:text-black dark:hover:bg-[#E8E8ED]"
+          >
+            View all projects
+          </Button>
         </div>
       </div>
     </section>

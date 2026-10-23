@@ -80,7 +80,7 @@ export default function ProjectTechSpecs({ projectId, title, tagline, groups, ne
               <a
                 key={group.title}
                 href={`#${slug(group.title)}`}
-                className="inline-flex min-h-9 items-center gap-1.5 rounded-full bg-[var(--pa-soft)] px-3.5 text-[13px] font-medium text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors hover:bg-[color-mix(in_srgb,var(--pa)_22%,transparent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--pa)]"
+                className="inline-flex min-h-9 items-center gap-1.5 rounded-full bg-[var(--pa-soft)] px-3.5 text-[13px] font-medium text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors hover:bg-[color-mix(in_srgb,var(--pa)_22%,transparent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
               >
                 <Icon className="h-3.5 w-3.5 text-[var(--pa)]" aria-hidden="true" />
                 {group.title}
@@ -108,9 +108,9 @@ export default function ProjectTechSpecs({ projectId, title, tagline, groups, ne
                 </h2>
               </div>
 
-              <dl className="divide-y divide-black/[0.07] dark:divide-white/10 border-y border-black/[0.07] dark:border-white/10 md:border-t-0">
+              <dl className="space-y-1">
                 {group.rows.map((row) => (
-                  <div key={row.label} className="grid grid-cols-1 sm:grid-cols-[10.5rem_minmax(0,1fr)] gap-1 sm:gap-6 py-4">
+                  <div key={row.label} className="grid grid-cols-1 sm:grid-cols-[10.5rem_minmax(0,1fr)] gap-1 sm:gap-6 py-3.5">
                     <dt className="text-[13px] font-semibold text-[#6E6E73] dark:text-[#86868B] sm:pt-1">{row.label}</dt>
                     <dd className="text-base sm:text-[17px] text-[#1D1D1F] dark:text-[#F5F5F7] leading-[1.55]">
                       {Array.isArray(row.value) ? (

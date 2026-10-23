@@ -1,14 +1,14 @@
 import GaugeStatement from "@/components/projects/GaugeStatement";
 import { LINK, PILL } from "@/components/ui/Button";
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import CaseStudyBreadcrumb from "@/components/shared/CaseStudyBreadcrumb";
 import CountUp from "@/components/shared/CountUp";
+import ExploreMore from "@/components/shared/ExploreMore";
 import Reveal from "@/components/shared/Reveal";
 import YouTubeEmbed from "@/components/shared/YouTubeEmbed";
 import CopyCitation from "@/components/projects/CopyCitation";
-import IotFigureTabs from "@/components/projects/IotFigureTabs";
+import PinnedScreens from "@/components/shared/PinnedScreens";
 import { projectThemeStyle } from "@/data/projectTheme";
 import type { CaseStudy, ProjectItem } from "@/types";
 
@@ -157,8 +157,6 @@ const FIGURES = [
       "Real-time monitoring, fertiliser mixing and the user interface, joined around a NodeMCU ESP32 that reads the sensors and drives the pumps and valves.",
     src: `${IMG}/fig-1-system-overview.png`,
     alt: "Overall IoT-based fertiliser mixing system processes: Real-Time Monitoring, Fertiliser Mixing System, and User-End Experience",
-    width: 1408,
-    height: 779,
   },
   {
     id: "circuit",
@@ -168,8 +166,6 @@ const FIGURES = [
       "The ESP32 expansion board, relay modules, an AC-to-12 V power supply, the TDS and water-level sensors, flow sensors, pumps and solenoid valves.",
     src: `${IMG}/fig-3-circuit-design.png`,
     alt: "Circuit design diagram showing full ESP32 wiring schematic, relay modules, buck converter, and sensors",
-    width: 1211,
-    height: 730,
   },
   {
     id: "workflow",
@@ -178,9 +174,6 @@ const FIGURES = [
     description: "The decisions and operations of the code, from reading the sensors to acting on a command from the Blynk app.",
     src: `${IMG}/fig-4-firmware-flowchart.png`,
     alt: "Process flow of the prototype code implementation flowchart",
-    width: 1340,
-    height: 1001,
-    narrow: true,
   },
 ];
 
@@ -382,8 +375,8 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
     <div className="project-theme selection:bg-emerald-500/20" style={projectThemeStyle(project.id)}>
       {/* 1. Hero */}
       {/* White in light mode so the photo, which has a white background, blends in. */}
-      <section className="bg-white dark:bg-[var(--pa-tint)] overflow-hidden">
-        <div className={`${WRAP} pt-24 sm:pt-28 text-center`}>
+      <section className="hero-glow hero-glow-iot overflow-hidden">
+        <div className={`${WRAP} pt-10 sm:pt-14 text-center`}>
           <div className="flex justify-center">
             <CaseStudyBreadcrumb title="IoT Fertiliser Mixing" />
           </div>
@@ -473,12 +466,12 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
       </section>
 
       {/* 4. Figures from the paper */}
-      <section aria-label="Figures from the paper" className="py-16 sm:py-24 bg-[var(--pa-tint)]">
+      <section aria-label="Figures from the paper" className="py-16 sm:py-24">
         <div className="max-w-6xl mx-auto w-full px-6 sm:px-8">
           <Reveal>
             <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero text-center`}>See how it’s built.</h2>
             <p className={`mt-3 mb-10 text-lg ${GRAY} text-center`}>Three figures from the published paper.</p>
-            <IotFigureTabs figures={FIGURES} />
+            <PinnedScreens screens={FIGURES} tone="light" />
           </Reveal>
         </div>
       </section>
@@ -524,7 +517,7 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
       </section>
 
       {/* 7. Publication */}
-      <section aria-label="Publication" className="py-16 sm:py-24 bg-[var(--pa-tint)]">
+      <section aria-label="Publication" className="py-16 sm:py-24">
         <div className={WRAP}>
           <Reveal>
             <p className="text-sm font-semibold text-[var(--pa)]">Peer-reviewed · Scopus and MyCite indexed · Open access</p>
@@ -565,21 +558,8 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
         </div>
       </section>
 
-      {/* 8. Next project */}
-      <section aria-label="Next project" className={`${WRAP} py-20 sm:py-28`}>
-        <Link
-          href={`/projects/${nextProject.id}`}
-          className="group block rounded-[28px] bg-[var(--pa-tint)] p-8 sm:p-12 transition-transform duration-300 hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--pa)]"
-        >
-          <p className="text-sm font-semibold text-[var(--pa)]">Next project</p>
-          <h2 className={`mt-2 text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero leading-[1.08]`}>{nextProject.title}</h2>
-          <p className={`mt-3 max-w-2xl text-lg ${GRAY} leading-relaxed`}>{nextProject.subtitle}</p>
-          <span className="mt-8 inline-flex items-center gap-1 text-[17px] text-[var(--pa)] group-hover:underline">
-            {nextProject.ctaLabel || "Explore the case study"}
-            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
-          </span>
-        </Link>
-      </section>
+      {/* 8. Keep exploring */}
+      <ExploreMore projectId={project.id} nextProject={nextProject} />
     </div>
   );
 }

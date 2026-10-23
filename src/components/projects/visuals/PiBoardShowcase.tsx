@@ -73,8 +73,9 @@ const BOARDS: Board[] = [
 ];
 
 /**
- * Product-style board picker: segmented control, one large photo tile, and a panel listing what
- * the suite checks on that board.
+ * Product-style board picker: a neutral segmented control, one wide photo tile, and beneath it the
+ * board name on the left with what the suite checks on the right. No cards or dividers; the only
+ * colour is the accent on the check marks.
  */
 export default function PiBoardShowcase() {
   const [active, setActive] = useState(0);
@@ -101,7 +102,7 @@ export default function PiBoardShowcase() {
         role="tablist"
         aria-label="Raspberry Pi models"
         onKeyDown={onKeyDown}
-        className="flex w-fit max-w-full overflow-x-auto rounded-full bg-[var(--pa-soft)] p-1 [scrollbar-width:none]"
+        className="flex w-fit max-w-full overflow-x-auto rounded-full bg-black/[0.06] p-1 dark:bg-white/10 [scrollbar-width:none]"
       >
         {BOARDS.map((b, i) => (
           <button
@@ -117,8 +118,8 @@ export default function PiBoardShowcase() {
             onClick={() => setActive(i)}
             className={`min-h-11 sm:min-h-10 shrink-0 rounded-full px-4 sm:px-5 text-sm font-medium transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 ${
               i === active
-                ? "bg-[var(--pa)] text-white dark:text-[#0B0B0C] focus-visible:outline-[#1D1D1F] dark:focus-visible:outline-white"
-                : "text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-black/[0.06] dark:hover:bg-white/10 focus-visible:outline-[var(--pa)]"
+                ? "bg-[#ffffff] text-[#1D1D1F] shadow-sm dark:bg-[#48484A] dark:text-[#F5F5F7] focus-visible:outline-[var(--focus-ring)]"
+                : "text-[#68686D] hover:text-[#1D1D1F] dark:text-[#A1A1A6] dark:hover:text-[#F5F5F7] focus-visible:outline-[var(--focus-ring)]"
             }`}
           >
             {b.tab}
@@ -130,10 +131,10 @@ export default function PiBoardShowcase() {
         id="board-panel"
         role="tabpanel"
         aria-labelledby={`board-tab-${board.id}`}
-        className="mt-8 grid gap-5 md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]"
+        className="mt-8 grid items-center gap-8 md:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] md:gap-14"
       >
         {/* Photo tile: all boards stacked and crossfaded so the tile never changes size. */}
-        <div className="relative aspect-[3/2] overflow-hidden rounded-[28px] bg-[#E8E8ED] dark:bg-[#1C1C1E]">
+        <div className="relative aspect-[3/2] overflow-hidden rounded-[28px] bg-[#E8E8ED] [corner-shape:squircle] dark:bg-[#1C1C1E]">
           {BOARDS.map((b, i) => (
             <Image
               key={b.id}
@@ -141,7 +142,7 @@ export default function PiBoardShowcase() {
               alt={i === active ? `${b.name}, seen from above` : ""}
               aria-hidden={i !== active}
               fill
-              sizes="(max-width: 768px) 100vw, 640px"
+              sizes="(max-width: 768px) 100vw, 560px"
               className={`object-cover transition-opacity duration-500 motion-reduce:transition-none ${
                 i === active ? "opacity-100" : "opacity-0"
               }`}
@@ -149,29 +150,29 @@ export default function PiBoardShowcase() {
           ))}
         </div>
 
-        <div key={board.id} className="fade-swap flex flex-col rounded-[28px] bg-white dark:bg-[#1C1C1E] p-7 sm:p-9">
-          <h3 className="text-2xl sm:text-3xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight leading-tight">
-            {board.name}
-          </h3>
-          <p className="mt-1.5 text-sm text-[#68686D] dark:text-[#A1A1A6]">{board.soc}</p>
+        <div key={board.id} className="fade-swap">
+          <div>
+            <h3 className="text-3xl font-semibold leading-[1.08] tracking-apple-hero text-[#1D1D1F] sm:text-4xl dark:text-[#F5F5F7]">
+              {board.name}
+            </h3>
+            <p className="mt-3 text-lg text-[#68686D] dark:text-[#A1A1A6]">{board.soc}</p>
+          </div>
 
-          <p className="mt-8 text-xs font-semibold uppercase tracking-wider text-[#68686D] dark:text-[#A1A1A6]">
-            What the suite checks
-          </p>
-          <ul className="mt-4 space-y-3.5">
-            {board.checks.map((check) => (
-              <li key={check} className="flex items-start gap-3 text-base text-[#1D1D1F] dark:text-[#F5F5F7] leading-snug">
-                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--pa-soft)]">
-                  <Check className="h-3 w-3 text-[var(--pa)]" strokeWidth={3} aria-hidden="true" />
-                </span>
-                {check}
-              </li>
-            ))}
-          </ul>
+          <div className="mt-8">
+            <p className="text-xs font-semibold uppercase tracking-wider text-[#68686D] dark:text-[#A1A1A6]">What the suite checks</p>
+            <ul className="mt-4 space-y-3.5">
+              {board.checks.map((check) => (
+                <li key={check} className="flex items-start gap-3 text-base leading-snug text-[#1D1D1F] sm:text-lg dark:text-[#F5F5F7]">
+                  <Check className="mt-1 h-[18px] w-[18px] shrink-0 text-[var(--pa)]" strokeWidth={2.5} aria-hidden="true" />
+                  {check}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
 
-      <p className="mt-6 text-sm text-[#68686D] dark:text-[#A1A1A6]">
+      <p className="mt-10 text-sm text-[#68686D] dark:text-[#A1A1A6]">
         Pi 2, Pi 1, Zero and Zero W run in passive mode: peripheral discovery, single-core load testing and firmware checks.
       </p>
     </div>

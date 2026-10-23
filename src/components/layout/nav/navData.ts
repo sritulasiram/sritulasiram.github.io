@@ -43,7 +43,7 @@ export const NAV_MENUS: Record<NavMenu["id"], NavMenu> = {
         ],
       },
       {
-        heading: "More projects",
+        heading: "Case studies",
         span: 4,
         variant: "primary",
         links: [
@@ -65,6 +65,16 @@ export const NAV_MENUS: Record<NavMenu["id"], NavMenu> = {
           {
             label: "IoT Fertiliser Firmware (GitHub)",
             href: "https://github.com/sritulasiram/iot-fertiliser-mixing-esp32",
+            external: true,
+          },
+          {
+            label: "OpenCore EFI Hackintosh (GitHub)",
+            href: "https://github.com/sritulasiram/ASUS-ROG-Strix-GL503GE-Hackintosh",
+            external: true,
+          },
+          {
+            label: "ROG Gaming Center (GitHub)",
+            href: "https://github.com/sritulasiram/rog-gaming-center-hackintosh",
             external: true,
           },
         ],
