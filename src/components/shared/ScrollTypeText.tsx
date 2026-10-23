@@ -175,7 +175,7 @@ export default function ScrollTypeText({
         // Without links the whole paragraph is labelled once. With links, each piece is read out in order:
         // links by their label, the rest as plain text.
         return segment.href ? (
-          <a key={si} href={segment.href} aria-label={segment.label ?? segment.text.trim()} className="rounded-xs hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--pa)]">
+          <a key={si} href={segment.href} aria-label={segment.label ?? segment.text.trim()} className="rounded-xs hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]">
             {visual}
           </a>
         ) : hasLinks ? (

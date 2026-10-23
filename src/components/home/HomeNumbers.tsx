@@ -5,7 +5,7 @@ import { Headline, GRAY, INK, WRAP_WIDE } from "./homeShared";
 
 export default function HomeNumbers() {
   return (
-    <section aria-label="In numbers" className="py-24 sm:py-32">
+    <section id="numbers" aria-label="In numbers" className="scroll-mt-14 py-24 sm:py-32">
       <div className={WRAP_WIDE}>
         <Reveal>
           <Headline gray="The work," ink="in numbers." />

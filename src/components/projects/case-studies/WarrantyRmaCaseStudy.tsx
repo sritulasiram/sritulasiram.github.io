@@ -149,12 +149,12 @@ function LabelVisual() {
     "repeating-linear-gradient(90deg,#111 0 2px,transparent 2px 4px,#111 4px 5px,transparent 5px 8px,#111 8px 11px,transparent 11px 12px,#111 12px 13px,transparent 13px 16px)";
   return (
     <div className="space-y-4" role="img" aria-label="A 60 by 40 millimetre thermal label: Cytron, a warranty type, product model, SKU, order ID, technician, a Code128 barcode and the case number WTY-261019-0001.">
-      <div className="mx-auto w-full max-w-[340px] overflow-hidden rounded-xl bg-white text-[#111] shadow-lg ring-1 ring-black/5">
+      <div className="mx-auto w-full max-w-[340px] overflow-hidden rounded-xl bg-[#ffffff] text-[#111] shadow-lg ring-1 ring-black/5">
         <div className="px-5 pt-5">
           {/* Brand and warranty type */}
           <div className="flex items-baseline justify-between gap-3 border-b-2 border-[#111] pb-1.5">
             <span className="text-[19px] font-extrabold tracking-wide">CYTRON</span>
-            <span className="truncate text-[8px] font-extrabold uppercase tracking-wide">Manufacturing Warr…</span>
+            <span className="whitespace-nowrap text-[8px] font-extrabold uppercase tracking-wide">Manufacturing Warranty</span>
           </div>
 
           {/* Product */}
@@ -328,12 +328,12 @@ export default function WarrantyRmaCaseStudy({ project, nextProject }: Props) {
   return (
     <div>
       {/* 1. Hero */}
-      <section className="bg-[var(--pa-tint)] overflow-hidden">
+      <section className="hero-glow hero-glow-warranty overflow-hidden">
         <div className={`${WRAP} pt-14 sm:pt-20 text-center`}>
           <p className={`text-xl sm:text-2xl font-semibold ${INK} tracking-apple-tight`}>{project.title}</p>
           <h1 className={`mt-2 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold ${INK} tracking-apple-hero leading-[1.03]`}>
             One system.
-            <span className={`block ${ACCENT}`}>Every repair.</span>
+            <span className={`block ${ACCENT}`}>Every case.</span>
           </h1>
           <p className={`mt-5 mx-auto max-w-2xl text-lg sm:text-xl ${GRAY} leading-relaxed tracking-apple-subhead`}>
             {project.tagline}
@@ -386,11 +386,11 @@ export default function WarrantyRmaCaseStudy({ project, nextProject }: Props) {
       </section>
 
       {/* 5. Highlights */}
-      <CardCarousel title="Get the highlights." label="Highlights">
+      <CardCarousel title="Get the highlights." label="Highlights" plain>
         {HIGHLIGHTS.map(({ icon: Icon, badge, title, body }) => (
           <article
             key={title}
-            className="snap-start shrink-0 w-[78vw] sm:w-[320px] min-h-[360px] rounded-[28px] bg-white dark:bg-[#1C1C1E] p-8 flex flex-col"
+            className="snap-start shrink-0 w-[78vw] sm:w-[320px] min-h-[360px] rounded-[28px] bg-[#F5F5F7] dark:bg-[#1D1D1F] p-8 flex flex-col"
           >
             <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--pa-soft)]">
               <Icon className={`h-6 w-6 ${ACCENT}`} aria-hidden="true" />

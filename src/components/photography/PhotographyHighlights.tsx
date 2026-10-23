@@ -80,7 +80,7 @@ export default function PhotographyHighlights({
                 embedded
                   ? "w-[min(420px,calc((100vh-300px)*0.75))]"
                   : "w-[78vw] sm:w-[360px] lg:w-[420px]"
-              } relative rounded-3xl overflow-hidden bg-[#E5E5EA] dark:bg-[#1C1C1E] text-left cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0071e3]`}
+              } relative rounded-3xl overflow-hidden bg-[#E5E5EA] dark:bg-[#1C1C1E] text-left cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus-ring)]`}
             >
               <Image
                 src={photo.imageSrc}
@@ -91,9 +91,9 @@ export default function PhotographyHighlights({
               />
               <div className="absolute inset-x-0 top-0 p-6 sm:p-7 bg-gradient-to-b from-black/55 to-transparent">
                 {photo.location && (
-                  <span className="text-xs font-semibold text-white/80">{photo.location}</span>
+                  <span className="text-xs font-semibold text-white/90 [text-shadow:0_1px_3px_rgba(0,0,0,0.6),0_2px_16px_rgba(0,0,0,0.4)]">{photo.location}</span>
                 )}
-                <h3 className="mt-1 text-xl sm:text-2xl font-semibold tracking-apple-tight leading-tight text-white">
+                <h3 className="mt-1 text-xl sm:text-2xl font-semibold tracking-apple-tight leading-tight text-white [text-shadow:0_1px_3px_rgba(0,0,0,0.6),0_2px_16px_rgba(0,0,0,0.4)]">
                   {photo.spotlightTitle ?? photo.title}
                 </h3>
               </div>

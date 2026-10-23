@@ -40,7 +40,7 @@ export default function DesignWorkGrid() {
               >
                 <Link
                   href={`/designs/${design.id}`}
-                  className="group block rounded-3xl overflow-hidden bg-[#F5F5F7] dark:bg-[#1C1C1E] border border-black/[0.06] dark:border-white/10 transition-shadow duration-300 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0071E3]"
+                  className="group block rounded-3xl overflow-hidden bg-[#F5F5F7] dark:bg-[#1C1C1E] border border-black/[0.06] dark:border-white/10 transition-shadow duration-300 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus-ring)]"
                 >
                   {stage?.device === "laptop" ? (
                     <div

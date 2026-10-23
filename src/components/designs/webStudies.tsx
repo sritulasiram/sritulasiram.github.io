@@ -44,12 +44,6 @@ const PMC: WebStudyConfig = {
         { src: `${PMC_DIR}/mobile-menu.jpg`, alt: "The open mobile menu" },
       ],
     },
-    {
-      gray: "Every state",
-      ink: "designed.",
-      body: "The service card and the Contact Us button each have default, hover, pressed and focus-visible states, so the site responds to a mouse, a tap and a keyboard in the same way.",
-      shot: { src: `${PMC_DIR}/ui-states.jpg`, alt: "Service card and Contact Us button in default, hover, pressed and focus states", width: 1700, height: 1520 },
-    },
   ],
   visual: {
     gray: "One navy.",

@@ -14,7 +14,7 @@ import { cn } from "@/lib/cn";
 
 // Written out in full: Tailwind only generates classes it can read literally in the source.
 const FOCUS =
-  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--pa,var(--btn-accent))]";
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]";
 
 export const PILL =
   "inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[var(--pa,var(--btn-accent))] px-6 text-[15px] font-medium text-white dark:text-black transition-opacity hover:opacity-90 " +

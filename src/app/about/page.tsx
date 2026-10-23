@@ -1,22 +1,12 @@
 import Image from "next/image";
-import {
-  ArrowRight,
-  Code2,
-  Download,
-  Cpu,
-  FileText,
-  Headset,
-  Laptop,
-  PenTool,
-  Sparkles,
-  type LucideIcon,
-} from "lucide-react";
+import { Download } from "lucide-react";
 import Footer from "@/components/layout/Footer";
 import Button from "@/components/ui/Button";
 import SectionNav from "@/components/layout/SectionNav";
 import PinnedJourney, { type JourneyStep } from "@/components/about/PinnedJourney";
 import CredentialCards, { type Credential } from "@/components/about/CredentialCards";
 import Recognition from "@/components/about/Recognition";
+import SkillsScroller from "@/components/about/SkillsScroller";
 import CountUp from "@/components/shared/CountUp";
 import Reveal from "@/components/shared/Reveal";
 import StatementReveal from "@/components/about/StatementReveal";
@@ -39,7 +29,6 @@ const GRAY = "text-[#68686D] dark:text-[#A1A1A6]";
 const WRAP = "max-w-5xl mx-auto w-full px-6 sm:px-8";
 const H2 = `text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero leading-[1.08]`;
 
-const SKILL_ICONS: LucideIcon[] = [Headset, Cpu, Code2, Sparkles, Laptop, PenTool, FileText];
 const NUMBERS = [
   { value: "7", label: "Awards", text: "From Universiti Tun Hussein Onn Malaysia and Politeknik Ungku Omar." },
   { value: "2", label: "Engineering qualifications", text: "A diploma in Mechatronic Engineering and a B.Eng in Electronic Engineering." },
@@ -60,10 +49,35 @@ const HONORS_BY_ORG: Record<string, string[]> = {
   ],
 };
 
+// The four skills shown large in each category, in the same order as ABOUT_DATA.skillCategories.
+// The rest keep their order from the data and follow as smaller pills.
+const SKILL_HEADLINES: string[][] = [
+  ["Technical Support", "Warranty & RMA Management", "Hardware QA & Triage", "Technical Consultation"],
+  ["Raspberry Pi", "Embedded Systems", "ESP32 Microcontrollers", "Internet of Things (IoT)"],
+  ["Python & Flask", "API Design", "Web Application Security", "Next.js & React"],
+  ["Retrieval-Augmented Generation", "Vector Search (ChromaDB)", "LLM Function Calling", "Embeddings & Reranking"],
+  ["Swift & SwiftUI", "IOKit HID", "AppleSMC Telemetry", "OpenCore & UEFI"],
+  ["Figma", "User Interface Design", "Mobile Interface Design", "Interactive Prototyping"],
+  ["Peer-Reviewed Publication", "Technical Documentation", "Standard Operating Procedures (SOPs)", "Data Analysis"],
+];
+
+const SKILL_GROUPS = (ABOUT_DATA.skillCategories ?? []).map((group, i) => {
+  const lead = SKILL_HEADLINES[i] ?? [];
+  const rank = (name: string) => {
+    const at = lead.indexOf(name);
+    return at === -1 ? lead.length : at;
+  };
+  // Array.sort is stable, so everything outside the headline keeps its original order.
+  return { ...group, items: [...group.items].sort((a, b) => rank(a.name) - rank(b.name)) };
+});
+
+// Oldest first by start year (the sort is stable), so the pinned year only ever counts upwards.
 const JOURNEY: JourneyStep[] = [
   ...[...(ABOUT_DATA.education ?? [])].reverse(),
   ...(ABOUT_DATA.experience ?? []),
-].map((step) => ({
+]
+  .sort((a, b) => Number(a.period.slice(0, 4)) - Number(b.period.slice(0, 4)))
+  .map((step) => ({
   id: `${step.period}-${step.role}`,
   year: step.period.slice(0, 4),
   period: step.period,
@@ -84,12 +98,11 @@ const CREDENTIALS: Credential[] = [
   {
     title: ABOUT_DATA.accreditation.title,
     body: ABOUT_DATA.accreditation.body,
+    subtitle: ABOUT_DATA.accreditation.discipline,
     status: ABOUT_DATA.accreditation.status,
+    active: true,
     logoSrc: ABOUT_DATA.accreditation.logoSrc,
-    details: [
-      { label: "Discipline", value: ABOUT_DATA.accreditation.discipline },
-      { label: "Registration", value: ABOUT_DATA.accreditation.registrationNo },
-    ],
+    verify: { label: "Registration no.", value: ABOUT_DATA.accreditation.registrationNo },
   },
   ...(ABOUT_DATA.firstAid
     ? [
@@ -97,14 +110,10 @@ const CREDENTIALS: Credential[] = [
           title: "First Aid & CPR",
           body: ABOUT_DATA.firstAid.body,
           status: ABOUT_DATA.firstAid.status,
+          active: true,
+          note: `Valid until ${ABOUT_DATA.firstAid.expires}`,
           logoSrc: ABOUT_DATA.firstAid.logoSrc,
-          logoDarkSrc: ABOUT_DATA.firstAid.logoDarkSrc,
-          certificateSrc: ABOUT_DATA.firstAid.certificateSrc,
-          details: [
-            { label: "Serial", value: ABOUT_DATA.firstAid.serialNo },
-            { label: "Issued", value: ABOUT_DATA.firstAid.issued },
-            { label: "Expires", value: ABOUT_DATA.firstAid.expires },
-          ],
+          verify: { label: "Serial", value: ABOUT_DATA.firstAid.serialNo },
         },
       ]
     : []),
@@ -114,13 +123,9 @@ const CREDENTIALS: Credential[] = [
           title: "Flutter App Development",
           body: ABOUT_DATA.flutterCert.body,
           status: ABOUT_DATA.flutterCert.status,
+          note: ABOUT_DATA.flutterCert.issuedRange,
           logoSrc: ABOUT_DATA.flutterCert.logoSrc,
-          logoDarkSrc: ABOUT_DATA.flutterCert.logoDarkSrc,
-          certificateSrc: ABOUT_DATA.flutterCert.certificateSrc,
-          details: [
-            { label: "Serial", value: ABOUT_DATA.flutterCert.serialNo },
-            { label: "Completed", value: ABOUT_DATA.flutterCert.issuedRange },
-          ],
+                verify: { label: "Serial", value: ABOUT_DATA.flutterCert.serialNo },
         },
       ]
     : []),
@@ -240,68 +245,30 @@ export default function AboutTwoPage() {
 
       {/* 8. Skills */}
       <section id="skills" aria-label="Skills" className={`${WRAP} scroll-mt-14 py-24 sm:py-32`}>
-        <Reveal>
-          <h2 className={H2}>
-            Skills.
-            <span className={`block ${GRAY}`}>What I work with.</span>
-          </h2>
-        </Reveal>
-        <div className="mt-12 grid gap-5 md:grid-cols-2">
-          {(ABOUT_DATA.skillCategories ?? []).map((group, i) => {
-            const Icon = SKILL_ICONS[i] ?? Code2;
-            const headline = group.items.slice(0, 4);
-            const rest = group.items.slice(4);
-            return (
-              <div key={group.category} className="flex flex-col rounded-[28px] bg-[#F5F5F7] dark:bg-[#161618] p-7">
-                <div className="flex items-center gap-4">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[var(--pa-soft)]">
-                    <Icon className="h-5 w-5 text-[var(--pa)]" aria-hidden="true" />
-                  </span>
-                  <h3 className={`text-xl font-semibold ${INK} tracking-apple-tight leading-snug`}>{group.category}</h3>
-                </div>
-                <p className={`mt-4 text-[15px] leading-relaxed ${GRAY}`}>{group.description}</p>
-                <ul className="mt-5 flex flex-wrap gap-2">
-                  {headline.map((item) => (
-                    <li key={item.name} className={`rounded-full bg-white dark:bg-[#232326] px-3 py-1 text-sm font-medium ${INK}`}>
-                      {item.name}
-                    </li>
-                  ))}
-                </ul>
-                {rest.length > 0 && (
-                  <details className="group mt-1">
-                    <summary className="inline-flex min-h-11 cursor-pointer list-none items-center gap-1 text-sm font-medium text-[var(--pa)] hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--pa)] rounded-xs [&::-webkit-details-marker]:hidden">
-                      <span className="group-open:hidden">Show {rest.length} more</span>
-                      <span className="hidden group-open:inline">Show fewer</span>
-                      <ArrowRight className="h-4 w-4 transition-transform group-open:rotate-90" aria-hidden="true" />
-                    </summary>
-                    <ul className="mt-1 flex flex-wrap gap-2">
-                      {rest.map((item) => (
-                        <li key={item.name} className={`rounded-full bg-white dark:bg-[#232326] px-3 py-1 text-sm font-medium ${INK}`}>
-                          {item.name}
-                        </li>
-                      ))}
-                    </ul>
-                  </details>
-                )}
-              </div>
-            );
-          })}
-        </div>
+        <SkillsScroller
+          groups={SKILL_GROUPS}
+          heading={
+            <h2 className={H2}>
+              Skills.
+              <span className={`block ${GRAY}`}>What I work with.</span>
+            </h2>
+          }
+        />
       </section>
 
       {/* 9. Credentials */}
       <section id="credentials" aria-label="Credentials" className="scroll-mt-14 py-24 sm:py-32">
-        <div className={WRAP}>
-          <Reveal>
-            <h2 className={H2}>
-              Credentials.
-              <span className={`block ${GRAY}`}>Registered and certified.</span>
-            </h2>
-          </Reveal>
-          <div className="mt-12">
-            <CredentialCards items={CREDENTIALS} />
-          </div>
-        </div>
+        <CredentialCards
+          items={CREDENTIALS}
+          heading={
+            <Reveal>
+              <h2 className={H2}>
+                Credentials.
+                <span className={`block ${GRAY}`}>Registered and certified.</span>
+              </h2>
+            </Reveal>
+          }
+        />
       </section>
 
       <Footer />

@@ -1,8 +1,8 @@
-import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
-import { ChevronRight, type LucideIcon } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import CardCarousel from "@/components/shared/CardCarousel";
 import CountUp from "@/components/shared/CountUp";
+import DesignExploreMore from "@/components/designs/DesignExploreMore";
 import Reveal from "@/components/shared/Reveal";
 import Button from "@/components/ui/Button";
 import ScrollTypeText from "@/components/shared/ScrollTypeText";
@@ -103,7 +103,14 @@ export default function AppCaseStudy({
   return (
     <div>
       {/* 1. Hero */}
-      <section className="relative bg-[var(--pa-tint)] overflow-hidden">
+      {/* Sage keeps its own breathing glow; the other designs share the hero-glow mist. */}
+      <section
+        className={
+          config.heroGlow
+            ? "relative overflow-hidden"
+            : `hero-glow hero-glow-d-${design.id} overflow-hidden`
+        }
+      >
         {config.heroGlow && (
           <div
             aria-hidden="true"
@@ -257,7 +264,7 @@ export default function AppCaseStudy({
       </section>
 
       {/* 6. Design system */}
-      <section aria-label="Visual language" className="bg-[var(--pa-tint)] py-24 sm:py-32">
+      <section aria-label="Visual language" className="py-24 sm:py-32">
         <div className={WRAP}>
           <Reveal>
             <h2 className="text-3xl sm:text-5xl font-semibold tracking-apple-hero leading-[1.08] max-w-3xl">
@@ -288,13 +295,13 @@ export default function AppCaseStudy({
 
       {/* 7. Features */}
       <Reveal>
-      <CardCarousel title="Get the highlights." label="Highlights">
+      <CardCarousel title="Get the highlights." label="Highlights" plain>
         {design.keyFeatures.map((feature, i) => {
           const Icon = config.featureIcons[i % config.featureIcons.length];
           return (
             <article
               key={feature.title}
-              className="snap-start shrink-0 w-[78vw] sm:w-[320px] min-h-[360px] rounded-[28px] bg-white dark:bg-[#1C1C1E] p-8 flex flex-col"
+              className="snap-start shrink-0 w-[78vw] sm:w-[320px] min-h-[360px] rounded-[28px] bg-[#F5F5F7] dark:bg-[#1D1D1F] p-8 flex flex-col"
             >
               <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--pa-soft)]">
                 <Icon className={`h-6 w-6 ${ACCENT}`} aria-hidden="true" />
@@ -331,24 +338,8 @@ export default function AppCaseStudy({
         </div>
       </section>
 
-      {/* 9. Next design */}
-      <section className="py-20 sm:py-28">
-        <div className={WRAP}>
-          <Reveal>
-          <Link href={`/designs/${nextDesign.id}`} className="group block">
-            <p className={`text-sm font-semibold ${GRAY}`}>Next design</p>
-            <h3 className={`mt-2 text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-tight leading-[1.1] group-hover:text-[var(--pa)] transition-colors`}>
-              {nextDesign.title}
-              <ChevronRight
-                aria-hidden="true"
-                className="inline-block w-7 h-7 sm:w-9 sm:h-9 ml-1 align-[-0.1em] text-[#6E6E73] dark:text-[#8E8E93] transition-transform duration-300 group-hover:translate-x-1"
-              />
-            </h3>
-            <p className={`mt-3 text-base sm:text-lg ${GRAY}`}>{nextDesign.subtitle}</p>
-          </Link>
-          </Reveal>
-        </div>
-      </section>
+      {/* 9. Keep exploring */}
+      <DesignExploreMore nextDesign={nextDesign} figmaUrl={design.figmaUrl} githubUrl={design.githubUrl} liveUrl={design.liveUrl} />
     </div>
   );
 }

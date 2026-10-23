@@ -274,9 +274,6 @@ export default function DesignShowcaseMorph() {
               <br />
               <span className="block mt-1 text-3xl lg:text-4xl xl:text-5xl text-[#6E6E73] dark:text-[#8E8E93] font-medium">Effortlessly natural</span>
             </h1>
-            <p className="text-lg xl:text-xl text-[#6E6E73] dark:text-[#A1A1A6] max-w-2xl mx-auto leading-relaxed tracking-apple-subhead">
-              Five products across health, retail, education and sustainability. Each starts with a problem worth solving.
-            </p>
           </div>
         </div>
 
@@ -304,7 +301,7 @@ export default function DesignShowcaseMorph() {
             }}
             href={design.caseStudyUrl}
             aria-label={`${design.name}: ${design.subtitle}`}
-            className="group absolute z-[5] block rounded-3xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0071E3]"
+            className="group absolute z-[5] block rounded-3xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus-ring)]"
             style={{ visibility: "hidden", pointerEvents: "none" }}
           >
             <div

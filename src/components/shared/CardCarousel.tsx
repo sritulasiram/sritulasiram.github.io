@@ -15,11 +15,14 @@ export default function CardCarousel({
   title,
   subtitle,
   label,
+  plain = false,
   children,
 }: {
   title: string;
   subtitle?: string;
   label: string;
+  /** Leave out the tinted band, so the row sits on the page background. */
+  plain?: boolean;
   children: React.ReactNode;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -58,10 +61,10 @@ export default function CardCarousel({
   };
 
   const btn =
-    "h-10 w-10 rounded-full flex items-center justify-center bg-[var(--pa-soft)] text-[var(--pa)] transition-[opacity,background-color] hover:bg-[color-mix(in_srgb,var(--pa)_22%,transparent)] disabled:opacity-30 disabled:pointer-events-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--pa)]";
+    "h-10 w-10 rounded-full flex items-center justify-center bg-[var(--pa-soft)] text-[var(--pa)] transition-[opacity,background-color] hover:bg-[color-mix(in_srgb,var(--pa)_22%,transparent)] disabled:opacity-30 disabled:pointer-events-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]";
 
   return (
-    <section aria-label={label} className="py-16 sm:py-24 bg-[var(--pa-tint)]">
+    <section aria-label={label} className={`py-16 sm:py-24 ${plain ? "" : "bg-[var(--pa-tint)]"}`}>
       <div className="max-w-5xl mx-auto w-full px-6 sm:px-8 flex items-end justify-between gap-6">
         <div>
           <h2 className="text-3xl sm:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero">
@@ -84,7 +87,7 @@ export default function CardCarousel({
         tabIndex={0}
         role="group"
         aria-label={`${label} cards`}
-        className="mt-10 flex gap-5 overflow-x-auto snap-x snap-mandatory pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden focus-visible:outline-2 focus-visible:outline-[var(--pa)]"
+        className="mt-10 flex gap-5 overflow-x-auto snap-x snap-mandatory pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden focus-visible:outline-2 focus-visible:outline-[var(--focus-ring)]"
         style={{ paddingInline: EDGE, scrollPaddingInline: EDGE }}
       >
         {children}

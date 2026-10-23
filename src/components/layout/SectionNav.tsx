@@ -17,17 +17,24 @@ const getSection = (id: string) =>
     (el) => el.getClientRects().length > 0,
   ) ?? document.getElementById(id);
 
+/** Height of one row in the capsule. */
+const ITEM_H = 30;
+
 // Desktop only: below this width the nav is not rendered and no scroll work is done.
 const DESKTOP_QUERY = "(min-width: 1280px)";
 
 /**
- * Chapter ruler fixed to the right edge of the page.
+ * Chapter dots in a frosted capsule, fixed to the right edge of the page, styled after the
+ * pagination dots on Apple's product pages.
  *
- * - xl (1280px+): ticks only, with the label shown on hover or keyboard focus, so it never
- *   covers page content. 2xl (1536px+): labels are always visible in the page margin.
+ * - xl (1280px+) only. At rest it is a column of dots; the current section's dot stretches into
+ *   a pill. Hovering or focusing the capsule widens it to show every chapter's name.
  * - Items are real links (#id), so they can be copied, opened in a new tab and followed
  *   from the keyboard. The URL hash is updated on click and honoured on load.
  * - Active section comes from scroll position, checked at most once per frame.
+ * - It stands in for the page's scrollbar: the browser's own is hidden while the nav is mounted
+ *   on desktop (see globals.css). The current section's pill can be dragged up and down the
+ *   column; the page follows section by section and the labels stay open while dragging.
  */
 export default function SectionNav({
   sections,
@@ -42,6 +49,12 @@ export default function SectionNav({
   // flicker through the sections in between.
   const lockRef = useRef(false);
   const unlockTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const listRef = useRef<HTMLUListElement>(null);
+  const [dragging, setDragging] = useState(false);
+  // Mirrors `dragging` for the scroll listener, which must leave the active section alone mid-drag.
+  const draggingRef = useRef(false);
+  // Set when a drag ends, so the click that follows the pointerup does not jump anywhere.
+  const suppressClick = useRef(false);
 
   useEffect(() => {
     const mq = window.matchMedia(DESKTOP_QUERY);
@@ -51,7 +64,8 @@ export default function SectionNav({
     const update = () => {
       raf = 0;
       setVisible((shown) => (shown ? window.scrollY > 120 : window.scrollY > 200));
-      if (lockRef.current) return;
+
+      if (lockRef.current || draggingRef.current) return;
 
       const atBottom =
         window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 120;
@@ -76,6 +90,7 @@ export default function SectionNav({
     };
 
     const sync = () => {
+      document.documentElement.classList.toggle("section-nav-scroll", mq.matches);
       if (mq.matches && !attached) {
         window.addEventListener("scroll", onScroll, { passive: true });
         window.addEventListener("resize", onScroll);
@@ -100,6 +115,7 @@ export default function SectionNav({
 
     return () => {
       mq.removeEventListener("change", sync);
+      document.documentElement.classList.remove("section-nav-scroll");
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
       if (raf) cancelAnimationFrame(raf);
@@ -108,10 +124,10 @@ export default function SectionNav({
     };
   }, [sections]);
 
-  const goTo = (event: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+  /** Mark a section current and glide to it, holding off the scroll listener until it arrives. */
+  const scrollToSection = (id: string) => {
     const el = getSection(id);
-    if (!el) return;
-    event.preventDefault();
+    if (!el) return false;
 
     setActive(id);
     lockRef.current = true;
@@ -129,17 +145,73 @@ export default function SectionNav({
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     el.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
     window.history.replaceState(null, "", `#${id}`);
+    return true;
+  };
+
+  const goTo = (event: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    if (suppressClick.current || scrollToSection(id)) event.preventDefault();
+  };
+
+  /**
+   * Drag the current section's pill. Window listeners rather than pointer capture, so a press
+   * without movement still lands on the link as a normal click.
+   */
+  const startDrag = (event: React.PointerEvent<HTMLAnchorElement>) => {
+    if (event.button !== 0 || !listRef.current) return;
+    const startY = event.clientY;
+    let moved = false;
+    let current = sections.findIndex((s) => s.id === active);
+
+    const onMove = (e: PointerEvent) => {
+      if (!moved) {
+        if (Math.abs(e.clientY - startY) < 4) return;
+        moved = true;
+        draggingRef.current = true;
+        setDragging(true);
+        document.documentElement.style.cursor = "grabbing";
+      }
+      e.preventDefault();
+
+      const rect = listRef.current!.getBoundingClientRect();
+      const paddingTop = parseFloat(getComputedStyle(listRef.current!).paddingTop);
+      const index = Math.min(
+        sections.length - 1,
+        Math.max(0, Math.floor((e.clientY - rect.top - paddingTop) / ITEM_H)),
+      );
+      if (index === current) return;
+      current = index;
+
+      scrollToSection(sections[index].id);
+    };
+
+    const onEnd = () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onEnd);
+      window.removeEventListener("pointercancel", onEnd);
+      if (!moved) return;
+
+      draggingRef.current = false;
+      setDragging(false);
+      document.documentElement.style.cursor = "";
+      suppressClick.current = true;
+      setTimeout(() => (suppressClick.current = false), 0);
+    };
+
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onEnd);
+    window.addEventListener("pointercancel", onEnd);
   };
 
   return (
     <nav
       aria-label={ariaLabel}
       inert={!visible}
-      className={`hidden xl:block fixed right-4 2xl:right-8 top-1/2 -translate-y-1/2 z-40 transition-[opacity,transform] duration-[400ms] [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
-        visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-3 pointer-events-none"
+      data-dragging={dragging || undefined}
+      className={`group/rail hidden xl:block fixed right-4 2xl:right-8 top-1/2 -translate-y-1/2 z-40 transition-[opacity,transform] duration-500 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
+        visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4 pointer-events-none"
       }`}
     >
-      <ul className="flex flex-col gap-1">
+      <ul ref={listRef} className="flex flex-col rounded-[22px] px-2 py-2 bg-[rgba(232,232,237,0.72)] dark:bg-[rgba(44,44,46,0.72)] backdrop-blur-xl backdrop-saturate-[180%] ring-1 ring-inset ring-black/[0.04] dark:ring-white/[0.06]">
         {sections.map(({ id, label }) => {
           const isActive = active === id;
           return (
@@ -147,32 +219,39 @@ export default function SectionNav({
               <a
                 href={`#${id}`}
                 onClick={(event) => goTo(event, id)}
+                onPointerDown={isActive ? startDrag : undefined}
+                draggable={false}
                 aria-current={isActive ? "location" : undefined}
-                className="group relative flex items-center justify-end h-8 w-9 pl-2 pr-1 rounded-md select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0071E3]"
+                style={{ height: ITEM_H }}
+                className={`group flex items-center justify-end rounded-full px-1.5 select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)] ${
+                  isActive ? "cursor-grab" : ""
+                }`}
               >
-                {/* Label: a pill beside the tick on hover/focus; plain text in the margin on 2xl.
-                    The wrapper's padding bridges the gap to the tick, so the pointer can move
-                    from tick to label without losing hover, and the label is part of the link.
-                    It only takes pointer events while visible, so it never blocks the page. */}
-                <span className="absolute right-full pr-2 pointer-events-none group-hover:pointer-events-auto group-focus-visible:pointer-events-auto 2xl:pointer-events-auto">
-                  <span
-                    className={`block whitespace-nowrap rounded-full px-3 py-1 text-[12px] leading-none cursor-pointer border border-black/[0.06] dark:border-white/10 bg-white/90 dark:bg-[#1C1C1E]/90 backdrop-blur-xl shadow-xs transition-[opacity,transform,color] duration-200 ease-out motion-reduce:transition-none opacity-0 translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 group-focus-visible:opacity-100 group-focus-visible:translate-x-0 2xl:opacity-100 2xl:translate-x-0 2xl:bg-transparent 2xl:dark:bg-transparent 2xl:border-transparent 2xl:dark:border-transparent 2xl:shadow-none 2xl:backdrop-blur-none ${
-                      isActive
-                        ? "font-medium text-[#1D1D1F] dark:text-white"
-                        : "font-medium text-[#6E6E73] dark:text-[#A1A1A6] group-hover:text-[#1D1D1F] dark:group-hover:text-white"
-                    }`}
-                  >
-                    {label}
+                {/* Label: folded to zero width at rest, opened when the capsule is hovered, focused or dragged. */}
+                <span className="grid grid-cols-[0fr] group-hover/rail:grid-cols-[1fr] group-focus-within/rail:grid-cols-[1fr] group-data-dragging/rail:grid-cols-[1fr] transition-[grid-template-columns] duration-500 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none">
+                  <span className="overflow-hidden">
+                    <span
+                      className={`block whitespace-nowrap pl-1.5 pr-3 text-[12px] leading-none tracking-[-0.01em] opacity-0 group-hover/rail:opacity-100 group-focus-within/rail:opacity-100 group-data-dragging/rail:opacity-100 transition-[opacity,color] duration-300 motion-reduce:transition-none ${
+                        isActive
+                          ? "font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]"
+                          : "text-[#515154] dark:text-[#A1A1A6] group-hover:text-[#1D1D1F] dark:group-hover:text-[#F5F5F7]"
+                      }`}
+                    >
+                      {label}
+                    </span>
                   </span>
                 </span>
-                <span
-                  aria-hidden="true"
-                  className={`block w-6 h-[2px] rounded-full shrink-0 origin-right transition-[transform,background-color] duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
-                    isActive
-                      ? "scale-x-100 bg-[#1D1D1F] dark:bg-white"
-                      : "scale-x-[0.42] bg-[#86868B] dark:bg-[#6E6E73] group-hover:scale-x-[0.7] group-hover:bg-[#6E6E73] dark:group-hover:bg-[#A1A1A6]"
-                  }`}
-                />
+
+                {/* Dot: the current section's stretches into a pill. */}
+                <span className="flex w-2 shrink-0 justify-center" aria-hidden="true">
+                  <span
+                    className={`block w-2 rounded-full transition-[height,background-color] duration-500 [transition-timing-function:cubic-bezier(0.34,1.3,0.64,1)] motion-reduce:transition-none ${
+                      isActive
+                        ? "h-5 bg-[#1D1D1F] dark:bg-[#F5F5F7]"
+                        : "h-2 bg-[#8B8B8E] dark:bg-[#808082] group-hover:bg-[#48484A] dark:group-hover:bg-[#C7C7CC]"
+                    }`}
+                  />
+                </span>
               </a>
             </li>
           );

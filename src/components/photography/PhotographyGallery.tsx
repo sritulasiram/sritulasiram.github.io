@@ -363,9 +363,6 @@ export default function PhotographyGallery({ photos }: PhotographyGalleryProps) 
             );
           })}
         </div>
-        <p className="mt-4 text-sm text-[#6E6E73] dark:text-[#A1A1A6] max-w-xl mx-auto text-balance min-h-10">
-          {PHOTO_ALBUMS.find((a) => a.id === selectedAlbum)?.description}
-        </p>
       </div>
 
       {/* 2. Photo Gallery Display */}

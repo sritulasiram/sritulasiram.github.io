@@ -236,15 +236,15 @@ const SAGE: AppStudyConfig = {
     ink: "Every colour has a job.",
     swatches: [
       { name: "Mist", hex: "#DCEBDE", note: "Screen background", fg: "#2D6645" },
-      { name: "Sage Green", hex: "#31C456", note: "Primary buttons, active tab", fg: "#FFFFFF" },
+      { name: "Sage Green", hex: "#31C456", note: "Primary buttons, active tab", fg: "#0F2A1A" },
       { name: "Forest", hex: "#2D6645", note: "Headlines and Book Now", fg: "#FFFFFF" },
       { name: "Coral", hex: "#D1624C", note: "Crisis help only", fg: "#FFFFFF" },
       { name: "Plum", hex: "#4B3462", note: "Urgent help card", fg: "#FFFFFF" },
     ],
     sample: (
-      <div className="rounded-2xl bg-[#DCEBDE] p-8 h-full flex flex-col justify-between gap-8 min-h-[320px] ring-1 ring-black/5 dark:ring-white/10">
+      <div className="rounded-2xl bg-[#DCEBDE] p-8 h-full flex flex-col gap-8 min-h-[320px] ring-1 ring-black/5 dark:ring-white/10">
         <p className="text-xs font-semibold text-[#2D6645]">Components</p>
-        <div className="space-y-3">
+        <div className="my-auto space-y-3">
           <p className="font-serif text-4xl font-semibold text-[#2D6645]">Sage</p>
           <div className="flex h-12 items-center justify-center rounded-full bg-[#31C456] text-sm font-semibold text-white">Get Started</div>
           <div className="flex items-center gap-3 rounded-xl border border-[#2D6645] bg-white/60 px-4 py-3 text-sm font-semibold text-[#2D6645]">

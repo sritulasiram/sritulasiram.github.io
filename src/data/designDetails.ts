@@ -726,8 +726,6 @@ export const DESIGN_DETAILS: Record<string, DesignCaseStudy> = {
     organization: "Perak Medical Centre (Klinik PMC Sdn. Bhd.)",
     tool: "Figma",
     platform: "Website (Desktop & Mobile)",
-    liveUrl: "https://www.pmcgroup.com.my/",
-    liveLabel: "Visit the live website",
     background: {
       problemStatement:
         "A clinic group's website has to answer three questions fast: what do you offer, who will treat me, and where do I go?",

@@ -14,11 +14,15 @@ export default function HomeDesigns() {
       <div className={`${WRAP_WIDE} grid grid-cols-1 items-center gap-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-10`}>
         {/* Left: title and the list of designs */}
         <Reveal>
-          <Headline gray="Apps." ink="Designed end to end." />
-          <p className={`mt-4 max-w-md text-lg sm:text-xl leading-relaxed ${GRAY}`}>
-            Mobile apps designed from the first screen to the last. Each page covers the problem, the decisions, and the result.
+          <Headline gray="Designs." ink="Every screen, considered." className="text-balance" />
+          <p className={`mt-5 max-w-md text-pretty text-lg sm:text-xl leading-relaxed ${GRAY}`}>
+            A collection of my app designs, from the first screen to the last. Each one covers the problem, the decisions, and the result.
           </p>
-          <Button variant="secondary" href="/designs" className="mt-4">
+          <Button
+            variant="secondary"
+            href="/designs"
+            className="mt-8 border-black bg-black text-white hover:bg-[#1D1D1F] dark:border-white dark:bg-white dark:text-black dark:hover:bg-[#E8E8ED]"
+          >
             See all designs
           </Button>
         </Reveal>
@@ -35,7 +39,7 @@ export default function HomeDesigns() {
                 <Link
                   href={design.caseStudyUrl}
                   aria-label={`${design.name}: ${design.shortSubtitle}`}
-                  className="group block rounded-[2rem] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--pa)]"
+                  className="group block rounded-[2rem] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus-ring)]"
                 >
                   <div
                     role="img"

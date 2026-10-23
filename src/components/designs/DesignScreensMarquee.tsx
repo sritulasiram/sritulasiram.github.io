@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
-import { Maximize2, X, Smartphone, LayoutGrid, GalleryHorizontal } from "lucide-react";
+import ImageLightbox from "@/components/shared/ImageLightbox";
+import { Maximize2, Smartphone, LayoutGrid, GalleryHorizontal } from "lucide-react";
 import type { DesignScreen } from "@/types";
 
 interface MetaRow {
@@ -22,20 +23,12 @@ export default function DesignScreensMarquee({
   title?: string;
   subtitle?: string;
 }) {
-  const [selectedScreen, setSelectedScreen] = useState<DesignScreen | null>(null);
+  // Index of the screen open in the viewer, or null when closed.
+  const [selectedAt, setSelectedAt] = useState<number | null>(null);
   const [viewMode, setViewMode] = useState<"ribbon" | "grid">("ribbon");
 
   // Duplicate screens for an uninterrupted infinite loop
   const marqueeScreens = [...screens, ...screens];
-
-  useEffect(() => {
-    if (!selectedScreen) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelectedScreen(null);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [selectedScreen]);
 
   const switcherButton = (mode: "ribbon" | "grid", label: string, hint: string, Icon: typeof Smartphone) => (
     <button
@@ -43,7 +36,7 @@ export default function DesignScreensMarquee({
       onClick={() => setViewMode(mode)}
       aria-pressed={viewMode === mode}
       title={hint}
-      className={`flex items-center gap-1.5 px-3 min-h-[32px] rounded-full text-xs font-medium transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-[#0071E3] ${
+      className={`flex items-center gap-1.5 px-3 min-h-[32px] rounded-full text-xs font-medium transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-[var(--focus-ring)] ${
         viewMode === mode
           ? "bg-white dark:bg-[#2C2C2E] text-[#1D1D1F] dark:text-white shadow-2xs"
           : "text-[#6E6E73] dark:text-[#A1A1A6] hover:text-[#1D1D1F] dark:hover:text-white"
@@ -83,11 +76,11 @@ export default function DesignScreensMarquee({
                 <button
                   key={`${screen.id}-${index}`}
                   type="button"
-                  onClick={() => setSelectedScreen(screen)}
+                  onClick={() => setSelectedAt(screens.indexOf(screen))}
                   aria-hidden={isCopy}
                   tabIndex={isCopy ? -1 : 0}
                   aria-label={`Inspect screen ${screen.number}: ${screen.title}`}
-                  className="group/card relative w-[220px] sm:w-[260px] md:w-[290px] aspect-[9/19] shrink-0 rounded-[2.5rem] p-3 overflow-hidden border border-[#E5E5EA] dark:border-white/10 bg-[#1D1D1F] apple-card-shadow transition-all duration-500 hover:-translate-y-2.5 hover:shadow-[0_24px_48px_rgba(0,0,0,0.2)] text-left cursor-pointer flex flex-col justify-between focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0071E3]"
+                  className="group/card relative w-[220px] sm:w-[260px] md:w-[290px] aspect-[9/19] shrink-0 rounded-[2.5rem] p-3 overflow-hidden border border-[#E5E5EA] dark:border-white/10 bg-[#1D1D1F] apple-card-shadow transition-all duration-500 hover:-translate-y-2.5 hover:shadow-[0_24px_48px_rgba(0,0,0,0.2)] text-left cursor-pointer flex flex-col justify-between focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus-ring)]"
                 >
                   {/* Phone Speaker & Camera Notch Simulator */}
                   <div className="w-full flex justify-center pb-1">
@@ -142,9 +135,9 @@ export default function DesignScreensMarquee({
             <button
               key={screen.id}
               type="button"
-              onClick={() => setSelectedScreen(screen)}
+              onClick={() => setSelectedAt(screens.indexOf(screen))}
               aria-label={`Inspect screen ${screen.number}: ${screen.title}`}
-              className="group/card relative aspect-[9/19] rounded-[2rem] p-2.5 overflow-hidden border border-[#E5E5EA] dark:border-white/10 bg-[#1D1D1F] apple-card-shadow transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg text-left cursor-pointer flex flex-col justify-between focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0071E3]"
+              className="group/card relative aspect-[9/19] rounded-[2rem] p-2.5 overflow-hidden border border-[#E5E5EA] dark:border-white/10 bg-[#1D1D1F] apple-card-shadow transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg text-left cursor-pointer flex flex-col justify-between focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus-ring)]"
             >
               <div className="w-full flex justify-center pb-1">
                 <div className="w-12 h-1 rounded-full bg-white/20" />
@@ -175,75 +168,29 @@ export default function DesignScreensMarquee({
         </div>
       )}
 
-      {/* Screen Lightbox Modal */}
-      {selectedScreen && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label={`Screen ${selectedScreen.number}: ${selectedScreen.title}`}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 sm:p-6 animate-page-enter"
-          onClick={() => setSelectedScreen(null)}
-        >
-          <div
-            className="relative max-w-2xl w-full max-h-[92vh] bg-[#1D1D1F] border border-[#2C2E35] rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-center gap-6 sm:gap-8 apple-card-shadow text-white overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Close Button */}
-            <button
-              type="button"
-              onClick={() => setSelectedScreen(null)}
-              className="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-[#2997FF]"
-              aria-label="Close preview"
-            >
-              <X className="w-4 h-4" />
-            </button>
-
-            {/* Screen Viewport */}
-            <div className="w-[240px] sm:w-[270px] aspect-[9/19] shrink-0 rounded-[2.5rem] p-3 border border-white/10 bg-black flex flex-col justify-between shadow-2xl">
-              <div className="w-full flex justify-center pb-1">
-                <div className="w-16 h-1 rounded-full bg-white/20" />
-              </div>
-              <div className="relative w-full flex-1 rounded-[1.75rem] overflow-hidden bg-[#111]">
-                <Image
-                  src={selectedScreen.imageSrc}
-                  alt={selectedScreen.title}
-                  fill
-                  sizes="270px"
-                  className="object-contain"
-                />
-              </div>
-            </div>
-
-            {/* Detailed Metadata Breakdown */}
-            <div className="space-y-4 max-w-sm">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-[#2997FF] bg-[#0071E3]/20 px-2.5 py-0.5 rounded-full border border-[#0071E3]/30">
-                  SCREEN {selectedScreen.number}
-                </span>
-                <span className="text-xs text-neutral-400">{selectedScreen.role}</span>
-              </div>
-
-              <h3 className="text-2xl font-semibold text-white tracking-apple-tight">
-                {selectedScreen.title}
-              </h3>
-
-              <p className="text-sm text-neutral-300 leading-relaxed font-normal">
-                {selectedScreen.description}
+      {/* Full-size viewer */}
+      {selectedAt !== null && (
+        <ImageLightbox
+          src={screens[selectedAt].imageSrc}
+          alt={screens[selectedAt].title}
+          onClose={() => setSelectedAt(null)}
+          index={selectedAt}
+          count={screens.length}
+          onPrev={() => setSelectedAt((selectedAt - 1 + screens.length) % screens.length)}
+          onNext={() => setSelectedAt((selectedAt + 1) % screens.length)}
+          caption={
+            <div className="space-y-2">
+              <p className="text-xs font-semibold uppercase tracking-wider text-white/60">
+                Screen {screens[selectedAt].number} · {screens[selectedAt].role}
               </p>
-
+              <p className="text-lg font-semibold text-white">{screens[selectedAt].title}</p>
+              <p className="text-sm leading-relaxed text-white/70">{screens[selectedAt].description}</p>
               {meta.length > 0 && (
-                <div className="pt-3 border-t border-white/10 space-y-2 text-xs text-neutral-400">
-                  {meta.map((row) => (
-                    <div key={row.label} className="flex items-center justify-between gap-4">
-                      <span>{row.label}</span>
-                      <span className="text-white font-medium text-right">{row.value}</span>
-                    </div>
-                  ))}
-                </div>
+                <p className="pt-1 text-xs text-white/50">{meta.map((row) => `${row.label}: ${row.value}`).join(" · ")}</p>
               )}
             </div>
-          </div>
-        </div>
+          }
+        />
       )}
     </div>
   );
