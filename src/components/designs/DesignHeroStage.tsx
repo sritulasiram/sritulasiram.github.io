@@ -136,15 +136,11 @@ export default function DesignHeroStage() {
         </nav>
 
         {/* Page Header matching Photography layout */}
-        <div className="max-w-4xl mx-auto text-center space-y-4 mb-8 sm:mb-12">
+        <div className="max-w-4xl mx-auto text-center space-y-4 mb-6 sm:mb-4">
           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.03]">
             Design
             <span className="mt-3 block text-[0.36em] font-medium leading-[1.15] tracking-apple-tight text-[#6E6E73] dark:text-[#8E8E93] text-balance">Effortlessly natural</span>
           </h1>
-
-          <p className="text-lg sm:text-xl lg:text-2xl text-[#6E6E73] dark:text-[#A1A1A6] font-normal max-w-2xl mx-auto leading-relaxed tracking-apple-subhead">
-            Five products across health, retail, education and sustainability. Each starts with a problem worth solving.
-          </p>
         </div>
 
         {/* Phones: one featured design in place of the carousel */}
@@ -160,7 +156,7 @@ export default function DesignHeroStage() {
                 <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: accent }}>Featured · {featured.category}</p>
                 <h2 className="text-2xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight">{featured.name}</h2>
                 <p className="text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">{featured.subtitle}</p>
-                <div className="pt-3">
+                <div className="pt-3 flex justify-center">
                   <Button href={featured.caseStudyUrl} accent={APP_STUDIES[featured.id]?.accent} icon={<ArrowRight className="h-4 w-4" aria-hidden="true" />}>
                     {featured.cta}
                   </Button>
@@ -174,7 +170,7 @@ export default function DesignHeroStage() {
         <div
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
-          className="hidden sm:flex mt-6 sm:mt-12 relative w-full max-w-5xl mx-auto h-[540px] md:h-[600px] lg:h-[650px] items-center justify-center overflow-x-clip overflow-y-visible touch-pan-y"
+          className="hidden sm:flex sm:mt-0 relative w-full max-w-5xl mx-auto h-[540px] md:h-[600px] lg:h-[650px] items-center justify-center overflow-x-clip overflow-y-visible touch-pan-y"
         >
           {DESIGNS.map((item, idx) => {
             const diff = getSlot(idx);
@@ -203,7 +199,7 @@ export default function DesignHeroStage() {
                   "absolute top-1/2 left-1/2 w-[190px] sm:w-[245px] md:w-[275px] lg:w-[295px] origin-center transition-all duration-600 ease-[cubic-bezier(0.16,1,0.3,1)] select-none",
                   slot.opacityClass,
                   !slot.isCenter ? "cursor-pointer" : "cursor-default",
-                  !slot.isCenter && "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0071E3] rounded-[2.5rem]",
+                  !slot.isCenter && "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus-ring)] rounded-[2.5rem]",
                 )}
                 style={{
                   transform: `translate(calc(-50% + ${slot.xPercent}%), -50%) scale(${slot.scale})`,

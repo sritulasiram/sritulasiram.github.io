@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ChevronRight } from "lucide-react";
 import { useMediaQuery } from "@/components/layout/nav/useMediaQuery";
+import Button from "@/components/ui/Button";
+import InstagramIcon from "./InstagramIcon";
 import PhotographyHighlights from "./PhotographyHighlights";
 import type { PhotoItem } from "@/types";
 
@@ -39,7 +41,7 @@ const MORPH_DONE = 0.85;
 const SWAP_AT = 0.8;
 const PHOTO_ASPECT = 4 / 3; // height / width, matches the 3:4 viewfinder
 const TOP_INSET = 64;
-const HEADER_H = 364;
+const HEADER_H = 336;
 
 const FOCUS_POINTS = [
   { x: 52, y: 58 },
@@ -73,8 +75,30 @@ function CameraPhone({
   pressed: boolean;
 }) {
   const focus = FOCUS_POINTS[index % FOCUS_POINTS.length];
+  // The phone and its screen appear together: nothing shows until the frame and the first photo
+  // have loaded, so the preview never arrives before the phone. Images that finished before React
+  // started are counted too (their load event has already gone), and a timeout keeps a slow image
+  // from hiding the phone for good.
+  const rootRef = useRef<HTMLDivElement>(null);
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    const imgs = Array.from(rootRef.current?.querySelectorAll<HTMLImageElement>("img[data-gate]") ?? []);
+    let pending = imgs.length;
+    const done = () => {
+      if (--pending <= 0) setReady(true);
+    };
+    imgs.forEach((img) => {
+      if (img.complete) done();
+      else {
+        img.addEventListener("load", done, { once: true });
+        img.addEventListener("error", done, { once: true });
+      }
+    });
+    const t = window.setTimeout(() => setReady(true), 1500);
+    return () => window.clearTimeout(t);
+  }, []);
   return (
-    <div className="absolute inset-0">
+    <div ref={rootRef} className="absolute inset-0" style={{ opacity: ready ? 1 : 0, transition: "opacity 0.3s ease-out" }}>
       {/* Black screen behind the semi-transparent camera bars */}
       <div
         className="absolute bg-black"
@@ -91,6 +115,8 @@ function CameraPhone({
             fill
             sizes="320px"
             className="object-cover"
+            priority={i === 0}
+            {...(i === 0 ? { "data-gate": "" } : {})}
             style={{ opacity: i === index ? 1 : 0, transition: "opacity 0.35s ease-out" }}
           />
         ))}
@@ -125,7 +151,7 @@ function CameraPhone({
       </div>
 
       {/* Camera app chrome: zoom pills, modes, shutter and flip */}
-      <Image src={CAMERA_UI} alt="" fill sizes="700px" className="object-contain" />
+      <Image src={CAMERA_UI} alt="" fill sizes="700px" className="object-contain" priority data-gate="" />
 
       {/* Last shot, bottom left */}
       <span
@@ -161,7 +187,7 @@ function CameraPhone({
   );
 }
 
-export default function PhotographyIntroMorph({ photos }: { photos: PhotoItem[] }) {
+export default function PhotographyIntroMorph({ photos: allPhotos }: { photos: PhotoItem[] }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -178,7 +204,10 @@ export default function PhotographyIntroMorph({ photos }: { photos: PhotoItem[] 
   const [flashKey, setFlashKey] = useState(0);
   const [pressed, setPressed] = useState(false);
 
-  const count = photos.length;
+  const count = allPhotos.length;
+  // The shelf and the frames that fly onto it start from the photo the camera is showing, then follow
+  // the sequence. The cycle stops once you scroll, so this is the photo you left the phone on.
+  const photos = useMemo(() => [...allPhotos.slice(index), ...allPhotos.slice(0, index)], [allPhotos, index]);
   const cycling = enabled && nearTop && count > 0;
 
   // Shutter cycle: frame the scene, press the shutter, move on.
@@ -216,6 +245,9 @@ export default function PhotographyIntroMorph({ photos }: { photos: PhotoItem[] 
     const shelf = shelfRef.current;
     if (!track || !stage || !header || !phone || !shelf) return;
 
+    const scroller = shelf.querySelector<HTMLElement>(".overflow-x-auto");
+    if (!scroller) return;
+
     type Geo = {
       startCx: number;
       startCy: number;
@@ -243,7 +275,9 @@ export default function PhotographyIntroMorph({ photos }: { photos: PhotoItem[] 
       phone.style.width = `${imgW}px`;
       phone.style.top = `${imgTop}px`;
 
-      // Targets are the real cards in the Highlights shelf, in stage coordinates.
+      // Targets are the real cards in the Highlights shelf, in stage coordinates. Until the frames have
+      // landed the shelf sits at its first card, so the photo from the phone is the one you land on.
+      if (shelf.style.pointerEvents !== "auto") scroller.scrollLeft = 0;
       const cards = Array.from(shelf.querySelectorAll<HTMLElement>("[data-highlight-card]"));
       const sr = stage.getBoundingClientRect();
       const rects = cards.map((c) => c.getBoundingClientRect());
@@ -308,6 +342,7 @@ export default function PhotographyIntroMorph({ photos }: { photos: PhotoItem[] 
 
       const sp = clamp((p - 0.5) / 0.3);
       shelf.style.opacity = String(sp);
+      if (!swapped && scroller.scrollLeft !== 0) scroller.scrollLeft = 0;
       shelf.style.pointerEvents = swapped ? "auto" : "none";
 
       const hp = clamp(p / 0.2);
@@ -407,9 +442,20 @@ export default function PhotographyIntroMorph({ photos }: { photos: PhotoItem[] 
               <br />
               <span className="block mt-1 text-3xl lg:text-4xl xl:text-5xl text-[#6E6E73] dark:text-[#8E8E93] font-medium">Perspective and light</span>
             </h1>
-            <p className="text-lg xl:text-xl text-[#6E6E73] dark:text-[#A1A1A6] max-w-2xl mx-auto leading-relaxed tracking-apple-subhead">
-              Curated frames capturing coastal atmosphere, architectural geometry, and fleeting moments.
-            </p>
+            <div className="pointer-events-auto flex items-center justify-center gap-3 pt-3">
+              <Button
+                variant="secondary"
+                href="https://instagram.com/iamsritulasiram"
+                icon={<InstagramIcon className="h-4 w-4" />}
+                iconBefore
+                className="border-black bg-black text-white hover:bg-[#1D1D1F] dark:border-white dark:bg-white dark:text-black dark:hover:bg-[#E8E8ED]"
+              >
+                iamsritulasiram
+              </Button>
+              <Button variant="link" href="#shot-on-iphone" className="text-[#1D1D1F]! dark:text-[#F5F5F7]!">
+                Shot on iPhone 16 Pro
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -426,7 +472,7 @@ export default function PhotographyIntroMorph({ photos }: { photos: PhotoItem[] 
             transform: "translateX(-50%)",
           }}
         >
-          <CameraPhone photos={photos} index={index} shotIndex={shotIndex} flashKey={flashKey} pressed={pressed} />
+          <CameraPhone photos={allPhotos} index={index} shotIndex={shotIndex} flashKey={flashKey} pressed={pressed} />
         </div>
       </div>
     </div>

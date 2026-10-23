@@ -21,7 +21,8 @@ export default function PinnedScreens({
   fitWidth?: boolean;
 }) {
   const [active, setActive] = useState(0);
-  const [zoom, setZoom] = useState(false);
+  // Index of the screen open in the viewer, or null when closed.
+  const [zoomAt, setZoomAt] = useState<number | null>(null);
   const stepRefs = useRef<(HTMLLIElement | null)[]>([]);
 
   useEffect(() => {
@@ -38,7 +39,7 @@ export default function PinnedScreens({
   }, []);
 
   const frame = `relative h-full w-full overflow-hidden rounded-xl sm:rounded-2xl ${
-    tone === "light" ? "bg-white" : "bg-[#0F1117]"
+    tone === "light" ? "bg-[#ffffff]" : "bg-[#0F1117]"
   } shadow-2xl ring-1 ring-black/10 dark:ring-white/10`;
 
   return (
@@ -51,8 +52,10 @@ export default function PinnedScreens({
               <div
                 key={screen.id}
                 aria-hidden={i !== active}
-                className={`absolute ${fitWidth ? "inset-0" : "inset-5"} transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
-                  i === active ? "opacity-100 scale-100" : "pointer-events-none opacity-0 scale-[0.985]"
+                // The incoming screen fades in on top while the outgoing one stays fully opaque until it is
+                // covered, so the stage never dips to the background between two screens.
+                className={`absolute ${fitWidth ? "inset-0" : "inset-5"} transition-opacity duration-500 ease-out motion-reduce:transition-none ${
+                  i === active ? "z-[1] opacity-100" : "pointer-events-none opacity-0 delay-500 motion-reduce:delay-0"
                 }`}
               >
                 <div className={fitWidth ? "relative h-full w-full overflow-hidden" : frame}>
@@ -62,9 +65,9 @@ export default function PinnedScreens({
             ))}
             <button
               type="button"
-              onClick={() => setZoom(true)}
+              onClick={() => setZoomAt(active)}
               aria-label={`View ${screens[active].label} full size`}
-              className="absolute inset-0 z-10 cursor-zoom-in focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-[var(--pa)]"
+              className="absolute inset-0 z-10 cursor-zoom-in focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-[var(--focus-ring)]"
             >
               <span className="absolute bottom-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur-md">
                 <Maximize2 className="h-4 w-4" aria-hidden="true" />
@@ -83,7 +86,7 @@ export default function PinnedScreens({
               stepRefs.current[i] = el;
             }}
             data-step={i}
-            className="py-10 md:flex md:min-h-[45vh] md:items-center md:py-0"
+            className="py-10 md:flex md:min-h-[30vh] md:items-center md:py-0"
           >
             <div
               className={`transition-opacity duration-500 motion-reduce:transition-none ${
@@ -105,7 +108,22 @@ export default function PinnedScreens({
         ))}
       </ol>
 
-      {zoom && <ImageLightbox src={screens[active].src} alt={screens[active].alt} onClose={() => setZoom(false)} />}
+      {zoomAt !== null && (
+        <ImageLightbox
+          src={screens[zoomAt].src}
+          alt={screens[zoomAt].alt}
+          onClose={() => setZoomAt(null)}
+          index={zoomAt}
+          count={screens.length}
+          onPrev={() => setZoomAt((zoomAt - 1 + screens.length) % screens.length)}
+          onNext={() => setZoomAt((zoomAt + 1) % screens.length)}
+          caption={
+            <p className="text-sm leading-relaxed text-white/70 sm:text-base">
+              <span className="font-semibold text-white">{screens[zoomAt].title}</span> {screens[zoomAt].description}
+            </p>
+          }
+        />
+      )}
     </div>
   );
 }

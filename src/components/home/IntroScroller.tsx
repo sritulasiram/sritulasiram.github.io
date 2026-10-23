@@ -59,7 +59,7 @@ export default function IntroScroller() {
 
   if (flat) {
     return (
-      <section aria-label="Introduction" className={`${WRAP} flex flex-col gap-20 sm:gap-28 py-24 sm:py-32`}>
+      <section id="intro" aria-label="Introduction" className={`${WRAP} scroll-mt-14 flex flex-col gap-20 sm:gap-28 py-24 sm:py-32`}>
         {BEATS.map((Beat, i) => (
           <Beat key={i} />
         ))}
@@ -68,7 +68,7 @@ export default function IntroScroller() {
   }
 
   return (
-    <section ref={sectionRef} aria-label="Introduction" className="relative" style={{ height: `calc(100svh + ${COUNT * STEP_SVH}svh)` }}>
+    <section id="intro" ref={sectionRef} aria-label="Introduction" className="relative" style={{ height: `calc(100svh + ${COUNT * STEP_SVH}svh)` }}>
       <p className="sr-only">{READ_OUT}</p>
       <div aria-hidden="true" className="sticky top-0 h-svh overflow-hidden">
         {BEATS.map((Beat, i) => {
@@ -92,16 +92,6 @@ export default function IntroScroller() {
             </div>
           );
         })}
-
-        <div className="absolute right-3 top-1/2 flex -translate-y-1/2 flex-col gap-2 sm:right-6">
-          {BEATS.map((_, i) => (
-            <span
-              key={i}
-              className="w-1 rounded-full bg-[#1D1D1F] dark:bg-[#F5F5F7] transition-[height,opacity] duration-500"
-              style={{ height: i === active ? 22 : 6, opacity: i === active ? 1 : 0.25 }}
-            />
-          ))}
-        </div>
       </div>
     </section>
   );

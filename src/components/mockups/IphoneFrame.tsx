@@ -1,4 +1,6 @@
-import { useId, type ReactNode, type HTMLAttributes } from "react";
+"use client";
+
+import { useId, useRef, type ReactNode, type HTMLAttributes } from "react";
 
 const PHONE_WIDTH = 420;
 const PHONE_HEIGHT = 870;
@@ -29,7 +31,10 @@ export interface IphoneFrameProps extends HTMLAttributes<HTMLDivElement> {
   theme?: "light" | "dark";
   hideStatusBar?: boolean;
   noShadow?: boolean;
-  /** Cross-dissolve between `screens`. Turn off to swap instantly, with no light backing showing through. */
+  /**
+   * Cross-dissolve between `screens`: the new screen fades in over the old one, which stays fully
+   * opaque underneath, so the frame never dips to the backing. Turn off to swap instantly.
+   */
   fade?: boolean;
 }
 
@@ -57,6 +62,12 @@ export default function IphoneFrame({
   const statusColor = isDark ? "text-white" : "text-[#1D1D1F]";
   const homeBarColor = isDark ? "bg-white/40" : "bg-black/30";
   const rawId = useId();
+
+  // The screen shown before the current one, kept under the incoming screen while it fades in.
+  const activeId = screens?.find((s) => s.active)?.id;
+  const shown = useRef<{ cur?: string; prev?: string }>({ cur: activeId });
+  if (shown.current.cur !== activeId) shown.current = { cur: activeId, prev: shown.current.cur };
+  const prevId = shown.current.prev;
   const clipId = `iphone17-screen-${rawId.replace(/[^a-zA-Z0-9_-]/g, "")}`;
 
   return (
@@ -207,7 +218,53 @@ export default function IphoneFrame({
         />
 
         {/* 5A. Screen Images (Native vector clip path with smooth cross-dissolve support) */}
-        {screens && screens.length > 0 ? (
+        {screens && screens.length > 0 && fade ? (
+          <>
+            {/* Every screen stays loaded, hidden, so a new one never waits on the network. */}
+            {screens.map((screen) => (
+              <image
+                key={`load-${screen.id}`}
+                x={SCREEN_X}
+                y={SCREEN_Y}
+                width={SCREEN_WIDTH}
+                height={SCREEN_HEIGHT}
+                preserveAspectRatio="xMidYMid slice"
+                clipPath={`url(#${clipId})`}
+                href={screen.src}
+                style={{ opacity: 0 }}
+              />
+            ))}
+            {screens
+              .filter((screen) => screen.id === prevId && !screen.active)
+              .map((screen) => (
+                <image
+                  key={`prev-${screen.id}`}
+                  x={SCREEN_X}
+                  y={SCREEN_Y}
+                  width={SCREEN_WIDTH}
+                  height={SCREEN_HEIGHT}
+                  preserveAspectRatio="xMidYMid slice"
+                  clipPath={`url(#${clipId})`}
+                  href={screen.src}
+                />
+              ))}
+            {screens
+              .filter((screen) => screen.active)
+              .map((screen) => (
+                <image
+                  key={`active-${screen.id}`}
+                  className={prevId ? "screen-fade-in" : undefined}
+                  x={SCREEN_X}
+                  y={SCREEN_Y}
+                  width={SCREEN_WIDTH}
+                  height={SCREEN_HEIGHT}
+                  preserveAspectRatio="xMidYMid slice"
+                  clipPath={`url(#${clipId})`}
+                  href={screen.src}
+                />
+              ))}
+          </>
+        ) : screens && screens.length > 0 ? (
           screens.map((screen) => (
             <image
               key={screen.id}
@@ -220,7 +277,7 @@ export default function IphoneFrame({
               href={screen.src}
               style={{
                 opacity: screen.active ? 1 : 0,
-                transition: fade ? "opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)" : "none",
+                transition: "none",
                 pointerEvents: screen.active ? "auto" : "none",
               }}
             />

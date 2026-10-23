@@ -97,3 +97,6 @@ export const COMPARE_ROWS: CompareRow[] = [
     },
   },
 ];
+
+/** Compare is only for the three internal tools shown as its columns. */
+export const hasCompare = (id: string) => COMPARE_COLUMNS.some((col) => col.id === id);

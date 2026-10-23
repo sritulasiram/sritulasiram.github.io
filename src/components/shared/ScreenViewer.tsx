@@ -21,7 +21,8 @@ export interface ViewerScreen {
  */
 export default function ScreenViewer({ screens, tone = "dark" }: { screens: ViewerScreen[]; tone?: "dark" | "light" }) {
   const [active, setActive] = useState(0);
-  const [zoom, setZoom] = useState(false);
+  // Index of the screen open in the viewer, or null when closed.
+  const [zoomAt, setZoomAt] = useState<number | null>(null);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const current = screens[active];
 
@@ -56,7 +57,7 @@ export default function ScreenViewer({ screens, tone = "dark" }: { screens: View
                 i === active ? "opacity-100 scale-100" : "opacity-0 scale-[0.985] pointer-events-none"
               }`}
             >
-              <div className={`relative h-full w-full overflow-hidden rounded-xl sm:rounded-2xl ${tone === "light" ? "bg-white" : "bg-[#0F1117]"} shadow-2xl ring-1 ring-black/10 dark:ring-white/10`}>
+              <div className={`relative h-full w-full overflow-hidden rounded-xl sm:rounded-2xl ${tone === "light" ? "bg-[#ffffff]" : "bg-[#0F1117]"} shadow-2xl ring-1 ring-black/10 dark:ring-white/10`}>
                 <Image
                   src={screen.src}
                   alt={screen.alt}
@@ -69,9 +70,9 @@ export default function ScreenViewer({ screens, tone = "dark" }: { screens: View
           ))}
           <button
             type="button"
-            onClick={() => setZoom(true)}
+            onClick={() => setZoomAt(active)}
             aria-label={`View ${current.label} full size`}
-            className="absolute inset-0 z-10 cursor-zoom-in focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-[var(--pa)]"
+            className="absolute inset-0 z-10 cursor-zoom-in focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-[var(--focus-ring)]"
           >
             <span className="absolute bottom-4 right-4 flex h-9 w-9 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur-md">
               <Maximize2 className="h-4 w-4" aria-hidden="true" />
@@ -102,7 +103,7 @@ export default function ScreenViewer({ screens, tone = "dark" }: { screens: View
             className={`min-h-11 sm:min-h-10 shrink-0 rounded-full px-5 sm:px-6 text-sm font-medium transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 ${
               i === active
                 ? "bg-[var(--pa)] text-white dark:text-[#0B0B0C] focus-visible:outline-[#1D1D1F] dark:focus-visible:outline-white"
-                : "text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-black/[0.06] dark:hover:bg-white/10 focus-visible:outline-[var(--pa)]"
+                : "text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-black/[0.06] dark:hover:bg-white/10 focus-visible:outline-[var(--focus-ring)]"
             }`}
           >
             {screen.label}
@@ -115,7 +116,22 @@ export default function ScreenViewer({ screens, tone = "dark" }: { screens: View
         <span className="font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">{current.title}</span>{" "}
         {current.description}
       </p>
-      {zoom && <ImageLightbox src={current.src} alt={current.alt} onClose={() => setZoom(false)} />}
+      {zoomAt !== null && (
+        <ImageLightbox
+          src={screens[zoomAt].src}
+          alt={screens[zoomAt].alt}
+          onClose={() => setZoomAt(null)}
+          index={zoomAt}
+          count={screens.length}
+          onPrev={() => setZoomAt((zoomAt - 1 + screens.length) % screens.length)}
+          onNext={() => setZoomAt((zoomAt + 1) % screens.length)}
+          caption={
+            <p className="text-sm leading-relaxed text-white/70 sm:text-base">
+              <span className="font-semibold text-white">{screens[zoomAt].title}</span> {screens[zoomAt].description}
+            </p>
+          }
+        />
+      )}
     </div>
   );
 }

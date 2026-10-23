@@ -39,7 +39,7 @@ export default function HrScreenshot({ alt }: { alt: string }) {
           type="button"
           onClick={open}
           aria-label="View the screenshot full size"
-          className="absolute inset-0 z-10 cursor-zoom-in focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-[var(--pa)]"
+          className="absolute inset-0 z-10 cursor-zoom-in focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-[var(--focus-ring)]"
         >
           <span className="absolute bottom-4 right-4 flex h-9 w-9 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur-md">
             <Maximize2 className="h-4 w-4" aria-hidden="true" />

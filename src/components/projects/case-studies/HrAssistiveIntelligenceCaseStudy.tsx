@@ -171,7 +171,7 @@ export default function HrAssistiveIntelligenceCaseStudy({ project, nextProject 
   return (
     <div>
       {/* 1. Hero */}
-      <section className="bg-[var(--pa-tint)] overflow-hidden">
+      <section className="hero-glow hero-glow-hr overflow-hidden">
         <div className={`${WRAP} pt-14 sm:pt-20 text-center`}>
           <p className={`text-xl sm:text-2xl font-semibold ${INK} tracking-apple-tight`}>{project.title}</p>
           <h1 className={`mt-2 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold ${INK} tracking-apple-hero leading-[1.03]`}>
@@ -218,7 +218,7 @@ export default function HrAssistiveIntelligenceCaseStudy({ project, nextProject 
       </section>
 
       {/* 3a. In action */}
-      <section id="in-action" aria-label="See it in action" className="scroll-mt-20 py-16 sm:py-24 bg-[var(--pa-tint)]">
+      <section id="in-action" aria-label="See it in action" className="scroll-mt-20 py-16 sm:py-24">
         <div className="max-w-6xl mx-auto w-full px-6 sm:px-8">
           <Reveal>
             <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero text-center`}>See it in action.</h2>
@@ -262,13 +262,13 @@ export default function HrAssistiveIntelligenceCaseStudy({ project, nextProject 
       </section>
 
       {/* 4. Highlights */}
-      <CardCarousel title="Get the highlights." label="Highlights">
+      <CardCarousel title="Get the highlights." label="Highlights" plain>
         {highlights.map((feat, i) => {
           const Icon = HIGHLIGHT_ICONS[i] ?? BookOpenCheck;
           return (
             <article
               key={feat.title}
-              className="snap-start shrink-0 w-[78vw] sm:w-[320px] min-h-[360px] rounded-[28px] bg-white dark:bg-[#1C1C1E] p-8 flex flex-col"
+              className="snap-start shrink-0 w-[78vw] sm:w-[320px] min-h-[360px] rounded-[28px] bg-[#F5F5F7] dark:bg-[#1D1D1F] p-8 flex flex-col"
             >
               <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--pa-soft)]">
                 <Icon className={`h-6 w-6 ${TEAL}`} aria-hidden="true" />

@@ -52,7 +52,6 @@ export default function PhoneFlow({ screens }: { screens: DesignScreen[] }) {
           <IphoneFrame
             theme="light"
             hideStatusBar
-            fade={false}
             screens={screens.map((screen, i) => ({ id: screen.id, src: screen.imageSrc, active: i === active }))}
           />
         </div>
@@ -67,11 +66,10 @@ export default function PhoneFlow({ screens }: { screens: DesignScreen[] }) {
               aria-label={`${screens[active].title} screen`}
               className="absolute left-1/2 top-1/2 aspect-[420/870] h-[88%] -translate-x-1/2 -translate-y-1/2"
             >
-              {/* One phone, all screens preloaded and swapped instantly: no flash between screens. */}
+              {/* One phone, all screens preloaded; the next screen fades in over the current one. */}
               <IphoneFrame
                 theme="light"
                 hideStatusBar
-                fade={false}
                 screens={screens.map((screen, i) => ({ id: screen.id, src: screen.imageSrc, active: i === active }))}
               />
             </div>
@@ -88,7 +86,7 @@ export default function PhoneFlow({ screens }: { screens: DesignScreen[] }) {
               stepRefs.current[i] = el;
             }}
             data-step={i}
-            className="flex min-h-[22svh] items-center py-4 md:min-h-[42vh] md:py-0"
+            className="flex min-h-[22svh] items-center py-4 md:min-h-[30vh] md:py-0"
           >
             <div
               className={`transition-opacity duration-500 motion-reduce:transition-none ${

@@ -82,10 +82,8 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   const showcase = isShowcaseProject(canonicalId);
 
   return (
-    <main id="main-content" tabIndex={-1} style={showcase ? projectThemeStyle(canonicalId) : undefined} className={`${showcase ? "project-theme pt-12 " : ""}min-h-screen bg-white dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300 flex flex-col selection:bg-[#0071E3]/15 selection:text-[#1D1D1F] dark:selection:text-[#F5F5F7]`}>
-      {showcase && (
-        <ProjectLocalNav projectId={canonicalId} title={project.title} githubUrl={project.githubUrl} />
-      )}
+    <main id="main-content" tabIndex={-1} style={projectThemeStyle(canonicalId)} className={`project-theme pt-12 min-h-screen bg-white dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300 flex flex-col selection:bg-[#0071E3]/15 selection:text-[#1D1D1F] dark:selection:text-[#F5F5F7]`}>
+      <ProjectLocalNav projectId={canonicalId} title={project.title} githubUrl={project.githubUrl} showTabs={showcase} />
 
       {/* Tailored Case Study Layout Based on Content */}
       {canonicalId === "warranty-rma" && (
