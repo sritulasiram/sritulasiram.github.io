@@ -12,10 +12,6 @@
       "shutterSpeed": "1/282s",
       "iso": "50"
     },
-    "gps": {
-      "latitude": 3.2387944444444443,
-      "longitude": 101.68520277777777
-    },
     "dateTime": "2025-07-05T01:57:48.000Z",
     "rawExif": {
       "Make": "Apple",
@@ -40,17 +36,13 @@
       "shutterSpeed": "1/20833s",
       "iso": "32"
     },
-    "gps": {
-      "latitude": 5.469941666666667,
-      "longitude": 100.2414388888889
-    },
     "dateTime": "2026-02-07T11:17:43.000Z",
     "rawExif": {
       "Make": "Apple",
       "Model": "iPhone 16 Pro",
       "LensModel": "iPhone 16 Pro back camera 15.66mm f/2.8",
       "FNumber": 2.8,
-      "ExposureTime": 0.000048000365496758965,
+      "ExposureTime": 4.8000365496758965e-05,
       "ISO": 32,
       "FocalLength": 15.659999847383
     }
@@ -67,10 +59,6 @@
       "aperture": "ƒ/1.8",
       "shutterSpeed": "1/1282s",
       "iso": "50"
-    },
-    "gps": {
-      "latitude": 5.470180555555555,
-      "longitude": 100.24233611111111
     },
     "dateTime": "2026-02-07T11:33:16.000Z",
     "rawExif": {
@@ -91,7 +79,6 @@
     "aspectRatio": "aspect-[3/4]",
     "camera": null,
     "optics": null,
-    "gps": null,
     "rawExif": null
   },
   "canopy-trail.jpg": {
@@ -102,7 +89,6 @@
     "aspectRatio": "aspect-[3/4]",
     "camera": null,
     "optics": null,
-    "gps": null,
     "rawExif": null
   },
   "chiaroscuro-lamp-noir.jpg": {
@@ -117,10 +103,6 @@
       "aperture": "ƒ/1.9",
       "shutterSpeed": "1/14s",
       "iso": "4000"
-    },
-    "gps": {
-      "latitude": 5.431916666666667,
-      "longitude": 100.32028333333334
     },
     "dateTime": "2025-11-08T15:46:34.000Z",
     "rawExif": {
@@ -141,7 +123,6 @@
     "aspectRatio": "aspect-[3/4]",
     "camera": null,
     "optics": null,
-    "gps": null,
     "rawExif": null
   },
   "fire-performance.jpg": {
@@ -152,7 +133,6 @@
     "aspectRatio": "aspect-[3/4]",
     "camera": null,
     "optics": null,
-    "gps": null,
     "rawExif": null
   },
   "golden-sunbeam-shore.jpg": {
@@ -163,7 +143,6 @@
     "aspectRatio": "aspect-[3/4]",
     "camera": null,
     "optics": null,
-    "gps": null,
     "rawExif": null
   },
   "hindu-temple-twilight-gopuram.jpg": {
@@ -178,10 +157,6 @@
       "aperture": "ƒ/1.8",
       "shutterSpeed": "1/195s",
       "iso": "50"
-    },
-    "gps": {
-      "latitude": 5.203177777777778,
-      "longitude": 100.4953
     },
     "dateTime": "2026-01-14T23:19:49.000Z",
     "rawExif": {
@@ -207,17 +182,13 @@
       "shutterSpeed": "1/13158s",
       "iso": "32"
     },
-    "gps": {
-      "latitude": 5.469925,
-      "longitude": 100.24143333333333
-    },
     "dateTime": "2026-02-07T10:50:34.000Z",
     "rawExif": {
       "Make": "Apple",
       "Model": "iPhone 16 Pro",
       "LensModel": "iPhone 16 Pro back triple camera 15.66mm f/2.8",
       "FNumber": 2.8,
-      "ExposureTime": 0.00007599939200486396,
+      "ExposureTime": 7.599939200486396e-05,
       "ISO": 32,
       "FocalLength": 15.659999847383
     }
@@ -230,7 +201,6 @@
     "aspectRatio": "aspect-[3/4]",
     "camera": null,
     "optics": null,
-    "gps": null,
     "rawExif": null
   },
   "penang-breakwater-shore.jpg": {
@@ -245,10 +215,6 @@
       "aperture": "ƒ/1.8",
       "shutterSpeed": "1/1046s",
       "iso": "100"
-    },
-    "gps": {
-      "latitude": 5.446861111111112,
-      "longitude": 100.3779
     },
     "dateTime": "2026-01-11T10:50:49.000Z",
     "rawExif": {
@@ -274,10 +240,6 @@
       "shutterSpeed": "1/5128s",
       "iso": "64"
     },
-    "gps": {
-      "latitude": 5.327744444444444,
-      "longitude": 100.49983333333333
-    },
     "dateTime": "2025-11-29T10:57:20.000Z",
     "rawExif": {
       "Make": "Apple",
@@ -297,7 +259,6 @@
     "aspectRatio": "aspect-[3/4]",
     "camera": null,
     "optics": null,
-    "gps": null,
     "rawExif": null
   },
   "petronas-twin-towers-night.jpg": {
@@ -312,10 +273,6 @@
       "aperture": "ƒ/1.8",
       "shutterSpeed": "1/50s",
       "iso": "320"
-    },
-    "gps": {
-      "latitude": 3.159072222222222,
-      "longitude": 101.71081666666667
     },
     "dateTime": "2025-07-05T14:04:01.000Z",
     "rawExif": {
@@ -336,7 +293,6 @@
     "aspectRatio": "aspect-[3/4]",
     "camera": null,
     "optics": null,
-    "gps": null,
     "rawExif": null
   },
   "starlight-chandelier-noir.jpg": {
@@ -347,7 +303,6 @@
     "aspectRatio": "aspect-[3/4]",
     "camera": null,
     "optics": null,
-    "gps": null,
     "rawExif": null
   },
   "sunset-boat.jpg": {
@@ -358,7 +313,6 @@
     "aspectRatio": "aspect-[3/4]",
     "camera": null,
     "optics": null,
-    "gps": null,
     "rawExif": null
   },
   "waterfront-night-skyline.jpg": {
@@ -373,10 +327,6 @@
       "aperture": "ƒ/1.8",
       "shutterSpeed": "1/5s",
       "iso": "1250"
-    },
-    "gps": {
-      "latitude": 5.424155555555556,
-      "longitude": 100.33347222222221
     },
     "dateTime": "2025-10-01T14:45:25.000Z",
     "rawExif": {
@@ -401,10 +351,6 @@
       "aperture": "ƒ/2.8",
       "shutterSpeed": "1/99s",
       "iso": "64"
-    },
-    "gps": {
-      "latitude": 3.209052777777778,
-      "longitude": 101.75748333333334
     },
     "dateTime": "2025-07-06T07:46:59.000Z",
     "rawExif": {
