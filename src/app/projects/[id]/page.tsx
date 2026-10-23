@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { pageSocial } from "@/lib/seo";
 import { projectThemeStyle } from "@/data/projectTheme";
 import Footer from "@/components/layout/Footer";
 import { FOOTER_COPY } from "@/data/footerCopy";
@@ -49,10 +50,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
+  const canonicalId = PROJECT_ALIASES[id] || id;
+  const path = `/projects/${canonicalId}`;
   return {
     title: project.title,
     description: project.tagline,
-    alternates: { canonical: `/projects/${PROJECT_ALIASES[id] || id}` },
+    alternates: { canonical: path },
+    ...pageSocial({
+      title: project.title,
+      description: project.tagline,
+      path,
+      image: PROJECTS_DATA.find((p) => p.id === canonicalId)?.imageSrc,
+    }),
   };
 }
 

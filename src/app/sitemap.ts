@@ -1,12 +1,25 @@
+import { execSync } from "node:child_process";
 import type { MetadataRoute } from "next";
 import { PROJECTS_DATA } from "@/data/content";
 import { DESIGNS_DATA } from "@/data/designDetails";
 
 export const dynamic = "force-static";
 
+/** Date of the latest commit, so lastModified only moves when the site's source does, not on every build. */
+function lastCommitDate(): Date {
+  try {
+    const iso = execSync("git log -1 --format=%cI", { stdio: ["ignore", "pipe", "ignore"] }).toString().trim();
+    const date = new Date(iso);
+    if (!Number.isNaN(date.getTime())) return date;
+  } catch {
+    // Not a git checkout (e.g. a source archive): fall through.
+  }
+  return new Date();
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://sritulasiram.my";
-  const currentDate = new Date();
+  const currentDate = lastCommitDate();
 
   const staticRoutes: MetadataRoute.Sitemap = [
     {
