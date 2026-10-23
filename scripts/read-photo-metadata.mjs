@@ -137,7 +137,6 @@ async function inspectPhoto(filename) {
     const focalLength = formatFocalLength(exif?.FocalLength, exif?.FocalLengthIn35mmFormat);
     const iso = exif?.ISO ? String(exif.ISO) : undefined;
     const dateTime = exif?.DateTimeOriginal ? new Date(exif.DateTimeOriginal).toISOString() : undefined;
-    const gps = await exifr.gps(fileBuffer).catch(() => null);
 
     return {
       filename,
@@ -152,12 +151,6 @@ async function inspectPhoto(filename) {
             aperture,
             shutterSpeed,
             iso,
-          }
-        : null,
-      gps: gps
-        ? {
-            latitude: gps.latitude,
-            longitude: gps.longitude,
           }
         : null,
       dateTime,
@@ -220,9 +213,6 @@ async function main() {
       console.log(`✓ [REAL EXIF DETECTED] ${file}`);
       console.log(`  Device:  ${info.camera}`);
       console.log(`  Optics:  ${[info.optics.focalLength, info.optics.aperture, info.optics.shutterSpeed, info.optics.iso ? `ISO ${info.optics.iso}` : null].filter(Boolean).join(" · ")}`);
-      if (info.gps) {
-        console.log(`  GPS:     ${info.gps.latitude.toFixed(6)}, ${info.gps.longitude.toFixed(6)}`);
-      }
       console.log(`  Aspect:  ${info.aspectRatio} (${info.width}x${info.height})\n`);
     } else {
       console.log(`ℹ [WEB-OPTIMIZED / EXIF STRIPPED] ${file}`);

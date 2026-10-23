@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# tooling output
+/.agents/
+/graphify-out/
+/src/graphify-out/
