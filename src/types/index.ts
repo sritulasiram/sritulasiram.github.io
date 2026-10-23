@@ -134,6 +134,8 @@ export interface DesignCaseStudy {
   heroLayout?: "phone" | "landscape";
   /** Optional multi-screen flow, shown as a gallery under the hero. */
   screens?: DesignScreen[];
+  /** YouTube videos, shown under the screen flow. `id` is the part after youtu.be/. */
+  videos?: { id: string; title: string }[];
   placeholderLabel: string;
   placeholderRatio: string;
   timeframe: string;

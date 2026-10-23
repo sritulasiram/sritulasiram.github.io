@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Instrument_Serif } from "next/font/google";
 import MaintenanceScreen from "@/components/layout/MaintenanceScreen";
 import Navigation from "@/components/layout/Navigation";
+import { CONTACT_DATA } from "@/data/content";
 import "./globals.css";
 
 const inter = Inter({
@@ -115,7 +116,7 @@ const personSchema = {
       ],
       "url": "https://sritulasiram.my",
       "image": "https://sritulasiram.my/images/portraits/sri-portrait.webp",
-      "email": "mailto:sritulasiram@yahoo.com",
+      "email": `mailto:${CONTACT_DATA.email}`,
       "sameAs": [
         "https://www.linkedin.com/in/sritulasiram",
         "https://github.com/sritulasiram",

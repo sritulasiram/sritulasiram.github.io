@@ -1,4 +1,5 @@
 import Footer from "@/components/layout/Footer";
+import { FOOTER_COPY } from "@/data/footerCopy";
 import SectionNav from "@/components/layout/SectionNav";
 import DesignHeroStage from "@/components/designs/DesignHeroStage";
 import DesignShowcaseMorph from "@/components/designs/DesignShowcaseMorph";
@@ -47,7 +48,7 @@ export default function DesignsPage() {
       <DesignWorkflowKit />
 
       {/* 8. Contact Footer */}
-      <Footer />
+      <Footer {...FOOTER_COPY.designs} />
     </main>
   );
 }

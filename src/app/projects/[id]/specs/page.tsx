@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { projectThemeStyle } from "@/data/projectTheme";
 import Footer from "@/components/layout/Footer";
+import { FOOTER_COPY } from "@/data/footerCopy";
 import ProjectLocalNav from "@/components/projects/ProjectLocalNav";
 import ProjectTechSpecs from "@/components/projects/ProjectTechSpecs";
 import { PROJECT_DETAILS } from "@/data/projectDetails";
@@ -47,7 +48,7 @@ export default async function ProjectSpecsPage({ params }: PageProps) {
         groups={groups}
         nextProject={nextProject}
       />
-      <Footer />
+      <Footer {...FOOTER_COPY.projects} />
     </main>
   );
 }

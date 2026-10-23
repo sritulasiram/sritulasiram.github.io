@@ -64,8 +64,8 @@ export default function DesignShowcaseMorph() {
   const trackRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-  const crumbRef = useRef<HTMLElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
+  const crumbRef = useRef<HTMLElement>(null);
   const workHeaderRef = useRef<HTMLDivElement>(null);
   const phonesRef = useRef<HTMLDivElement>(null);
   const phoneRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -170,11 +170,11 @@ export default function DesignShowcaseMorph() {
 
       const hp = clamp(p / 0.2);
       header.style.opacity = String(1 - hp);
+      if (glowRef.current) glowRef.current.style.opacity = String(1 - hp);
       header.style.transform = `translateY(${-hp * 40}px)`;
       if (crumbRef.current) {
         crumbRef.current.style.visibility = hp >= 1 ? "hidden" : "visible";
       }
-      if (glowRef.current) glowRef.current.style.opacity = String(1 - hp);
 
       const wp = clamp((p - 0.58) / 0.22);
       workHeader.style.opacity = String(wp);
@@ -238,7 +238,7 @@ export default function DesignShowcaseMorph() {
         <div
           ref={glowRef}
           aria-hidden="true"
-          className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[920px] h-[480px] rounded-full bg-gradient-to-b from-[#0071E3]/12 via-[#2997FF]/6 to-transparent blur-3xl"
+          className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[920px] h-[480px] rounded-full bg-gradient-to-b from-[#1D1D1F]/8 via-[#6E6E73]/4 to-transparent dark:from-white/10 dark:via-white/5 blur-3xl"
         />
 
         {/* Headline (p = 0) */}
@@ -272,7 +272,7 @@ export default function DesignShowcaseMorph() {
             <h1 className="text-5xl lg:text-6xl xl:text-7xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.03]">
               Design
               <br />
-              <span className="block mt-1 text-3xl lg:text-4xl xl:text-5xl text-[#6E6E73] dark:text-[#8E8E93] font-medium">Crafted for humans</span>
+              <span className="block mt-1 text-3xl lg:text-4xl xl:text-5xl text-[#6E6E73] dark:text-[#8E8E93] font-medium">Effortlessly natural</span>
             </h1>
             <p className="text-lg xl:text-xl text-[#6E6E73] dark:text-[#A1A1A6] max-w-2xl mx-auto leading-relaxed tracking-apple-subhead">
               Five products across health, retail, education and sustainability. Each starts with a problem worth solving.

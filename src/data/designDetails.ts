@@ -823,6 +823,10 @@ export const DESIGN_DETAILS: Record<string, DesignCaseStudy> = {
     imageSrc: "/images/designs/void/app-project.jpg",
     logoSrc: "/images/designs/void/logo.png",
     heroLayout: "phone",
+    videos: [
+      { id: "OPOrgHg-vf0", title: "Introducing Void: The Android App for Seamless Final Year Project Management" },
+      { id: "PHpneWlUBbc", title: "Void: Typography Ad | Android Application for Final Year Documentation Management" },
+    ],
     screens: [
       {
         id: "splash",

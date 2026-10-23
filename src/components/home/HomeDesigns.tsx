@@ -18,7 +18,7 @@ export default function HomeDesigns() {
           <p className={`mt-4 max-w-md text-lg sm:text-xl leading-relaxed ${GRAY}`}>
             Mobile apps designed from the first screen to the last. Each page covers the problem, the decisions, and the result.
           </p>
-          <Button variant="link" href="/designs" className="mt-2">
+          <Button variant="secondary" href="/designs" className="mt-4">
             See all designs
           </Button>
         </Reveal>

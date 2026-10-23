@@ -188,12 +188,6 @@ export default function ProjectsHeroStage() {
       ref={heroRef}
       className="scroll-mt-20 relative pt-24 sm:pt-28 pb-12 sm:pb-16 overflow-hidden"
     >
-      {/* Background Ambient Glow */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[680px] sm:w-[920px] h-[480px] rounded-full bg-gradient-to-b from-[#0071E3]/12 via-[#2997FF]/6 to-transparent blur-3xl -z-10"
-      />
-
       <div className="max-w-6xl mx-auto px-6 sm:px-8 text-center">
         {/* Back Link Breadcrumb */}
         <nav aria-label="Breadcrumb" className="mb-5 sm:mb-6">
@@ -232,12 +226,35 @@ export default function ProjectsHeroStage() {
           </p>
         </div>
 
+        {/* Phones: one featured project in place of the carousel */}
+        <div className="sm:hidden mt-8 text-left">
+          <Link href={STAGE_PROJECTS[0].caseStudyUrl} aria-hidden="true" tabIndex={-1} className="block">
+            <HrAssistiveMacbook className="w-full h-auto drop-shadow-xl" />
+          </Link>
+          <div className="pt-6 space-y-1">
+            <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#0F8B8D" }}>
+              Featured · In development
+            </p>
+            <h2 className="text-2xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight">{STAGE_PROJECTS[0].name}</h2>
+            <p className="text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">{STAGE_PROJECTS[0].subtitle}</p>
+            <div className="pt-3">
+              <Button
+                href={STAGE_PROJECTS[0].caseStudyUrl}
+                accent={PROJECT_ACCENTS[STAGE_PROJECTS[0].id]}
+                icon={<ArrowRight className="h-4 w-4" aria-hidden="true" />}
+              >
+                {STAGE_PROJECTS[0].ctaText}
+              </Button>
+            </div>
+          </div>
+        </div>
+
         {/* Apple Scroll-Morph Staging Viewport */}
         <div
           ref={viewportRef}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
-          className="relative z-10 w-full max-w-[580px] sm:max-w-[640px] md:max-w-[700px] mx-auto touch-pan-y transition-transform duration-300 ease-out will-change-transform"
+          className="hidden sm:block relative z-10 w-full max-w-[580px] sm:max-w-[640px] md:max-w-[700px] mx-auto touch-pan-y transition-transform duration-300 ease-out will-change-transform"
           style={{
             aspectRatio: "650 / 400",
           }}
@@ -316,7 +333,7 @@ export default function ProjectsHeroStage() {
         </div>
 
         {/* Unified Side-by-Side Control Bar: Title, Dot Controller, CTA */}
-        <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4 px-4">
+        <div className="mt-6 sm:mt-8 hidden sm:flex flex-wrap items-center justify-center gap-3 sm:gap-4 px-4">
           {/* Active Project Title & Tagline */}
           <div className="flex items-center gap-1.5 shrink-0">
             <span className="text-sm sm:text-base font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight">

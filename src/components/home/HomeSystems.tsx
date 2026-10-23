@@ -2,7 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import Reveal from "@/components/shared/Reveal";
 import { PROJECTS_DATA } from "@/data/content";
-import { Headline, TextLink, INK, GRAY, WRAP_WIDE } from "./homeShared";
+import Button from "@/components/ui/Button";
+import { Headline, INK, GRAY, WRAP_WIDE } from "./homeShared";
 
 const FEATURED = ["warranty-rma", "raspberry-pi-diagnostics", "iot-fertiliser-mixing"];
 
@@ -66,7 +67,7 @@ export default function HomeSystems() {
         </div>
 
         <div className="mt-8 text-center">
-          <TextLink href="/projects">View all projects</TextLink>
+          <Button variant="secondary" href="/projects">View all projects</Button>
         </div>
       </div>
     </section>

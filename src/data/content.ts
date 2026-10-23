@@ -803,7 +803,7 @@ export const ABOUT_DATA: AboutData = {
   primaryParagraph:
     "I'm a Support Engineer at Cytron Technologies. My focus spans technical support, warranty and RMA operations, and building the internal platforms and SOPs that keep support running smoothly.",
   secondaryParagraph:
-    "Based in Penang, Malaysia, I work closely with hardware engineers, developers, and makers across the region. Outside of support and internal systems, I design clean software interfaces and shoot casual, professional photography.",
+    "Based in Penang, Malaysia, I work closely with hardware engineers, developers, and makers across the region. Outside of engineering, I'm drawn to design, shaping interfaces around how people naturally move and think, with nature as the quiet influence. Design lets me build beautiful foundations. Photography lets me explore the world and capture nature's magical moments.",
   extendedBio: [
     "At Cytron Technologies — Malaysia's leading robotics and maker electronics company and an official Raspberry Pi Design Partner — my work sits at the intersection of technical support, warranty triage, and the internal tools that keep those processes efficient.",
   ],
@@ -1103,7 +1103,7 @@ export const ABOUT_DATA: AboutData = {
       period: "2024 — Present",
       role: "Support Engineer",
       organization: "Cytron Technologies",
-      location: "Bukit Mertajam, Penang, Malaysia",
+      location: "Bukit Mertajam, Penang",
       logoSrc: "/images/logos/cytron.png",
       logoAlt: "Cytron Technologies",
       description:
@@ -1157,7 +1157,7 @@ export const ABOUT_DATA: AboutData = {
       period: "2024 — Present",
       role: "Support Engineer",
       organization: "Cytron Technologies",
-      location: "Bukit Mertajam, Penang, Malaysia",
+      location: "Bukit Mertajam, Penang",
       badge: "Industry · Current Role",
       description:
         "Providing technical support, product consultation, and warranty/RMA case handling for Raspberry Pi and robotics products at Cytron, Malaysia's leading robotics and electronics company and an official Raspberry Pi Design Partner.",

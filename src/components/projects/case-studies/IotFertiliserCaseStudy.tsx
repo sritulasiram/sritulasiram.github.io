@@ -6,6 +6,7 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import CaseStudyBreadcrumb from "@/components/shared/CaseStudyBreadcrumb";
 import CountUp from "@/components/shared/CountUp";
 import Reveal from "@/components/shared/Reveal";
+import YouTubeEmbed from "@/components/shared/YouTubeEmbed";
 import CopyCitation from "@/components/projects/CopyCitation";
 import IotFigureTabs from "@/components/projects/IotFigureTabs";
 import { projectThemeStyle } from "@/data/projectTheme";
@@ -18,6 +19,10 @@ interface Props {
 
 const GRAY = "text-[#68686D] dark:text-[#A1A1A6]";
 const INK = "text-[#1D1D1F] dark:text-[#F5F5F7]";
+const VIDEOS = [
+  { id: "ZStZwBj2lk4", title: "HYDRA: Hydroponic Yield Driven Real-time Automation" },
+  { id: "6alu8ssZnl8", title: "IoT-Based Fertiliser Mixing System Prototype Demonstration" },
+];
 const WRAP = "max-w-5xl mx-auto w-full px-6 sm:px-8";
 const PANEL =
   "rounded-[28px] bg-[var(--pa-tint)] p-6 sm:p-10 min-h-[320px] flex flex-col justify-center";
@@ -167,8 +172,8 @@ const FIGURES = [
     height: 730,
   },
   {
-    id: "firmware",
-    label: "Firmware",
+    id: "workflow",
+    label: "Workflow",
     title: "A flowchart of the loop.",
     description: "The decisions and operations of the code, from reading the sensors to acting on a command from the Blynk app.",
     src: `${IMG}/fig-4-firmware-flowchart.png`,
@@ -448,6 +453,23 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
             </div>
           </div>
         ))}
+      </section>
+
+      {/* 3b. Videos */}
+      <section aria-label="Videos" className="max-w-6xl mx-auto w-full px-6 sm:px-8 pb-20 sm:pb-32">
+        <Reveal>
+          <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero text-center`}>
+            See it <span className={GRAY}>in action.</span>
+          </h2>
+        </Reveal>
+        <div className="mt-10 sm:mt-14 grid grid-cols-1 gap-6 md:grid-cols-2">
+          {VIDEOS.map((video, i) => (
+            <Reveal key={video.id} delay={i * 120}>
+              <YouTubeEmbed id={video.id} title={video.title} />
+              <p className={`mt-4 text-sm sm:text-base ${GRAY} leading-snug`}>{video.title}</p>
+            </Reveal>
+          ))}
+        </div>
       </section>
 
       {/* 4. Figures from the paper */}

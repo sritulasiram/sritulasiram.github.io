@@ -1,13 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
+import { cn } from "@/lib/cn";
 import { DESIGNS_DATA, DESIGN_DETAILS } from "@/data/designDetails";
 import { MacbookPro } from "@/components/mockups/MacbookPro";
 import DesignPhoneStage from "./DesignPhoneStage";
 import { DESIGN_ACCENT, STAGE_DESIGNS } from "./designStage";
 
+const FEATURED_ID = "sage";
+
 export default function DesignWorkGrid() {
   return (
-    <section data-section="work" className="scroll-mt-20 py-12 sm:py-16 bg-white dark:bg-black transition-colors">
+    <section id="work" data-section="work" className="scroll-mt-20 py-12 sm:py-16 bg-white dark:bg-black transition-colors">
       <div className="max-w-6xl mx-auto px-6 sm:px-8 space-y-10 sm:space-y-12">
         <div className="max-w-3xl space-y-3">
           <h2 className="text-3xl sm:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight leading-[1.08] text-balance">
@@ -30,7 +33,11 @@ export default function DesignWorkGrid() {
             const stage = STAGE_DESIGNS.find((s) => s.id === design.id);
             const screen = stage?.imageSrc ?? design.imageSrc;
             return (
-              <li key={design.id} className="sm:[&:last-child:nth-child(odd)]:col-span-2">
+              <li
+                key={design.id}
+                // Sage is the featured card in the phone hero, so it goes last in the grid there
+                className={cn("sm:[&:last-child:nth-child(odd)]:col-span-2", design.id === FEATURED_ID && "order-last sm:order-none")}
+              >
                 <Link
                   href={`/designs/${design.id}`}
                   className="group block rounded-3xl overflow-hidden bg-[#F5F5F7] dark:bg-[#1C1C1E] border border-black/[0.06] dark:border-white/10 transition-shadow duration-300 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0071E3]"

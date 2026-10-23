@@ -1,8 +1,15 @@
-import { ArrowLeft, Mail } from "lucide-react";
+import { ArrowLeft, RefreshCw } from "lucide-react";
 import Button from "@/components/ui/Button";
+import EmailButton from "@/components/ui/EmailButton";
+import { InstagramIcon, LinkedInIcon } from "@/components/about/BrandIcons";
 import { ABOUT_DATA, CONTACT_DATA } from "@/data/content";
 
-export type MaintenanceVariant = "upgrade" | "invalid";
+export type MaintenanceVariant = "upgrade" | "invalid" | "error";
+
+const SOCIAL_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+  LinkedIn: LinkedInIcon,
+  Instagram: InstagramIcon,
+};
 
 const COPY = {
   upgrade: {
@@ -17,6 +24,12 @@ const COPY = {
     follow: "Let’s get you back.",
     body: "The link may be wrong, or the page may have moved. Try one of these instead.",
   },
+  error: {
+    eyebrow: "Something went wrong",
+    lead: "That didn’t load.",
+    follow: "Let’s try again.",
+    body: "An unexpected error stopped this page from loading. Try again, or head back home.",
+  },
 } as const;
 
 /**
@@ -24,7 +37,14 @@ const COPY = {
  * variant draws its own header, because the site navigation is hidden while it is shown; the
  * invalid variant sits under the normal navigation.
  */
-export default function MaintenanceScreen({ variant }: { variant: MaintenanceVariant }) {
+export default function MaintenanceScreen({
+  variant,
+  onRetry,
+}: {
+  variant: MaintenanceVariant;
+  /** The error variant's "Try again" action (the route error boundary's reset). */
+  onRetry?: () => void;
+}) {
   const copy = COPY[variant];
   const upgrading = variant === "upgrade";
 
@@ -63,36 +83,56 @@ export default function MaintenanceScreen({ variant }: { variant: MaintenanceVar
             <p>Need to reach me in the meantime?</p>
             <ul className="mt-4 flex flex-wrap items-center justify-center gap-3">
               <li>
-                <Button href={`mailto:${CONTACT_DATA.email}`} iconBefore icon={<Mail className="h-4 w-4" aria-hidden="true" />}>
-                  Email
-                </Button>
+                <EmailButton />
               </li>
               {ABOUT_DATA.links
                 .filter((link) => link.label !== "GitHub")
-                .map((link) => (
+                .map((link) => {
+                  const Icon = SOCIAL_ICONS[link.label];
+                  return (
                   <li key={link.label}>
-                    <Button variant="secondary" href={link.href} external>
+                    <Button
+                      variant="secondary"
+                      href={link.href}
+                      external
+                      icon={Icon && <Icon className="h-4 w-4" />}
+                      iconBefore
+                    >
                       {link.label}
                     </Button>
                   </li>
-                ))}
+                  );
+                })}
             </ul>
           </div>
         ) : (
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Button href="/" iconBefore icon={<ArrowLeft className="h-4 w-4" aria-hidden="true" />} className="w-full sm:w-auto">
-              Return home
-            </Button>
-            <Button variant="secondary" href="/projects" className="w-full sm:w-auto">
-              See projects
-            </Button>
+            {variant === "error" && onRetry ? (
+              <>
+                <Button onClick={onRetry} accent={["#1D1D1F", "#F5F5F7"]} iconBefore icon={<RefreshCw className="h-4 w-4" aria-hidden="true" />} className="w-full sm:w-auto">
+                  Try again
+                </Button>
+                <Button variant="secondary" href="/" className="w-full sm:w-auto">
+                  Return home
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button href="/" accent={["#1D1D1F", "#F5F5F7"]} iconBefore icon={<ArrowLeft className="h-4 w-4" aria-hidden="true" />} className="w-full sm:w-auto">
+                  Return home
+                </Button>
+                <Button variant="secondary" href="/projects" className="w-full sm:w-auto">
+                  See projects
+                </Button>
+              </>
+            )}
           </div>
         )}
       </section>
 
       {upgrading && (
         <footer className="py-6 text-center text-xs text-[#68686D] dark:text-[#8E8E93]">
-          © {new Date().getFullYear()} Sri Tulasi Ram
+          © {new Date().getFullYear()} Sri Tulasi Ram. All rights reserved.
         </footer>
       )}
     </main>

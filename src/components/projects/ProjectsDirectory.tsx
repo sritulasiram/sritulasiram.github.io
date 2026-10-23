@@ -190,25 +190,14 @@ export default function ProjectsDirectory() {
       className="relative z-10 scroll-mt-20 py-12 sm:py-16 bg-white dark:bg-black transition-colors overflow-hidden"
     >
       <div className="max-w-6xl mx-auto px-6 sm:px-8 space-y-10 sm:space-y-12">
-        {/* Section Header & Liquid Glass Filter Bar */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div className="space-y-2 max-w-2xl">
-            <h2 className="text-3xl sm:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight leading-[1.08]">
-              All projects.
-            </h2>
-            <p aria-live="polite" className="text-base sm:text-lg text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
-              {filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projects"}
-              {selectedFilter === "all" ? "" : ` in ${CATEGORIES.find((c) => c.id === selectedFilter)?.label}`}
-              . Production systems, embedded hardware, and native-app case studies.
-            </p>
-          </div>
+        {/* Heading and category filter chips */}
+        <div className="text-center">
+          <h2 className="text-3xl sm:text-5xl font-semibold tracking-apple-headline leading-[1.08] text-[#1D1D1F] dark:text-[#F5F5F7]">
+            Every project.
+            <span className="block text-[#6E6E73] dark:text-[#8E8E93]">Browse by system and build.</span>
+          </h2>
 
-          {/* Apple Category Filter Pills with Smooth Horizontal Scroll & 44pt Touch Hit Areas */}
-          <div
-            role="tablist"
-            aria-label="Filter engineering lineup by category"
-            className="inline-flex p-1 rounded-full bg-[#F5F5F7] dark:bg-[#1C1C1E] border border-black/[0.04] dark:border-white/[0.08] shrink-0 self-start md:self-auto max-w-full overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-          >
+          <div role="tablist" aria-label="Filter engineering lineup by category" className="mt-8 flex flex-wrap justify-center gap-2">
             {CATEGORIES.map((cat, idx) => {
               const isSelected = selectedFilter === cat.id;
               return (
@@ -222,10 +211,10 @@ export default function ProjectsDirectory() {
                   onClick={() => setSelectedFilter(cat.id)}
                   onKeyDown={(e) => handleFilterKeyDown(e, idx)}
                   className={cn(
-                    "min-h-[38px] sm:min-h-[32px] px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#0071E3] whitespace-nowrap inline-flex items-center justify-center",
+                    "px-4 min-h-[44px] rounded-full text-sm font-medium transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1D1D1F] dark:focus-visible:outline-[#F5F5F7]",
                     isSelected
-                      ? "bg-white dark:bg-[#2C2C2E] text-[#1D1D1F] dark:text-white shadow-xs"
-                      : "text-[#6E6E73] dark:text-[#8E8E93] hover:text-[#1D1D1F] dark:hover:text-white",
+                      ? "bg-[#1D1D1F] text-white dark:bg-[#F5F5F7] dark:text-[#1D1D1F]"
+                      : "bg-[#F5F5F7] text-[#1D1D1F] hover:bg-[#E8E8ED] dark:bg-[#1C1C1E] dark:text-[#F5F5F7] dark:hover:bg-[#2C2C2E]",
                   )}
                 >
                   {cat.label}
@@ -233,6 +222,11 @@ export default function ProjectsDirectory() {
               );
             })}
           </div>
+          <p aria-live="polite" className="mt-4 text-sm text-[#6E6E73] dark:text-[#A1A1A6] max-w-xl mx-auto text-balance min-h-10">
+            {filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projects"}
+            {selectedFilter === "all" ? "" : ` in ${CATEGORIES.find((c) => c.id === selectedFilter)?.label}`}
+            . Production systems, embedded hardware, and native-app case studies.
+          </p>
         </div>
 
         {/* 2-Column Responsive Apple Lineup Grid */}

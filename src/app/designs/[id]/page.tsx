@@ -10,6 +10,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import Footer from "@/components/layout/Footer";
+import { FOOTER_COPY } from "@/data/footerCopy";
 import Button from "@/components/ui/Button";
 import Image from "next/image";
 import ProjectImage from "@/components/ui/ProjectImage";
@@ -73,7 +74,7 @@ export default async function DesignDetailPage({ params }: PageProps) {
         className="project-theme min-h-screen bg-white dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300 flex flex-col selection:bg-[#0071E3]/15 selection:text-[#1D1D1F] dark:selection:text-[#F5F5F7]"
       >
         <WebCaseStudy design={design} nextDesign={nextDesign} config={webStudy.config} />
-        <Footer />
+        <Footer {...FOOTER_COPY.designs} />
       </main>
     );
   }
@@ -88,7 +89,7 @@ export default async function DesignDetailPage({ params }: PageProps) {
         className="project-theme min-h-screen bg-white dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300 flex flex-col selection:bg-[#0071E3]/15 selection:text-[#1D1D1F] dark:selection:text-[#F5F5F7]"
       >
         <AppCaseStudy design={design} nextDesign={nextDesign} config={study.config} />
-        <Footer />
+        <Footer {...FOOTER_COPY.designs} />
       </main>
     );
   }
@@ -472,7 +473,7 @@ export default async function DesignDetailPage({ params }: PageProps) {
       </section>
 
       {/* 10. Contact Footer */}
-      <Footer />
+      <Footer {...FOOTER_COPY.designs} />
     </main>
   );
 }

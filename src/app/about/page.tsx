@@ -19,6 +19,7 @@ import CredentialCards, { type Credential } from "@/components/about/CredentialC
 import Recognition from "@/components/about/Recognition";
 import CountUp from "@/components/shared/CountUp";
 import Reveal from "@/components/shared/Reveal";
+import StatementReveal from "@/components/about/StatementReveal";
 import { ABOUT_DATA, HERO_DATA } from "@/data/content";
 import { ABOUT_ACCENT, accentStyle } from "@/data/projectTheme";
 
@@ -191,15 +192,12 @@ export default function AboutTwoPage() {
       </section>
 
       {/* 2. Statement */}
-      <section aria-label="Introduction" className={`${WRAP} py-24 sm:py-32`}>
-        <Reveal>
-          <p className={`text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl ${GRAY}`}>
-            {firstSentence}{" "}
-            <span className={INK}>{restSentences.join(" ")}</span>
-          </p>
-          <p className={`mt-8 max-w-2xl text-lg sm:text-xl leading-relaxed ${GRAY}`}>{ABOUT_DATA.secondaryParagraph}</p>
-        </Reveal>
-      </section>
+      <StatementReveal
+        lead={firstSentence}
+        rest={restSentences.join(" ")}
+        secondary={ABOUT_DATA.secondaryParagraph}
+        wrapClassName={WRAP}
+      />
 
       {/* 3. Numbers */}
       <section aria-label="By the numbers" className="bg-[#F5F5F7] dark:bg-[#151517] py-20 sm:py-28">

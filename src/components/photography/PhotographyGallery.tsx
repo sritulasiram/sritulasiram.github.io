@@ -5,8 +5,6 @@ import {
   MapPin,
   Expand,
   Camera,
-  Columns2,
-  Grid3X3,
   SlidersHorizontal,
   Sparkles,
 } from "lucide-react";
@@ -29,7 +27,6 @@ interface PhotographyGalleryProps {
  */
 export default function PhotographyGallery({ photos }: PhotographyGalleryProps) {
   const [selectedAlbum, setSelectedAlbum] = useState<PhotoAlbumId>("all");
-  const [viewMode, setViewMode] = useState<"editorial" | "grid">("editorial");
   const [previewPhoto, setPreviewPhoto] = useState<PhotoItem | null>(null);
   const [shuffledPhotos, setShuffledPhotos] = useState<PhotoItem[]>(photos);
 
@@ -336,94 +333,48 @@ export default function PhotographyGallery({ photos }: PhotographyGalleryProps) 
 
   return (
     <div className="space-y-12 sm:space-y-16">
-      {/* Apple-Style Filter & View Switcher Toolbar */}
-      <div id="gallery" className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-2 pt-2 scroll-mt-24">
-        {/* Album Segmented Control */}
-        <div className="flex items-center gap-2 w-full sm:w-auto max-w-full sm:overflow-x-auto no-scrollbar">
-          <div
-            role="tablist"
-            aria-label="Photography Albums"
-            className="grid w-full grid-cols-2 gap-1 p-1 rounded-3xl bg-[#EEEEF0] dark:bg-[#1C1C1E] border border-black/[0.04] dark:border-white/[0.08] shadow-2xs no-scrollbar sm:inline-flex sm:w-auto sm:gap-0 sm:rounded-full sm:overflow-x-auto"
-          >
-            {PHOTO_ALBUMS.map((album) => {
-              const isActive = selectedAlbum === album.id;
+      {/* Heading and album filter chips */}
+      <div id="gallery" className="text-center scroll-mt-24">
+        <h2
+          id="gallery-title"
+          className="text-3xl sm:text-5xl font-semibold tracking-apple-headline leading-[1.08] text-[#1D1D1F] dark:text-[#F5F5F7]"
+        >
+          Every frame.
+          <span className="block text-[#6E6E73] dark:text-[#8E8E93]">Browse by place and light.</span>
+        </h2>
 
-              return (
-                <button
-                  key={album.id}
-                  role="tab"
-                  aria-selected={isActive}
-                  onClick={() => {
-                    setSelectedAlbum(album.id);
-                  }}
-                  className={`px-3.5 sm:px-4 py-1.5 rounded-full text-xs text-center transition-all duration-200 whitespace-nowrap select-none min-h-[36px] sm:min-h-[32px] cursor-pointer ${
-                    isActive
-                      ? "bg-white dark:bg-[#2C2C2E] text-[#1D1D1F] dark:text-[#F5F5F7] shadow-xs font-semibold"
-                      : "text-[#6E6E73] dark:text-[#8E8E93] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] font-medium"
-                  }`}
-                >
-                  {album.label}
-                </button>
-              );
-            })}
-          </div>
+        <div role="tablist" aria-label="Photography albums" className="mt-8 flex flex-wrap justify-center gap-2">
+          {PHOTO_ALBUMS.map((album) => {
+            const on = album.id === selectedAlbum;
+            return (
+              <button
+                key={album.id}
+                role="tab"
+                aria-selected={on}
+                onClick={() => setSelectedAlbum(album.id)}
+                className={`px-4 min-h-[44px] rounded-full text-sm font-medium transition-colors cursor-pointer ${
+                  on
+                    ? "bg-[#1D1D1F] text-white dark:bg-[#F5F5F7] dark:text-[#1D1D1F]"
+                    : "bg-[#F5F5F7] text-[#1D1D1F] hover:bg-[#E8E8ED] dark:bg-[#1C1C1E] dark:text-[#F5F5F7] dark:hover:bg-[#2C2C2E]"
+                }`}
+              >
+                {album.label}
+              </button>
+            );
+          })}
         </div>
-
-        {/* View Switcher: Editorial (Curated Mosaic) vs Grid (Catalog) */}
-        <div className="flex items-center gap-2 shrink-0">
-          {/* Segmented Control */}
-          <div
-            role="group"
-            aria-label="Gallery View Mode"
-            className="inline-flex p-1 rounded-full bg-[#EEEEF0] dark:bg-[#1C1C1E] border border-black/[0.04] dark:border-white/[0.08] shadow-2xs shrink-0"
-          >
-            <button
-              type="button"
-              onClick={() => setViewMode("editorial")}
-              aria-pressed={viewMode === "editorial"}
-              className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs transition-all duration-200 cursor-pointer select-none min-h-[32px] ${
-                viewMode === "editorial"
-                  ? "bg-white dark:bg-[#2C2C2E] text-[#1D1D1F] dark:text-[#F5F5F7] shadow-xs font-semibold"
-                  : "text-[#6E6E73] dark:text-[#8E8E93] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] font-medium"
-              }`}
-            >
-              <Columns2 className="w-3.5 h-3.5" />
-              <span>Editorial</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setViewMode("grid")}
-              aria-pressed={viewMode === "grid"}
-              className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs transition-all duration-200 cursor-pointer select-none min-h-[32px] ${
-                viewMode === "grid"
-                  ? "bg-white dark:bg-[#2C2C2E] text-[#1D1D1F] dark:text-[#F5F5F7] shadow-xs font-semibold"
-                  : "text-[#6E6E73] dark:text-[#8E8E93] hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] font-medium"
-              }`}
-            >
-              <Grid3X3 className="w-3.5 h-3.5" />
-              <span>Grid</span>
-            </button>
-          </div>
-        </div>
+        <p className="mt-4 text-sm text-[#6E6E73] dark:text-[#A1A1A6] max-w-xl mx-auto text-balance min-h-10">
+          {PHOTO_ALBUMS.find((a) => a.id === selectedAlbum)?.description}
+        </p>
       </div>
-
 
       {/* 2. Photo Gallery Display */}
       {filteredPhotos.length > 0 ? (
         <div
-          key={`${viewMode}-${filteredPhotos.map((p) => p.id).slice(0, 3).join("-")}`}
+          key={`${selectedAlbum}-${filteredPhotos.map((p) => p.id).slice(0, 3).join("-")}`}
           className="animate-in fade-in duration-300"
         >
-          {viewMode === "editorial" ? (
-            /* EDITORIAL VIEW: Apple "Curated Days" Mosaic (Heroes + 2x2 Companion Quads) */
-            renderEditorialMosaic(filteredPhotos)
-          ) : (
-            /* GRID VIEW: Uniform 4-Column Apple Photos Catalog */
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 items-start [content-visibility:auto] [contain-intrinsic-size:auto_600px]">
-              {filteredPhotos.map((photo) => renderPhotoCard(photo, false))}
-            </div>
-          )}
+          {renderEditorialMosaic(filteredPhotos)}
         </div>
       ) : (
         <div className="py-20 text-center space-y-3 p-8 rounded-3xl bg-[#FAFAFA] dark:bg-[#121214] border border-[#E5E5EA] dark:border-white/[0.08] apple-card-shadow max-w-md mx-auto">
