@@ -29,13 +29,7 @@ function Mono({ children }: { children: React.ReactNode }) {
   return <span className="shrink-0 font-mono text-xs font-semibold text-[var(--pa)]">{children}</span>;
 }
 
-function LightingVisual() {
-  const rows = [
-    { name: "Keyboard zones", note: "Controlled independently", value: "4" },
-    { name: "Modes", note: "Static, breathing, strobing, colour cycle", value: "4" },
-    { name: "USB feature report", note: "Reverse-engineered protocol", value: "17 bytes" },
-    { name: "Command queue", note: "Serialized, so the controller never locks up", value: "10 ms" },
-  ];
+function Rows({ rows }: { rows: { name: string; note: string; value?: string }[] }) {
   return (
     <ul className="space-y-3">
       {rows.map((row) => (
@@ -44,36 +38,47 @@ function LightingVisual() {
             <span className={`block text-sm font-semibold ${INK}`}>{row.name}</span>
             <span className={`block text-xs ${GRAY}`}>{row.note}</span>
           </span>
-          <Mono>{row.value}</Mono>
+          {row.value && <Mono>{row.value}</Mono>}
         </li>
       ))}
     </ul>
   );
 }
 
-function ThermalsVisual() {
-  const rows = [
-    { name: "CPU die temperature", note: "Read from AppleSMC, no root needed", value: "TC0P" },
-    { name: "Fans", note: "Both blowers, in RPM", value: "2 fans" },
-    { name: "Battery charge limit", note: "Set through the AsusSMC driver", value: "60 · 80 · 100%" },
+function LightingVisual() {
+  return (
+    <Rows
+      rows={[
+        { name: "Keyboard zones", note: "Coloured together or one by one", value: "4" },
+        { name: "Effects", note: "Static, Breathing, Color Cycle, Rainbow, Strobe", value: "5" },
+        { name: "Transaction", note: "Handshake, brightness, mode, set, apply", value: "17 bytes each" },
+        { name: "Write queue", note: "Latest wins, so a colour drag never builds a backlog", value: "10 ms apart" },
+      ]}
+    />
+  );
+}
+
+function InterfaceVisual() {
+  const steps = [
+    "ASUS vendor ID 0x0B05, with full-size feature reports",
+    "Vendor usage pages first, then known product IDs",
+    "Never mix two product IDs",
+    "One lock, so the app and the CLI never interleave",
   ];
   return (
-    <ul className="space-y-3">
-      {rows.map((row) => (
-        <li key={row.name} className={`${ROW} justify-between`}>
-          <span className="min-w-0">
-            <span className={`block text-sm font-semibold ${INK}`}>{row.name}</span>
-            <span className={`block text-xs ${GRAY}`}>{row.note}</span>
-          </span>
-          <Mono>{row.value}</Mono>
+    <ol className="space-y-3">
+      {steps.map((step, i) => (
+        <li key={step} className={ROW}>
+          <Mono>{i + 1}</Mono>
+          <span className={`text-sm font-semibold ${INK}`}>{step}</span>
         </li>
       ))}
-    </ul>
+    </ol>
   );
 }
 
 function DisplayVisual() {
-  const modes = ["Vivid", "Cinema", "Eye Care", "FPS", "RTS / RPG", "Default"];
+  const modes = ["Standard", "Vivid", "Eye Care", "Cinema", "FPS", "RTS / RPG"];
   return (
     <div>
       <ul className="grid grid-cols-2 gap-3">
@@ -81,7 +86,7 @@ function DisplayVisual() {
           <li
             key={mode}
             className={`rounded-2xl px-4 py-3.5 text-sm font-semibold shadow-xs ${
-              i === 5 ? "bg-[var(--pa)] text-white dark:text-black" : `bg-[#FFFFFF] dark:bg-[#232326] ${INK}`
+              i === 0 ? "bg-[var(--pa)] text-white dark:text-black" : `bg-[#FFFFFF] dark:bg-[#232326] ${INK}`
             }`}
           >
             {mode}
@@ -89,29 +94,35 @@ function DisplayVisual() {
         ))}
       </ul>
       <p className={`mt-4 text-xs ${GRAY}`}>
-        Each mode uploads 256-sample red, green and blue curves, and the original is restored on quit or sleep.
+        Each profile is computed from the display’s own ColorSync curve, so Standard is exactly what you had before.
       </p>
     </div>
   );
 }
 
-function HotkeysVisual() {
-  const rows = [
-    { name: "Fn combinations", note: "Caught with a macOS event tap" },
-    { name: "Dedicated ROG key", note: "Raw HID report, UsagePage 0xFF31 · Usage 0x0038" },
-    { name: "Debounce", note: "250 ms, so one press is one action" },
-  ];
+function ReadingsVisual() {
   return (
-    <ul className="space-y-3">
-      {rows.map((row) => (
-        <li key={row.name} className={ROW}>
-          <span className="min-w-0">
-            <span className={`block text-sm font-semibold ${INK}`}>{row.name}</span>
-            <span className={`block text-xs ${GRAY}`}>{row.note}</span>
-          </span>
-        </li>
-      ))}
-    </ul>
+    <Rows
+      rows={[
+        { name: "CPU load and memory", note: "macOS kernel", value: "Live" },
+        { name: "CPU temperature", note: "SMC, through VirtualSMC", value: "Reported" },
+        { name: "Battery health and cycles", note: "AppleSmartBattery", value: "Reported" },
+        { name: "Fan speed", note: "No macOS driver reads this laptop’s fans", value: "Not reported" },
+      ]}
+    />
+  );
+}
+
+function HotkeysVisual() {
+  return (
+    <Rows
+      rows={[
+        { name: "ROG key", note: "Show the window, next preset or light on and off", value: "0x38" },
+        { name: "Fn+↑ and Fn+↓", note: "Backlight brightness, with an optional overlay", value: "0xC4 · 0xC5" },
+        { name: "Fn+F11", note: "Puts the Mac to sleep", value: "0x6C" },
+        { name: "⌃⌥⌘ shortcuts", note: "Optional, and they work from any keyboard", value: "Any keyboard" },
+      ]}
+    />
   );
 }
 
@@ -119,25 +130,31 @@ const CHAPTERS: { problem: string; headline: string; body: string; visual: React
   {
     problem: "Lighting locked to Windows.",
     headline: "Four zones, straight over USB.",
-    body: "The keyboard’s lighting controller speaks an undocumented 17-byte protocol. The app reverse-engineers it for several ROG and TUF models and drives it directly through IOKit, with a serialized queue so the controller never locks up.",
+    body: "The keyboard’s lighting controller speaks an undocumented protocol of 17-byte feature reports. The app sends a complete lighting state every time, and keeps only the newest one waiting, so dragging a colour picker never leaves the keyboard behind.",
     visual: <LightingVisual />,
   },
   {
+    problem: "Packets in the wrong place.",
+    headline: "Only the keyboard hears it.",
+    body: "Version 1 could send lighting packets to any ASUS USB device, including mice and docks. Now a small, tested rule picks the one Aura interface, and a shared lock stops the app and the command-line tool from talking over each other.",
+    visual: <InterfaceVisual />,
+  },
+  {
     problem: "Colours that never match.",
-    headline: "Six display modes.",
-    body: "GameVisual profiles are rebuilt as gamma curves and uploaded through CoreGraphics. Nothing is left changed: quitting the app, or putting the Mac to sleep, puts the original curve back.",
+    headline: "Six display profiles.",
+    body: "Profiles apply to every connected display and come back after sleep or when a display is plugged in. Gamma is left alone until you choose a profile, so Night Shift keeps working, and choosing Standard or quitting restores your calibration.",
     visual: <DisplayVisual />,
   },
   {
-    problem: "Thermals you can’t see.",
-    headline: "Read from the silicon.",
-    body: "Die temperature and fan speed come straight from the AppleSMC registers, without root. The charge limit goes through the AsusSMC driver, so the battery can be held at 60, 80 or 100 percent.",
-    visual: <ThermalsVisual />,
+    problem: "Numbers you can’t trust.",
+    headline: "Only real readings.",
+    body: "Version 1 showed an estimated fan speed and placeholder battery values. Now every number comes from macOS, and a sensor that isn’t there says Not reported. Readings are only taken while the Dashboard or Status screen is open.",
+    visual: <ReadingsVisual />,
   },
   {
-    problem: "One key, one app.",
-    headline: "The ROG key, working.",
-    body: "A global event tap catches the Fn combinations, and the dedicated ROG key is read from raw USB reports, so the physical key launches the app. It works entirely in user space.",
+    problem: "Keys that fired everywhere.",
+    headline: "Only the keys on the keyboard.",
+    body: "macOS tags every arrow and F-key with the function modifier, so the old key monitor acted on ordinary presses in other apps. Now the ROG key, Fn+↑, Fn+↓ and Fn+F11 are read straight from the controller, and everything else is left to macOS.",
     visual: <HotkeysVisual />,
   },
 ];
@@ -148,40 +165,77 @@ const SCREENS: ViewerScreen[] = [
     label: "Dashboard",
     title: "The machine at a glance.",
     description:
-      "System and battery details, live CPU and memory load, die temperature with thermal headroom, fan speed, and quick controls for backlight, lighting and display profile.",
+      "CPU load with history, memory, CPU temperature with its status, battery charge, health and cycles, the system, and quick keyboard controls.",
     src: "/images/projects/rog-gaming-center/app.png",
-    alt: "The Dashboard tab: system architecture and battery, CPU and RAM load, silicon thermal engine and hardware quick controls.",
+    alt: "The Dashboard: processor load chart at 4%, memory at 52%, CPU temperature 55°C, battery 100% with 94% health, keyboard controls and macOS Tahoe system details.",
   },
   {
-    id: "aura-core",
-    label: "Aura Core",
-    title: "Lighting you can see before you apply it.",
+    id: "lighting",
+    label: "Lighting",
+    title: "See it before the keyboard does.",
     description:
-      "A live keyboard preview, five effects (Static, Breathing, Color Cycle, Rainbow and Strobing), brightness and tempo, then one button to send it to the keyboard.",
-    src: "/images/projects/rog-gaming-center/aura-core.png",
-    alt: "The Aura Core tab: a colourful keyboard preview, five lighting effect tiles, brightness and tempo controls and an Apply to Keyboard button.",
+      "A live four-zone preview that matches what the hardware can do, five effects with speed, brightness, and built-in and saved presets.",
+    src: "/images/projects/rog-gaming-center/lighting.png",
+    alt: "The Lighting screen: a keyboard preview in teal, purple, red and lime zones, backlight and brightness controls, effect and speed pickers with Rainbow selected, and presets.",
   },
   {
-    id: "gamevisual",
-    label: "GameVisual",
+    id: "display",
+    label: "Display",
     title: "Six ways to see the same screen.",
     description:
-      "Display profiles from Default Standard to FPS Mode and RTS / RPG, each with its own colour strip, plus a live preview with a baseline switch to compare.",
-    src: "/images/projects/rog-gaming-center/gamevisual.png",
-    alt: "The GameVisual tab: six display colour calibration profiles and a real-time visual simulation with a baseline toggle.",
+      "Standard, Vivid, Eye Care, Cinema, FPS and RTS / RPG, with a test pattern to compare them: each grey step should stay distinct from its neighbours.",
+    src: "/images/projects/rog-gaming-center/display.png",
+    alt: "The Display screen: six display profiles with Standard selected, and a test pattern of grey steps and red, blue and green ramps.",
   },
   {
-    id: "settings",
-    label: "Settings",
-    title: "Set it once.",
+    id: "status",
+    label: "Status",
+    title: "When something’s wrong, it says so.",
     description:
-      "Open at login, stay in the menu bar, pick the startup lighting, choose what the ROG key does, set a battery charge limit and look up the Fn key shortcuts.",
-    src: "/images/projects/rog-gaming-center/settings.png",
-    alt: "The Settings tab: system integration, lighting and controller behaviour, battery health and a function key reference.",
+      "The keyboard controller and its product ID, the Input Monitoring permission, which sensors macOS reports, a re-sync button and an event log.",
+    src: "/images/projects/rog-gaming-center/status.png",
+    alt: "The Status screen: keyboard connected on ITE Device 8910, product ID 0x1869, Input Monitoring allowed, SMC available, CPU temperature reported and fan speed not reported.",
   },
 ];
 
-const NOT_NEEDED = ["Electron", "Python", "Node.js", "libusb", "Bridging headers", "Root daemons", "Kext changes"];
+const EXTRAS: { label: string; title: string; body: string; src: string; alt: string; width: number; height: number }[] = [
+  {
+    label: "Settings · Keyboard",
+    title: "Your keys, your way.",
+    body: "Choose what the ROG key does, show a brightness overlay for Fn+↑ and Fn+↓, and turn on ⌃⌥⌘ shortcuts that work from any keyboard.",
+    src: "/images/projects/rog-gaming-center/settings-keyboard.png",
+    alt: "Keyboard settings: ROG key action, brightness overlay, and keyboard shortcuts for backlight brightness, presets and on or off.",
+    width: 612,
+    height: 772,
+  },
+  {
+    label: "Menu bar",
+    title: "The everyday controls.",
+    body: "Light on or off, brightness, the lighting preset and the display profile, without opening the window.",
+    src: "/images/projects/rog-gaming-center/menu-bar.png",
+    alt: "The menu bar panel: a keyboard light switch, brightness slider, lighting and display pickers, and open, settings and quit commands.",
+    width: 306,
+    height: 292,
+  },
+  {
+    label: "Settings · General",
+    title: "Runs quietly.",
+    body: "Open at login, hide the Dock icon and keep running in the menu bar. Lighting comes back after sleep.",
+    src: "/images/projects/rog-gaming-center/settings-general.png",
+    alt: "General settings: open at login, show icon in the Dock, and keep running in the menu bar when the window is closed.",
+    width: 612,
+    height: 425,
+  },
+];
+
+const NOT_NEEDED = ["Electron", "Python", "Node.js", "libusb", "Root privileges", "Kexts for lighting", "Estimated readings"];
+
+const MODULES = [
+  { name: "AuraCore", note: "Packets, effects, key decoding and display curves. Pure Swift, unit-tested." },
+  { name: "AuraHID", note: "The only code that touches the keyboard controller." },
+  { name: "ROG Gaming Center", note: "The SwiftUI app, its menu bar panel and Settings." },
+  { name: "rogauracore", note: "The command-line tool, with --diagnose and --keys." },
+];
 
 /* ---------- Page ---------- */
 
@@ -196,12 +250,12 @@ export default function RogGamingCenterCaseStudy({ project }: Props) {
           <div className="flex justify-center">
             <CaseStudyBreadcrumb title="ROG Gaming Center" />
           </div>
-          <p className="mt-4 text-sm font-semibold text-[var(--pa)]">Native macOS app · Swift &amp; SwiftUI</p>
+          <p className="mt-4 text-sm font-semibold text-[var(--pa)]">Native macOS app · Swift &amp; SwiftUI · Version 2</p>
           <h1 className={`mt-3 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold ${INK} tracking-apple-hero leading-[1.03]`}>
             Every ROG control. <span className="sm:whitespace-nowrap">Zero runtimes.</span>
           </h1>
           <p className={`mt-5 mx-auto max-w-2xl text-lg sm:text-xl ${GRAY} leading-relaxed tracking-apple-subhead`}>
-            A native app that controls the lighting, thermals, display and hotkeys of ASUS ROG and TUF laptops on macOS, without Electron or root daemons.
+            Keyboard lighting, system vitals and display profiles for ASUS ROG laptops running macOS. Rebuilt from the core as a native SwiftUI app, with nothing running as root.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
             {project.githubUrl && (
@@ -224,9 +278,9 @@ export default function RogGamingCenterCaseStudy({ project }: Props) {
           <div className="mt-10 sm:mt-14 pb-10 sm:pb-16 flex justify-center">
             <Image
               src={project.imageSrc}
-              alt="The ROG Gaming Center dashboard showing CPU load, memory, silicon temperature, battery health and quick controls for the keyboard backlight, Aura lighting and display profile"
-              width={1024}
-              height={576}
+              alt="The ROG Gaming Center dashboard showing processor load, memory, CPU temperature, battery health, keyboard controls and system details"
+              width={1397}
+              height={825}
               priority
               sizes="(max-width: 768px) 100vw, 880px"
               className="h-auto w-full max-w-4xl"
@@ -239,13 +293,11 @@ export default function RogGamingCenterCaseStudy({ project }: Props) {
       <section className={`${WRAP} py-28 sm:py-40`}>
         <UnlockStatement
           className="text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.12] tracking-apple-hero max-w-4xl"
-          problem="On macOS, a gaming laptop’s lighting, fans, display modes and battery limits stay locked inside utilities that only run on Windows."
-          answer="Here, ROG Gaming Center, GameVisual and Aura Core are merged into one native app, in plain Swift."
+          problem="On macOS, a ROG laptop’s keyboard lighting, display modes and hotkeys stay locked inside Armoury Crate, which only runs on Windows."
+          answer="ROG Gaming Center brings them back as one native app, in plain Swift."
           marks={[
             { phrase: "lighting", kind: "rgb" },
-            { phrase: "fans", kind: "rpm" },
             { phrase: "display modes", kind: "profile" },
-            { phrase: "battery limits", kind: "battery" },
           ]}
         />
       </section>
@@ -275,13 +327,52 @@ export default function RogGamingCenterCaseStudy({ project }: Props) {
         <div className="max-w-6xl mx-auto w-full px-6 sm:px-8">
           <Reveal>
             <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero text-center`}>See every screen.</h2>
-            <p className={`mt-3 mb-10 text-lg ${GRAY} text-center`}>Four tabs, one native app. Scroll to see each one.</p>
+            <p className={`mt-3 mb-10 text-lg ${GRAY} text-center`}>Four screens in one native window. Scroll to see each one.</p>
             <PinnedScreens screens={SCREENS} fitWidth />
           </Reveal>
         </div>
       </section>
 
-      {/* 5. What it doesn't need */}
+      {/* 5. Menu bar and Settings */}
+      <section id="menu-bar" aria-label="Menu bar and Settings" className="scroll-mt-20 py-16 sm:py-24">
+        <div className={WRAP}>
+          <Reveal>
+            <h2 className={`text-3xl sm:text-5xl font-semibold tracking-apple-hero leading-[1.08]`}>
+              <span className={`block ${GRAY}`}>Close the window.</span>
+              <span className={`block ${INK}`}>It stays out of the way.</span>
+            </h2>
+            <p className={`mt-5 max-w-2xl text-lg ${GRAY} leading-relaxed`}>
+              The everyday controls live in the menu bar, and everything else is in a standard Settings window, opened with ⌘,.
+            </p>
+          </Reveal>
+          <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2">
+            {EXTRAS.map((extra, i) => (
+              <Reveal key={extra.src} delay={i * 80} className={i === 0 ? "md:row-span-2" : ""}>
+                <figure className="flex h-full flex-col rounded-[28px] bg-[var(--pa-tint)] p-6 sm:p-8">
+                  <figcaption>
+                    <p className="text-sm font-semibold text-[var(--pa)]">{extra.label}</p>
+                    <h3 className={`mt-1 text-xl sm:text-2xl font-semibold ${INK} tracking-apple-hero`}>{extra.title}</h3>
+                    <p className={`mt-2 text-base ${GRAY} leading-relaxed`}>{extra.body}</p>
+                  </figcaption>
+                  <div className="mt-6 flex flex-1 items-center justify-center">
+                    <Image
+                      src={extra.src}
+                      alt={extra.alt}
+                      width={extra.width}
+                      height={extra.height}
+                      sizes={`(max-width: 768px) 100vw, ${extra.width}px`}
+                      className="h-auto w-full"
+                      style={{ maxWidth: extra.width }}
+                    />
+                  </div>
+                </figure>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 6. What it doesn't need */}
       <section aria-label="Built without" className="py-16 sm:py-24">
         <div className={WRAP}>
           <Reveal>
@@ -289,10 +380,10 @@ export default function RogGamingCenterCaseStudy({ project }: Props) {
               What it doesn’t need.
             </h2>
             <p className={`mt-3 max-w-2xl text-lg ${GRAY} leading-relaxed`}>
-              Everything is Swift and SwiftUI, running in user space. A small command-line tool, rogauracore, is included for controlling the lighting from shell scripts.
+              Everything is Swift and SwiftUI, running in user space. No kexts are needed for lighting, and every reading comes from macOS.
             </p>
           </Reveal>
-          <Reveal delay={100}>
+          <Reveal delay={80}>
             <ul className="mt-10 flex flex-wrap gap-3">
               {NOT_NEEDED.map((item) => (
                 <li
@@ -304,16 +395,31 @@ export default function RogGamingCenterCaseStudy({ project }: Props) {
               ))}
             </ul>
           </Reveal>
+          <Reveal delay={80}>
+            <p className={`mt-14 max-w-2xl text-lg ${GRAY} leading-relaxed`}>
+              Four modules, so the hardware logic is tested without the hardware.
+            </p>
+            <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {MODULES.map((module) => (
+                <li key={module.name} className={ROW}>
+                  <span className="min-w-0">
+                    <span className={`block font-mono text-sm font-semibold ${INK}`}>{module.name}</span>
+                    <span className={`block text-xs ${GRAY}`}>{module.note}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
         </div>
       </section>
 
-      {/* 5. Results */}
+      {/* 7. Results */}
       <section aria-label="Results" className="bg-[var(--pa-deep)] text-white py-24 sm:py-32">
         <div className={WRAP}>
           <Reveal>
             <p className="text-sm font-semibold text-[#86868B]">At a glance</p>
             <h2 className="mt-2 text-3xl sm:text-5xl font-semibold tracking-apple-hero max-w-2xl leading-[1.08]">
-              One app. Four controls.
+              Rebuilt from the core.
             </h2>
           </Reveal>
           <dl className="mt-14 grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-12">
@@ -330,34 +436,7 @@ export default function RogGamingCenterCaseStudy({ project }: Props) {
         </div>
       </section>
 
-      {/* 6. Tech specs */}
-      <section aria-label="Technical stack" className={`${WRAP} py-20 sm:py-28`}>
-        <Reveal>
-          <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero`}>Under the hood.</h2>
-          <p className={`mt-3 text-lg ${GRAY} max-w-2xl`}>{project.timeframe} · v1.0 beta.</p>
-        </Reveal>
-        <div className="mt-12 divide-y divide-black/[0.08] dark:divide-white/10 border-y border-black/[0.08] dark:border-white/10">
-          {project.techStack.map((group) => (
-            <Reveal key={group.category}>
-              <div className="grid grid-cols-1 gap-3 py-8 md:grid-cols-[14rem_1fr] md:gap-10">
-                <h3 className={`text-sm font-semibold ${INK}`}>{group.category}</h3>
-                <ul className="flex flex-wrap gap-x-3 gap-y-2">
-                  {group.items.map((item) => (
-                    <li
-                      key={item}
-                      className="rounded-full bg-[var(--pa-tint)] px-3.5 py-1.5 text-sm text-[#1D1D1F] dark:text-[#F5F5F7]"
-                    >
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* 7. Keep exploring */}
+      {/* 8. Keep exploring */}
       {next && <ExploreMore projectId={project.id} nextProject={next} nextKicker="The firmware behind it" />}
     </div>
   );

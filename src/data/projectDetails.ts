@@ -577,154 +577,137 @@ export const PROJECT_DETAILS: Record<string, CaseStudy> = {
   "rog-gaming-center": {
     id: "rog-gaming-center",
     title: "ROG Gaming Center macOS App",
-    eyebrow: "Native macOS Systems Architecture · Swift & SwiftUI",
-    tagline: "Zero-runtime native macOS hardware control suite interfacing directly with IOKit USB HID microcontrollers, AppleSMC kernel telemetry registers, and CoreGraphics display transfer tables.",
-    heroMetric: "v1.0-beta",
-    heroMetricLabel: "Zero Third-Party Runtimes",
+    eyebrow: "Native macOS App · Swift & SwiftUI",
+    tagline: "A native macOS app for the keyboard lighting, system vitals, display profiles and hotkeys of ASUS ROG laptops, talking to the keyboard controller directly through IOKit with nothing running as root.",
+    heroMetric: "2.0",
+    heroMetricLabel: "Rebuilt from the core",
     imageSrc: "/images/projects/rog-gaming-center/app.png",
     placeholderLabel: "rog-gaming-center-preview.png",
-    placeholderRatio: "16:10 Native SwiftUI Dashboard (1920×1200)",
-    timeframe: "Open Source Systems Software",
+    placeholderRatio: "Native SwiftUI window",
+    timeframe: "Open source, MIT licence",
     role: "Lead Systems & macOS Developer",
     organization: "Independent Systems R&D",
     githubUrl: "https://github.com/sritulasiram/rog-gaming-center-hackintosh",
     githubLabel: "View the repo on GitHub",
     background: {
       problemStatement:
-        "On high-performance gaming laptops converted to macOS, all proprietary hardware management—such as 4-zone Aura RGB keyboard lighting, blower fan curve profiles, GameVisual display color calibration, and battery charging thresholds—remains locked inside Windows-only vendor utilities. Existing community workarounds often rely on bloated Electron wrappers or insecure root daemons that waste battery and add background latency. Without a native macOS driver, users have zero hardware control over their chassis lights, thermals, and battery health.",
+        "ASUS's own software, Armoury Crate, only runs on Windows. On a ROG laptop running macOS, the four-zone keyboard lighting, the display profiles and the ROG and Fn hotkeys have no way to be controlled.",
       context:
-        "To solve this without sacrificing macOS efficiency, ROG Gaming Center was engineered as a pure Swift 5.9 and SwiftUI desktop application. It communicates directly with onboard ROG/TUF USB HID microcontrollers (VID 0x0B05) via user-space IOKit, reads silicon die temperatures straight from AppleSMC kernel registers (TC0P), dynamically adjusts display gamma LUT curves via CoreGraphics, and intercepts physical chassis hotkeys via macOS EventTap—all with zero external runtimes and no root daemons.",
+        "Version 1 brought those controls to macOS, but it could send lighting packets to other ASUS devices, its key monitor fired on ordinary arrow and F-key presses in other apps, and it showed estimated fan and battery values as if they were real. Version 2 rebuilds the app on a tested core: it writes only to the Aura lighting interface, reads only the keyboard's own hotkeys, and shows only readings macOS provides.",
       challenges: [
-        "Reverse-engineering undocumented 17-byte USB HID feature report protocols across multiple ROG and TUF keyboard controller product IDs",
-        "Preventing USB microcontroller communication lockups through serialized FIFO queues with 10ms latching delays",
-        "Querying AppleSMC kernel registers directly for real-time CPU die temperature (TC0P) and fan RPM without root privileges",
-        "Directly manipulating CoreGraphics gamma lookup tables (CGSetDisplayTransferByTable) with failsafe auto-restoration upon quit or sleep",
-        "Intercepting physical Fn key combinations and the dedicated ROG launcher key via macOS EventTap and IOHIDManager with 250ms debouncing",
-        "Eliminating background daemon footprint by running entirely in user space without requiring root privileges, kext modifications, or custom sleep/wake daemons",
+        "Driving an undocumented protocol of 17-byte HID feature reports without the keyboard lagging behind a colour drag",
+        "Making sure lighting packets reach only the Aura controller, never another ASUS USB device",
+        "Reading the ROG and Fn keys without catching ordinary key presses in other apps",
+        "Applying display profiles to every display and restoring the user's calibration on quit, without disturbing Night Shift",
+        "Showing only real readings on a Hackintosh, where some sensors such as fan speed may not exist",
       ],
     },
     architecture: {
       summary:
-        "A pure Swift systems architecture built with SwiftUI, IOKit HID Manager, AppleSMC C bridge, CoreGraphics display APIs, and an active CGEventTap input listener.",
+        "A Swift package of four modules: a pure, unit-tested core, a single IOKit transport that is the only code touching the hardware, the SwiftUI app, and the rogauracore command-line tool.",
       components: [
         {
-          title: "Native Swift UI & Reactive State Engine",
+          title: "AuraCore",
           description:
-            "A three-column Apple HIG responsive dashboard built with SwiftUI, featuring live hardware gauges, real-time Mach host CPU sparklines, and unified hardware profile management.",
+            "Pure Swift with no AppKit or IOKit: packet building, effects, lighting state, hotkey decoding and debouncing, interface selection and display curves, all covered by unit tests.",
         },
         {
-          title: "Direct User-Space IOKit HID Driver",
+          title: "AuraHID",
           description:
-            "Interfaces with onboard ASUS ROG/TUF USB microcontrollers (VID 0x0B05), transmitting 17-byte feature reports over a serialized GCD queue with 10ms delays and automatic sleep-wake reconnection.",
+            "Finds the Aura interface, checks Input Monitoring access, writes feature reports through a latest-wins queue 10 ms apart, and reads the controller's vendor hotkeys.",
         },
         {
-          title: "Kernel Telemetry & AppleSMC Subsystem",
+          title: "ROG Gaming Center",
           description:
-            "Reads live silicon die temperatures directly from AppleSMC register TC0P, reads dual fan RPM, and communicates with AsusSMC sysctl to enforce 60%, 80%, or 100% battery charge thresholds.",
+            "A SwiftUI app with a sidebar window (Dashboard, Lighting, Display, Status), a menu bar panel and a Settings window. Telemetry is sampled only while it is on screen.",
         },
         {
-          title: "CoreGraphics GameVisual Calibration Engine",
+          title: "rogauracore",
           description:
-            "Directly calculates and uploads 256-sample red/green/blue gamma curves via CGSetDisplayTransferByTable for 6 distinct visual modes (Vivid, Cinema, Eye Care, FPS, RTS/RPG, Default).",
-        },
-        {
-          title: "Global EventTap & ROG Key Interceptor",
-          description:
-            "Captures physical keyboard Fn events and intercepts raw USB HID input reports (UsagePage 0xFF31, Usage 0x0038) to trigger the application from the physical ROG chassis key.",
+            "A command-line tool for scripting the backlight, with --diagnose to list every ASUS HID interface and --keys to show hotkeys as they are pressed.",
         },
       ],
     },
     keyFeatures: [
       {
-        title: "Pure Swift & SwiftUI Architecture",
+        title: "Keyboard lighting",
         description:
-          "Written entirely in Swift and SwiftUI with zero external runtimes (no Python, Node.js, Electron, libusb, or bridging headers), running natively in user space.",
-        badge: "Swift 5.9",
-      },
-      {
-        title: "Direct IOKit Aura RGB Control",
-        description:
-          "Controls 4 distinct keyboard lighting zones with static, breathing, strobing, and color cycle modes using serialized 17-byte USB feature reports.",
+          "Static, Breathing, Color Cycle, Rainbow and Strobe effects, per-zone colours, brightness, built-in and saved presets, and a live four-zone preview.",
         badge: "IOKit HID",
       },
       {
-        title: "AppleSMC Silicon Thermal Telemetry",
+        title: "Dashboard",
         description:
-          "Direct AppleSMC TC0P silicon die temperature readouts, thermal headroom calculation, dual fan RPM, and AsusSMC battery threshold sysctl (60%/80%/100%).",
-        badge: "Kernel Telemetry",
+          "CPU load with history, memory, CPU temperature with status, battery charge, health and cycles, and quick keyboard controls.",
+        badge: "SwiftUI",
       },
       {
-        title: "ROG GameVisual Display Calibration",
+        title: "Display profiles",
         description:
-          "Applies calibrated gamma curves directly to active display transfer tables via CGSetDisplayTransferByTable, with automatic restoration upon quit or sleep.",
+          "Six GameVisual-style profiles applied to every connected display, computed from each display's ColorSync curve and restored on quit.",
         badge: "CoreGraphics",
       },
       {
-        title: "Hardware Fn & Dedicated ROG Key Launcher",
+        title: "Hotkeys",
         description:
-          "Captures physical keyboard Fn legends via macOS EventTap and intercepts raw USB HID reports from the dedicated ROG key with 250ms debouncing.",
+          "The ROG key, Fn+↑ and Fn+↓ for backlight and Fn+F11 for sleep, read from the controller, plus optional ⌃⌥⌘ shortcuts from any keyboard.",
         badge: "HID & Hotkeys",
       },
       {
-        title: "Standalone rogauracore CLI Tool",
-        description:
-          "Bundles a standalone command-line executable for programmatic RGB lighting control in bash/zsh shell scripts and workflow automations.",
-        badge: "CLI Utility",
+        title: "Menu bar",
+        description: "Backlight, brightness, lighting preset and display profile, without opening the window.",
+        badge: "Menu bar",
+      },
+      {
+        title: "Command line",
+        description: "rogauracore controls the backlight from Terminal or scripts, and diagnoses the controller.",
+        badge: "CLI",
       },
     ],
     techStack: [
       {
-        category: "macOS Systems Programming",
+        category: "App",
+        items: ["Swift 5.9+", "SwiftUI", "Swift Charts", "Observation", "SMAppService", "macOS 14 Sonoma or later"],
+      },
+      {
+        category: "Hardware",
         items: [
-          "Swift 5.9+",
-          "SwiftUI",
-          "IOKit HID Manager",
-          "AppleSMC Kernel C-Bridge",
-          "CoreGraphics Display LUT",
-          "macOS EventTap API",
-          "Mach Host Statistics",
+          "IOKit HID (vendor 0x0B05)",
+          "ITE 8910 controller (0x1869)",
+          "SMC through VirtualSMC",
+          "AppleSmartBattery",
+          "CoreGraphics gamma tables",
+          "RegisterEventHotKey",
         ],
       },
       {
-        category: "Hardware Controllers",
-        items: [
-          "IOKit HID (VID: 0x0B05 · Multiple ROG/TUF PIDs)",
-          "AppleSMC (TC0P Silicon Die)",
-          "AsusSMC Sysctl Driver",
-          "Built-in 120Hz IPS Display",
-        ],
-      },
-      {
-        category: "Tooling & Architecture",
-        items: ["Xcode 15", "SPM (Swift Package Manager)", "rogauracore CLI", "Apple HIG Visual Tokens"],
+        category: "Tooling",
+        items: ["Swift Package Manager", "Swift Testing", "GitHub Actions CI", "rogauracore CLI", "Disk image packaging"],
       },
     ],
     results: [
       {
         metric: "4",
-        label: "Hardware Features Controlled",
-        description:
-          "RGB keyboard lighting, live thermal/battery telemetry, GameVisual display calibration, and physical Fn hotkeys — all from one native app.",
+        label: "Swift modules",
+        description: "A pure, unit-tested core, one transport that touches the hardware, the app and the CLI.",
       },
       {
-        metric: "Beta",
-        label: "Active Development",
-        description:
-          "v1.0.0-beta, actively refined across ROG/TUF models and Hackintosh configurations.",
+        metric: "10",
+        label: "Controller product IDs",
+        description: "Known ASUS keyboard controllers. Lighting packets go only to the Aura one, never to other ASUS USB devices.",
       },
       {
-        metric: "0",
-        label: "Third-Party Runtimes",
-        description:
-          "Written entirely in Swift and SwiftUI — no Python, Node.js, Electron, or bridging headers.",
+        metric: "34",
+        label: "Unit tests",
+        description: "They cover packets, effects, key decoding, interface selection and display curves, and run on every push.",
       },
     ],
     screens: [
       {
         id: "screen-rog-center-dash",
-        title: "Native Systems Stage",
+        title: "Dashboard",
         description:
-          "Pure Swift dashboard reading live AppleSMC TC0P silicon thermals (71°C, 29% headroom), dual fan speed (about 2,566 RPM), 99% battery health, and 11.3W live power draw.",
+          "CPU load with history, memory, CPU temperature, battery health and cycles, quick keyboard controls and system details.",
         imageSrc: "/images/projects/rog-gaming-center/app.png",
         badge: "SwiftUI App",
       },

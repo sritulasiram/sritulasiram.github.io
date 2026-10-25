@@ -119,12 +119,12 @@ const LINEUP_PROJECTS: ProjectCardData[] = [
     category: "Case Studies",
     categoryId: "case-studies",
     description:
-      "Native Swift utility for ASUS ROG and TUF laptops on macOS. Interfaces directly with USB HID microcontrollers for Aura RGB lighting, reads AppleSMC thermals, and applies display calibration without root daemons.",
+      "Native Swift app for ASUS ROG laptops on macOS. Drives the Aura keyboard lighting directly over USB HID, shows real system readings, and applies display profiles, with nothing running as root.",
     imageSrc: "/images/projects/rog-gaming-center/app.png",
     tech: ["Swift", "SwiftUI", "IOKit", "USB HID"],
     caseStudyUrl: "/projects/rog-gaming-center",
     badgeColor: "#FF453A",
-    stats: ["Pure Swift & SwiftUI", "No root daemons", "USB HID + AppleSMC"],
+    stats: ["Version 2.0", "Pure Swift & SwiftUI", "No root"],
   },
   {
     id: "opencore-efi-hackintosh",

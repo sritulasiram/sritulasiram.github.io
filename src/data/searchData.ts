@@ -177,10 +177,10 @@ export const SEARCH_ITEMS: SearchItem[] = [
     id: "project-rog-gaming-center",
     title: "ROG Gaming Center macOS App",
     subtitle: "Native Swift Hardware Telemetry & Controls",
-    description: "Native Swift utility for ASUS ROG and TUF laptops on macOS. Talks to USB HID microcontrollers for Aura RGB lighting, reads AppleSMC thermals, and applies display calibration without root daemons.",
+    description: "Native Swift app for ASUS ROG laptops on macOS. Drives the Aura keyboard lighting over USB HID, shows real system readings, and applies display profiles without root.",
     category: "Projects",
     url: "/projects/rog-gaming-center",
-    tags: ["macos", "swift", "swiftui", "rog", "asus", "tuf", "aura", "rgb", "thermal", "fans", "hid", "usb", "applesmc", "telemetry", "hackintosh"],
+    tags: ["macos", "swift", "swiftui", "rog", "asus", "tuf", "aura", "rgb", "thermal", "hid", "usb", "smc", "display", "hotkeys", "menu bar", "telemetry", "hackintosh"],
     iconType: "project",
   },
   {
