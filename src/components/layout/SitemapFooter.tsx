@@ -19,7 +19,7 @@ const COLUMNS: Column[] = [
   { heading: NAV_MENUS.designs.label, href: NAV_MENUS.designs.href, links: NAV_MENUS.designs.groups[0].links },
   {
     heading: "Explore",
-    links: [PHOTOGRAPHY, ABOUT, ...NAV_MENUS.projects.groups[2].links],
+    links: [PHOTOGRAPHY, ABOUT, NAV_MENUS.projects.groups[2].links[0]],
   },
   {
     heading: "Connect",
@@ -38,7 +38,7 @@ export default function SitemapFooter() {
   return (
     <div className="bg-white dark:bg-black transition-colors duration-300">
       <nav aria-label="Site map" className="max-w-6xl mx-auto px-6 sm:px-8 pt-10 sm:pt-12 pb-6">
-        <div className="grid grid-cols-2 gap-x-6 gap-y-8 pb-6 md:flex md:justify-center md:gap-x-16 lg:gap-x-24">
+        <div className="mx-auto grid max-w-5xl grid-cols-2 gap-x-6 gap-y-8 pb-6 md:grid-cols-4 md:gap-x-8">
           {COLUMNS.map((col) => (
             <div key={col.heading}>
               <h2 className="text-xs font-semibold text-[#1D1D1F] dark:text-[#F5F5F7]">

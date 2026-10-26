@@ -37,6 +37,7 @@ function MegaLink({
         className={className}
       >
         {link.label}
+        <span aria-hidden="true"> ↗</span>
       </a>
     );
   }

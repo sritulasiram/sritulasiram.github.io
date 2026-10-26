@@ -298,8 +298,8 @@ export default function Navigation() {
           mobileMenuOpen
             ? "h-12 bg-transparent border-transparent shadow-none"
             : activeDropdown || searchOpen
-            ? "bg-white/95 dark:bg-[#0a0a0c]/92 backdrop-blur-3xl backdrop-saturate-150 border-b border-[#E5E5EA]/70 dark:border-white/[0.08] shadow-[0_24px_48px_rgba(0,0,0,0.12)] dark:shadow-[0_24px_48px_rgba(0,0,0,0.6)]"
-            : "bg-white/80 dark:bg-black/80 backdrop-blur-3xl backdrop-saturate-150 border-b border-[#E5E5EA]/60 dark:border-white/[0.06] shadow-[0_1px_2px_rgba(0,0,0,0.02)] dark:shadow-none"
+            ? "bg-white/70 dark:bg-[#0a0a0c]/68 backdrop-blur-3xl backdrop-saturate-200 border-b border-[#E5E5EA]/60 dark:border-white/[0.08] shadow-[0_24px_48px_rgba(0,0,0,0.12)] dark:shadow-[0_24px_48px_rgba(0,0,0,0.6)]"
+            : "bg-white/55 dark:bg-black/50 backdrop-blur-3xl backdrop-saturate-200 border-b border-[#E5E5EA]/50 dark:border-white/[0.06] shadow-[0_1px_2px_rgba(0,0,0,0.02)] dark:shadow-none"
         }`}
         onMouseLeave={handleMouseLeave}
         onBlur={(event) => {

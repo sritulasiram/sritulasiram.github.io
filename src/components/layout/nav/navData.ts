@@ -88,8 +88,8 @@ export const NAV_MENUS: Record<NavMenu["id"], NavMenu> = {
     allLabel: "Explore All Designs",
     groups: [
       {
-        heading: "UI/UX & Design",
-        span: 5,
+        heading: "Featured work",
+        span: 4,
         variant: "primary",
         links: [
           { label: "Sage", href: "/designs/sage" },
@@ -100,17 +100,28 @@ export const NAV_MENUS: Record<NavMenu["id"], NavMenu> = {
         ],
       },
       {
-        heading: "Design systems & code",
+        heading: "Foundations",
         span: 4,
         variant: "small",
         links: [
-          { label: "Material Design 3 (Google)", href: "https://m3.material.io", external: true },
+          { label: "Typography", href: "/designs#typography" },
+          { label: "Icons", href: "/designs#icons" },
+          { label: "Workflow", href: "/designs#workflow" },
+          { label: "Liquid Glass", href: "/designs#design" },
+        ],
+      },
+      {
+        heading: "Design systems",
+        span: 4,
+        variant: "small",
+        links: [
+          { label: "Material Design 3", href: "https://m3.material.io", external: true },
           {
-            label: "Human Interface Guidelines (Apple)",
+            label: "Human Interface Guidelines",
             href: "https://developer.apple.com/design/human-interface-guidelines",
             external: true,
           },
-          { label: "Void App (GitHub)", href: "https://github.com/sritulasiram/Void-App", external: true },
+          { label: "Void on GitHub", href: "https://github.com/sritulasiram/Void-App", external: true },
         ],
       },
     ],

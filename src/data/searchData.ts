@@ -1,3 +1,8 @@
+import { PHOTOGRAPHY_DATA } from "@/data/content";
+import { PROJECT_DETAILS } from "@/data/projectDetails";
+import { hasCompare } from "@/data/projectCompare";
+import { PROJECT_SPECS, SHOWCASE_PROJECT_IDS } from "@/data/projectSpecs";
+
 export interface SearchItem {
   id: string;
   title: string;
@@ -245,16 +250,6 @@ export const SEARCH_ITEMS: SearchItem[] = [
     tags: ["void", "audio", "soundscape", "minimalism", "ambient", "focus", "spatial", "haptics", "figma"],
     iconType: "design",
   },
-  {
-    id: "design-smart-agriturismo",
-    title: "Smart Agriturismo",
-    subtitle: "Eco-Tourism & Farm Booking",
-    description: "Modern reservation system connecting conscious travelers with authentic farm stays and sustainable agricultural experiences.",
-    category: "Designs",
-    url: "/designs/smart-agriturismo",
-    tags: ["smart agriturismo", "farming", "eco tourism", "booking", "travel", "nature", "figma"],
-    iconType: "design",
-  },
 
   // ── Design Foundations & Typography ──────────────────────────────────
   {
@@ -360,6 +355,57 @@ export const SEARCH_ITEMS: SearchItem[] = [
     iconType: "photo",
   },
 ];
+
+// Generated from the site data so new photos and project pages are searchable without editing this file.
+const PHOTO_ITEMS: SearchItem[] = PHOTOGRAPHY_DATA.map((photo) => ({
+  id: `photo-item-${photo.id.replace(/^photo-/, "")}`,
+  title: photo.title ?? photo.placeholderLabel,
+  subtitle: photo.location ?? "Photography",
+  description: photo.description ?? "",
+  category: "Photography",
+  url: "/photography#gallery",
+  tags: [
+    "photo",
+    "photography",
+    ...(photo.album ? [photo.album] : []),
+    ...(photo.location ?? "").split(",").map((part) => part.trim()).filter(Boolean),
+    photo.placeholderLabel,
+    ...(photo.camera ? [photo.camera] : []),
+  ],
+  iconType: "photo",
+}));
+
+const PROJECT_PAGE_ITEMS: SearchItem[] = SHOWCASE_PROJECT_IDS.filter((id) => PROJECT_DETAILS[id]).flatMap((id) => {
+  const title = PROJECT_DETAILS[id].title;
+  const items: SearchItem[] = [];
+  if (PROJECT_SPECS[id]) {
+    items.push({
+      id: `project-specs-${id}`,
+      title: `${title}: Tech Specs`,
+      subtitle: "Technical specifications",
+      description: `Stack, architecture and technical details of ${title}.`,
+      category: "Projects",
+      url: `/projects/${id}/specs`,
+      tags: ["specs", "specifications", "tech", "stack", "architecture", title],
+      iconType: "project",
+    });
+  }
+  if (hasCompare(id)) {
+    items.push({
+      id: `project-compare-${id}`,
+      title: `${title}: Compare`,
+      subtitle: "Compared with other internal tools",
+      description: `${title} compared with Cytron's other internal tools.`,
+      category: "Projects",
+      url: `/projects/${id}/compare`,
+      tags: ["compare", "comparison", "versus", title],
+      iconType: "project",
+    });
+  }
+  return items;
+});
+
+SEARCH_ITEMS.push(...PHOTO_ITEMS, ...PROJECT_PAGE_ITEMS);
 
 // Curated Quick Links matching Apple.com
 export const QUICK_LINKS: SearchItem[] = [
