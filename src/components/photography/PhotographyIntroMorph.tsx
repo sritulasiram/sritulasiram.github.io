@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
+import { photoThumb } from "@/lib/photoThumb";
 import Link from "next/link";
 import { ArrowLeft, ChevronRight } from "lucide-react";
 import { useMediaQuery } from "@/components/layout/nav/useMediaQuery";
@@ -35,7 +36,7 @@ const IMG_PHONE_H = 0.965;
 const IMG_VF_CY = 0.4545; // viewfinder centre
 const IMG_VF_W = 0.4344; // viewfinder width
 const PHONE_ASPECT = IMG_PHONE_H / IMG_PHONE_W;
-const CAMERA_UI = "/images/devices/iphone-camera-ui.png";
+const CAMERA_UI = "/images/devices/iphone-camera-ui.webp";
 const TRACK_VH = 270;
 const MORPH_DONE = 0.85;
 const SWAP_AT = 0.8;
@@ -110,7 +111,7 @@ function CameraPhone({
         {photos.map((photo, i) => (
           <Image
             key={photo.id}
-            src={photo.imageSrc}
+            src={photoThumb(photo.imageSrc)}
             alt=""
             fill
             sizes="320px"
@@ -161,7 +162,7 @@ function CameraPhone({
         {shotIndex >= 0 && (
           <Image
             key={`thumb-${shotIndex}-${flashKey}`}
-            src={photos[shotIndex].imageSrc}
+            src={photoThumb(photos[shotIndex].imageSrc)}
             alt=""
             fill
             sizes="48px"
@@ -404,7 +405,7 @@ export default function PhotographyIntroMorph({ photos: allPhotos }: { photos: P
               className="absolute left-0 top-0 rounded-3xl overflow-hidden shadow-xl will-change-transform"
               style={{ opacity: 0, zIndex: photos.length - i }}
             >
-              <Image src={photo.imageSrc} alt="" fill sizes="420px" className="object-cover" />
+              <Image src={photoThumb(photo.imageSrc)} alt="" fill sizes="420px" className="object-cover" />
             </div>
           ))}
         </div>
