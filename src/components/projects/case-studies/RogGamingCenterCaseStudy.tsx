@@ -1,7 +1,7 @@
 import { LINK, PILL } from "@/components/ui/Button";
 import UnlockStatement from "@/components/projects/UnlockStatement";
 import Image from "next/image";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight, ChevronDown, X } from "lucide-react";
 import CaseStudyBreadcrumb from "@/components/shared/CaseStudyBreadcrumb";
 import CountUp from "@/components/shared/CountUp";
 import ExploreMore from "@/components/shared/ExploreMore";
@@ -230,12 +230,16 @@ const EXTRAS: { label: string; title: string; body: string; src: string; alt: st
 
 const NOT_NEEDED = ["Electron", "Python", "Node.js", "libusb", "Root privileges", "Kexts for lighting", "Estimated readings"];
 
-const MODULES = [
-  { name: "AuraCore", note: "Packets, effects, key decoding and display curves. Pure Swift, unit-tested." },
-  { name: "AuraHID", note: "The only code that touches the keyboard controller." },
+const TOP_LAYER = [
   { name: "ROG Gaming Center", note: "The SwiftUI app, its menu bar panel and Settings." },
-  { name: "rogauracore", note: "The command-line tool, with --diagnose and --keys." },
+  { name: "rogauracore", note: "The command-line tool, for scripts and diagnostics." },
 ];
+const HID_LAYER = { name: "AuraHID", note: "The only code that touches the keyboard controller.", tag: "Hardware" };
+const CORE_LAYER = {
+  name: "AuraCore",
+  note: "Packets, effects, key decoding and display curves. No AppKit or IOKit.",
+  tag: "Unit-tested",
+};
 
 /* ---------- Page ---------- */
 
@@ -372,43 +376,67 @@ export default function RogGamingCenterCaseStudy({ project }: Props) {
         </div>
       </section>
 
-      {/* 6. What it doesn't need */}
-      <section aria-label="Built without" className="py-16 sm:py-24">
-        <div className={WRAP}>
+      {/* 6. What it doesn't need, and how it is split */}
+      <section id="built-without" aria-label="Built without" className="scroll-mt-20 py-16 sm:py-28">
+        <div className={`${WRAP} grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16`}>
           <Reveal>
-            <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero leading-[1.08]`}>
-              What it doesn’t need.
+            <h2 className="text-3xl sm:text-5xl font-semibold tracking-apple-hero leading-[1.08]">
+              <span className={`block ${GRAY}`}>Swift, in user space.</span>
+              <span className={`block ${INK}`}>What it doesn’t need.</span>
             </h2>
-            <p className={`mt-3 max-w-2xl text-lg ${GRAY} leading-relaxed`}>
-              Everything is Swift and SwiftUI, running in user space. No kexts are needed for lighting, and every reading comes from macOS.
+            <p className={`mt-5 text-base sm:text-lg ${GRAY} leading-relaxed`}>
+              No kexts are needed for lighting, nothing runs as root, and every reading comes from macOS.
             </p>
-          </Reveal>
-          <Reveal delay={80}>
-            <ul className="mt-10 flex flex-wrap gap-3">
+            <ul className="mt-8 grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
               {NOT_NEEDED.map((item) => (
-                <li
-                  key={item}
-                  className="rounded-full bg-[#FFFFFF] dark:bg-[#232326] px-5 py-2.5 text-base font-medium text-[#68686D] dark:text-[#A1A1A6] line-through decoration-[var(--pa)] decoration-2 shadow-xs"
-                >
-                  {item}
+                <li key={item} className="flex items-center gap-3">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--pa-tint)] text-[var(--pa)]">
+                    <X className="h-3.5 w-3.5" strokeWidth={3} aria-hidden="true" />
+                  </span>
+                  <span className={`text-base font-medium ${INK}`}>{item}</span>
                 </li>
               ))}
             </ul>
           </Reveal>
-          <Reveal delay={80}>
-            <p className={`mt-14 max-w-2xl text-lg ${GRAY} leading-relaxed`}>
-              Four modules, so the hardware logic is tested without the hardware.
-            </p>
-            <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {MODULES.map((module) => (
-                <li key={module.name} className={ROW}>
-                  <span className="min-w-0">
-                    <span className={`block font-mono text-sm font-semibold ${INK}`}>{module.name}</span>
-                    <span className={`block text-xs ${GRAY}`}>{module.note}</span>
-                  </span>
+
+          <Reveal delay={120}>
+            <div className={PANEL}>
+              <p className={`mb-4 text-xs font-semibold ${GRAY}`}>Four modules. Each one depends only on the layers below it.</p>
+              <ol aria-label="Module layers, top to bottom" className="flex flex-col items-stretch gap-2">
+                <li>
+                  <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    {TOP_LAYER.map((layer) => (
+                      <li key={layer.name} className={`${ROW} h-full`}>
+                        <span className="min-w-0">
+                          <span className={`block text-sm font-semibold ${INK}`}>{layer.name}</span>
+                          <span className={`block text-xs ${GRAY}`}>{layer.note}</span>
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
                 </li>
-              ))}
-            </ul>
+                <li aria-hidden="true" className="flex justify-center text-[var(--pa)]">
+                  <ChevronDown className="h-4 w-4" />
+                </li>
+                <li className={`${ROW} justify-between ring-1 ring-[var(--pa)]`}>
+                  <span className="min-w-0">
+                    <span className={`block font-mono text-sm font-semibold ${INK}`}>{HID_LAYER.name}</span>
+                    <span className={`block text-xs ${GRAY}`}>{HID_LAYER.note}</span>
+                  </span>
+                  <Mono>{HID_LAYER.tag}</Mono>
+                </li>
+                <li aria-hidden="true" className="flex justify-center text-[var(--pa)]">
+                  <ChevronDown className="h-4 w-4" />
+                </li>
+                <li className={`${ROW} justify-between`}>
+                  <span className="min-w-0">
+                    <span className={`block font-mono text-sm font-semibold ${INK}`}>{CORE_LAYER.name}</span>
+                    <span className={`block text-xs ${GRAY}`}>{CORE_LAYER.note}</span>
+                  </span>
+                  <Mono>{CORE_LAYER.tag}</Mono>
+                </li>
+              </ol>
+            </div>
           </Reveal>
         </div>
       </section>
