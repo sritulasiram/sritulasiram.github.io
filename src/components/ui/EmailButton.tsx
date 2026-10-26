@@ -55,14 +55,20 @@ export default function EmailButton({ className }: { className?: string }) {
     }, OUT_MS);
   };
 
+  // Always the latest close, so the listeners below don't re-run (and re-focus) when `closing` flips.
+  const closeRef = useRef(close);
+  useEffect(() => {
+    closeRef.current = close;
+  });
+
   useEffect(() => {
     if (!open) return;
     root.current?.querySelector<HTMLElement>("a,button")?.focus();
     const onPointer = (e: PointerEvent) => {
-      if (!root.current?.contains(e.target as Node)) close();
+      if (!root.current?.contains(e.target as Node)) closeRef.current();
     };
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
+      if (e.key === "Escape") closeRef.current();
     };
     document.addEventListener("pointerdown", onPointer);
     document.addEventListener("keydown", onKey);

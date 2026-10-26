@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
+import { photoThumb } from "@/lib/photoThumb";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import PhotoPreviewModal from "./PhotoPreviewModal";
 import type { PhotoItem } from "@/types";
@@ -83,7 +84,7 @@ export default function PhotographyHighlights({
               } relative rounded-3xl overflow-hidden bg-[#E5E5EA] dark:bg-[#1C1C1E] text-left cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus-ring)]`}
             >
               <Image
-                src={photo.imageSrc}
+                src={photoThumb(photo.imageSrc)}
                 alt={photo.altText}
                 fill
                 sizes="(min-width: 1024px) 420px, (min-width: 640px) 360px, 78vw"

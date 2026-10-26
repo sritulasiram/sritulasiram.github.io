@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useRef, type ReactNode, type HTMLAttributes } from "react";
+import { useId, useState, type ReactNode, type HTMLAttributes } from "react";
 
 const PHONE_WIDTH = 420;
 const PHONE_HEIGHT = 870;
@@ -65,9 +65,9 @@ export default function IphoneFrame({
 
   // The screen shown before the current one, kept under the incoming screen while it fades in.
   const activeId = screens?.find((s) => s.active)?.id;
-  const shown = useRef<{ cur?: string; prev?: string }>({ cur: activeId });
-  if (shown.current.cur !== activeId) shown.current = { cur: activeId, prev: shown.current.cur };
-  const prevId = shown.current.prev;
+  const [shown, setShown] = useState<{ cur?: string; prev?: string }>({ cur: activeId });
+  if (shown.cur !== activeId) setShown({ cur: activeId, prev: shown.cur });
+  const prevId = shown.prev;
   const clipId = `iphone17-screen-${rawId.replace(/[^a-zA-Z0-9_-]/g, "")}`;
 
   return (

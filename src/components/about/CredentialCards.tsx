@@ -33,6 +33,29 @@ export default function CredentialCards({ items, heading }: { items: Credential[
   const trackRef = useRef<HTMLUListElement>(null);
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(false);
+  // "shown" until the effect decides to hide the cards, so nothing is hidden without JavaScript or reduced motion.
+  const [entrance, setEntrance] = useState<"shown" | "hidden" | "revealed">("shown");
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (el.getBoundingClientRect().top < window.innerHeight * 0.9) return;
+    const hide = requestAnimationFrame(() => setEntrance("hidden"));
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setEntrance("revealed");
+          io.disconnect();
+        }
+      },
+      { threshold: 0.25 },
+    );
+    io.observe(el);
+    return () => {
+      cancelAnimationFrame(hide);
+      io.disconnect();
+    };
+  }, []);
 
   const update = useCallback(() => {
     const el = trackRef.current;
@@ -86,17 +109,25 @@ export default function CredentialCards({ items, heading }: { items: Credential[
         className="mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 [scrollbar-width:none] focus-visible:outline-2 focus-visible:outline-[var(--focus-ring)] [&::-webkit-scrollbar]:hidden"
         style={{ paddingInline: EDGE, scrollPaddingInline: EDGE }}
       >
-        {items.map((item) => (
-          <Card key={item.title} item={item} />
+        {items.map((item, i) => (
+          <Card key={item.title} item={item} index={i} hidden={entrance === "hidden"} />
         ))}
       </ul>
     </>
   );
 }
 
-function Card({ item }: { item: Credential }) {
+/** The cards rise, scale up and fade in one after another when the row scrolls into view. */
+function Card({ item, index, hidden }: { item: Credential; index: number; hidden: boolean }) {
   return (
-    <li className="flex min-h-[22rem] w-[18.5rem] shrink-0 snap-start flex-col rounded-[28px] bg-[#F5F5F7] p-8 [corner-shape:squircle] sm:w-[22rem] dark:bg-[#1D1D1F]">
+    <li className="w-[18.5rem] shrink-0 snap-start sm:w-[22rem]">
+      <div
+        style={{ transitionDelay: hidden ? "0ms" : `${index * 160}ms` }}
+        className={`h-full transition-[opacity,transform] duration-[1100ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
+          hidden ? "translate-y-16 scale-[0.94] opacity-0" : "translate-y-0 scale-100 opacity-100"
+        }`}
+      >
+      <div className="group flex h-full min-h-[22rem] flex-col rounded-[28px] bg-[#F5F5F7] p-8 transition-colors duration-300 ease-out [corner-shape:squircle] hover:bg-[#EBEBF0] dark:bg-[#1D1D1F] dark:hover:bg-[#2C2C2E]">
       <div className="flex items-start">
         {item.logoSrc ? (
           <span className="flex h-20 w-20 items-center justify-center rounded-[28%] bg-[#ffffff] p-3 ring-2 ring-white [corner-shape:squircle]">
@@ -128,6 +159,8 @@ function Card({ item }: { item: Credential }) {
           {item.note && <dd className="mt-1 text-sm text-[#68686D] dark:text-[#A1A1A6]">{item.note}</dd>}
         </dl>
       )}
+      </div>
+      </div>
     </li>
   );
 }

@@ -39,17 +39,37 @@ export default function CardCarousel({
     setCanNext(!!last && last.getBoundingClientRect().right > el.getBoundingClientRect().right + 8);
   }, []);
 
+  /**
+   * When every card fits on the screen, the row has nothing to scroll and would otherwise end lopsided, short of the
+   * right edge. Centre it instead. A row that runs off the edge stays aligned to the heading and scrolls.
+   */
+  const centre = useCallback(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    el.dataset.centered = "false";
+    const first = el.firstElementChild as HTMLElement | null;
+    const last = el.lastElementChild as HTMLElement | null;
+    if (!first || !last) return;
+    const width = last.getBoundingClientRect().right - first.getBoundingClientRect().left;
+    if (width <= el.clientWidth - 48) el.dataset.centered = "true";
+  }, []);
+
   useEffect(() => {
     const el = trackRef.current;
     if (!el) return;
+    centre();
     update();
+    const onResize = () => {
+      centre();
+      update();
+    };
     el.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
+    window.addEventListener("resize", onResize);
     return () => {
       el.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
+      window.removeEventListener("resize", onResize);
     };
-  }, [update]);
+  }, [centre, update]);
 
   const scrollByCard = (dir: 1 | -1) => {
     const el = trackRef.current;

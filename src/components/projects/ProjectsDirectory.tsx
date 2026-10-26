@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { MacbookPro } from "@/components/mockups/MacbookPro";
+import Reveal from "@/components/shared/Reveal";
 import { cn } from "@/lib/cn";
 import HrAssistiveMacbook from "./visuals/HrAssistiveMacbook";
 
@@ -191,6 +192,7 @@ export default function ProjectsDirectory() {
     >
       <div className="max-w-6xl mx-auto px-6 sm:px-8 space-y-10 sm:space-y-12">
         {/* Heading and category filter chips */}
+        <Reveal>
         <div className="text-center">
           <h2 className="text-3xl sm:text-5xl font-semibold tracking-apple-headline leading-[1.08] text-[#1D1D1F] dark:text-[#F5F5F7]">
             Every project.
@@ -228,6 +230,7 @@ export default function ProjectsDirectory() {
             . Production systems, embedded hardware, and native-app case studies.
           </p>
         </div>
+        </Reveal>
 
         {/* 2-Column Responsive Apple Lineup Grid */}
         <div id="lineup-grid" role="region" aria-label="Projects lineup" className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 items-start">

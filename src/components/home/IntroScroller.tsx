@@ -13,7 +13,7 @@ const COUNT = BEATS.length;
 const STEP_SVH = 45;
 
 const READ_OUT =
-  "I've always felt inspired when exploring solutions. Not just fixing what's broken, but asking what else is possible. That's me, Sri. That curiosity taught me precision, because the details are what make a solution great. Then I discovered design, and it changed how I see everything. It's not enough for something to work. It has to feel natural, like home. And through photography, I explore nature's magic and freeze the moments that only happen once.";
+  "I've always felt inspired when exploring solutions. Not just fixing what's broken, but asking what else is possible. That's me, Sri. That curiosity became my inspiration, and the details are what make a solution great. Then I discovered design, and it changed how I see everything. It's not enough for something to work. It has to feel natural, like home. And through photography, I explore nature's magic and freeze the moments that only happen once.";
 
 /**
  * The intro, one beat at a time. The section is pinned to the screen and scrolling steps through the four
@@ -29,6 +29,7 @@ export default function IntroScroller() {
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- client-only check; the server render must start from the initial state
       setFlat(true);
       return;
     }

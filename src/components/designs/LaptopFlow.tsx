@@ -17,9 +17,9 @@ export default function LaptopFlow({ screens }: { screens: DesignScreen[] }) {
   const stepRefs = useRef<(HTMLLIElement | null)[]>([]);
 
   // The page shown before the current one, kept under the incoming page while it fades in.
-  const shown = useRef<{ cur: number; prev?: number }>({ cur: active });
-  if (shown.current.cur !== active) shown.current = { cur: active, prev: shown.current.cur };
-  const prev = shown.current.prev;
+  const [shown, setShown] = useState<{ cur: number; prev?: number }>({ cur: active });
+  if (shown.cur !== active) setShown({ cur: active, prev: shown.cur });
+  const prev = shown.prev;
 
   useEffect(() => {
     const io = new IntersectionObserver(

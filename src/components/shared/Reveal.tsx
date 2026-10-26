@@ -10,10 +10,13 @@ export default function Reveal({
   children,
   className = "",
   delay = 0,
+  rootMargin = "0px 0px -12% 0px",
 }: {
   children: React.ReactNode;
   className?: string;
   delay?: number;
+  /** How far up the screen it must be before it plays. A bigger bottom inset waits longer. */
+  rootMargin?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [state, setState] = useState<"shown" | "hidden" | "revealed">("shown");
@@ -31,14 +34,14 @@ export default function Reveal({
           io.disconnect();
         }
       },
-      { rootMargin: "0px 0px -12% 0px" },
+      { rootMargin },
     );
     io.observe(el);
     return () => {
       cancelAnimationFrame(hide);
       io.disconnect();
     };
-  }, []);
+  }, [rootMargin]);
 
   return (
     <div

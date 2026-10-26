@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+import { GitHubIcon, InstagramIcon, LinkedInIcon } from "@/components/about/BrandIcons";
+import { ABOUT_DATA, CONTACT_DATA } from "@/data/content";
 import type { NavGroup, NavLink, NavMenu } from "./navData";
 
 const SPAN = { 3: "col-span-3", 4: "col-span-4", 5: "col-span-5", 7: "col-span-7" } as const;
@@ -28,6 +31,8 @@ function MegaLink({
   onNavigate: () => void;
 }) {
   if (link.external) {
+    // The arrow is glued to the last word, so it never wraps onto a line of its own.
+    const cut = link.label.lastIndexOf(" ") + 1;
     return (
       <a
         href={link.href}
@@ -36,7 +41,11 @@ function MegaLink({
         onClick={onNavigate}
         className={className}
       >
-        {link.label}
+        {link.label.slice(0, cut)}
+        <span className="whitespace-nowrap">
+          {link.label.slice(cut)}
+          <ArrowUpRight aria-hidden="true" strokeWidth={2.25} className="ml-0.5 inline-block size-[0.85em] -translate-y-px opacity-60" />
+        </span>
       </a>
     );
   }
@@ -122,6 +131,57 @@ export default function MegaMenu({ menu, onNavigate }: { menu: NavMenu; onNaviga
       {menu.groups.map((group, i) => (
         <Group key={group.heading} group={group} menu={menu} isFirst={i === 0} onNavigate={onNavigate} />
       ))}
+    </div>
+  );
+}
+
+const PROFILE_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+  LinkedIn: LinkedInIcon,
+  GitHub: GitHubIcon,
+  Instagram: InstagramIcon,
+};
+
+/**
+ * The Let's Talk panel, laid out like the Projects and Designs menus: the same column grid, small uppercase
+ * headings and staggered rows, so it reads as one of the family. Mount it only while open so the entrance plays each time.
+ */
+export function ContactMenu({ onNavigate }: { onNavigate: () => void }) {
+  const words = CONTACT_DATA.heading.split(" ");
+  const headline = { last: words.pop() ?? "", first: words.join(" ") };
+  return (
+    <div data-mega-menu="contact" className="grid grid-cols-12 gap-8">
+      <div className="col-span-6 space-y-3">
+        <p className={HEADING}>Get in touch</p>
+        <p className="max-w-sm text-[32px] font-semibold leading-[1.1] tracking-apple-hero text-[#1D1D1F] text-balance apple-stagger-2 dark:text-[#F5F5F7]">
+          {headline.first} <span className="text-[#86868B] dark:text-[#6E6E73]">{headline.last}</span>
+        </p>
+        <a href={`mailto:${CONTACT_DATA.email}`} onClick={onNavigate} className={`${PRIMARY} apple-stagger-3 inline-block text-lg`}>
+          Send an email
+        </a>
+        <p className="apple-stagger-4 select-text text-xs text-[#6E6E73] dark:text-[#A1A1A6]">{CONTACT_DATA.email}</p>
+      </div>
+
+      <div className="col-span-6 space-y-2.5">
+        <p className={HEADING}>Find me online</p>
+        <div className="space-y-1">
+          {ABOUT_DATA.links.map((link, i) => {
+            const Icon = PROFILE_ICONS[link.label];
+            return (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={onNavigate}
+                className={`${PRIMARY} flex! items-center gap-3 text-lg ${STAGGER[Math.min(i + 2, 5)]}`}
+              >
+                {Icon && <Icon className="h-[22px] w-[22px] shrink-0" />}
+                {link.label}
+              </a>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }

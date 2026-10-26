@@ -7,7 +7,7 @@ import { ArrowRight, Search, X } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 import SearchModal from "./SearchModal";
 import { QUICK_LINKS, type SearchItem } from "@/data/searchData";
-import MegaMenu from "./nav/MegaMenu";
+import MegaMenu, { ContactMenu } from "./nav/MegaMenu";
 import MobileMenu from "./nav/MobileMenu";
 import { NAV_DIRECT_LINKS, NAV_MENUS, isActivePath, type NavMenu } from "./nav/navData";
 import { HighlightText, openSearchItem, searchSite } from "./nav/siteSearch";
@@ -25,6 +25,9 @@ export default function Navigation() {
   const [activeDropdown, setActiveDropdown] = useState<"projects" | "designs" | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<Record<string, boolean>>({});
   const [searchOpen, setSearchOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
+  const contactRef = useRef<HTMLDivElement>(null);
+  const contactButtonRef = useRef<HTMLButtonElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const pathname = usePathname();
@@ -51,6 +54,7 @@ export default function Navigation() {
 
   const openSearch = useCallback(() => {
     setActiveDropdown(null);
+    setContactOpen(false);
     setMobileMenuOpen(false);
     setSelectedIndex(0);
     setSearchOpen(true);
@@ -148,6 +152,7 @@ export default function Navigation() {
   if (prevPathname !== pathname) {
     setPrevPathname(pathname);
     setActiveDropdown(null);
+    setContactOpen(false);
     setMobileMenuOpen(false);
     setSearchOpen(false);
     setSearchQuery("");
@@ -219,33 +224,44 @@ export default function Navigation() {
   const handleMouseEnter = (menu: "projects" | "designs") => {
     if (searchOpen) return;
     if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
+    setContactOpen(false);
     setActiveDropdown(menu);
   };
 
   const handleMouseLeave = () => {
     dropdownTimeoutRef.current = setTimeout(() => {
       setActiveDropdown(null);
+      setContactOpen(false);
     }, 200);
   };
 
-  // Every page ends with the contact block, so scroll to it in place; fall back to the Home link.
-  const handleContact = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    const wasMobileOpen = mobileMenuOpen;
-    setMobileMenuOpen(false);
+  // On desktop, Let's Talk opens a short list under the button instead of jumping down to the footer.
+  // Like Projects and Designs it opens on hover. A press (touch, keyboard) opens it too, and it closes when the
+  // pointer leaves, on Escape, or on a click outside.
+  const openContact = () => {
+    if (searchOpen) return;
+    if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
     setActiveDropdown(null);
-    const target = document.getElementById("contact");
-    if (!target) return;
-    event.preventDefault();
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    // Wait for the mobile sheet to release the page scroll lock before scrolling
-    window.setTimeout(
-      () => {
-        target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
-        window.history.replaceState(null, "", "#contact");
-      },
-      wasMobileOpen ? 420 : 0,
-    );
+    setContactOpen(true);
   };
+
+  useEffect(() => {
+    if (!contactOpen) return;
+    const onPointer = (e: PointerEvent) => {
+      const target = e.target as Node;
+      // The Let's Talk button toggles on its own click; closing here too would just reopen it.
+      if (!contactRef.current?.contains(target) && !contactButtonRef.current?.contains(target)) setContactOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setContactOpen(false);
+    };
+    document.addEventListener("pointerdown", onPointer);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("pointerdown", onPointer);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [contactOpen]);
 
   // ArrowDown on a trigger opens its menu and moves focus to the first link once it has rendered
   const focusMenuOnOpenRef = useRef<NavMenu["id"] | null>(null);
@@ -293,17 +309,20 @@ export default function Navigation() {
       <header
         id="main-navigation"
         data-mobile-open={mobileMenuOpen ? "true" : "false"}
-        data-dropdown-open={activeDropdown || searchOpen ? "true" : "false"}
+        data-dropdown-open={activeDropdown || searchOpen || contactOpen ? "true" : "false"}
         className={`${scrollsAway ? "absolute" : "fixed"} top-0 left-0 right-0 z-50 transition-[background-color,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           mobileMenuOpen
             ? "h-12 bg-transparent border-transparent shadow-none"
-            : activeDropdown || searchOpen
-            ? "bg-white/95 dark:bg-[#0a0a0c]/92 backdrop-blur-3xl backdrop-saturate-150 border-b border-[#E5E5EA]/70 dark:border-white/[0.08] shadow-[0_24px_48px_rgba(0,0,0,0.12)] dark:shadow-[0_24px_48px_rgba(0,0,0,0.6)]"
-            : "bg-white/80 dark:bg-black/80 backdrop-blur-3xl backdrop-saturate-150 border-b border-[#E5E5EA]/60 dark:border-white/[0.06] shadow-[0_1px_2px_rgba(0,0,0,0.02)] dark:shadow-none"
+            : activeDropdown || searchOpen || contactOpen
+            ? "bg-white/70 dark:bg-[#0a0a0c]/68 backdrop-blur-2xl backdrop-saturate-200 border-b border-[#E5E5EA]/60 dark:border-white/[0.08] shadow-[0_24px_48px_rgba(0,0,0,0.12)] dark:shadow-[0_24px_48px_rgba(0,0,0,0.6)]"
+            : "bg-white/55 dark:bg-black/50 backdrop-blur-2xl backdrop-saturate-200 border-b border-[#E5E5EA]/50 dark:border-white/[0.06] shadow-[0_1px_2px_rgba(0,0,0,0.02)] dark:shadow-none"
         }`}
         onMouseLeave={handleMouseLeave}
         onBlur={(event) => {
-          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setActiveDropdown(null);
+          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+            setActiveDropdown(null);
+            setContactOpen(false);
+          }
         }}
       >
         {/* Top Navigation Row - Apple 48px Height with seamless morphing to search bar */}
@@ -381,6 +400,7 @@ export default function Navigation() {
                 const closeMenus = () => {
                   if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
                   setActiveDropdown(null);
+                  setContactOpen(false);
                 };
                 return (
                   <Link
@@ -412,13 +432,18 @@ export default function Navigation() {
               </button>
 
               <ThemeToggle />
-              <Link prefetch={false}
-                href="/#contact"
-                onClick={handleContact}
+              <button
+                ref={contactButtonRef}
+                type="button"
+                onMouseEnter={openContact}
+                onFocus={openContact}
+                onClick={openContact}
+                aria-expanded={contactOpen}
+                aria-controls="contact-panel"
                 className="press nav-focus h-7.5 pointer-coarse:min-h-11 px-3.5 inline-flex items-center justify-center rounded-full text-[13px] font-medium text-white dark:text-[#1D1D1F] bg-[#1D1D1F] dark:bg-white hover:bg-black dark:hover:bg-[#F5F5F7] shadow-xs hover:shadow-sm transition-all duration-200 focus:outline-hidden leading-none"
               >
                 <span>Let&apos;s Talk</span>
-              </Link>
+              </button>
             </div>
 
             {/* Mobile Search, Theme Toggle & Apple Animated 2-Line Menu Button */}
@@ -636,6 +661,26 @@ export default function Navigation() {
           </div>
         </div>
 
+        {/* Contact (desktop): opens under the navbar from Let's Talk, built like the menus above */}
+        <div
+          ref={contactRef}
+          id="contact-panel"
+          onMouseEnter={() => {
+            if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
+          }}
+          inert={!contactOpen}
+          aria-hidden={!contactOpen}
+          className={`hidden md:block overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
+            contactOpen
+              ? "max-h-[500px] opacity-100 pointer-events-auto visible pt-2.5 pb-8"
+              : "max-h-0 opacity-0 pointer-events-none invisible pt-0 pb-0"
+          }`}
+        >
+          <div className="max-w-6xl mx-auto px-6 sm:px-8">
+            {contactOpen && <ContactMenu onNavigate={() => setContactOpen(false)} />}
+          </div>
+        </div>
+
       </header>
 
       {/* Mobile menu sheet */}
@@ -645,17 +690,17 @@ export default function Navigation() {
         expanded={mobileExpanded}
         onToggle={toggleMobileSubmenu}
         onNavigate={() => setMobileMenuOpen(false)}
-        onContact={handleContact}
       />
 
       {/* Backdrop Blur Overlay when desktop dropdown or search is active (Desktop) */}
       <div
         onClick={() => {
           setActiveDropdown(null);
+          setContactOpen(false);
           closeSearch();
         }}
         className={`hidden md:block fixed inset-0 top-0 bg-black/25 dark:bg-black/50 backdrop-blur-xs z-40 transition-opacity ${
-          activeDropdown || searchOpen
+          activeDropdown || searchOpen || contactOpen
             ? "opacity-100 pointer-events-auto duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
             : "opacity-0 pointer-events-none duration-200 ease-[cubic-bezier(0.32,0.72,0,1)]"
         }`}

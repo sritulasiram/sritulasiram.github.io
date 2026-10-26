@@ -107,7 +107,9 @@ export default function SectionNav({
     mq.addEventListener("change", sync);
 
     // Honour #section in the URL, including sections that have no native anchor target.
-    const hash = window.location.hash.slice(1);
+    // A reload or back/forward load goes back to where the visitor was instead (see ScrollMemory).
+    const navType = (performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined)?.type;
+    const hash = navType === "reload" || navType === "back_forward" ? "" : window.location.hash.slice(1);
     const hashTimer =
       hash && sections.some((s) => s.id === hash)
         ? setTimeout(() => getSection(hash)?.scrollIntoView({ block: "start" }), 300)

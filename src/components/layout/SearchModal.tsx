@@ -38,6 +38,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
       // SearchModal is strictly mobile (< 768px); desktop uses the morphed navbar search
       const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
       if (!isMobile) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- client-only check; the server render must start from the initial state
         setShouldRender(false);
         return;
       }
@@ -95,6 +96,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
   // Reset selection on query change
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reset on change
     setSelectedIndex(0);
     setIsKeyboardNav(false);
     hoveredIndexRef.current = null;
@@ -166,7 +168,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
       {/* Apple.com Dropdown Search Canvas with Navbar Frosted Glass (Liquid Glass) */}
       <div
-        className={`relative w-full bg-white/80 dark:bg-black/80 backdrop-blur-3xl backdrop-saturate-150 border-b border-[#E5E5EA]/70 dark:border-white/[0.08] shadow-[0_24px_48px_rgba(0,0,0,0.12)] dark:shadow-[0_24px_48px_rgba(0,0,0,0.6)] z-10 transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
+        className={`relative w-full bg-white/80 dark:bg-black/80 backdrop-blur-2xl backdrop-saturate-150 border-b border-[#E5E5EA]/70 dark:border-white/[0.08] shadow-[0_24px_48px_rgba(0,0,0,0.12)] dark:shadow-[0_24px_48px_rgba(0,0,0,0.6)] z-10 transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
         }`}
         onClick={(e) => e.stopPropagation()}

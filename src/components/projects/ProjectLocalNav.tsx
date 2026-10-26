@@ -44,7 +44,7 @@ export default function ProjectLocalNav({ projectId, title, githubUrl, showTabs 
       inert={!visible}
       className={`sticky top-0 z-40 w-full transition-opacity duration-300 motion-reduce:transition-none ${
         visible ? "opacity-100" : "opacity-0"
-      } border-b border-[#E5E5EA]/60 dark:border-white/[0.08] bg-white/80 dark:bg-[#0a0a0c]/72 backdrop-blur-3xl backdrop-saturate-150 dark:backdrop-blur-[28px] dark:backdrop-saturate-[1.8] dark:backdrop-brightness-[0.85] shadow-[0_1px_2px_rgba(0,0,0,0.02)] dark:shadow-none`}
+      } border-b border-[#E5E5EA]/60 dark:border-white/[0.08] bg-white/80 dark:bg-[#0a0a0c]/72 backdrop-blur-2xl backdrop-saturate-150 dark:backdrop-blur-[28px] dark:backdrop-saturate-[1.8] dark:backdrop-brightness-[0.85] shadow-[0_1px_2px_rgba(0,0,0,0.02)] dark:shadow-none`}
     >
       <nav
         aria-label={`${title} sections`}
