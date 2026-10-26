@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Instrument_Serif } from "next/font/google";
 import MaintenanceScreen from "@/components/layout/MaintenanceScreen";
 import Navigation from "@/components/layout/Navigation";
+import WelcomeSheet from "@/components/layout/WelcomeSheet";
 import { CONTACT_DATA } from "@/data/content";
 import "./globals.css";
 
@@ -177,6 +178,17 @@ export default function RootLayout({
                   var stored = localStorage.getItem('theme');
                   var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
                   var isDark = stored === 'dark' || (!stored && prefersDark);
+                  // Instagram visitors land in dark mode and LinkedIn visitors in light, once per session so the toggle still wins.
+                  if (!sessionStorage.getItem('source-theme')) {
+                    var ref = (new URLSearchParams(location.search).get('ref') || '').toLowerCase();
+                    var ua = navigator.userAgent;
+                    var src = ref === 'instagram' || ref === 'linkedin' ? ref : /LinkedInApp/i.test(ua) ? 'linkedin' : /Instagram/i.test(ua) ? 'instagram' : '';
+                    if (src) {
+                      isDark = src === 'instagram';
+                      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                      sessionStorage.setItem('source-theme', '1');
+                    }
+                  }
                   if (isDark) {
                     d.classList.add('dark');
                     d.style.colorScheme = 'dark';
@@ -219,6 +231,7 @@ export default function RootLayout({
         ) : (
           <>
             <Navigation />
+            <WelcomeSheet />
             <div className="animate-page-enter min-h-screen flex flex-col">
               {children}
             </div>
