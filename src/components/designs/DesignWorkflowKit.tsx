@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Reveal from "@/components/shared/Reveal";
 
 interface ToolItem {
   name: string;
@@ -42,11 +43,14 @@ export default function DesignWorkflowKit() {
       className="scroll-mt-20 py-16 sm:py-24 bg-white dark:bg-black transition-colors overflow-hidden"
     >
       <div className="max-w-6xl mx-auto px-6 sm:px-8">
+        <Reveal>
         <h2 className="max-w-3xl text-3xl sm:text-5xl font-semibold tracking-apple-tight leading-[1.05] text-[#1D1D1F] dark:text-[#F5F5F7] text-balance">
           Tools &amp; design suite.{" "}
           <span className="text-[#6E6E73] dark:text-[#A1A1A6]">The apps I design, prototype and produce assets with.</span>
         </h2>
+        </Reveal>
 
+        <Reveal delay={100}>
         <ul className="mt-12 sm:mt-16 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           {DESIGN_TOOLS.map((tool) => (
             <li
@@ -70,6 +74,7 @@ export default function DesignWorkflowKit() {
             </li>
           ))}
         </ul>
+        </Reveal>
       </div>
     </section>
   );

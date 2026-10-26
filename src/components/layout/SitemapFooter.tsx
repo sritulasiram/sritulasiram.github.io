@@ -19,7 +19,7 @@ const COLUMNS: Column[] = [
   { heading: NAV_MENUS.designs.label, href: NAV_MENUS.designs.href, links: NAV_MENUS.designs.groups[0].links },
   {
     heading: "Explore",
-    links: [PHOTOGRAPHY, ABOUT, ...NAV_MENUS.projects.groups[2].links],
+    links: [PHOTOGRAPHY, ABOUT, NAV_MENUS.projects.groups[2].links[0]],
   },
   {
     heading: "Connect",

@@ -39,6 +39,7 @@ export default function DesignStatement() {
     const root = rootRef.current;
     if (!root) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- client-only check; the server render must start from the initial state
       setPhase("settled");
       setFollowUp(true);
       return;
@@ -148,7 +149,7 @@ export default function DesignStatement() {
         {followUp && (
           <ScrollTypeText
             mode="words"
-            className="text-2xl sm:text-4xl font-medium leading-snug tracking-apple-hero max-w-3xl"
+            className="text-2xl sm:text-4xl font-medium leading-snug tracking-apple-hero max-w-2xl text-balance"
             segments={[
               { text: "It's not enough for something to work. It has to feel natural, like ", className: GRAY },
               { text: "home.", className: INK },

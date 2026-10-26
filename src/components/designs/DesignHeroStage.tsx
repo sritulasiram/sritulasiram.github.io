@@ -15,7 +15,7 @@ export default function DesignHeroStage() {
   const activeDesign = DESIGNS[activeIndex];
   const touchStartX = useRef<number | null>(null);
   // Track which cards have finished entrance so animation doesn't override carousel transitions
-  const animatedCards = useRef<Set<string>>(new Set());
+  const [animatedCards, setAnimatedCards] = useState<ReadonlySet<string>>(new Set());
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
@@ -179,7 +179,7 @@ export default function DesignHeroStage() {
             const staggerMs = Math.abs(diff) * 40;
             // --pan-offset: negate the slot's X so the phone starts at visual center
             const panOffset = `${-slot.xPercent}%`;
-            const hasAnimated = animatedCards.current.has(item.id);
+            const hasAnimated = animatedCards.has(item.id);
 
             return (
               <div
@@ -225,7 +225,7 @@ export default function DesignHeroStage() {
                         }
                   }
                   onAnimationEnd={() => {
-                    animatedCards.current.add(item.id);
+                    setAnimatedCards((prev) => (prev.has(item.id) ? prev : new Set(prev).add(item.id)));
                   }}
                 >
                   <StageDevice device={item.device} src={item.imageSrc} />

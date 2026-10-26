@@ -43,6 +43,7 @@ import {
 import DesignPrincipleGrid, { type Principle } from "./DesignPrincipleGrid";
 import DesignSpecimenToggle from "./DesignSpecimenToggle";
 import DesignSectionHeading from "./DesignSectionHeading";
+import Reveal from "@/components/shared/Reveal";
 
 // Real Font Awesome Free glyphs: the same icon in its Solid and Regular style.
 const FA_ICONS: { name: string; solid: IconDefinition; regular: IconDefinition }[] = [
@@ -156,127 +157,141 @@ export default function DesignIconsKit() {
     <section id="icons" className="scroll-mt-20 py-12 sm:py-16 bg-white dark:bg-black transition-colors overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 sm:px-8 space-y-12 sm:space-y-16">
         {/* Section Header */}
-        <div className="max-w-3xl space-y-3">
-          <h2 className="text-3xl sm:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight leading-[1.08] text-balance">
-            Icon systems.
-            <br />
-            <span className="text-[#6E6E73] dark:text-[#8E8E93] font-medium">
-              Two icon systems, side by side.
-            </span>
-          </h2>
-          <p className="text-base sm:text-lg text-[#6E6E73] dark:text-[#A1A1A6] font-normal leading-relaxed">
-            Font Awesome&apos;s fixed styles next to Material Symbols&apos; variable axes. Change the settings to compare.
-          </p>
-        </div>
+        <Reveal>
+          <div className="max-w-3xl space-y-3">
+            <h2 className="text-3xl sm:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight leading-[1.08] text-balance">
+              Icon systems.
+              <br />
+              <span className="text-[#6E6E73] dark:text-[#8E8E93] font-medium">
+                Two icon systems, side by side.
+              </span>
+            </h2>
+            <p className="text-base sm:text-lg text-[#6E6E73] dark:text-[#A1A1A6] font-normal leading-relaxed">
+              Font Awesome&apos;s fixed styles next to Material Symbols&apos; variable axes. Change the settings to compare.
+            </p>
+          </div>
+        </Reveal>
 
         {/* 1. Font Awesome Icon System */}
         <div className="space-y-8 sm:space-y-10">
-          <DesignSectionHeading
-            title="Font Awesome Icon System"
-            description="Two fixed styles, Solid and Regular. Switch between them to compare."
-            href="https://fontawesome.com/"
-            linkLabel="Font Awesome Library"
-          />
+          <Reveal>
+            <DesignSectionHeading
+              title="Font Awesome Icon System"
+              description="Two fixed styles, Solid and Regular. Switch between them to compare."
+              href="https://fontawesome.com/"
+              linkLabel="Font Awesome Library"
+            />
+          </Reveal>
 
-          <div className="space-y-6">
-            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 sm:gap-4 py-2">
-              <DesignSpecimenToggle
-                label="Style"
-                value={faStyle}
-                onChange={setFaStyle}
-                options={[
-                  { value: "solid", label: "Solid" },
-                  { value: "regular", label: "Regular" },
-                ]}
-              />
-              <DesignSpecimenToggle
-                label="Scale"
-                value={faSize}
-                onChange={setFaSize}
-                options={[
-                  { value: 16, label: "16px" },
-                  { value: 24, label: "24px" },
-                  { value: 32, label: "32px" },
-                ]}
-              />
+          <Reveal delay={100}>
+            <div className="space-y-6">
+              <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 sm:gap-4 py-2">
+                <DesignSpecimenToggle
+                  label="Style"
+                  value={faStyle}
+                  onChange={setFaStyle}
+                  options={[
+                    { value: "solid", label: "Solid" },
+                    { value: "regular", label: "Regular" },
+                  ]}
+                />
+                <DesignSpecimenToggle
+                  label="Scale"
+                  value={faSize}
+                  onChange={setFaSize}
+                  options={[
+                    { value: 16, label: "16px" },
+                    { value: 24, label: "24px" },
+                    { value: 32, label: "32px" },
+                  ]}
+                />
+              </div>
+  
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-x-2 gap-y-4 sm:gap-6 py-2 sm:py-4">
+                {FA_ICONS.map((icon, i) => (
+                  <Reveal key={icon.name} delay={(i % 6) * 50}>
+                    <SpecimenTile name={icon.name} box={faSize + 20}>
+                      <FontAwesomeIcon
+                        icon={faStyle === "solid" ? icon.solid : icon.regular}
+                        style={{ fontSize: faSize }}
+                        className="text-[#1D1D1F] dark:text-[#F5F5F7] transition-all duration-200"
+                        fixedWidth
+                      />
+                    </SpecimenTile>
+                  </Reveal>
+                ))}
+              </div>
             </div>
-
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-x-2 gap-y-4 sm:gap-6 py-2 sm:py-4">
-              {FA_ICONS.map((icon) => (
-                <SpecimenTile key={icon.name} name={icon.name} box={faSize + 20}>
-                  <FontAwesomeIcon
-                    icon={faStyle === "solid" ? icon.solid : icon.regular}
-                    style={{ fontSize: faSize }}
-                    className="text-[#1D1D1F] dark:text-[#F5F5F7] transition-all duration-200"
-                    fixedWidth
-                  />
-                </SpecimenTile>
-              ))}
-            </div>
-          </div>
+          </Reveal>
 
           <DesignPrincipleGrid items={ICON_PRINCIPLES_1} />
         </div>
 
         {/* 2. Google Material Symbols */}
         <div className="space-y-8 sm:space-y-10">
-          <DesignSectionHeading
-            title="Google Material Symbols"
-            description="A variable icon font with continuous weight, fill, and optical-size axes, set live below."
-            href="https://fonts.google.com/icons"
-            linkLabel="Google Material Symbols Library"
-          />
+          <Reveal>
+            <DesignSectionHeading
+              title="Google Material Symbols"
+              description="A variable icon font with continuous weight, fill, and optical-size axes, set live below."
+              href="https://fonts.google.com/icons"
+              linkLabel="Google Material Symbols Library"
+            />
+          </Reveal>
 
-          <div className="space-y-8">
-            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 sm:gap-4 py-2">
-              <DesignSpecimenToggle
-                label="Weight"
-                value={matWeight}
-                onChange={setMatWeight}
-                options={[
-                  { value: 200, label: "Light 200" },
-                  { value: 400, label: "Regular 400" },
-                  { value: 700, label: "Bold 700" },
-                ]}
-              />
-              <DesignSpecimenToggle
-                label="Fill"
-                value={matFilled}
-                onChange={setMatFilled}
-                options={[
-                  { value: false, label: "Outlined" },
-                  { value: true, label: "Filled" },
-                ]}
-              />
-              <DesignSpecimenToggle
-                label="Optical size"
-                value={matSize}
-                onChange={setMatSize}
-                options={[
-                  { value: 20, label: "20px" },
-                  { value: 24, label: "24px" },
-                  { value: 36, label: "36px" },
-                ]}
-              />
+          <Reveal delay={100}>
+            <div className="space-y-8">
+              <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 sm:gap-4 py-2">
+                <DesignSpecimenToggle
+                  label="Weight"
+                  value={matWeight}
+                  onChange={setMatWeight}
+                  options={[
+                    { value: 200, label: "Light 200" },
+                    { value: 400, label: "Regular 400" },
+                    { value: 700, label: "Bold 700" },
+                  ]}
+                />
+                <DesignSpecimenToggle
+                  label="Fill"
+                  value={matFilled}
+                  onChange={setMatFilled}
+                  options={[
+                    { value: false, label: "Outlined" },
+                    { value: true, label: "Filled" },
+                  ]}
+                />
+                <DesignSpecimenToggle
+                  label="Optical size"
+                  value={matSize}
+                  onChange={setMatSize}
+                  options={[
+                    { value: 20, label: "20px" },
+                    { value: 24, label: "24px" },
+                    { value: 36, label: "36px" },
+                  ]}
+                />
+              </div>
+  
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-x-2 gap-y-4 sm:gap-6 py-2 sm:py-4">
+                {MATERIAL_ICONS.map((icon, i) => (
+                  <Reveal key={icon.name} delay={(i % 6) * 50}>
+                    <SpecimenTile name={icon.name} box={matSize + 22}>
+                      <span
+                        aria-hidden="true"
+                        className="material-symbols text-[#1D1D1F] dark:text-[#F5F5F7]"
+                        style={{
+                          fontSize: matSize,
+                          fontVariationSettings: `'FILL' ${matFilled ? 1 : 0}, 'wght' ${matWeight}, 'opsz' ${matSize}`,
+                        }}
+                      >
+                        {icon.glyph}
+                      </span>
+                    </SpecimenTile>
+                  </Reveal>
+                ))}
+              </div>
             </div>
-
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-x-2 gap-y-4 sm:gap-6 py-2 sm:py-4">
-              {MATERIAL_ICONS.map((icon) => (
-                <SpecimenTile key={icon.name} name={icon.name} box={matSize + 22}>
-                  <span
-                    aria-hidden="true"
-                    className="material-symbols text-[#1D1D1F] dark:text-[#F5F5F7]"
-                    style={{
-                      fontSize: matSize,
-                      fontVariationSettings: `'FILL' ${matFilled ? 1 : 0}, 'wght' ${matWeight}, 'opsz' ${matSize}`,
-                    }}
-                  >
-                    {icon.glyph}
-                  </span>
-                </SpecimenTile>
-              ))}
-            </div>
-          </div>
+          </Reveal>
 
           <DesignPrincipleGrid items={ICON_PRINCIPLES_2} />
         </div>

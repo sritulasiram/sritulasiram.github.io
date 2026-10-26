@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 
 interface Segment {
   text: string;
@@ -39,23 +39,29 @@ const Word = memo(function Word({
   fade: boolean;
 }) {
   if (fade) {
+    // The trailing space sits outside the animated box, so it collapses at a line end and right-aligned
+    // text lines up flush with the edge.
+    const word = text.trimEnd();
     return (
-      <span
-        aria-hidden="true"
-        data-stt-hidden={visible > 0 ? undefined : ""}
-        className={`${className ?? ""} inline-block whitespace-pre transition-[opacity,transform] duration-500 ease-out motion-reduce:transition-none ${
-          visible > 0 ? "translate-y-0 opacity-100" : "translate-y-[0.35em] opacity-0"
-        }`}
-      >
-        {text}
-      </span>
+      <>
+        <span
+          aria-hidden="true"
+          data-stt-hidden={visible > 0 ? undefined : ""}
+          className={`${className ?? ""} inline-block whitespace-pre transition-[opacity,transform] duration-500 ease-out motion-reduce:transition-none ${
+            visible > 0 ? "translate-y-0 opacity-100" : "translate-y-[0.35em] opacity-0"
+          }`}
+        >
+          {word}
+        </span>
+        {text.slice(word.length)}
+      </>
     );
   }
   const chars = Array.from(text);
   return (
     <span aria-hidden="true" className={className}>
       {chars.map((char, i) => (
-        <span key={i} data-stt-hidden={i < visible ? undefined : ""} className={i < visible ? undefined : "opacity-0"}>
+        <span key={i} data-stt-hidden={i < visible ? undefined : ""} className={`transition-opacity duration-150 ease-out motion-reduce:transition-none ${i < visible ? "opacity-100" : "opacity-0"}`}>
           {char}
           {caret && i === visible - 1 && (
             <span className="relative inline-block h-[1em] w-0 align-[-0.15em]">
@@ -97,14 +103,17 @@ export default function ScrollTypeText({
     onProgressRef.current = onProgress;
   });
 
-  const words: WordData[] = [];
-  let total = 0;
-  segments.forEach((segment, si) => {
-    for (const match of segment.text.match(/\S+\s*/g) ?? []) {
-      words.push({ text: match, start: total, className: segment.className, segment: si });
-      total += Array.from(match).length;
-    }
-  });
+  const { bySegment, total } = useMemo(() => {
+    const bySegment: WordData[][] = segments.map(() => []);
+    let total = 0;
+    segments.forEach((segment, si) => {
+      for (const match of segment.text.match(/\S+\s*/g) ?? []) {
+        bySegment[si].push({ text: match, start: total, className: segment.className, segment: si });
+        total += Array.from(match).length;
+      }
+    });
+    return { bySegment, total };
+  }, [segments]);
 
   // Starts hidden, on the server too, so the full text never flashes before it types. null = show
   // everything (reduced motion); without JavaScript a <noscript> rule reveals it.
@@ -115,26 +124,33 @@ export default function ScrollTypeText({
     const el = ref.current;
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- client-only check; the server render must start from the initial state
       setShown(null);
       return;
     }
 
-    let timer: ReturnType<typeof setInterval> | undefined;
+    let frame = 0;
     let caretTimer: ReturnType<typeof setTimeout> | undefined;
 
     const start = () => {
       const step = mode === "words" ? WORDS_DURATION_MS / total : Math.min(MAX_CHAR_MS, MAX_DURATION_MS / total);
       const begin = performance.now();
-      timer = setInterval(() => {
-        const n = Math.min(total, Math.floor((performance.now() - begin) / step));
-        setShown(n);
-        onProgressRef.current?.(n);
+      let last = 0;
+      const tick = (now: number) => {
+        const n = Math.min(total, Math.floor((now - begin) / step));
+        if (n !== last) {
+          last = n;
+          setShown(n);
+          onProgressRef.current?.(n);
+        }
         if (n >= total) {
-          clearInterval(timer);
           onCompleteRef.current?.();
           caretTimer = setTimeout(() => setCaretOn(false), 1400);
+          return;
         }
-      }, 16);
+        frame = requestAnimationFrame(tick);
+      };
+      frame = requestAnimationFrame(tick);
     };
 
     const io = new IntersectionObserver(
@@ -150,7 +166,7 @@ export default function ScrollTypeText({
 
     return () => {
       io.disconnect();
-      if (timer) clearInterval(timer);
+      cancelAnimationFrame(frame);
       if (caretTimer) clearTimeout(caretTimer);
     };
   }, [total, mode]);
@@ -164,8 +180,7 @@ export default function ScrollTypeText({
         <style>{"[data-stt-hidden]{opacity:1!important}"}</style>
       </noscript>
       {segments.map((segment, si) => {
-        const typed = words.map((word, i) => ({ word, i })).filter(({ word }) => word.segment === si);
-        const visual = typed.map(({ word, i }) => {
+        const visual = bySegment[si].map((word, i) => {
           const length = Array.from(word.text).length;
           const visible = Math.min(length, Math.max(0, count - word.start));
           // The cursor sits in whichever word the typing has reached.

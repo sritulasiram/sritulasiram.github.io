@@ -13,6 +13,7 @@ import {
 import DesignPrincipleGrid, { type Principle } from "./DesignPrincipleGrid";
 import DesignSpecimenToggle from "./DesignSpecimenToggle";
 import DesignSectionHeading from "./DesignSectionHeading";
+import Reveal from "@/components/shared/Reveal";
 
 // Apple San Francisco
 const TYPE_PRINCIPLES_1: Principle[] = [
@@ -168,90 +169,100 @@ export default function DesignTypographyKit() {
     <section id="typography" className="scroll-mt-20 py-12 sm:py-16 bg-white dark:bg-black transition-colors overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 sm:px-8 space-y-12 sm:space-y-16">
         {/* Section Header */}
-        <div className="max-w-3xl space-y-3">
-          <h2 className="text-3xl sm:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight leading-[1.08] text-balance">
-            Typography systems.
-            <br />
-            <span className="text-[#6E6E73] dark:text-[#8E8E93] font-medium">
-              San Francisco and the Google Fonts web stack.
-            </span>
-          </h2>
-          <p className="text-base sm:text-lg text-[#6E6E73] dark:text-[#A1A1A6] font-normal leading-relaxed">
-            Change the cut, weight and size to see how each typeface behaves.
-          </p>
-        </div>
+        <Reveal>
+          <div className="max-w-3xl space-y-3">
+            <h2 className="text-3xl sm:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight leading-[1.08] text-balance">
+              Typography systems.
+              <br />
+              <span className="text-[#6E6E73] dark:text-[#8E8E93] font-medium">
+                San Francisco and the Google Fonts web stack.
+              </span>
+            </h2>
+            <p className="text-base sm:text-lg text-[#6E6E73] dark:text-[#A1A1A6] font-normal leading-relaxed">
+              Change the cut, weight and size to see how each typeface behaves.
+            </p>
+          </div>
+        </Reveal>
 
         {/* 1. Apple San Francisco */}
         <div className="space-y-8 sm:space-y-10">
-          <DesignSectionHeading
-            title="Apple San Francisco"
-            description="Apple's system typeface. Spacing and shapes adjust with size, from small labels to large titles."
-            href="https://developer.apple.com/fonts/"
-            linkLabel="Apple Developer Fonts"
-          />
-
-          <div className="space-y-6">
-            <div className="flex flex-wrap items-center justify-between gap-4 py-2">
-              <DesignSpecimenToggle
-                label="Cut"
-                value={appleVariant}
-                onChange={setAppleVariant}
-                options={(Object.keys(APPLE_FAMILIES) as (keyof typeof APPLE_FAMILIES)[]).map((key) => ({
-                  value: key,
-                  label: APPLE_FAMILIES[key].label,
-                }))}
-              />
-              <DesignSpecimenToggle label="Weight" value={appleWeight} onChange={setAppleWeight} options={[...WEIGHT_OPTIONS]} />
-              <DesignSpecimenToggle label="Size" value={appleSize} onChange={setAppleSize} options={[...SIZE_OPTIONS]} />
-            </div>
-
-            <Specimen
-              title="San Francisco"
-              caption="Apple Typography"
-              detail={APPLE_FAMILIES[appleVariant].label}
-              family={APPLE_FAMILIES[appleVariant].css}
-              weight={appleWeight}
-              size={appleSize}
-              note="San Francisco is licensed to Apple platforms, so it renders on Mac, iPhone and iPad. On other devices this specimen falls back to Inter."
+          <Reveal>
+            <DesignSectionHeading
+              title="Apple San Francisco"
+              description="Apple's system typeface. Spacing and shapes adjust with size, from small labels to large titles."
+              href="https://developer.apple.com/fonts/"
+              linkLabel="Apple Developer Fonts"
             />
-          </div>
+          </Reveal>
+
+          <Reveal delay={100}>
+            <div className="space-y-6">
+              <div className="flex flex-wrap items-center justify-between gap-4 py-2">
+                <DesignSpecimenToggle
+                  label="Cut"
+                  value={appleVariant}
+                  onChange={setAppleVariant}
+                  options={(Object.keys(APPLE_FAMILIES) as (keyof typeof APPLE_FAMILIES)[]).map((key) => ({
+                    value: key,
+                    label: APPLE_FAMILIES[key].label,
+                  }))}
+                />
+                <DesignSpecimenToggle label="Weight" value={appleWeight} onChange={setAppleWeight} options={[...WEIGHT_OPTIONS]} />
+                <DesignSpecimenToggle label="Size" value={appleSize} onChange={setAppleSize} options={[...SIZE_OPTIONS]} />
+              </div>
+  
+              <Specimen
+                title="San Francisco"
+                caption="Apple Typography"
+                detail={APPLE_FAMILIES[appleVariant].label}
+                family={APPLE_FAMILIES[appleVariant].css}
+                weight={appleWeight}
+                size={appleSize}
+                note="San Francisco is licensed to Apple platforms, so it renders on Mac, iPhone and iPad. On other devices this specimen falls back to Inter."
+              />
+            </div>
+          </Reveal>
 
           <DesignPrincipleGrid items={TYPE_PRINCIPLES_1} />
         </div>
 
         {/* 2. Google Fonts and Variable Systems */}
         <div className="space-y-8 sm:space-y-10">
-          <DesignSectionHeading
-            title="Google Fonts and Variable Systems"
-            description="Open-source variable fonts you can load on any site, with a continuous weight range."
-            href="https://fonts.google.com/"
-            linkLabel="Google Fonts Library"
-          />
-
-          <div className="space-y-6">
-            <div className="flex flex-wrap items-center justify-between gap-4 py-2">
-              <DesignSpecimenToggle
-                label="Family"
-                value={googleFont}
-                onChange={setGoogleFont}
-                options={(Object.keys(GOOGLE_FAMILIES) as (keyof typeof GOOGLE_FAMILIES)[]).map((key) => ({
-                  value: key,
-                  label: GOOGLE_FAMILIES[key].label,
-                }))}
-              />
-              <DesignSpecimenToggle label="Weight" value={googleWeight} onChange={setGoogleWeight} options={[...WEIGHT_OPTIONS]} />
-              <DesignSpecimenToggle label="Size" value={googleSize} onChange={setGoogleSize} options={[...SIZE_OPTIONS]} />
-            </div>
-
-            <Specimen
-              title={GOOGLE_FAMILIES[googleFont].label}
-              caption="Google Fonts"
-              detail="Variable"
-              family={GOOGLE_FAMILIES[googleFont].css}
-              weight={googleWeight}
-              size={googleSize}
+          <Reveal>
+            <DesignSectionHeading
+              title="Google Fonts and Variable Systems"
+              description="Open-source variable fonts you can load on any site, with a continuous weight range."
+              href="https://fonts.google.com/"
+              linkLabel="Google Fonts Library"
             />
-          </div>
+          </Reveal>
+
+          <Reveal delay={100}>
+            <div className="space-y-6">
+              <div className="flex flex-wrap items-center justify-between gap-4 py-2">
+                <DesignSpecimenToggle
+                  label="Family"
+                  value={googleFont}
+                  onChange={setGoogleFont}
+                  options={(Object.keys(GOOGLE_FAMILIES) as (keyof typeof GOOGLE_FAMILIES)[]).map((key) => ({
+                    value: key,
+                    label: GOOGLE_FAMILIES[key].label,
+                  }))}
+                />
+                <DesignSpecimenToggle label="Weight" value={googleWeight} onChange={setGoogleWeight} options={[...WEIGHT_OPTIONS]} />
+                <DesignSpecimenToggle label="Size" value={googleSize} onChange={setGoogleSize} options={[...SIZE_OPTIONS]} />
+              </div>
+  
+              <Specimen
+                title={GOOGLE_FAMILIES[googleFont].label}
+                caption="Google Fonts"
+                detail="Variable"
+                family={GOOGLE_FAMILIES[googleFont].css}
+                weight={googleWeight}
+                size={googleSize}
+              />
+            </div>
+          </Reveal>
 
           <DesignPrincipleGrid items={TYPE_PRINCIPLES_2} />
         </div>

@@ -9,6 +9,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import ProjectImage from "@/components/ui/ProjectImage";
+import { photoThumb } from "@/lib/photoThumb";
 import PhotoPreviewModal from "./PhotoPreviewModal";
 import type { PhotoItem, PhotoAlbumId } from "@/types";
 import { PHOTO_ALBUMS, PHOTO_SPECS } from "@/data/content";
@@ -42,6 +43,7 @@ export default function PhotographyGallery({ photos }: PhotographyGalleryProps) 
 
   // Randomize photo sequence on each page visit / refresh
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- client-only check; the server render must start from the initial state
     setShuffledPhotos(performShuffle(photos));
   }, [photos, performShuffle]);
 
@@ -95,7 +97,7 @@ export default function PhotographyGallery({ photos }: PhotographyGalleryProps) 
             className="group aspect-[3/4] w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-[#F5F5F7] dark:bg-[#151518] border border-black/[0.05] dark:border-white/[0.08] apple-card-shadow cursor-pointer relative select-none"
           >
             <ProjectImage
-              src={photo.imageSrc}
+              src={photoThumb(photo.imageSrc)}
               alt={photo.altText}
               placeholderLabel={photo.placeholderLabel}
               ratioText="High-Res Portrait"
@@ -190,7 +192,7 @@ export default function PhotographyGallery({ photos }: PhotographyGalleryProps) 
           className="group aspect-[3/4] w-full rounded-xl sm:rounded-2xl overflow-hidden bg-[#F5F5F7] dark:bg-[#151518] border border-black/[0.04] dark:border-white/[0.08] apple-card-shadow cursor-pointer relative select-none"
         >
           <ProjectImage
-            src={photo.imageSrc}
+            src={photoThumb(photo.imageSrc)}
             alt={photo.altText}
             placeholderLabel={photo.placeholderLabel}
             ratioText="High-Res Portrait"

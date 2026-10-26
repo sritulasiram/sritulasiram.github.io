@@ -1,4 +1,5 @@
 import CountUp from "@/components/shared/CountUp";
+import Reveal from "@/components/shared/Reveal";
 
 const FIGURES = [
   { value: "19", label: "Automated checks", detail: "Raspberry Pi Diagnostic Suite, from one Run All button" },
@@ -15,10 +16,13 @@ export default function ProjectsImpact() {
       className="scroll-mt-20 py-16 sm:py-24 bg-[#F5F5F7] dark:bg-[#1C1C1E] transition-colors"
     >
       <div className="max-w-6xl mx-auto px-6 sm:px-8">
+        <Reveal>
         <h2 className="max-w-2xl text-3xl sm:text-5xl font-semibold tracking-apple-tight leading-[1.08] text-[#1D1D1F] dark:text-[#F5F5F7]">
           Built to be measured.{" "}
           <span className="text-[#6E6E73] dark:text-[#A1A1A6]">Shipped with the numbers to prove it.</span>
         </h2>
+        </Reveal>
+        <Reveal delay={100}>
         <dl className="mt-12 sm:mt-16 grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-8">
           {FIGURES.map((f) => (
             <div key={f.label}>
@@ -34,6 +38,7 @@ export default function ProjectsImpact() {
             </div>
           ))}
         </dl>
+        </Reveal>
       </div>
     </section>
   );

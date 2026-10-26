@@ -1,5 +1,8 @@
 import Image from "next/image";
 import Reveal from "@/components/shared/Reveal";
+import PhoneHistory from "@/components/photography/PhoneHistory";
+import LensNumber from "@/components/photography/LensNumber";
+import FocusText from "@/components/photography/FocusText";
 
 const INK = "text-[#1D1D1F] dark:text-[#F5F5F7]";
 const GRAY = "text-[#6E6E73] dark:text-[#A1A1A6]";
@@ -47,17 +50,48 @@ const POST_APPS: App[] = [
 
 const ORIGINS = [
   {
-    year: "2014",
-    tag: "The spark",
+    year: "2009",
+    tag: "The beginning",
+    name: "Olympus µ 700",
+    spec: "7.1MP · ƒ/3.4–5.7 · 3x Optical Zoom",
+    story:
+      "Where my photography began. A pocket compact with an all-weather body and a 3x zoom, it taught me to frame a shot long before I knew anything about settings.",
+    image: "/images/devices/olympus-mu-700.png",
+    alt: "Olympus µ 700 compact digital camera in black",
+  },
+  {
+    year: "2013",
+    tag: "Always in my pocket",
+    name: "iPhone 3GS",
+    spec: "3MP · ƒ/2.8 · Autofocus",
+    story:
+      "My first smartphone, and the first time a camera was always in my pocket. Tap to focus and a camera that was always with me turned everyday moments into photos.",
+    image: "/images/devices/iphone-3gs.png",
+    alt: "iPhone 3GS in black, front and back",
+    scale: 0.85,
+  },
+  {
+    year: "2015",
+    tag: "Learning to see",
+    name: "Galaxy J1",
+    spec: "5MP · Autofocus · LED Flash",
+    story:
+      "My first step into Android. A modest camera, but enough to keep me shooting everyday scenes and wanting more from the next phone.",
+    image: "/images/devices/samsung-galaxy-j1.png",
+    alt: "Samsung Galaxy J1 in white",
+  },
+  {
+    year: "2017",
+    tag: "Getting serious",
     name: "Galaxy Note Edge",
     spec: "16MP · ƒ/2.2 · Smart OIS",
     story:
-      "Where mobile framing first took root. The curved edge screen carried camera settings beside the viewfinder, opening the door to spontaneous handheld street perspectives.",
+      "Where phone photography got serious, with a 16MP sensor and optical stabilisation. The curved edge screen carried camera settings beside the viewfinder, opening the door to spontaneous handheld street perspectives.",
     image: "/images/devices/samsung-note-edge.png",
     alt: "Samsung Galaxy Note Edge with S-Pen",
   },
   {
-    year: "2017",
+    year: "2019",
     tag: "Dual optics",
     name: "Galaxy Note 8",
     spec: "Dual 12MP · ƒ/1.7 + ƒ/2.4 · 2x Optical",
@@ -67,7 +101,7 @@ const ORIGINS = [
     alt: "Samsung Galaxy Note 8 with S-Pen",
   },
   {
-    year: "2020",
+    year: "2021",
     tag: "Long reach",
     name: "Galaxy Note 20 Ultra",
     spec: "108MP · 5x Optical Periscope · Laser AF",
@@ -75,6 +109,15 @@ const ORIGINS = [
       "A 108MP sensor with 5x folded telephoto reach. Where I learned manual exposure control, low-light RAW capture and isolating distant wildlife.",
     image: "/images/devices/samsung-note-20-ultra.png",
     alt: "Samsung Galaxy Note 20 Ultra Mystic Bronze with S-Pen",
+  },
+  {
+    year: "Now",
+    tag: "Shot on iPhone 16 Pro",
+    name: "iPhone 16 Pro",
+    spec: "48MP Fusion · 5x Telephoto · ProRAW",
+    story: "Every frame, in my pocket. No heavy camera bags, no tripod rigs and no lens swaps in the field.",
+    image: "/images/devices/iphone-16-pro-desert-titanium.png",
+    alt: "iPhone 16 Pro in Desert Titanium, showing its Pro camera system",
   },
 ];
 
@@ -94,43 +137,31 @@ function AppTile({ app }: { app: App }) {
 
 export default function CameraOpticsKitBento() {
   return (
-    <section
+    <>
+      {/* Origins first: the first camera and the phones that followed, one at a time as you scroll, leading up to the iPhone below */}
+      <div id="origins" className="scroll-mt-24 mt-24 text-left sm:mt-32">
+        <PhoneHistory
+          origins={ORIGINS}
+          heading={
+            <h2 className="max-w-3xl text-2xl font-semibold leading-[1.05] tracking-apple-tight text-balance sm:text-4xl md:text-5xl">
+              <span className={INK}>A journey in cameras.</span>{" "}
+              <span className="text-[#6E6E73] dark:text-[#A1A1A6]">From a pocket compact to a studio in my pocket.</span>
+            </h2>
+          }
+        />
+      </div>
+
+      <section
       id="shot-on-iphone"
       aria-label="Shot on iPhone 16 Pro mobile photography"
       className="scroll-mt-24 mt-24 sm:mt-32 text-left"
     >
-      {/* The device */}
-      <Reveal>
-        <div className={`${TILE} grid grid-cols-1 items-center gap-6 overflow-hidden px-8 pt-12 sm:px-14 sm:pt-16 lg:grid-cols-2 lg:py-16`}>
-          <div>
-            <p className={`text-xl font-semibold tracking-apple-tight sm:text-2xl ${INK}`}>Shot on iPhone 16 Pro.</p>
-            <h2 className={`mt-2 text-4xl font-semibold leading-[1.05] tracking-apple-hero sm:text-6xl ${INK}`}>
-              Every frame,
-              <span className="block text-[#86868B] dark:text-[#6E6E73]">in my pocket.</span>
-            </h2>
-            <p className={`mt-5 max-w-md text-lg leading-relaxed ${GRAY}`}>
-              No heavy camera bags, no tripod rigs and no lens swaps in the field.
-            </p>
-          </div>
-          <div className="relative mx-auto aspect-square w-[min(80%,380px)] drop-shadow-2xl">
-            <Image
-              src="/images/devices/iphone-16-pro-desert-titanium.png"
-              alt="iPhone 16 Pro in Desert Titanium, showing its Pro camera system"
-              fill
-              sizes="(max-width: 1024px) 70vw, 380px"
-              className="object-contain"
-            />
-          </div>
-        </div>
-      </Reveal>
-
       {/* Focal lengths */}
-      <dl className="mt-16 grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4 sm:mt-24">
+      <dl className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">
         {LENSES.map((lens, i) => (
-          <Reveal key={lens.name} delay={i * 80}>
+          <Reveal key={lens.name} delay={i * 80} rootMargin="0px 0px -30% 0px">
             <dt className={`text-6xl font-semibold tabular-nums tracking-apple-hero sm:text-7xl ${INK}`}>
-              {lens.zoom}
-              <span className="text-3xl text-[#86868B] dark:text-[#6E6E73] sm:text-4xl">×</span>
+              <LensNumber value={Number(lens.zoom)} suffixClassName="text-3xl text-[#86868B] dark:text-[#6E6E73] sm:text-4xl" />
             </dt>
             <dd className={`mt-2 text-base font-semibold ${INK}`}>{lens.name}</dd>
             <dd className={`mt-1 text-sm ${GRAY}`}>{lens.spec}</dd>
@@ -142,8 +173,8 @@ export default function CameraOpticsKitBento() {
       <ul className="mt-20 grid grid-cols-1 gap-10 sm:mt-28 md:grid-cols-3 md:gap-12">
         {PRINCIPLES.map((item, i) => (
           <li key={item.title}>
-            <Reveal delay={i * 90}>
-              <h3 className={`text-2xl font-semibold leading-tight tracking-apple-tight sm:text-3xl ${INK}`}>{item.title}</h3>
+            <Reveal delay={i * 90} rootMargin="0px 0px -25% 0px">
+              <FocusText text={item.title} delay={i * 90} className={`text-2xl font-semibold leading-tight tracking-apple-tight sm:text-3xl ${INK}`} />
               <p className={`mt-3 text-base leading-relaxed ${GRAY}`}>{item.body}</p>
             </Reveal>
           </li>
@@ -173,45 +204,7 @@ export default function CameraOpticsKitBento() {
           ))}
         </ul>
       </div>
-
-      {/* Origins: the three Galaxy Note phones, side by side like Apple's compare view */}
-      <div id="origins" className="scroll-mt-24 mt-24 sm:mt-32">
-        <Reveal>
-          <h2 className="max-w-3xl text-3xl font-semibold leading-[1.05] tracking-apple-tight text-balance sm:text-5xl">
-            <span className={INK}>Where it started.</span>{" "}
-            <span className="text-[#6E6E73] dark:text-[#A1A1A6]">
-              Three Galaxy Notes. One way of seeing.
-            </span>
-          </h2>
-        </Reveal>
-
-        <ol className="-mx-6 mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 no-scrollbar sm:-mx-8 sm:mt-16 sm:px-8 md:mx-0 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:px-0 md:pb-0">
-          {ORIGINS.map((device, i) => (
-            <li key={device.name} className="w-[82%] shrink-0 snap-center sm:w-[60%] md:w-auto">
-              <Reveal delay={i * 100} className="h-full">
-                <article className={`${TILE} group flex h-full flex-col overflow-hidden px-7 pt-8 pb-9`}>
-                  <p className="text-sm font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#8E8E93]">{device.tag}</p>
-                  <p className={`mt-1 text-6xl font-semibold tabular-nums leading-none tracking-apple-hero ${INK}`}>{device.year}</p>
-
-                  <div className="relative mx-auto my-8 h-72 w-full">
-                    <Image
-                      src={device.image}
-                      alt={device.alt}
-                      fill
-                      sizes="(max-width: 768px) 70vw, 300px"
-                      className="object-contain drop-shadow-[0_24px_32px_rgba(0,0,0,0.18)] transition-transform duration-500 ease-out motion-safe:group-hover:-translate-y-2 dark:drop-shadow-none"
-                    />
-                  </div>
-
-                  <h3 className={`text-2xl font-semibold tracking-apple-tight ${INK}`}>{device.name}</h3>
-                  <p className={`mt-1 text-sm font-medium ${GRAY}`}>{device.spec}</p>
-                  <p className={`mt-5 text-[15px] leading-relaxed ${GRAY}`}>{device.story}</p>
-                </article>
-              </Reveal>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

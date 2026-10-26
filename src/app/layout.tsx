@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Instrument_Serif } from "next/font/google";
 import MaintenanceScreen from "@/components/layout/MaintenanceScreen";
 import Navigation from "@/components/layout/Navigation";
+import ScrollMemory from "@/components/layout/ScrollMemory";
 import WelcomeSheet from "@/components/layout/WelcomeSheet";
 import { CONTACT_DATA } from "@/data/content";
 import "./globals.css";
@@ -231,6 +232,7 @@ export default function RootLayout({
         ) : (
           <>
             <Navigation />
+            <ScrollMemory />
             <WelcomeSheet />
             <div className="animate-page-enter min-h-screen flex flex-col">
               {children}

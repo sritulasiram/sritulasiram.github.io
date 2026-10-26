@@ -27,6 +27,7 @@ export default function FixStatement() {
     const root = rootRef.current;
     if (!root) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- client-only check; the server render must start from the initial state
       setStill(true);
       setStarted(true);
       setSubline(true);
@@ -59,7 +60,7 @@ export default function FixStatement() {
     <div ref={rootRef} className="flex flex-col gap-5 sm:gap-7">
       <p
         aria-label={WORDS.join(" ")}
-        className="max-w-4xl text-4xl sm:text-6xl md:text-7xl font-semibold leading-[1.06] tracking-apple-hero"
+        className="max-w-4xl text-balance text-4xl sm:text-6xl md:text-7xl font-semibold leading-[1.06] tracking-apple-hero"
         style={{ opacity: started ? 1 : 0, transform: started ? "none" : "translateY(0.3em)", transition: "opacity 600ms ease-out, transform 700ms cubic-bezier(0.16, 1, 0.3, 1)" }}
       >
         {WORDS.map((word, i) => (
@@ -80,7 +81,7 @@ export default function FixStatement() {
         {subline && (
           <ScrollTypeText
             onProgress={onTyped}
-            className="text-xl sm:text-3xl font-medium leading-snug tracking-apple-hero max-w-2xl"
+            className="text-xl sm:text-3xl font-medium leading-snug tracking-apple-hero max-w-xl text-balance"
             segments={[{ text: "Not just fixing what's broken, but asking what else is possible.", className: GRAY }]}
           />
         )}

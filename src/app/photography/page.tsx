@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, ChevronRight } from "lucide-react";
 import Button from "@/components/ui/Button";
 import InstagramIcon from "@/components/photography/InstagramIcon";
+import Reveal from "@/components/shared/Reveal";
 import Footer from "@/components/layout/Footer";
 import { FOOTER_COPY } from "@/data/footerCopy";
 import SectionNav from "@/components/layout/SectionNav";
@@ -27,8 +28,8 @@ const PHOTO_SECTIONS = [
   { id: "overview", label: "Overview" },
   { id: "highlights", label: "Highlights" },
   { id: "gallery", label: "Gallery" },
-  { id: "shot-on-iphone", label: "Shot on iPhone" },
-  { id: "origins", label: "Origins" },
+  { id: "origins", label: "Journey" },
+  { id: "shot-on-iphone", label: "iPhone 16 Pro" },
 ];
 
 export default function PhotographyPage() {
@@ -80,9 +81,6 @@ export default function PhotographyPage() {
             >
               iamsritulasiram
             </Button>
-            <Button variant="link" href="#shot-on-iphone" className="text-[#1D1D1F]! dark:text-[#F5F5F7]!">
-              Shot on iPhone 16 Pro
-            </Button>
           </div>
         </div>
 
@@ -95,7 +93,9 @@ export default function PhotographyPage() {
 
       <div className="relative z-10 bg-white dark:bg-black max-w-6xl mx-auto px-6 sm:px-8 pt-16 sm:pt-24 pb-16 flex-1 w-full text-center">
         {/* Photography Grid with Album Filter Tabs & Lightbox */}
-        <PhotographyGallery photos={PHOTOGRAPHY_DATA} />
+        <Reveal>
+          <PhotographyGallery photos={PHOTOGRAPHY_DATA} />
+        </Reveal>
 
         {/* Shot on iPhone 16 Pro Optical System Showcase */}
         <CameraOpticsKitBento />

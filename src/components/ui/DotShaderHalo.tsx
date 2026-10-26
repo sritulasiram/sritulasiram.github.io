@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface DotShaderHaloProps {
   className?: string;
@@ -192,33 +192,29 @@ export default function DotShaderHalo({
     }
 
     // Animation loop with physics, spring damping & low-power sleep
-    let lastTime = performance.now();
-
+    let lastTime = 0;
     const animate = (currentTime: number) => {
       if (!isVisible) {
+        lastTime = 0;
         animationFrameId = requestAnimationFrame(animate);
         return;
       }
 
-      const dt = Math.min((currentTime - lastTime) / 1000, 0.1);
+      // Frame time in 60 fps units (1 at 60 Hz, 0.5 at 120 Hz), so the motion feels the same at any
+      // refresh rate. Capped so a stalled frame or a tab switch doesn't make the dots jump.
+      const f = lastTime ? Math.min(3, (currentTime - lastTime) / (1000 / 60)) : 1;
       lastTime = currentTime;
 
       // Smooth cursor lerp
-      if (mouse.isActive) {
-        mouse.x += (mouse.targetX - mouse.x) * 0.18;
-        mouse.y += (mouse.targetY - mouse.y) * 0.18;
-      } else {
-        mouse.x += (mouse.targetX - mouse.x) * 0.1;
-        mouse.y += (mouse.targetY - mouse.y) * 0.1;
-      }
+      const follow = 1 - Math.pow(1 - (mouse.isActive ? 0.18 : 0.1), f);
+      mouse.x += (mouse.targetX - mouse.x) * follow;
+      mouse.y += (mouse.targetY - mouse.y) * follow;
 
       ctx.clearRect(0, 0, width, height);
 
       const time = currentTime * 0.0015;
       const spring = 0.12;
-      const damping = 0.82;
-
-      let isMoving = mouse.isActive;
+      const damping = Math.pow(0.82, f);
 
       for (let i = 0; i < dots.length; i++) {
         const dot = dots[i];
@@ -249,22 +245,17 @@ export default function DotShaderHalo({
 
           proximityScale = 1 + force * 0.9; // Scale up to ~1.9x
           proximityGlow = force;
-          isMoving = true;
         }
 
         // Spring physics towards target
-        const ax = (targetX - dot.x) * spring;
-        const ay = (targetY - dot.y) * spring;
+        const ax = (targetX - dot.x) * spring * f;
+        const ay = (targetY - dot.y) * spring * f;
 
         dot.vx = (dot.vx + ax) * damping;
         dot.vy = (dot.vy + ay) * damping;
 
-        dot.x += dot.vx;
-        dot.y += dot.vy;
-
-        if (Math.abs(dot.vx) > 0.01 || Math.abs(dot.vy) > 0.01) {
-          isMoving = true;
-        }
+        dot.x += dot.vx * f;
+        dot.y += dot.vy * f;
 
         // Compute dot color and opacity with halo radial falloff
         const baseAlpha = isDark ? 0.14 : 0.11;

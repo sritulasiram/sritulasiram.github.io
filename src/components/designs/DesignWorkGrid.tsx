@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import Reveal from "@/components/shared/Reveal";
 import { cn } from "@/lib/cn";
 import { DESIGNS_DATA, DESIGN_DETAILS } from "@/data/designDetails";
 import { MacbookPro } from "@/components/mockups/MacbookPro";
@@ -12,6 +13,7 @@ export default function DesignWorkGrid() {
   return (
     <section id="work" data-section="work" className="scroll-mt-20 py-12 sm:py-16 bg-white dark:bg-black transition-colors">
       <div className="max-w-6xl mx-auto px-6 sm:px-8 space-y-10 sm:space-y-12">
+        <Reveal>
         <div className="max-w-3xl space-y-3">
           <h2 className="text-3xl sm:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight leading-[1.08] text-balance">
             Selected work.
@@ -24,7 +26,9 @@ export default function DesignWorkGrid() {
             Four mobile apps and one website. Each page covers the problem, the decisions, and the result.
           </p>
         </div>
+        </Reveal>
 
+        <Reveal delay={100}>
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
           {DESIGNS_DATA.map((design) => {
             // Void's own hero image is a five-phone Android presentation that crops badly in a
@@ -91,6 +95,7 @@ export default function DesignWorkGrid() {
             );
           })}
         </ul>
+        </Reveal>
       </div>
     </section>
   );

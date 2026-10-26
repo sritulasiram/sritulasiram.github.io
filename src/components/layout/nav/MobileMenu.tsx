@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, ChevronDown } from "lucide-react";
-import { CONTACT_DATA } from "@/data/content";
+import ContactLinks from "./ContactPanel";
 import { NAV_DIRECT_LINKS, NAV_MENUS, isActivePath, type NavLink } from "./navData";
 
 const TOP_LEVEL = "text-[26px] sm:text-[28px] font-semibold tracking-apple-tight transition-colors";
@@ -13,7 +13,6 @@ interface MobileMenuProps {
   expanded: Record<string, boolean>;
   onToggle: (id: string) => void;
   onNavigate: () => void;
-  onContact: (event: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
 function SubLink({ link, small, onNavigate }: { link: NavLink; small: boolean; onNavigate: () => void }) {
@@ -47,7 +46,7 @@ function SubLink({ link, small, onNavigate }: { link: NavLink; small: boolean; o
   );
 }
 
-export default function MobileMenu({ open, pathname, expanded, onToggle, onNavigate, onContact }: MobileMenuProps) {
+export default function MobileMenu({ open, pathname, expanded, onToggle, onNavigate }: MobileMenuProps) {
   return (
     <div
       id="mobile-menu"
@@ -150,43 +149,9 @@ export default function MobileMenu({ open, pathname, expanded, onToggle, onNavig
           ))}
         </nav>
 
-        {/* Bottom actions and quick links */}
-        <div className={`pt-4 mt-6 space-y-5 ${open ? "mobile-item-5" : ""}`}>
-          <Link
-            prefetch={false}
-            href="/#contact"
-            onClick={onContact}
-            className="w-full h-11 px-6 rounded-full text-[14px] font-medium text-white dark:text-[#1D1D1F] bg-[#1D1D1F] dark:bg-white hover:bg-black dark:hover:bg-[#F5F5F7] shadow-xs hover:shadow-sm flex items-center justify-center transition-all duration-200"
-          >
-            Let&apos;s Talk
-          </Link>
-
-          <div className="flex items-center justify-center gap-5 text-[13px] font-medium text-[#6E6E73] dark:text-[#8E8E93]">
-            <a
-              href="https://www.linkedin.com/in/sritulasiram"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] transition-colors"
-            >
-              LinkedIn
-            </a>
-            <span className="w-1 h-1 rounded-full bg-[#86868B]/40 dark:bg-[#8E8E93]/40" />
-            <a
-              href="https://github.com/sritulasiram"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] transition-colors"
-            >
-              GitHub
-            </a>
-            <span className="w-1 h-1 rounded-full bg-[#86868B]/40 dark:bg-[#8E8E93]/40" />
-            <a
-              href={`mailto:${CONTACT_DATA.email}`}
-              className="hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] transition-colors"
-            >
-              Email
-            </a>
-          </div>
+        {/* Contact, in the menu rather than a jump to the footer */}
+        <div className={`pt-4 mt-6 ${open ? "mobile-item-5" : ""}`}>
+          <ContactLinks onNavigate={onNavigate} />
         </div>
       </div>
     </div>

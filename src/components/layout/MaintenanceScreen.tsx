@@ -2,7 +2,7 @@ import { ArrowLeft, RefreshCw } from "lucide-react";
 import Button from "@/components/ui/Button";
 import EmailButton from "@/components/ui/EmailButton";
 import { InstagramIcon, LinkedInIcon } from "@/components/about/BrandIcons";
-import { ABOUT_DATA, CONTACT_DATA } from "@/data/content";
+import { ABOUT_DATA } from "@/data/content";
 
 export type MaintenanceVariant = "upgrade" | "invalid" | "error";
 

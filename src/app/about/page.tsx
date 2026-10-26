@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { Download } from "lucide-react";
 import Footer from "@/components/layout/Footer";
+import { FOOTER_COPY } from "@/data/footerCopy";
 import Button from "@/components/ui/Button";
 import SectionNav from "@/components/layout/SectionNav";
 import PinnedJourney, { type JourneyStep } from "@/components/about/PinnedJourney";
@@ -12,9 +12,6 @@ import Reveal from "@/components/shared/Reveal";
 import StatementReveal from "@/components/about/StatementReveal";
 import { ABOUT_DATA, HERO_DATA } from "@/data/content";
 import { ABOUT_ACCENT, accentStyle } from "@/data/projectTheme";
-
-// Put the PDF at public/Sri-Tulasi-Ram-Resume.pdf; it is served from the site root.
-const RESUME_PATH = "/Sri-Tulasi-Ram-Resume.pdf";
 
 const SECTIONS = [
   { id: "overview", label: "Overview" },
@@ -153,28 +150,30 @@ export default function AboutTwoPage() {
       <section id="overview" aria-label="Overview" className="scroll-mt-14 overflow-hidden">
         <div className={`${WRAP} relative flex flex-col pt-0 lg:block lg:min-h-[620px] lg:pt-20`}>
           <div className="relative z-10 -mt-6 pb-4 sm:-mt-8 lg:mt-0 lg:pb-24">
-            <p className={`text-xl sm:text-2xl font-semibold ${INK} tracking-apple-tight`}>{HERO_DATA.name}</p>
+            <p className={`hero-anim-eyebrow text-xl sm:text-2xl font-semibold ${INK} tracking-apple-tight`}>{HERO_DATA.name}</p>
             <h1 className={`mt-2 text-5xl sm:text-6xl lg:text-[64px] xl:text-[72px] font-semibold ${INK} tracking-apple-hero leading-[1.04]`}>
-              <span className="block lg:whitespace-nowrap">Engineering precision.</span>
-              <span className={`block lg:whitespace-nowrap ${GRAY} font-medium`}>Design intuition.</span>
+              {/* Each line rises out of its own clipped box; the padding keeps the descenders from being cut. */}
+              <span className="block overflow-hidden pb-[0.12em] -mb-[0.12em]">
+                <span className="hero-anim-role-1 block lg:whitespace-nowrap">Engineering precision.</span>
+              </span>
+              <span className="block overflow-hidden pb-[0.12em] -mb-[0.12em]">
+                <span className={`hero-anim-role-2 block lg:whitespace-nowrap ${GRAY} font-medium`}>Design intuition.</span>
+              </span>
             </h1>
-            <p className={`mt-6 max-w-xl text-lg sm:text-xl ${GRAY} leading-relaxed tracking-apple-subhead`}>
+            <p className={`hero-anim-desc mt-6 max-w-xl text-lg sm:text-xl ${GRAY} leading-relaxed tracking-apple-subhead`}>
               {HERO_DATA.positioning}
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-              <Button href={RESUME_PATH} download accent={["#1D1D1F", "#F0F0F2"]} iconBefore icon={<Download className="h-4 w-4" aria-hidden="true" />}>
-                Download resume
-              </Button>
-              <Button variant="link" href="#contact">
+            <div className="hero-anim-cta mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <Button href="#contact" accent={["#1D1D1F", "#F0F0F2"]}>
                 Get in touch
               </Button>
             </div>
           </div>
 
-          <div className="relative z-0 order-first mx-auto mt-6 aspect-[4/5] w-full max-w-[300px] sm:max-w-[340px] dark:-mt-12 dark:aspect-[3/4] lg:order-none lg:absolute lg:bottom-0 lg:right-0 lg:mt-0 lg:w-[40%] lg:max-w-none dark:lg:bottom-auto dark:lg:-top-12 dark:lg:w-[47%]">
+          <div className="hero-anim-portrait relative z-0 order-first mx-auto mt-6 aspect-[4/5] w-full max-w-[300px] sm:max-w-[340px] dark:-mt-12 dark:aspect-[3/4] lg:order-none lg:absolute lg:bottom-0 lg:right-0 lg:mt-0 lg:w-[40%] lg:max-w-none dark:lg:bottom-auto dark:lg:-top-12 dark:lg:w-[47%]">
             <div
               aria-hidden="true"
-              className="absolute inset-x-[4%] bottom-0 top-[10%] rounded-full bg-[radial-gradient(closest-side,var(--pa-soft),transparent)] dark:hidden"
+              className="hero-anim-halo absolute inset-x-[4%] bottom-0 top-[10%] rounded-full bg-[radial-gradient(closest-side,var(--pa-soft),transparent)] dark:hidden"
             />
             <Image
               src="/images/portraits/sri-portrait.webp"
@@ -271,7 +270,7 @@ export default function AboutTwoPage() {
         />
       </section>
 
-      <Footer />
+      <Footer animate {...FOOTER_COPY.about} />
     </main>
   );
 }

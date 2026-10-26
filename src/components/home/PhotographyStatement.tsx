@@ -41,6 +41,7 @@ export default function PhotographyStatement() {
     const root = rootRef.current;
     if (!root) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- client-only check; the server render must start from the initial state
       setStill(true);
       setPhase(2);
       return;
@@ -103,7 +104,7 @@ export default function PhotographyStatement() {
                   aria-hidden="true"
                   className={`${word.className} inline-block`}
                   style={{
-                    filter: sharp ? "blur(0)" : "blur(14px)",
+                    filter: sharp ? "blur(0)" : "blur(8px)",
                     opacity: sharp ? 1 : 0.25,
                     transition: still
                       ? "none"
