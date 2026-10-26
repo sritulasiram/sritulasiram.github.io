@@ -1,4 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
+import { Maximize2 } from "lucide-react";
+import ImageLightbox from "@/components/shared/ImageLightbox";
 import Reveal from "@/components/shared/Reveal";
 import { ABOUT_DATA } from "@/data/content";
 
@@ -15,22 +20,37 @@ const focusFor = (src: string) => FOCUS[src.split("/").pop()?.replace(/\.\w+$/, 
 
 /**
  * Awards as photo-led tiles: the newest is a wide feature, the rest sit below it. The text sits on a
- * dark gradient over the photo, so it reads the same in light and dark mode.
+ * dark gradient over the photo, so it reads the same in light and dark mode. A tile opens its photo
+ * in the full-size viewer, with previous and next moving through the awards.
  */
 export default function Recognition() {
   const awards = (ABOUT_DATA.achievements ?? []).filter((a) => a.imageSrc);
   const [feature, ...rest] = awards;
+  const [openAt, setOpenAt] = useState<number | null>(null);
   if (!feature) return null;
+  const open = openAt === null ? null : awards[openAt];
 
   const year = (source?: string) => source?.match(/\b(20\d\d)\b/)?.[1];
 
-  const tile = (award: (typeof awards)[number], large: boolean, delay: number) => (
+  const tile = (award: (typeof awards)[number], large: boolean, delay: number, index: number) => (
     <Reveal delay={delay} className="h-full">
       <article
         className={`group relative isolate overflow-hidden rounded-[28px] bg-[#F5F5F7] dark:bg-[#1C1C1E] ${
           large ? "aspect-[4/5] sm:aspect-[16/9] lg:aspect-[21/9]" : "aspect-[4/5] sm:aspect-[4/3]"
         }`}
       >
+        <button
+          type="button"
+          onClick={() => setOpenAt(index)}
+          aria-label={`View photo: ${award.label}`}
+          className="absolute inset-0 z-10 cursor-zoom-in rounded-[28px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus-ring)]"
+        />
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/30 text-white opacity-0 backdrop-blur-md transition-opacity duration-300 group-hover:opacity-100"
+        >
+          <Maximize2 className="h-4 w-4" />
+        </span>
         <Image
           src={award.imageSrc!}
           alt={award.imageAlt ?? award.label}
@@ -43,7 +63,7 @@ export default function Recognition() {
           aria-hidden="true"
           className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent"
         />
-        <div className={`absolute inset-x-0 bottom-0 text-white ${large ? "p-7 sm:p-10 lg:max-w-[60%]" : "p-7 sm:p-8"}`}>
+        <div className={`pointer-events-none absolute inset-x-0 bottom-0 text-white ${large ? "p-7 sm:p-10 lg:max-w-[60%]" : "p-7 sm:p-8"}`}>
           <p className="text-sm font-semibold text-white/80">
             {year(award.source)}
             {award.source ? <span aria-hidden="true"> · </span> : null}
@@ -74,11 +94,28 @@ export default function Recognition() {
       </Reveal>
 
       <div className="mt-12 grid gap-4 sm:gap-5 md:grid-cols-2">
-        <div className="md:col-span-2">{tile(feature, true, 0)}</div>
+        <div className="md:col-span-2">{tile(feature, true, 0, 0)}</div>
         {rest.map((award, i) => (
-          <div key={award.label}>{tile(award, false, (i + 1) * 100)}</div>
+          <div key={award.label}>{tile(award, false, (i + 1) * 100, i + 1)}</div>
         ))}
       </div>
+
+      {open && openAt !== null && (
+        <ImageLightbox
+          src={open.imageSrc!}
+          alt={open.imageAlt ?? open.label}
+          onClose={() => setOpenAt(null)}
+          index={openAt}
+          count={awards.length}
+          onPrev={() => setOpenAt((openAt - 1 + awards.length) % awards.length)}
+          onNext={() => setOpenAt((openAt + 1) % awards.length)}
+          caption={
+            <p className="text-sm leading-relaxed text-white/70 sm:text-base">
+              <span className="font-semibold text-white">{open.label}</span> {open.source}
+            </p>
+          }
+        />
+      )}
     </section>
   );
 }
