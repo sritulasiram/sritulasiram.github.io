@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Download } from "lucide-react";
 import Footer from "@/components/layout/Footer";
+import { FOOTER_COPY } from "@/data/footerCopy";
 import Button from "@/components/ui/Button";
 import SectionNav from "@/components/layout/SectionNav";
 import PinnedJourney, { type JourneyStep } from "@/components/about/PinnedJourney";
@@ -271,7 +272,7 @@ export default function AboutTwoPage() {
         />
       </section>
 
-      <Footer />
+      <Footer animate {...FOOTER_COPY.about} />
     </main>
   );
 }

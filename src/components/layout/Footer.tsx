@@ -2,6 +2,8 @@ import { GitHubIcon, InstagramIcon, LinkedInIcon } from "@/components/about/Bran
 import { ABOUT_DATA, CONTACT_DATA } from "@/data/content";
 import EmailButton from "@/components/ui/EmailButton";
 import SitemapFooter from "@/components/layout/SitemapFooter";
+import ClosingEntrance from "@/components/layout/ClosingEntrance";
+import ClosingFigure from "@/components/layout/ClosingFigure";
 import { cn } from "@/lib/cn";
 
 interface FooterProps {
@@ -9,6 +11,8 @@ interface FooterProps {
   /** Page-specific closing line. Defaults to the site-wide one in CONTACT_DATA. */
   heading?: string;
   subheading?: string;
+  /** Play the closing entrance (words rise in one by one) when the block scrolls into view. */
+  animate?: boolean;
 }
 
 const SOCIAL_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -22,28 +26,60 @@ export default function Footer({
   className,
   heading: headingText = CONTACT_DATA.heading,
   subheading = CONTACT_DATA.subheading,
+  animate = false,
 }: FooterProps = {}) {
-  // Two-tone headline: the last word drops to gray on its own line.
-  const words = headingText.split(" ");
-  const last = words.pop();
-  const heading = words;
+  // Two-tone headline: the last word drops to gray on its own line, or everything after a "|" when one is given.
+  let first: string;
+  let last: string;
+  if (headingText.includes("|")) {
+    [first, last] = headingText.split("|").map((part) => part.trim());
+  } else {
+    const words = headingText.split(" ");
+    last = words.pop() ?? "";
+    first = words.join(" ");
+  }
+  // With `animate`, each word, the subheading, the button and the links get their own delay in the entrance.
+  let step = 0;
+  const item = (): React.CSSProperties | undefined => (animate ? ({ "--i": step++ } as React.CSSProperties) : undefined);
+  const words = (text: string) =>
+    animate
+      ? text.split(" ").map((word, i, all) => (
+          <span key={`${word}-${i}`} className="closing-item inline-block" style={item()}>
+            {word}
+            {i < all.length - 1 ? "\u00A0" : ""}
+          </span>
+        ))
+      : text;
+
+  const Wrap = animate ? ClosingEntrance : "div";
   return (
     <footer
       id="contact"
       className={cn("scroll-mt-14 bg-white dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-300", className)}
     >
-      <div className="max-w-5xl mx-auto w-full px-6 sm:px-8 pt-24 sm:pt-36 pb-10 text-center">
+      <Wrap className="max-w-5xl mx-auto w-full px-6 sm:px-8 pt-24 sm:pt-36 pb-10 text-center">
         <h2 className="mx-auto max-w-4xl text-4xl sm:text-6xl md:text-7xl font-semibold tracking-apple-hero leading-[1.03] text-balance">
-          {heading.join(" ")}
-          <span className="block text-[#68686D] dark:text-[#8E8E93]">{last}</span>
+          {words(first)}
+          <span className="block text-[#68686D] dark:text-[#8E8E93]">{words(last)}</span>
         </h2>
-        <p className="mx-auto mt-6 max-w-xl text-lg sm:text-2xl text-[#68686D] dark:text-[#A1A1A6] tracking-apple-subhead text-balance">
+        <p
+          className={cn("mx-auto mt-6 max-w-xl text-lg sm:text-2xl text-[#68686D] dark:text-[#A1A1A6] tracking-apple-subhead text-balance", animate && "closing-item")}
+          style={item()}
+        >
           {subheading}
         </p>
 
-        <EmailButton className="mt-10" />
+        <div className={cn("flex justify-center", animate ? "mt-24 sm:mt-28" : "mt-10")}>
+          {/* The goodbye figure stands behind the top of the button, so it sits outside the rising item. */}
+          <div className="relative">
+            {animate && <ClosingFigure />}
+            <div className={cn("relative z-10", animate && "closing-item")} style={item()}>
+              <EmailButton />
+            </div>
+          </div>
+        </div>
 
-        <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-1">
+        <ul className={cn("mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-1", animate && "closing-item")} style={item()}>
           {ABOUT_DATA.links.map((link) => {
             const Icon = SOCIAL_ICONS[link.label];
             return (
@@ -61,7 +97,7 @@ export default function Footer({
             );
           })}
         </ul>
-      </div>
+      </Wrap>
       <SitemapFooter />
     </footer>
   );

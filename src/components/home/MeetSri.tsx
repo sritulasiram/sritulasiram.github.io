@@ -15,8 +15,9 @@ type Step = 0 | 1 | 2 | 3 | 4 | 5;
 
 /**
  * "That's me, Sri." The line writes itself in, then a stick figure peeks over the word "Sri.",
- * glances left and right, hops up onto the letters and waves hello, before the line about
- * precision follows. Reduced-motion visitors get everything at once, with the figure standing still.
+ * glances left and right, hops up onto the letters and sways as it waves hello. The "Hi!" fades as
+ * the line about precision follows, and the figure stays. Reduced-motion visitors get everything at
+ * once, with the figure standing still.
  */
 export default function MeetSri() {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -98,6 +99,14 @@ export default function MeetSri() {
               strokeLinecap="round"
               strokeLinejoin="round"
             >
+              {/* The whole figure sways from the feet while it waves */}
+              <g
+                style={{
+                  transformBox: "view-box",
+                  transformOrigin: "40px 84px",
+                  animation: waving && !still ? "stick-sway 1s ease-in-out 2" : "none",
+                }}
+              >
               {/* legs and body */}
               <path d="M40 50 L27 82 M40 50 L53 82 M40 23 L40 50" className={stroke} />
               {/* resting arm */}
@@ -121,10 +130,15 @@ export default function MeetSri() {
                 <circle cx="43.5" cy="11.5" r="1.1" className="fill-[#1D1D1F] stroke-none dark:fill-[#F5F5F7]" />
               </g>
               <path d="M36 16.5 Q40 20 44 16.5" strokeWidth="2.4" className={stroke} />
+              </g>
             </svg>
             <span
-              className="absolute bottom-[86%] right-[58%] whitespace-nowrap rounded-2xl rounded-br-sm bg-[var(--pa)] px-3 py-1 text-sm font-semibold text-white sm:text-base"
-              style={{ opacity: waving || still ? 1 : 0, animation: waving && !still ? "stick-bubble 450ms cubic-bezier(0.34, 1.56, 0.64, 1) both" : undefined }}
+              className="absolute bottom-[100%] right-[66%] whitespace-nowrap rounded-2xl rounded-br-sm bg-[var(--pa)] px-3 py-1 text-sm font-semibold text-white transition-opacity duration-500 sm:text-base"
+              style={{
+                // Fades once the precision line starts, so the two do not compete.
+                opacity: still || (waving && !detail) ? 1 : 0,
+                animation: waving && !still && !detail ? "stick-bubble 450ms cubic-bezier(0.34, 1.56, 0.64, 1) both" : "none",
+              }}
             >
               Hi!
             </span>
