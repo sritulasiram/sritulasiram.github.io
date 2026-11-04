@@ -1673,3 +1673,25 @@ html.dark .unlock-stmt { --g: #a1a1a6; }
   justify-content: center;
   padding-inline: 1.5rem !important;
 }
+
+/* Pre-launch countdown (see src/lib/launch.ts): the gate shows and the site hides until launch. */
+#launch-gate { display: none; }
+html.launch-gated #launch-gate { display: flex; }
+html.launch-gated #site-root { display: none; }
+
+/* Countdown digits drop from top to bottom (see LaunchGate). */
+@keyframes roll-in { from { transform: translateY(-100%); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes roll-out { from { transform: none; opacity: 1; } to { transform: translateY(100%); opacity: 0; } }
+.roll-in { animation: roll-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.roll-out { animation: roll-out 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+@media (prefers-reduced-motion: reduce) { .roll-in, .roll-out { animation: none; } .roll-out { display: none; } }
+
+/* Words rise and sharpen in on first load (see LaunchGate). */
+@keyframes word-in { from { opacity: 0; transform: translateY(0.45em); filter: blur(8px); } to { opacity: 1; transform: none; filter: blur(0); } }
+.word-in { opacity: 0; animation: word-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@media (prefers-reduced-motion: reduce) { .word-in { animation: none; opacity: 1; } }
+
+/* The countdown and buttons fade in after the words have landed (see LaunchGate). */
+@keyframes fade-late { from { opacity: 0; transform: translateY(0.4em); } to { opacity: 1; transform: none; } }
+.fade-late { opacity: 0; animation: fade-late 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@media (prefers-reduced-motion: reduce) { .fade-late { animation: none; opacity: 1; } }
