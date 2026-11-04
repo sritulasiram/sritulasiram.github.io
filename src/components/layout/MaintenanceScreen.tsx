@@ -1,4 +1,5 @@
 import { ArrowLeft, RefreshCw } from "lucide-react";
+import BrandMark from "@/components/layout/BrandMark";
 import Button from "@/components/ui/Button";
 import EmailButton from "@/components/ui/EmailButton";
 import { InstagramIcon, LinkedInIcon } from "@/components/about/BrandIcons";
@@ -56,7 +57,7 @@ export default function MaintenanceScreen({
     >
       {upgrading && (
         <div role="banner" className="px-6 sm:px-8 py-5">
-          <span className="text-xl font-semibold tracking-apple-tight">Sri Tulasi Ram</span>
+          <BrandMark />
         </div>
       )}
 
