@@ -116,7 +116,7 @@ export default function LaunchGate() {
                         <Digit key={d} value={c} />
                       ))}
                   </b>
-                  <span className="align-bottom leading-[1.15]">{u}</span>
+                  <span className="inline-block h-[1.15em] align-bottom leading-[1.15]">{u}</span>
                 </span>
               ))
             ) : (
