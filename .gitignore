@@ -44,3 +44,7 @@ next-env.d.ts
 /.agents/
 /graphify-out/
 /src/graphify-out/
+
+# Nested skill repos (cloned tooling, not part of the site)
+.agents/skills/agent-skills/
+.agents/skills/graphify/
