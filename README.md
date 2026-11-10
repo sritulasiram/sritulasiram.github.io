@@ -28,6 +28,8 @@ Source for [sritulasiram.my](https://sritulasiram.my): engineering case studies,
 - **Privacy-safe photography.** Published photos carry no GPS data, and camera details are stored in `content.ts`, not read from the files.
 - **Static export** (`output: "export"`), so the site is plain files with no server runtime.
 - **Maintenance mode** that publishes the whole site as an "upgrading" screen.
+- **Pre-launch countdown** that covers the site until 11 November 2026, 00:00 Malaysia time (see [Launch gate](#launch-gate)).
+- **Welcome sheet** for visitors arriving from LinkedIn or Instagram, with a matching theme (see [docs/architecture.md](docs/architecture.md#visitor-source)).
 
 ## How it fits together
 
@@ -85,11 +87,17 @@ NEXT_PUBLIC_MAINTENANCE_MODE=true npm run build
 
 Every route renders the "upgrading" screen. The flag is read in [`src/app/layout.tsx`](src/app/layout.tsx).
 
+### Launch gate
+
+Until `LAUNCH_AT` in [`src/lib/launch.ts`](src/lib/launch.ts) (11 Nov 2026, 00:00 UTC+8), every page shows a countdown. It is a visual cover only: the full site is still in the served HTML, so it is not access control. Open any page with `?preview=sri` to see the real site (remembered for that tab). When the countdown ends the page reloads itself, so no redeploy is needed.
+
+After launch, remove `LaunchGate`, `src/lib/launch.ts` and the gate script in `layout.tsx`.
+
 ## Project structure
 
 ```text
 public/
-  CNAME, _headers, fonts/
+  CNAME, _headers, fonts/   (a copy of CNAME also sits in the repo root)
   images/<kind>/<slug>/       photography, projects, designs, portraits, logos, ...
 docs/                         Architecture, content, deployment and security guides
 .github/workflows/            GitHub Pages deploy
@@ -101,7 +109,7 @@ src/
     about/ photography/       Feature sections
     shared/ mockups/ ui/      Shared pieces, device frames, primitives
   data/                       All content and structured data (see below)
-  lib/cn.ts                   Class-name helper
+  lib/                        cn.ts (class names), seo.ts (share metadata), photoThumb.ts (thumbnail paths), launch.ts (launch gate)
   types/index.ts              Shared types
 ```
 
@@ -115,7 +123,7 @@ Content lives in `src/data`, not in components.
 | A project case study | `projectDetails.ts` (also `projectSpecs.ts`, `projectCompare.ts`, `projectTheme.ts`) |
 | A design case study | `designDetails.ts` |
 | Search results and quick links | `searchData.ts` |
-| Photos | `content.ts` (`PHOTOGRAPHY_DATA`) and `photoHighlights.ts` |
+| Photos | `content.ts` (`PHOTOGRAPHY_DATA`), `photoHighlights.ts` and a matching WebP in `public/images/photography/thumbs/` |
 
 To add a project, add an entry to `PROJECT_DETAILS`, put its images in `public/images/projects/<id>/`, give it an accent in `projectTheme.ts`, and add a search entry.
 

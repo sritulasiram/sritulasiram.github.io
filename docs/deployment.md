@@ -9,7 +9,7 @@ The site is deployed to **GitHub Pages** at <https://sritulasiram.my> by [`.gith
 | `dev` | Day-to-day development. Pushing here does **not** deploy. |
 | `main` | Production. Every push builds and publishes to GitHub Pages. |
 
-Merging `dev` into `main` publishes the site. Until then `main` carries the teaser.
+Merging `dev` into `main` publishes the site. Pages are covered by the launch countdown until `LAUNCH_AT` (see [architecture.md](architecture.md#launch-gate)); `?preview=sri` shows the real site before then.
 
 ```mermaid
 flowchart LR
@@ -44,7 +44,7 @@ The workflow uses least-privilege permissions (`contents: read`, `pages: write`,
 ## One-time setup
 
 1. **Pages source:** repo Settings → Pages → Source → **GitHub Actions**.
-2. **Custom domain:** `public/CNAME` contains `sritulasiram.my` and ships with every build. Enter the same domain in Settings → Pages.
+2. **Custom domain:** `public/CNAME` (a copy also sits in the repo root) contains `sritulasiram.my` and ships with every build. Enter the same domain in Settings → Pages.
 3. **DNS** for the apex domain, four `A` records:
 
    ```text
@@ -73,6 +73,8 @@ flowchart TD
 
 - [ ] `NEXT_PUBLIC_MAINTENANCE_MODE` is not set for the production build.
 - [ ] `npm run build` passes locally.
+- [ ] After the launch time has passed, remove the launch gate (`LaunchGate`, `src/lib/launch.ts`, the gate script in `layout.tsx`) and redeploy.
+- [ ] `npm run lint` and `npx tsc --noEmit` pass (CI only runs the build).
 - [ ] Domain verified in Google Search Console and `https://sritulasiram.my/sitemap.xml` submitted.
 
 ## Teaser mode

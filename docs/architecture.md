@@ -56,7 +56,8 @@ src/
     mockups/            Device frames (iPhone, MacBook, laptop)
     ui/                 Small primitives
   data/                 All content and structured data
-  lib/cn.ts             Class-name helper (clsx + tailwind-merge)
+  lib/                  cn.ts (clsx + tailwind-merge), seo.ts (share metadata),
+                        photoThumb.ts (thumbnail paths), launch.ts (launch gate)
   types/index.ts        Shared types
 public/                 Static assets, `CNAME`, `_headers`
   images/<kind>/<slug>/ apps, awards, certificates, designs, devices, logos,
@@ -84,6 +85,17 @@ flowchart LR
 
 - Light and dark themes follow the system setting and are remembered in `localStorage`. An inline script in `<head>` ([`src/app/layout.tsx`](../src/app/layout.tsx)) applies the theme before first paint to avoid a flash.
 - Project and about pages take an accent from [`src/data/projectTheme.ts`](../src/data/projectTheme.ts) as `--pa*` CSS variables defined in `globals.css`. Use those instead of hard-coded hex values.
+
+## Visitor source
+
+Visitors from LinkedIn or Instagram get a tailored first visit. The source is read from `?ref=linkedin|instagram`, or from the in-app browser's user agent when no param is present.
+
+- The theme script in `layout.tsx` sets the theme once per session: dark for Instagram, light for LinkedIn. The result is saved to `localStorage`, so the theme toggle still wins afterwards.
+- [`WelcomeSheet`](../src/components/layout/WelcomeSheet.tsx) shows a short greeting on `/` only, with a link to projects (LinkedIn) or photography (Instagram). Dismissal is remembered in `sessionStorage`.
+
+## Launch gate
+
+A pre-launch countdown ([`LaunchGate`](../src/components/layout/LaunchGate.tsx), constants in [`src/lib/launch.ts`](../src/lib/launch.ts)) is always rendered but hidden by CSS. An inline script in `<head>` adds the `launch-gated` class to `<html>` before first paint when the current time is before `LAUNCH_AT` and the tab has not opted into `?preview=sri`. At zero the component reloads the page. The cover is cosmetic: the real site is in the HTML and crawlers can read it.
 
 ## Search
 

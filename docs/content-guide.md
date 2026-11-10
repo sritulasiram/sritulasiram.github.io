@@ -45,8 +45,9 @@ Add an entry to `DESIGNS_DATA` and `DESIGN_DETAILS` (both in `designDetails.ts`)
 ## Add photographs
 
 1. Drop the files in `public/images/photography/` (lowercase kebab-case names).
-2. Add the photo to `PHOTOGRAPHY_DATA` in `content.ts`.
-3. The photo's category (`coastal`, `urban` or `nature`) controls the gallery filter. Camera details shown in the lightbox are written in the data entry, not read from the file.
+2. Add an 800px-wide WebP with the same name in `public/images/photography/thumbs/`. The grid uses it through `photoThumb()` in `src/lib/photoThumb.ts`; the full-size JPEG is used in the lightbox.
+3. Add the photo to `PHOTOGRAPHY_DATA` in `content.ts`.
+4. The photo's category (`coastal`, `urban` or `nature`) controls the gallery filter. Camera details shown in the lightbox are written in the data entry, not read from the file.
 
 **Privacy:** strip location EXIF from the file before publishing (for example `exiftool -gps:all= photo.jpg`). The existing images in `public/images` have been checked and contain no GPS data.
 

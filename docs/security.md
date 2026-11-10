@@ -12,7 +12,7 @@ See [SECURITY.md](../SECURITY.md).
 - **No tracking scripts.** There are no analytics or advertising tags.
 - **Third-party embeds are click-to-load.** The YouTube player loads from `youtube-nocookie.com` only after a visitor presses play.
 - **Safe link handling.** Every `target="_blank"` link carries `rel="noopener noreferrer"`.
-- **No dynamic HTML.** The only `dangerouslySetInnerHTML` uses are the theme bootstrap script and the JSON-LD block, both built from constants.
+- **No dynamic HTML.** The only `dangerouslySetInnerHTML` uses are the theme bootstrap script, the launch-gate script and the JSON-LD block, both built from constants.
 - **Photo privacy.** Published images carry no GPS EXIF data, and no location data is stored in the repo.
 - **Dependency hygiene.** Run `npm audit` before releases. Production dependencies are currently clean.
 - **Least-privilege CI.** The deploy workflow requests only the permissions it needs and runs only on `main`.
@@ -23,7 +23,8 @@ See [SECURITY.md](../SECURITY.md).
 | :-- | :-- |
 | Response headers on GitHub Pages | HSTS, `X-Frame-Options`, `Permissions-Policy` and cache rules in `_headers` / `vercel.json` are not applied. Put Cloudflare in front, or move to a host that reads them. |
 | No Content-Security-Policy | Needs a header (or a meta tag with reduced coverage). |
-| Build-tooling advisory | `braces` (dev dependency only) has an open advisory. It never ships to production. |
+| Build-tooling advisories | `npm audit` reports dev-only advisories (for example `zod` and `minimatch`, pulled in by the lint toolchain). `npm audit --omit=dev` reports none, so nothing ships to production. |
+| Launch gate is not access control | The countdown only hides the page visually, and `?preview=sri` bypasses it. Do not put anything private in the build. |
 
 ## Release flow
 
