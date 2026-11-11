@@ -16,9 +16,25 @@ export interface Origin {
 }
 
 /** How far you scroll, in screen heights, to move from one phone to the next. */
-const STEP_SVH = 42;
+const STEP_SVH = 60;
 
-const COUNT_MS = 800;
+const COUNT_MS = 450;
+
+/** Where a device is while you scroll between two: it rests at each one, then glides across the middle of the step. */
+function easePosition(pos: number) {
+  const base = Math.floor(pos);
+  const t = Math.min(1, Math.max(0, (pos - base - 0.2) / 0.6));
+  return base + t * t * (3 - 2 * t);
+}
+
+/** Position and fade of one phone for its distance (in devices) from the one centre stage. */
+function phoneStyle(offset: number) {
+  const d = Math.abs(offset);
+  return {
+    opacity: Math.max(0, 1 - d * 1.1),
+    transform: `translate3d(${offset * 45}%, 0, 0) scale(${1 - Math.min(1, d) * 0.14})`,
+  };
+}
 
 const INK = "text-[#1D1D1F] dark:text-[#F5F5F7]";
 const GRAY = "text-[#6E6E73] dark:text-[#A1A1A6]";
@@ -30,6 +46,8 @@ const GRAY = "text-[#6E6E73] dark:text-[#A1A1A6]";
 function CountingYear({ to, label, className }: { to: number; label?: string; className: string }) {
   const ref = useRef<HTMLParagraphElement>(null);
   const shown = useRef(to);
+  // The counter writes its own text from here on, so React must not rewrite it when the props change.
+  const [first] = useState(() => label ?? String(to));
 
   useEffect(() => {
     const el = ref.current;
@@ -83,7 +101,7 @@ function CountingYear({ to, label, className }: { to: number; label?: string; cl
     };
 
     const tick = (now: number) => {
-      const t = Math.min(1, (now - begin) / COUNT_MS);
+      const t = Math.min(1, Math.max(0, (now - begin) / COUNT_MS));
       shown.current = Math.round(from + (to - from) * (1 - Math.pow(1 - t, 3)));
       el.textContent = String(shown.current);
       if (t < 1) frame = requestAnimationFrame(tick);
@@ -100,7 +118,7 @@ function CountingYear({ to, label, className }: { to: number; label?: string; cl
 
   return (
     <p ref={ref} aria-label={label ?? String(to)} className={className}>
-      {label ?? to}
+      {first}
     </p>
   );
 }
@@ -115,6 +133,11 @@ export default function PhoneHistory({ origins, heading }: { origins: Origin[]; 
   const count = origins.length;
   const sectionRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
+  const phoneRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const tagRefs = useRef<(HTMLParagraphElement | null)[]>([]);
+  const bodyRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [yearIdx, setYearIdx] = useState(0);
+  const lastPos = useRef(0);
   const [flat, setFlat] = useState(false);
 
   useEffect(() => {
@@ -131,7 +154,33 @@ export default function PhoneHistory({ origins, heading }: { origins: Origin[]; 
       const rect = el.getBoundingClientRect();
       const distance = rect.height - window.innerHeight;
       const progress = distance > 0 ? Math.min(1, Math.max(0, -rect.top / distance)) : 0;
-      setActive(Math.min(count - 1, Math.floor(progress * count)));
+      // The phones follow the scroll continuously; only the words and year wait for a device to be centred.
+      const pos = easePosition(progress * (count - 1));
+      phoneRefs.current.forEach((node, i) => {
+        if (!node) return;
+        const st = phoneStyle(i - pos);
+        node.style.opacity = String(st.opacity);
+        node.style.transform = st.transform;
+      });
+      // The words dissolve with the same scroll, so text and phone hand over together.
+      const fade = (node: HTMLElement | null, offset: number) => {
+        if (!node) return;
+        node.style.opacity = String(Math.max(0, 1 - Math.abs(offset) * 1.9));
+        node.style.transform = `translate3d(0, ${Math.max(-1, Math.min(1, offset)) * 14}px, 0)`;
+      };
+      origins.forEach((_, i) => {
+        fade(tagRefs.current[i], i - pos);
+        fade(bodyRefs.current[i], i - pos);
+      });
+      const clamp = (n: number) => Math.min(count - 1, Math.max(0, n));
+      setActive(clamp(Math.round(pos)));
+      // The year starts counting early so it lands as the phone does. It moves on once 30% past a device and
+      // back once 25% past the one below. A gap between the two points stops it flickering between years.
+      let k = lastPos.current;
+      while (k < count - 1 && pos >= k + 0.3) k++;
+      while (k > 0 && pos <= k - 1 + 0.25) k--;
+      lastPos.current = k;
+      setYearIdx(k);
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
@@ -144,7 +193,7 @@ export default function PhoneHistory({ origins, heading }: { origins: Origin[]; 
       window.removeEventListener("resize", onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, [count]);
+  }, [count, origins]);
 
   if (flat) {
     return (
@@ -185,16 +234,14 @@ export default function PhoneHistory({ origins, heading }: { origins: Origin[]; 
           {/* The phones: the current one centre stage, the others waiting to either side. */}
           <div className="pointer-events-none relative order-1 h-full max-h-[11rem] min-h-0 sm:max-h-[16rem] select-none self-center md:order-2 md:max-h-[24rem]" aria-hidden="true">
             {origins.map((o, i) => {
-              const offset = i - active;
               return (
                 <div
                   key={o.name}
-                  className="absolute inset-0"
-                  style={{
-                    opacity: offset === 0 ? 1 : 0,
-                    transform: `translateX(${offset * 28}%) scale(${offset === 0 ? 1 : 0.86})`,
-                    transition: "opacity 600ms ease, transform 800ms cubic-bezier(0.16, 1, 0.3, 1)",
+                  ref={(node) => {
+                    phoneRefs.current[i] = node;
                   }}
+                  className="absolute inset-0 will-change-transform"
+                  style={phoneStyle(i)}
                 >
                   <div className="absolute inset-0" style={{ transform: o.scale ? `scale(${o.scale})` : undefined }}>
                     <Image
@@ -217,17 +264,20 @@ export default function PhoneHistory({ origins, heading }: { origins: Origin[]; 
               {origins.map((o, i) => (
                 <p
                   key={o.name}
+                  ref={(node) => {
+                    tagRefs.current[i] = node;
+                  }}
                   aria-hidden={i === active ? undefined : "true"}
-                  className={`absolute inset-x-0 top-0 text-sm font-semibold uppercase tracking-widest transition-opacity duration-300 ${GRAY}`}
-                  style={{ opacity: i === active ? 1 : 0 }}
+                  className={`absolute inset-x-0 top-0 text-sm font-semibold uppercase tracking-widest ${GRAY}`}
+                  style={{ opacity: i === 0 ? 1 : 0 }}
                 >
                   {o.tag}
                 </p>
               ))}
             </div>
             <CountingYear
-              to={Number.isNaN(Number(origins[active].year)) ? new Date().getFullYear() : Number(origins[active].year)}
-              label={Number.isNaN(Number(origins[active].year)) ? origins[active].year : undefined}
+              to={Number.isNaN(Number(origins[yearIdx].year)) ? new Date().getFullYear() : Number(origins[yearIdx].year)}
+              label={Number.isNaN(Number(origins[yearIdx].year)) ? origins[yearIdx].year : undefined}
               className="mt-1 text-6xl font-semibold leading-none tabular-nums tracking-apple-hero text-[#86868B] sm:text-8xl md:text-9xl dark:text-[#6E6E73]"
             />
 
@@ -235,9 +285,12 @@ export default function PhoneHistory({ origins, heading }: { origins: Origin[]; 
               {origins.map((o, i) => (
                 <div
                   key={o.name}
+                  ref={(node) => {
+                    bodyRefs.current[i] = node;
+                  }}
                   aria-hidden={i === active ? undefined : "true"}
-                  className="absolute inset-x-0 top-0 transition-opacity duration-300"
-                  style={{ opacity: i === active ? 1 : 0, pointerEvents: i === active ? "auto" : "none" }}
+                  className="absolute inset-x-0 top-0"
+                  style={{ opacity: i === 0 ? 1 : 0, pointerEvents: i === active ? "auto" : "none" }}
                 >
                   <h3 className={`text-2xl font-semibold tracking-apple-tight sm:text-3xl ${INK}`}>{o.name}</h3>
                   <p className={`mt-1 text-sm font-medium ${GRAY}`}>{o.spec}</p>

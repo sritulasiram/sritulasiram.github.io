@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import { ArrowRight, ArrowUpRight, ChevronDown } from "lucide-react";
 import ContactLinks from "./ContactPanel";
 import { NAV_DIRECT_LINKS, NAV_MENUS, isActivePath, type NavLink } from "./navData";
@@ -52,9 +53,8 @@ export default function MobileMenu({ open, pathname, expanded, onToggle, onNavig
       id="mobile-menu"
       aria-hidden={!open}
       inert={!open}
-      className={`md:hidden fixed inset-0 z-40 bg-white/85 dark:bg-[#0a0a0c]/85 ${
-        open ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-4 pointer-events-none"
-      }`}
+      data-open={open}
+      className={`md:hidden fixed inset-0 z-40 bg-white/85 dark:bg-[#0a0a0c]/85 ${open ? "pointer-events-auto" : "pointer-events-none"}`}
     >
       <div className="h-full overflow-y-auto mobile-nav-panel px-6 sm:px-8 pt-16 pb-12 w-full max-w-6xl mx-auto flex flex-col justify-between">
         <nav aria-label="Mobile navigation" className="flex flex-col space-y-1">
@@ -62,7 +62,7 @@ export default function MobileMenu({ open, pathname, expanded, onToggle, onNavig
             const isOpen = Boolean(expanded[menu.id]);
             const active = isActivePath(pathname, menu.href);
             return (
-              <div key={menu.id} className={open ? `mobile-item-${index + 1}` : ""}>
+              <div key={menu.id} className="mobile-item" style={{ "--i": index } as CSSProperties}>
                 <button
                   type="button"
                   aria-expanded={isOpen}
@@ -131,7 +131,7 @@ export default function MobileMenu({ open, pathname, expanded, onToggle, onNavig
           })}
 
           {NAV_DIRECT_LINKS.map((link, index) => (
-            <div key={link.href} className={open ? `mobile-item-${index + 3}` : ""}>
+            <div key={link.href} className="mobile-item" style={{ "--i": index + 2 } as CSSProperties}>
               <Link
                 prefetch={false}
                 href={link.href}
@@ -150,7 +150,7 @@ export default function MobileMenu({ open, pathname, expanded, onToggle, onNavig
         </nav>
 
         {/* Contact, in the menu rather than a jump to the footer */}
-        <div className={`pt-4 mt-6 ${open ? "mobile-item-5" : ""}`}>
+        <div className="mobile-item pt-4 mt-6" style={{ "--i": 4 } as CSSProperties}>
           <ContactLinks onNavigate={onNavigate} />
         </div>
       </div>

@@ -3,6 +3,7 @@ import { Inter, Instrument_Serif } from "next/font/google";
 import LaunchGate from "@/components/layout/LaunchGate";
 import MaintenanceScreen from "@/components/layout/MaintenanceScreen";
 import Navigation from "@/components/layout/Navigation";
+import KeyboardFocus from "@/components/layout/KeyboardFocus";
 import ScrollMemory from "@/components/layout/ScrollMemory";
 import WelcomeSheet from "@/components/layout/WelcomeSheet";
 import { CONTACT_DATA } from "@/data/content";
@@ -237,6 +238,7 @@ export default function RootLayout({
             <LaunchGate />
             <div id="site-root">
               <Navigation />
+              <KeyboardFocus />
               <ScrollMemory />
               <WelcomeSheet />
               <div className="animate-page-enter min-h-screen flex flex-col">

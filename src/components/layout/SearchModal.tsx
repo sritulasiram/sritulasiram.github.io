@@ -200,7 +200,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
               aria-label="Search"
               autoComplete="off"
               spellCheck="false"
-              className="w-full bg-transparent text-[20px] sm:text-[23px] font-semibold tracking-tight text-[#1D1D1F] dark:text-[#F5F5F7] placeholder-[#86868B] dark:placeholder-[#6E6E73] focus:outline-hidden leading-tight"
+              className="no-focus-ring w-full bg-transparent text-[20px] sm:text-[23px] font-semibold tracking-tight text-[#1D1D1F] dark:text-[#F5F5F7] placeholder-[#86868B] dark:placeholder-[#6E6E73] focus:outline-hidden leading-tight"
             />
 
             {query && (

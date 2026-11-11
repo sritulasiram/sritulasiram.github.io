@@ -12,8 +12,8 @@ export default function HomePhotography() {
         <Reveal>
           <Headline gray="Photography." ink="Chasing the light." />
           <p className={`mt-4 max-w-2xl text-lg sm:text-xl leading-relaxed ${GRAY}`}>{PHOTO_ALBUMS[0].description}</p>
-          <div className="mt-6 flex flex-wrap items-center gap-3">
-            <Button variant="secondary" href="/photography" iconBefore icon={<PhotosIcon className="h-5 w-5" />}>
+          <div className="mt-6 flex items-center gap-2 sm:flex-wrap sm:gap-3">
+            <Button variant="secondary" href="/photography" iconBefore icon={<PhotosIcon className="h-5 w-5" />} className="max-sm:min-w-0 max-sm:flex-1 max-sm:justify-center max-sm:whitespace-nowrap max-sm:!px-3 max-sm:!text-[0.8125rem]">
               View the gallery
             </Button>
             <Button
@@ -21,6 +21,7 @@ export default function HomePhotography() {
               accent={["#1D1D1F", "#F5F5F7"]}
               iconBefore
               icon={<InstagramIcon className="h-4 w-4" />}
+              className="max-sm:min-w-0 max-sm:flex-1 max-sm:justify-center max-sm:whitespace-nowrap max-sm:!px-3 max-sm:!text-[0.8125rem]"
             >
               @iamsritulasiram
             </Button>

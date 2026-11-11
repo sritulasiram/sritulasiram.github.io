@@ -22,20 +22,20 @@ export default function HomeHero() {
         className="pointer-events-none absolute left-1/2 top-[12%] h-[70%] w-[min(900px,100%)] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.95),transparent_65%)] dark:hidden"
       />
 
-      <div className="relative mx-auto grid min-h-[100dvh] max-w-[1400px] grid-cols-1 gap-y-6 px-6 pb-28 pt-28 sm:px-10 lg:min-h-[92vh] lg:grid-cols-[1fr_minmax(0,460px)_1fr] lg:gap-x-6 lg:pt-24 xl:px-14">
+      <div className="relative mx-auto grid min-h-[100dvh] max-w-[1400px] grid-cols-1 gap-y-6 px-6 pb-28 pt-20 sm:px-10 sm:pt-28 lg:min-h-[92vh] lg:grid-cols-[1fr_minmax(0,460px)_1fr] lg:gap-x-6 lg:pt-24 xl:px-14">
         {/* Identity: left on desktop */}
         <div className="text-center lg:self-center lg:text-left">
           <p className={`story-rise text-lg font-semibold tracking-apple-tight sm:text-xl ${INK}`} style={delay(0)}>
             I am
           </p>
-          <h1 className="mt-2 text-6xl font-semibold leading-[1] tracking-apple-hero sm:text-7xl xl:text-8xl">
-            <span className={`story-rise lg:block ${INK}`} style={delay(0.08)}>
+          <h1 className="mt-2 max-lg:whitespace-nowrap text-[11.5vw] font-semibold leading-[1] tracking-apple-hero sm:text-7xl xl:text-8xl">
+            <span className={`story-rise hero-word lg:block ${INK}`} style={delay(0.08)}>
               Sri{" "}
             </span>
-            <span className="story-rise text-[#86868B] dark:text-[#6E6E73] lg:block" style={delay(0.16)}>
+            <span className="story-rise hero-word text-[#86868B] dark:text-[#6E6E73] lg:block" style={delay(0.16)}>
               Tulasi{" "}
             </span>
-            <span className="story-rise text-[#86868B] dark:text-[#6E6E73] lg:block" style={delay(0.24)}>
+            <span className="story-rise hero-word text-[#86868B] dark:text-[#6E6E73] lg:block" style={delay(0.24)}>
               Ram
             </span>
           </h1>
@@ -51,7 +51,7 @@ export default function HomeHero() {
 
         {/* Portrait: stands on the bottom edge */}
         <div
-          className="story-phone relative mx-auto h-[420px] w-full max-w-[460px] sm:h-[560px] lg:-mt-24 lg:h-auto lg:self-stretch"
+          className="story-phone relative mx-auto -mt-12 h-[420px] w-full max-w-[460px] sm:h-[560px] lg:-mt-24 lg:h-auto lg:self-stretch"
           style={delay(0.3)}
         >
           <div className="absolute inset-0 dark:hidden">
@@ -78,15 +78,15 @@ export default function HomeHero() {
         </div>
 
         {/* Role: right on desktop */}
-        <div className="text-center lg:self-center lg:text-right">
+        <div className="text-center max-lg:mt-8 lg:self-center lg:text-right">
           <p className={`story-rise text-lg font-semibold tracking-apple-tight sm:text-xl ${INK}`} style={delay(0.04)}>
             Cytron Technologies
           </p>
-          <p className="mt-2 text-6xl font-semibold leading-[1] tracking-apple-hero sm:text-7xl xl:text-8xl">
-            <span className={`story-rise lg:block ${INK}`} style={delay(0.12)}>
+          <p className="mt-2 text-[11.5vw] font-semibold leading-[1] tracking-apple-hero sm:text-7xl xl:text-8xl">
+            <span className={`story-rise hero-word lg:block ${INK}`} style={delay(0.12)}>
               Support{" "}
             </span>
-            <span className="story-rise text-[#86868B] dark:text-[#6E6E73] lg:block" style={delay(0.2)}>
+            <span className="story-rise hero-word text-[#86868B] dark:text-[#6E6E73] lg:block" style={delay(0.2)}>
               Engineer
             </span>
           </p>

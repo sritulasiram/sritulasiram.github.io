@@ -10,7 +10,14 @@ import { WRAP } from "@/components/home/homeShared";
 const BEATS = [FixStatement, MeetSri, DesignStatement, PhotographyStatement];
 const COUNT = BEATS.length;
 /** How far you scroll, in screen heights, to move from one beat to the next. */
-const STEP_SVH = 45;
+const STEP_SVH = 60;
+
+/** Where the intro is while you scroll between two beats: it rests on each, then glides across the middle of the step. */
+function easePosition(pos: number) {
+  const base = Math.floor(pos);
+  const t = Math.min(1, Math.max(0, (pos - base - 0.3) / 0.4));
+  return base + t * t * (3 - 2 * t);
+}
 
 const READ_OUT =
   "I've always felt inspired when exploring solutions. Not just fixing what's broken, but asking what else is possible. That's me, Sri. That curiosity became my inspiration, and the details are what make a solution great. Then I discovered design, and it changed how I see everything. It's not enough for something to work. It has to feel natural, like home. And through photography, I explore nature's magic and freeze the moments that only happen once.";
@@ -24,7 +31,9 @@ const READ_OUT =
 export default function IntroScroller() {
   const sectionRef = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
-  const [reached, setReached] = useState(1);
+  const layerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  // The first beat waits until the section is nearly pinned, so its animation is not spent while you are still in the hero.
+  const [reached, setReached] = useState(0);
   const [flat, setFlat] = useState(false);
 
   useEffect(() => {
@@ -41,9 +50,17 @@ export default function IntroScroller() {
       const rect = el.getBoundingClientRect();
       const distance = rect.height - window.innerHeight;
       const progress = distance > 0 ? Math.min(1, Math.max(0, -rect.top / distance)) : 0;
-      const next = Math.min(COUNT - 1, Math.floor(progress * COUNT));
-      setActive(next);
-      setReached((r) => Math.max(r, next + 1));
+      // The beats follow the scroll continuously: each one rests in place, then the next rises in as it leaves.
+      const pos = easePosition(progress * (COUNT - 1));
+      layerRefs.current.forEach((node, i) => {
+        if (!node) return;
+        const offset = i - pos;
+        node.style.opacity = String(Math.max(0, 1 - Math.abs(offset) * 1.9));
+        node.style.transform = `translate3d(0, ${Math.max(-1, Math.min(1, offset)) * 40}px, 0)`;
+      });
+      const now = Math.min(COUNT - 1, Math.max(0, Math.round(pos)));
+      setActive(now);
+      setReached((r) => Math.max(r, rect.top <= window.innerHeight * 0.25 ? now + 1 : 0));
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
@@ -71,20 +88,22 @@ export default function IntroScroller() {
   return (
     <section id="intro" ref={sectionRef} aria-label="Introduction" className="relative" style={{ height: `calc(100svh + ${COUNT * STEP_SVH}svh)` }}>
       <p className="sr-only">{READ_OUT}</p>
-      <div aria-hidden="true" className="sticky top-0 h-svh overflow-hidden">
+      <div aria-hidden="true" className="sticky top-0 h-svh overflow-hidden [contain:layout_paint]">
         {BEATS.map((Beat, i) => {
           const on = i === active;
           return (
             <div
               key={i}
+              ref={(node) => {
+                layerRefs.current[i] = node;
+              }}
               className="absolute inset-0 flex items-center"
               style={{
                 // Not shown (so not animating) until the first time you scroll to it.
                 display: i < reached ? "flex" : "none",
-                opacity: on ? 1 : 0,
-                transform: on ? "none" : `translateY(${i < active ? "-2.5rem" : "2.5rem"})`,
-                transition: "opacity 500ms ease, transform 700ms cubic-bezier(0.16, 1, 0.3, 1)",
+                opacity: i === 0 ? 1 : 0,
                 pointerEvents: on ? "auto" : "none",
+                willChange: "opacity, transform",
               }}
             >
               <div className={`${WRAP} flex flex-col`}>
