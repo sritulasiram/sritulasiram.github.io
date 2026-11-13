@@ -1,11 +1,13 @@
 "use client";
 
 import { useRef, useState } from "react";
-import Image from "next/image";
+import FadeImage from "@/components/shared/FadeImage";
 import { photoThumb } from "@/lib/photoThumb";
+import { photoPlaceholderStyle } from "@/lib/photoPlaceholder";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import PhotoPreviewModal from "./PhotoPreviewModal";
 import type { PhotoItem } from "@/types";
+import { SECTION_TITLE, TITLE_INK } from "@/components/shared/typeScale";
 
 /** Scroll-snap shelf of large portrait cards on a light-gray band; cards open the lightbox. */
 export default function PhotographyHighlights({
@@ -44,7 +46,7 @@ export default function PhotographyHighlights({
           <div className="flex items-end justify-between gap-6 mb-8 sm:mb-10">
             <h2
               id="highlights-title"
-              className="text-3xl sm:text-5xl font-semibold tracking-apple-headline leading-[1.08] text-[#1D1D1F] dark:text-[#F5F5F7]"
+              className={`${SECTION_TITLE} ${TITLE_INK}`}
             >
               Highlights.
               <span className="block text-[#6E6E73] dark:text-[#8E8E93]">Five frames to start with.</span>
@@ -76,19 +78,20 @@ export default function PhotographyHighlights({
               onClick={() => setActive(photo)}
               aria-label={`View ${photo.title}`}
               data-highlight-card
-              style={embedded ? { opacity: "var(--cards-o, 1)" } : undefined}
+              style={{ ...photoPlaceholderStyle(photo.imageSrc), ...(embedded ? { opacity: "var(--cards-o, 1)" } : {}) }}
               className={`group snap-start shrink-0 aspect-[3/4] ${
                 embedded
                   ? "w-[min(420px,calc((100vh-300px)*0.75))]"
                   : "w-[78vw] sm:w-[360px] lg:w-[420px]"
               } relative rounded-3xl overflow-hidden bg-[#E5E5EA] dark:bg-[#1C1C1E] text-left cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus-ring)]`}
             >
-              <Image
+              {/* The card's grey background is the placeholder; the photo fades in over it once loaded. */}
+              <FadeImage
                 src={photoThumb(photo.imageSrc)}
                 alt={photo.altText}
                 fill
                 sizes="(min-width: 1024px) 420px, (min-width: 640px) 360px, 78vw"
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                className="object-cover group-hover:scale-[1.03]"
               />
               <div className="absolute inset-x-0 top-0 p-6 sm:p-7 bg-gradient-to-b from-black/55 to-transparent">
                 {photo.location && (

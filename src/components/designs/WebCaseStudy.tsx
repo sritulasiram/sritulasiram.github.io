@@ -12,6 +12,7 @@ import IphoneFrame from "@/components/mockups/IphoneFrame";
 import { MacbookPro } from "@/components/mockups/MacbookPro";
 import LaptopFlow from "@/components/designs/LaptopFlow";
 import type { DesignCaseStudy, DesignItem } from "@/types";
+import { NAME_LABEL, EYEBROW, LEAD_GRAY, PAGE_TITLE, SECTION_LEAD, SECTION_TITLE } from "@/components/shared/typeScale";
 
 const ACCENT = "text-[var(--pa)]";
 const GRAY = "text-[#68686D] dark:text-[#A1A1A6]";
@@ -118,12 +119,12 @@ export default function WebCaseStudy({
       {/* 1. Hero */}
       <section className={`hero-glow hero-glow-d-${design.id} overflow-hidden`}>
         <div className={`${WRAP} pt-24 sm:pt-32 text-center`}>
-          <p className={`story-rise text-xl sm:text-2xl font-semibold ${INK} tracking-apple-tight`} style={delay(0)}>{design.title}</p>
-          <h1 className={`mt-2 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold ${INK} tracking-apple-hero leading-[1.03]`}>
+          <p className={`story-rise ${NAME_LABEL} ${INK}`} style={delay(0)}>{design.title}</p>
+          <h1 className={`mt-2 ${PAGE_TITLE} ${INK}`}>
             <span className="story-rise block" style={delay(0.1)}>{config.headline[0]}</span>
             <span className={`story-rise block ${ACCENT}`} style={delay(0.22)}>{config.headline[1]}</span>
           </h1>
-          <p className={`story-rise mt-5 mx-auto max-w-2xl text-lg sm:text-xl ${GRAY} leading-relaxed tracking-apple-subhead`} style={delay(0.38)}>
+          <p className={`story-rise mt-4 mx-auto max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY}`} style={delay(0.38)}>
             {design.tagline}
           </p>
           {links.length > 0 && (
@@ -180,10 +181,10 @@ export default function WebCaseStudy({
       {/* 4. The flow, pinned */}
       <section aria-label="Screen flow" className="max-w-6xl mx-auto w-full px-6 sm:px-8 pb-20 sm:pb-32">
         <Reveal>
-          <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero text-center`}>
+          <h2 className={`${SECTION_TITLE} ${INK} text-center`}>
             {config.flowTitle[0]} <span className={GRAY}>{config.flowTitle[1]}</span>
           </h2>
-          <p className={`mt-3 mb-10 sm:mb-16 text-lg ${GRAY} text-center`}>{config.flowSubtitle}</p>
+          <p className={`mt-4 mb-10 sm:mb-16 mx-auto max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY} text-center`}>{config.flowSubtitle}</p>
         </Reveal>
         <LaptopFlow screens={screens} />
       </section>
@@ -194,11 +195,11 @@ export default function WebCaseStudy({
           <div key={chapter.ink} className={`${WRAP} py-14 sm:py-24`}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
               <Reveal className={i % 2 ? "md:order-2" : ""}>
-                <h2 className="text-3xl sm:text-5xl font-semibold tracking-apple-hero leading-[1.08]">
+                <h2 className={SECTION_TITLE}>
                   <span className={`block ${GRAY}`}>{chapter.gray}</span>
                   <span className={`block ${INK}`}>{chapter.ink}</span>
                 </h2>
-                <p className={`mt-5 text-base sm:text-lg ${GRAY} leading-relaxed`}>{chapter.body}</p>
+                <p className={`mt-4 max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY}`}>{chapter.body}</p>
               </Reveal>
               <Reveal delay={120} className={i % 2 ? "md:order-1" : ""}>
                 {chapter.phones ? <PhonePanel phones={chapter.phones} /> : chapter.shot ? <PagePanel shot={chapter.shot} /> : null}
@@ -212,10 +213,10 @@ export default function WebCaseStudy({
       <section aria-label="Visual language" className="py-24 sm:py-32">
         <div className={WRAP}>
           <Reveal>
-            <h2 className="text-3xl sm:text-5xl font-semibold tracking-apple-hero leading-[1.08] max-w-3xl">
+            <h2 className={`${SECTION_TITLE} max-w-3xl`}>
               <span className={GRAY}>{visual.gray}</span> <span className={INK}>{visual.ink}</span>
             </h2>
-            <p className={`mt-5 max-w-2xl text-base sm:text-lg ${GRAY} leading-relaxed`}>{design.architecture.summary}</p>
+            <p className={`mt-4 max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY}`}>{design.architecture.summary}</p>
           </Reveal>
 
           <div className="mt-14 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-6">
@@ -264,8 +265,8 @@ export default function WebCaseStudy({
       <section aria-label="At a glance" className="bg-[var(--pa-deep)] text-white py-24 sm:py-32">
         <div className={WRAP}>
           <Reveal>
-            <p className="text-sm font-semibold text-[#86868B]">At a glance</p>
-            <h2 className="mt-2 text-3xl sm:text-5xl font-semibold tracking-apple-hero max-w-2xl leading-[1.08]">
+            <p className={`${EYEBROW} text-[#86868B]`}>At a glance</p>
+            <h2 className={`mt-2 ${SECTION_TITLE} max-w-2xl`}>
               {config.resultsHeadline}
             </h2>
           </Reveal>
@@ -284,7 +285,7 @@ export default function WebCaseStudy({
       </section>
 
       {/* 9. Keep exploring */}
-      <DesignExploreMore nextDesign={nextDesign} figmaUrl={design.figmaUrl} githubUrl={design.githubUrl} liveUrl={design.liveUrl} />
+      <DesignExploreMore title={design.title} nextDesign={nextDesign} figmaUrl={design.figmaUrl} githubUrl={design.githubUrl} liveUrl={design.liveUrl} />
     </div>
   );
 }

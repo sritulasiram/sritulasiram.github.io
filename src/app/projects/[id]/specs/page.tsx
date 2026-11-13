@@ -6,7 +6,7 @@ import { FOOTER_COPY } from "@/data/footerCopy";
 import ProjectLocalNav from "@/components/projects/ProjectLocalNav";
 import ProjectTechSpecs from "@/components/projects/ProjectTechSpecs";
 import { PROJECT_DETAILS } from "@/data/projectDetails";
-import { PROJECT_SPECS, SHOWCASE_PROJECT_IDS } from "@/data/projectSpecs";
+import { PROJECT_SPEC_HIGHLIGHTS, PROJECT_SPECS, SHOWCASE_PROJECT_IDS } from "@/data/projectSpecs";
 import { PROJECTS_DATA } from "@/data/content";
 
 interface PageProps {
@@ -44,8 +44,8 @@ export default async function ProjectSpecsPage({ params }: PageProps) {
       <ProjectTechSpecs
         projectId={id}
         title={project.title}
-        tagline={project.tagline}
         groups={groups}
+        highlights={PROJECT_SPEC_HIGHLIGHTS[id]}
         nextProject={nextProject}
       />
       <Footer {...FOOTER_COPY.projects} />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, type CSSProperties } from "react";
 import Image from "next/image";
 import { Image as ImageIcon, Camera } from "lucide-react";
 
@@ -15,6 +15,11 @@ export interface ProjectImageProps {
   objectPosition?: string;
   seamless?: boolean;
   onDimensionsLoad?: (aspectRatio: string, width: number, height: number) => void;
+  /**
+   * A photo's own loading placeholder (its colour and soft preview, from photoPlaceholderStyle). When given, it shows
+   * while the image loads in place of the grey gradient and shimmer, and the image fades in over it.
+   */
+  placeholderStyle?: CSSProperties;
 }
 
 export default function ProjectImage({
@@ -28,6 +33,7 @@ export default function ProjectImage({
   objectPosition,
   seamless = false,
   onDimensionsLoad,
+  placeholderStyle,
 }: ProjectImageProps) {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -58,6 +64,8 @@ export default function ProjectImage({
 
   const containerBg = seamless
     ? "bg-transparent border-transparent"
+    : placeholderStyle
+    ? ""
     : "bg-gradient-to-b from-[#FAFAFA] to-[#EDEDF0] dark:from-[#1C1C1E] dark:to-[#121214]";
 
   const isReady = priority || imageLoaded;
@@ -67,9 +75,10 @@ export default function ProjectImage({
       className={`relative ${
         seamless ? "overflow-visible" : "overflow-hidden"
       } transition-all duration-300 rounded-[inherit] ${containerBg} ${className}`}
+      style={placeholderStyle}
     >
       {/* Hardware-accelerated Apple Shimmer Placeholder while image is loading */}
-      {!imageLoaded && !imageError && src && !seamless && (
+      {!imageLoaded && !imageError && src && !seamless && !placeholderStyle && (
         <div
           aria-hidden="true"
           className="absolute inset-0 z-0 bg-[#E8E8ED] dark:bg-[#18181A] flex items-center justify-center overflow-hidden pointer-events-none rounded-[inherit]"

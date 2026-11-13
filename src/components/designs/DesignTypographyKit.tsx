@@ -14,6 +14,7 @@ import DesignPrincipleGrid, { type Principle } from "./DesignPrincipleGrid";
 import DesignSpecimenToggle from "./DesignSpecimenToggle";
 import DesignSectionHeading from "./DesignSectionHeading";
 import Reveal from "@/components/shared/Reveal";
+import { LEAD_GRAY, SECTION_LEAD, SECTION_TITLE, TITLE_INK } from "@/components/shared/typeScale";
 
 // Apple San Francisco
 const TYPE_PRINCIPLES_1: Principle[] = [
@@ -170,15 +171,15 @@ export default function DesignTypographyKit() {
       <div className="max-w-6xl mx-auto px-6 sm:px-8 space-y-12 sm:space-y-16">
         {/* Section Header */}
         <Reveal>
-          <div className="max-w-3xl space-y-3">
-            <h2 className="text-3xl sm:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight leading-[1.08] text-balance">
+          <div className="max-w-3xl">
+            <h2 className={`${SECTION_TITLE} ${TITLE_INK}`}>
               Typography systems.
               <br />
               <span className="text-[#6E6E73] dark:text-[#8E8E93] font-medium">
                 San Francisco and the Google Fonts web stack.
               </span>
             </h2>
-            <p className="text-base sm:text-lg text-[#6E6E73] dark:text-[#A1A1A6] font-normal leading-relaxed">
+            <p className={`mt-4 max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY}`}>
               Change the cut, weight and size to see how each typeface behaves.
             </p>
           </div>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import CaseStudyBreadcrumb from "@/components/shared/CaseStudyBreadcrumb";
 import { COMPARE_COLUMNS, COMPARE_ROWS } from "@/data/projectCompare";
 import { PROJECT_ACCENTS } from "@/data/projectTheme";
+import { EYEBROW, LEAD_GRAY, PAGE_TITLE, SECTION_LEAD, TITLE_INK } from "@/components/shared/typeScale";
 
 const dotStyle = (id: string) => {
   const [l, d] = PROJECT_ACCENTS[id];
@@ -20,12 +21,12 @@ export default function ProjectCompare({ projectId, title }: { projectId: string
   return (
     <div>
       <section className="pt-10 sm:pt-14 pb-10 sm:pb-14 px-6 sm:px-8 max-w-5xl mx-auto w-full">
-        <CaseStudyBreadcrumb title={title} />
-        <p className="text-sm font-semibold text-[var(--pa)]">{title}</p>
-        <h1 className="mt-1 text-5xl sm:text-6xl md:text-7xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.04]">
+        <CaseStudyBreadcrumb title={title} current="Compare" titleHref={`/projects/${projectId}`} />
+        <p className={`${EYEBROW} text-[var(--pa)]`}>{title}</p>
+        <h1 className={`mt-2 ${PAGE_TITLE} ${TITLE_INK}`}>
           Compare.
         </h1>
-        <p className="mt-5 max-w-2xl text-lg sm:text-xl text-[#68686D] dark:text-[#A1A1A6] leading-relaxed tracking-apple-subhead">
+        <p className={`mt-4 max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY}`}>
           Three internal tools built at Cytron, side by side.
         </p>
       </section>

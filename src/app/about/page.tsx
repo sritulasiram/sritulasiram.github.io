@@ -12,6 +12,7 @@ import Reveal from "@/components/shared/Reveal";
 import StatementReveal from "@/components/about/StatementReveal";
 import { ABOUT_DATA, HERO_DATA } from "@/data/content";
 import { ABOUT_ACCENT, accentStyle } from "@/data/projectTheme";
+import { NAME_LABEL, EYEBROW, LEAD_GRAY, SECTION_LEAD, SECTION_TITLE, TITLE_INK } from "@/components/shared/typeScale";
 
 const SECTIONS = [
   { id: "overview", label: "Overview" },
@@ -21,10 +22,10 @@ const SECTIONS = [
   { id: "contact", label: "Contact" },
 ];
 
-const INK = "text-[#1D1D1F] dark:text-[#F5F5F7]";
+const INK = TITLE_INK;
 const GRAY = "text-[#68686D] dark:text-[#A1A1A6]";
 const WRAP = "max-w-5xl mx-auto w-full px-6 sm:px-8";
-const H2 = `text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero leading-[1.08]`;
+const H2 = `${SECTION_TITLE} ${INK}`;
 
 const NUMBERS = [
   { value: "7", label: "Awards", text: "From Universiti Tun Hussein Onn Malaysia and Politeknik Ungku Omar." },
@@ -150,8 +151,9 @@ export default function AboutTwoPage() {
       <section id="overview" aria-label="Overview" className="scroll-mt-14 overflow-hidden">
         <div className={`${WRAP} relative flex flex-col pt-0 lg:block lg:min-h-[620px] lg:pt-20`}>
           <div className="relative z-10 -mt-6 pb-4 sm:-mt-8 lg:mt-0 lg:pb-24">
-            <p className={`hero-anim-eyebrow text-xl sm:text-2xl font-semibold ${INK} tracking-apple-tight`}>{HERO_DATA.name}</p>
-            <h1 className={`mt-2 text-5xl sm:text-6xl lg:text-[64px] xl:text-[72px] font-semibold ${INK} tracking-apple-hero leading-[1.04]`}>
+            <p className={`hero-anim-eyebrow ${NAME_LABEL} ${INK}`}>{HERO_DATA.name}</p>
+            {/* Smaller than PAGE_TITLE on wide screens: each line stays on one row in the column beside the portrait. */}
+            <h1 className={`mt-2 text-5xl sm:text-6xl lg:text-[64px] xl:text-[72px] font-semibold tracking-apple-hero leading-[1.03] ${INK}`}>
               {/* Each line rises out of its own clipped box; the padding keeps the descenders from being cut. */}
               <span className="block overflow-hidden pb-[0.12em] -mb-[0.12em]">
                 <span className="hero-anim-role-1 block lg:whitespace-nowrap">Engineering precision.</span>
@@ -160,7 +162,7 @@ export default function AboutTwoPage() {
                 <span className={`hero-anim-role-2 block lg:whitespace-nowrap ${GRAY} font-medium`}>Design intuition.</span>
               </span>
             </h1>
-            <p className={`hero-anim-desc mt-6 max-w-xl text-lg sm:text-xl ${GRAY} leading-relaxed tracking-apple-subhead`}>
+            <p className={`hero-anim-desc mt-4 max-w-xl ${SECTION_LEAD} ${LEAD_GRAY}`}>
               {HERO_DATA.positioning}
             </p>
             <div className="hero-anim-cta mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
@@ -207,8 +209,8 @@ export default function AboutTwoPage() {
       <section aria-label="By the numbers" className="bg-[#F5F5F7] dark:bg-[#151517] py-20 sm:py-28">
         <div className={WRAP}>
           <Reveal>
-            <p className="text-sm font-semibold text-[var(--pa)]">By the numbers</p>
-            <h2 className={`mt-2 max-w-2xl text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero leading-[1.08]`}>
+            <p className={`${EYEBROW} text-[var(--pa)]`}>By the numbers</p>
+            <h2 className={`mt-2 max-w-2xl ${H2}`}>
               The path so far, in four figures.
             </h2>
           </Reveal>

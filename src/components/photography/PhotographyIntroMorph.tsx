@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
+import FadeImage from "@/components/shared/FadeImage";
 import { photoThumb } from "@/lib/photoThumb";
 import Link from "next/link";
 import { ArrowLeft, ChevronRight } from "lucide-react";
@@ -76,30 +77,11 @@ function CameraPhone({
   pressed: boolean;
 }) {
   const focus = FOCUS_POINTS[index % FOCUS_POINTS.length];
-  // The phone and its screen appear together: nothing shows until the frame and the first photo
-  // have loaded, so the preview never arrives before the phone. Images that finished before React
-  // started are counted too (their load event has already gone), and a timeout keeps a slow image
-  // from hiding the phone for good.
-  const rootRef = useRef<HTMLDivElement>(null);
-  const [ready, setReady] = useState(false);
-  useEffect(() => {
-    const imgs = Array.from(rootRef.current?.querySelectorAll<HTMLImageElement>("img[data-gate]") ?? []);
-    let pending = imgs.length;
-    const done = () => {
-      if (--pending <= 0) setReady(true);
-    };
-    imgs.forEach((img) => {
-      if (img.complete) done();
-      else {
-        img.addEventListener("load", done, { once: true });
-        img.addEventListener("error", done, { once: true });
-      }
-    });
-    const t = window.setTimeout(() => setReady(true), 1500);
-    return () => window.clearTimeout(t);
-  }, []);
+  // The phone is drawn from the first paint: its frame is a small priority image, and nothing waits for
+  // JavaScript to start (a load gate here used to leave the space empty for a second or more). The
+  // viewfinder stays dark, like the real Camera app warming up, and each photo fades in over it as it arrives.
   return (
-    <div ref={rootRef} className="absolute inset-0" style={{ opacity: ready ? 1 : 0, transition: "opacity 0.3s ease-out" }}>
+    <div className="absolute inset-0">
       {/* Black screen behind the semi-transparent camera bars */}
       <div
         className="absolute bg-black"
@@ -109,7 +91,7 @@ function CameraPhone({
       {/* Viewfinder: the photo shows through the transparent middle of the mockup */}
       <div className="absolute overflow-hidden" style={{ left: "28.67%", width: "43.43%", top: "14.7%", height: "61.5%" }}>
         {photos.map((photo, i) => (
-          <Image
+          <FadeImage
             key={photo.id}
             src={photoThumb(photo.imageSrc)}
             alt=""
@@ -117,7 +99,6 @@ function CameraPhone({
             sizes="320px"
             className="object-cover"
             priority={i === 0}
-            {...(i === 0 ? { "data-gate": "" } : {})}
             style={{ opacity: i === index ? 1 : 0, transition: "opacity 0.35s ease-out" }}
           />
         ))}
@@ -152,7 +133,7 @@ function CameraPhone({
       </div>
 
       {/* Camera app chrome: zoom pills, modes, shutter and flip */}
-      <Image src={CAMERA_UI} alt="" fill sizes="700px" className="object-contain" priority data-gate="" />
+      <Image src={CAMERA_UI} alt="" fill sizes="700px" className="object-contain" priority />
 
       {/* Last shot, bottom left */}
       <span

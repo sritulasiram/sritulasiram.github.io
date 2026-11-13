@@ -5,6 +5,7 @@ import Image from "next/image";
 import ImageLightbox from "@/components/shared/ImageLightbox";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { ProjectScreen } from "@/types";
+import { EYEBROW, LEAD_GRAY, SECTION_LEAD, SECTION_TITLE, TITLE_INK } from "@/components/shared/typeScale";
 
 interface ProjectScreenWalkthroughProps {
   screens: ProjectScreen[];
@@ -74,19 +75,19 @@ export default function ProjectScreenWalkthrough({
     <section className={`w-full py-6 sm:py-10 space-y-6 sm:space-y-8 ${className}`}>
       {/* 1. Header & Navigation Controls */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 px-6 sm:px-8 max-w-5xl mx-auto w-full">
-        <div className="space-y-1.5 max-w-2xl">
+        <div className="max-w-2xl">
           {eyebrow && (
-            <span className="text-[11px] font-semibold uppercase tracking-widest text-[#0071E3] block">
+            <span className={`${EYEBROW} block text-[var(--pa,#0071E3)]`}>
               {eyebrow}
             </span>
           )}
           {title && (
-            <h2 className="text-3xl sm:text-5xl font-semibold text-[#1D1D1F] dark:text-white tracking-apple-tight leading-tight">
+            <h2 className={`${eyebrow ? "mt-2" : ""} ${SECTION_TITLE} ${TITLE_INK}`}>
               {title}
             </h2>
           )}
           {subtitle && (
-            <p className="text-sm sm:text-base text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
+            <p className={`${title || eyebrow ? "mt-4" : ""} ${SECTION_LEAD} ${LEAD_GRAY}`}>
               {subtitle}
             </p>
           )}

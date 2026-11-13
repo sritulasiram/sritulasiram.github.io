@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { LEAD_GRAY, SECTION_LEAD, SECTION_TITLE, TITLE_INK } from "@/components/shared/typeScale";
 
 // Aligns the first card with the page's 64rem content column and lets the row bleed off the right edge.
 const EDGE = "max(1.5rem, calc((100% - 64rem) / 2 + 2rem))";
@@ -87,10 +88,10 @@ export default function CardCarousel({
     <section aria-label={label} className={`py-16 sm:py-24 ${plain ? "" : "bg-[var(--pa-tint)]"}`}>
       <div className="max-w-5xl mx-auto w-full px-6 sm:px-8 flex items-end justify-between gap-6">
         <div>
-          <h2 className="text-3xl sm:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero">
+          <h2 className={`${SECTION_TITLE} ${TITLE_INK}`}>
             {title}
           </h2>
-          {subtitle && <p className="mt-3 text-lg text-[#68686D] dark:text-[#A1A1A6] max-w-2xl">{subtitle}</p>}
+          {subtitle && <p className={`mt-4 max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY}`}>{subtitle}</p>}
         </div>
         <div className={`flex gap-2 shrink-0 ${canPrev || canNext ? "" : "hidden"}`}>
           <button type="button" onClick={() => scrollByCard(-1)} disabled={!canPrev} aria-label="Previous" className={btn}>

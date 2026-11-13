@@ -11,6 +11,7 @@ import PinnedScreens from "@/components/shared/PinnedScreens";
 import type { ViewerScreen } from "@/components/shared/ScreenViewer";
 import { MacbookPro } from "@/components/mockups/MacbookPro";
 import type { CaseStudy, ProjectItem } from "@/types";
+import { NAME_LABEL, EYEBROW, LEAD_GRAY, PAGE_TITLE, SECTION_LEAD, SECTION_TITLE } from "@/components/shared/typeScale";
 
 interface Props {
   project: CaseStudy;
@@ -330,12 +331,12 @@ export default function WarrantyRmaCaseStudy({ project, nextProject }: Props) {
       {/* 1. Hero */}
       <section className="hero-glow hero-glow-warranty overflow-hidden">
         <div className={`${WRAP} pt-14 sm:pt-20 text-center`}>
-          <p className={`text-xl sm:text-2xl font-semibold ${INK} tracking-apple-tight`}>{project.title}</p>
-          <h1 className={`mt-2 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold ${INK} tracking-apple-hero leading-[1.03]`}>
+          <p className={`${NAME_LABEL} ${INK}`}>{project.title}</p>
+          <h1 className={`mt-2 ${PAGE_TITLE} ${INK}`}>
             One system.
             <span className={`block ${ACCENT}`}>Every case.</span>
           </h1>
-          <p className={`mt-5 mx-auto max-w-2xl text-lg sm:text-xl ${GRAY} leading-relaxed tracking-apple-subhead`}>
+          <p className={`mt-4 mx-auto max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY}`}>
             {project.tagline}
           </p>
           <div className="mt-10 sm:mt-14 mx-auto w-full max-w-4xl">
@@ -360,7 +361,7 @@ export default function WarrantyRmaCaseStudy({ project, nextProject }: Props) {
           <div key={chapter.headline} className={`${WRAP} py-14 sm:py-24`}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
               <Reveal className={i % 2 ? "md:order-2" : ""}>
-                <h2 className="text-3xl sm:text-5xl font-semibold tracking-apple-hero leading-[1.08]">
+                <h2 className={SECTION_TITLE}>
                   <span className={`block ${GRAY}`}>{chapter.problem}</span>
                   <span className={`block ${INK}`}>{chapter.headline}</span>
                 </h2>
@@ -379,8 +380,8 @@ export default function WarrantyRmaCaseStudy({ project, nextProject }: Props) {
       {/* 4. Screens */}
       <section aria-label="Screens" className="max-w-6xl mx-auto w-full px-6 sm:px-8 pb-20 sm:pb-32">
         <Reveal>
-          <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero text-center`}>See it in action.</h2>
-          <p className={`mt-3 mb-10 text-lg ${GRAY} text-center`}>The pages the team works in every day.</p>
+          <h2 className={`${SECTION_TITLE} ${INK} text-center`}>See it in action.</h2>
+          <p className={`mt-4 mb-10 mx-auto max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY} text-center`}>The pages the team works in every day.</p>
           <PinnedScreens screens={SCREENS} tone="light" fitWidth />
         </Reveal>
       </section>
@@ -406,8 +407,8 @@ export default function WarrantyRmaCaseStudy({ project, nextProject }: Props) {
       <section aria-label="Results" className="bg-[var(--pa-deep)] text-white py-24 sm:py-32">
         <div className={WRAP}>
           <Reveal>
-            <p className="text-sm font-semibold text-[#86868B]">In use at Cytron</p>
-            <h2 className="mt-2 text-3xl sm:text-5xl font-semibold tracking-apple-hero max-w-2xl leading-[1.08]">
+            <p className={`${EYEBROW} text-[#86868B]`}>In use at Cytron</p>
+            <h2 className={`mt-2 max-w-2xl ${SECTION_TITLE}`}>
               Built to be relied on.
             </h2>
           </Reveal>

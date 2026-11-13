@@ -9,6 +9,7 @@ import Reveal from "@/components/shared/Reveal";
 import HrAssistiveMacbook from "@/components/projects/visuals/HrAssistiveMacbook";
 import HrScreenshot from "@/components/projects/visuals/HrScreenshot";
 import type { CaseStudy, ProjectItem } from "@/types";
+import { NAME_LABEL, EYEBROW, LEAD_GRAY, LEAD_GRAY_ON_DARK, PAGE_TITLE, SECTION_LEAD, SECTION_TITLE } from "@/components/shared/typeScale";
 
 interface Props {
   project: CaseStudy;
@@ -173,11 +174,11 @@ export default function HrAssistiveIntelligenceCaseStudy({ project, nextProject 
       {/* 1. Hero */}
       <section className="hero-glow hero-glow-hr overflow-hidden">
         <div className={`${WRAP} pt-14 sm:pt-20 text-center`}>
-          <p className={`text-xl sm:text-2xl font-semibold ${INK} tracking-apple-tight`}>{project.title}</p>
-          <h1 className={`mt-2 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold ${INK} tracking-apple-hero leading-[1.03]`}>
+          <p className={`${NAME_LABEL} ${INK}`}>{project.title}</p>
+          <h1 className={`mt-2 ${PAGE_TITLE} ${INK}`}>
             Answers it can prove.
           </h1>
-          <p className={`mt-5 mx-auto max-w-2xl text-lg sm:text-xl ${GRAY} leading-relaxed tracking-apple-subhead`}>
+          <p className={`mt-4 mx-auto max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY}`}>
             {project.tagline}
           </p>
           <div className="mt-10 sm:mt-14 mx-auto w-full max-w-3xl">
@@ -201,7 +202,7 @@ export default function HrAssistiveIntelligenceCaseStudy({ project, nextProject 
           <div key={chapter.headline} className={`${WRAP} py-14 sm:py-24`}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
               <Reveal className={i % 2 ? "md:order-2" : ""}>
-                <h2 className="text-3xl sm:text-5xl font-semibold tracking-apple-hero leading-[1.08]">
+                <h2 className={SECTION_TITLE}>
                   <span className={`block ${GRAY}`}>{chapter.problem}</span>
                   <span className={`block ${INK}`}>{chapter.headline}</span>
                 </h2>
@@ -221,8 +222,8 @@ export default function HrAssistiveIntelligenceCaseStudy({ project, nextProject 
       <section id="in-action" aria-label="See it in action" className="scroll-mt-20 py-16 sm:py-24">
         <div className="max-w-6xl mx-auto w-full px-6 sm:px-8">
           <Reveal>
-            <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero text-center`}>See it in action.</h2>
-            <p className={`mt-3 mb-10 text-lg ${GRAY} text-center max-w-2xl mx-auto`}>
+            <h2 className={`${SECTION_TITLE} ${INK} text-center`}>See it in action.</h2>
+            <p className={`mt-4 mb-10 mx-auto max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY} text-center`}>
               A plain-language question, an answer built from the official documents, and numbered sources underneath.
             </p>
             <HrScreenshot alt="The HR assistant answering a leave question with two tables, numbered citations beside each statement, and a Sources row listing the Leave policy sections it came from." />
@@ -234,11 +235,11 @@ export default function HrAssistiveIntelligenceCaseStudy({ project, nextProject 
       <section aria-label="Privacy" className="bg-black text-white py-24 sm:py-32">
         <div className={WRAP}>
           <Reveal>
-            <p className="text-sm font-semibold text-[var(--pa-d)]">Privacy</p>
-            <h2 className="mt-2 max-w-3xl text-4xl sm:text-6xl font-semibold tracking-apple-hero leading-[1.05]">
+            <p className={`${EYEBROW} text-[var(--pa-d)]`}>Privacy</p>
+            <h2 className={`mt-2 max-w-3xl ${SECTION_TITLE}`}>
               Private where it counts.
             </h2>
-            <p className="mt-5 max-w-2xl text-lg text-[#A1A1A6] leading-relaxed">
+            <p className={`mt-4 max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY_ON_DARK}`}>
               Policies and contracts don’t belong in a public chat. Here the index is stored locally, chats can leave no trace, and analytics never record what was asked. The AI provider is your choice.
               <Fn n={1} />
             </p>
@@ -285,11 +286,11 @@ export default function HrAssistiveIntelligenceCaseStudy({ project, nextProject 
       <section aria-label="By design" className="bg-[var(--pa-deep)] text-white py-24 sm:py-32">
         <div className={WRAP}>
           <Reveal>
-            <p className="text-sm font-semibold text-[#86868B]">By design</p>
-            <h2 className="mt-2 text-3xl sm:text-5xl font-semibold tracking-apple-hero max-w-2xl leading-[1.08]">
+            <p className={`${EYEBROW} text-[#86868B]`}>By design</p>
+            <h2 className={`mt-2 max-w-2xl ${SECTION_TITLE}`}>
               Built to guarantee, not to guess.
             </h2>
-            <p className="mt-4 text-[#A1A1A6] max-w-xl">
+            <p className={`mt-4 max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY_ON_DARK}`}>
               The assistant is in internal pilot, so these are properties of the design rather than adoption figures.
             </p>
           </Reveal>

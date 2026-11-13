@@ -27,6 +27,9 @@ export default function ScrollMemory() {
       /* storage blocked: nothing to restore */
     }
 
+    // The theme script in <head> hides the page on a revisit (see layout.tsx); show it once it is in place.
+    const reveal = () => document.documentElement.classList.remove("scroll-restoring");
+
     if (target > 0) {
       const previous = window.history.scrollRestoration;
       window.history.scrollRestoration = "manual";
@@ -37,6 +40,7 @@ export default function ScrollMemory() {
           window.scrollTo({ top: target, behavior: "instant" });
           if (Math.abs(window.scrollY - target) < 2) {
             restoring = false;
+            reveal();
             return;
           }
         }
@@ -45,12 +49,14 @@ export default function ScrollMemory() {
         } else {
           restoring = false;
           window.scrollTo({ top: Math.min(target, Math.max(0, room)), behavior: "instant" });
+          reveal();
         }
       };
       raf = requestAnimationFrame(attempt);
       window.addEventListener("pagehide", () => (window.history.scrollRestoration = previous), { once: true });
     } else {
       restoring = false;
+      reveal();
     }
 
     let saveRaf = 0;
@@ -72,6 +78,7 @@ export default function ScrollMemory() {
       window.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(raf);
       cancelAnimationFrame(saveRaf);
+      reveal();
     };
   }, []);
 

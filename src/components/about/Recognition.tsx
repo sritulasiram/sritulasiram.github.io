@@ -6,8 +6,9 @@ import { Maximize2 } from "lucide-react";
 import ImageLightbox from "@/components/shared/ImageLightbox";
 import Reveal from "@/components/shared/Reveal";
 import { ABOUT_DATA } from "@/data/content";
+import { SECTION_TITLE, TITLE_INK } from "@/components/shared/typeScale";
 
-const INK = "text-[#1D1D1F] dark:text-[#F5F5F7]";
+const INK = TITLE_INK;
 const GRAY = "text-[#68686D] dark:text-[#A1A1A6]";
 
 /** Where each photo is anchored inside its tile, so the faces stay in frame. */
@@ -87,7 +88,7 @@ export default function Recognition() {
   return (
     <section id="recognition" aria-label="Recognition" className="scroll-mt-14 mx-auto w-full max-w-5xl px-6 py-24 sm:px-8 sm:py-32">
       <Reveal>
-        <h2 className={`text-3xl font-semibold leading-[1.08] tracking-apple-hero sm:text-5xl ${INK}`}>
+        <h2 className={`${SECTION_TITLE} ${INK}`}>
           Recognition.
           <span className={`block ${GRAY}`}>Awards from UTHM and Politeknik Ungku Omar.</span>
         </h2>

@@ -9,6 +9,7 @@ import Button from "@/components/ui/Button";
 import { APP_STUDIES } from "./appStudies";
 import { cn } from "@/lib/cn";
 import { STAGE_DESIGNS as DESIGNS } from "./designStage";
+import { PAGE_TITLE, TITLE_INK } from "@/components/shared/typeScale";
 
 export default function DesignHeroStage() {
   const [activeIndex, setActiveIndex] = useState(2); // Starts with Sage or center item
@@ -137,7 +138,7 @@ export default function DesignHeroStage() {
 
         {/* Page Header matching Photography layout */}
         <div className="max-w-4xl mx-auto text-center space-y-4 mb-6 sm:mb-4">
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.03]">
+          <h1 className={`${PAGE_TITLE} ${TITLE_INK}`}>
             Design
             <span className="mt-3 block text-[0.36em] font-medium leading-[1.15] tracking-apple-tight text-[#6E6E73] dark:text-[#8E8E93] text-balance">Effortlessly natural</span>
           </h1>

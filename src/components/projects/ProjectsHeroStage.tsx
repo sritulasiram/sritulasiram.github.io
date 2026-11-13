@@ -9,6 +9,7 @@ import AppleCarouselController from "@/components/ui/AppleCarouselController";
 import Button from "@/components/ui/Button";
 import { PROJECT_ACCENTS } from "@/data/projectTheme";
 import { cn } from "@/lib/cn";
+import { HERO_SUBTITLE, LEAD_GRAY, PAGE_TITLE, TITLE_INK } from "@/components/shared/typeScale";
 
 export interface StageProject {
   id: string;
@@ -213,12 +214,12 @@ export default function ProjectsHeroStage() {
         </nav>
 
         {/* Page Header matching Design & Photography typography */}
-        <div className="relative z-20 max-w-4xl mx-auto text-center space-y-2.5 sm:space-y-3 mb-8 sm:mb-10">
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.03]">
+        <div className="relative z-20 max-w-4xl mx-auto text-center mb-8 sm:mb-10">
+          <h1 className={`${PAGE_TITLE} ${TITLE_INK}`}>
             Projects
           </h1>
 
-          <p className="text-xl sm:text-2xl md:text-3xl font-medium text-[#6E6E73] dark:text-[#A1A1A6] max-w-2xl mx-auto leading-snug tracking-apple-tight text-balance">
+          <p className={`mt-3 max-w-2xl mx-auto ${HERO_SUBTITLE} ${LEAD_GRAY}`}>
             Hardware and software, engineered as one.
           </p>
         </div>

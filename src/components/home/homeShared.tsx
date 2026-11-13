@@ -1,4 +1,5 @@
 import Button from "@/components/ui/Button";
+import { SECTION_TITLE } from "@/components/shared/typeScale";
 
 export const INK = "text-[#1D1D1F] dark:text-[#F5F5F7]";
 export const GRAY = "text-[#68686D] dark:text-[#A1A1A6]";
@@ -35,7 +36,7 @@ export function Headline({
   onDark?: boolean;
 }) {
   return (
-    <h2 className={`text-4xl sm:text-5xl md:text-6xl font-semibold tracking-apple-hero leading-[1.08] ${className}`}>
+    <h2 className={`${SECTION_TITLE} ${className}`}>
       <span className={onDark ? "text-[#86868B]" : GRAY}>{gray}</span>{" "}
       <span className={onDark ? "text-white" : INK}>{ink}</span>
     </h2>

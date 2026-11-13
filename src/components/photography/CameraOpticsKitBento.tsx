@@ -1,12 +1,12 @@
-import Image from "next/image";
 import Reveal from "@/components/shared/Reveal";
+import AppGrid, { type AppGridGroup } from "@/components/shared/AppGrid";
 import PhoneHistory from "@/components/photography/PhoneHistory";
 import LensNumber from "@/components/photography/LensNumber";
 import FocusText from "@/components/photography/FocusText";
+import { SECTION_TITLE } from "@/components/shared/typeScale";
 
 const INK = "text-[#1D1D1F] dark:text-[#F5F5F7]";
 const GRAY = "text-[#6E6E73] dark:text-[#A1A1A6]";
-const TILE = "rounded-[28px] bg-[#F5F5F7] dark:bg-[#1C1C1E]";
 
 const LENSES = [
   { zoom: "0.5", name: "13 mm Ultra Wide", spec: "48MP · ƒ/2.2 · 120° FOV" },
@@ -30,22 +30,25 @@ const PRINCIPLES = [
   },
 ];
 
-interface App {
-  name: string;
-  icon: string;
-  description: string;
-}
-
-const FIELD_APPS: App[] = [
-  { name: "iOS Camera", icon: "/images/apps/app-ios-camera.png", description: "ProRAW up to 48MP, instant lock-screen launch, and zero shutter lag." },
-  { name: "Project Indigo", icon: "/images/apps/app-indigo.png", description: "Multi-frame RAW capture with a natural, lightly processed look." },
-  { name: "VSCO Capture", icon: "/images/apps/app-vsco.png", description: "Tactile manual focus and ISO control, with curated film emulations and grain." },
-];
-
-const POST_APPS: App[] = [
-  { name: "Apple Photos", icon: "/images/apps/app-photos.png", description: "Non-destructive edits to ProRAW and HEIF, with Photographic Styles." },
-  { name: "Adobe Lightroom", icon: "/images/apps/app-lightroom.png", description: "ProRAW development, tone curves, highlight roll-off and local masking." },
-  { name: "Adobe Photoshop", icon: "/images/apps/app-photoshop.png", description: "Pixel-level retouching, colour blending, frequency separation and clean-up." },
+const PHOTO_APPS: AppGridGroup[] = [
+  {
+    title: "Capture",
+    items: [
+      { name: "iOS Camera", iconSrc: "/images/apps/app-ios-camera.png", description: "48MP ProRAW, ready straight from the Lock Screen." },
+      { name: "Project Indigo", iconSrc: "/images/apps/app-indigo.png", description: "Multi-frame RAW with a natural, lightly processed look." },
+      { name: "No Fusion", iconSrc: "/images/apps/app-nofusion.jpg", description: "Natural photos without heavy sharpening, plus RAW and film looks." },
+      { name: "VSCO Capture", iconSrc: "/images/apps/app-vsco.png", description: "Manual focus and ISO, with film-style looks and grain." },
+    ],
+  },
+  {
+    title: "Edit",
+    items: [
+      { name: "Apple Photos", iconSrc: "/images/apps/app-photos.png", description: "Quick, non-destructive edits and Photographic Styles." },
+      { name: "Photomator", iconSrc: "/images/apps/app-photomator.jpg", description: "ProRAW editing with smart, machine-learning adjustments." },
+      { name: "Adobe Lightroom", iconSrc: "/images/apps/app-lightroom.png", description: "Developing ProRAW: tone curves, highlights and local masks." },
+      { name: "Adobe Photoshop", iconSrc: "/images/apps/app-photoshop.png", description: "Retouching, colour blending and clean-up." },
+    ],
+  },
 ];
 
 const ORIGINS = [
@@ -58,6 +61,10 @@ const ORIGINS = [
       "Where my photography began. A pocket compact with an all-weather body and a 3x zoom, it taught me to frame a shot long before I knew anything about settings.",
     image: "/images/devices/olympus-mu-700.png",
     alt: "Olympus µ 700 compact digital camera in black",
+    // A wide image fills the stage's width while the phones are limited by their height, so at full size it was far
+    // bigger than a real 91 mm compact looks beside a 115 mm iPhone 3GS. 0.6 was true to scale but felt too small on its
+    // own step; 0.72 keeps it clearly smaller than the phones while giving it presence.
+    scale: 0.72,
   },
   {
     year: "2013",
@@ -121,20 +128,6 @@ const ORIGINS = [
   },
 ];
 
-function AppTile({ app }: { app: App }) {
-  return (
-    <li className={`${TILE} flex flex-col p-7 min-h-[240px] transition-transform duration-300 ease-out motion-safe:hover:scale-[1.01]`}>
-      <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-[22%] bg-white shadow-md dark:bg-[#2C2C2E]">
-        <Image src={app.icon} alt="" fill sizes="56px" className="object-cover" />
-      </div>
-      <div className="mt-auto pt-8">
-        <h4 className={`text-xl font-semibold tracking-apple-tight ${INK}`}>{app.name}</h4>
-        <p className={`mt-2 text-[15px] leading-[1.45] ${GRAY}`}>{app.description}</p>
-      </div>
-    </li>
-  );
-}
-
 export default function CameraOpticsKitBento() {
   return (
     <>
@@ -143,7 +136,7 @@ export default function CameraOpticsKitBento() {
         <PhoneHistory
           origins={ORIGINS}
           heading={
-            <h2 className="max-w-3xl text-2xl font-semibold leading-[1.05] tracking-apple-tight text-balance sm:text-4xl md:text-5xl">
+            <h2 className={`max-w-3xl ${SECTION_TITLE}`}>
               <span className={INK}>A journey in cameras.</span>{" "}
               <span className="text-[#6E6E73] dark:text-[#A1A1A6]">From a pocket compact to a studio in my pocket.</span>
             </h2>
@@ -180,30 +173,18 @@ export default function CameraOpticsKitBento() {
           </li>
         ))}
       </ul>
+      </section>
 
-      {/* Apps */}
-      <div className="mt-24 sm:mt-32">
+      {/* Apps: its own section so the side nav can jump to it and mark it while you read it. */}
+      <section id="apps" aria-label="Apps in the field" className="scroll-mt-24 mt-24 sm:mt-32 text-left">
         <Reveal>
-          <h2 className="max-w-3xl text-3xl font-semibold leading-[1.05] tracking-apple-tight text-balance sm:text-5xl">
+          <h2 className={`max-w-3xl ${SECTION_TITLE}`}>
             <span className={INK}>Apps in the field.</span>{" "}
             <span className="text-[#6E6E73] dark:text-[#A1A1A6]">From instant candids to fully manual exposures.</span>
           </h2>
         </Reveal>
 
-        <h3 className={`mt-12 text-sm font-semibold uppercase tracking-widest sm:mt-16 ${GRAY}`}>Capture</h3>
-        <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6">
-          {FIELD_APPS.map((app) => (
-            <AppTile key={app.name} app={app} />
-          ))}
-        </ul>
-
-        <h3 className={`mt-10 text-sm font-semibold uppercase tracking-widest ${GRAY}`}>Edit</h3>
-        <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6">
-          {POST_APPS.map((app) => (
-            <AppTile key={app.name} app={app} />
-          ))}
-        </ul>
-      </div>
+        <AppGrid groups={PHOTO_APPS} className="mt-12 sm:mt-16" />
       </section>
     </>
   );

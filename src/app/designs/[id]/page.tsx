@@ -24,6 +24,10 @@ import WebCaseStudy from "@/components/designs/WebCaseStudy";
 import { WEB_STUDIES } from "@/components/designs/webStudies";
 import { DESIGN_DETAILS, DESIGNS_DATA } from "@/data/designDetails";
 import { accentStyle } from "@/data/projectTheme";
+import { EYEBROW, LEAD_GRAY, PAGE_TITLE, SECTION_LEAD, SECTION_TITLE, TITLE_INK } from "@/components/shared/typeScale";
+
+/** This fallback layout sits outside a .project-theme, so there is no --pa; eyebrows use the site link blue (passes 4.5:1 on #FAFAFA). */
+const EYEBROW_INK = "text-[#0066CC] dark:text-[#2997FF]";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -119,7 +123,7 @@ export default async function DesignDetailPage({ params }: PageProps) {
         </div>
 
         {/* Headline & Description */}
-        <div className="space-y-5 max-w-4xl">
+        <div className="max-w-4xl">
           <div className="flex items-center gap-4 sm:gap-5">
             {design.logoSrc && (
               <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl sm:rounded-3xl overflow-hidden border border-[#E5E5EA] dark:border-white/10 bg-white dark:bg-[#161618] p-1 shadow-2xs shrink-0">
@@ -132,17 +136,17 @@ export default async function DesignDetailPage({ params }: PageProps) {
                 />
               </div>
             )}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.08]">
+            <h1 className={`${PAGE_TITLE} ${TITLE_INK}`}>
               {design.title}
             </h1>
           </div>
 
-          <p className="text-xl sm:text-2xl text-[#6E6E73] dark:text-[#A1A1A6] font-normal leading-relaxed tracking-apple-subhead">
+          <p className={`mt-4 max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY}`}>
             {design.tagline}
           </p>
 
           {(design.githubUrl || design.figmaUrl || design.liveUrl) && (
-            <div className="pt-2 flex flex-wrap items-center gap-3">
+            <div className="mt-5 pt-2 flex flex-wrap items-center gap-3">
               {design.figmaUrl && (
                 <Button href={design.figmaUrl} icon={<ArrowUpRight className="h-4 w-4" aria-hidden="true" />}>
                   Inspect in Figma
@@ -235,14 +239,14 @@ export default async function DesignDetailPage({ params }: PageProps) {
       {/* 3. Problem Statement & UX Context */}
       <section className="py-16 sm:py-24 bg-[#FAFAFA] dark:bg-[#0E0E11] border-y border-[#E5E5EA] dark:border-[#2C2C2E] transition-colors">
         <div className="max-w-5xl mx-auto px-6 sm:px-8 space-y-12">
-          <div className="max-w-3xl space-y-4">
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#86868B]">
+          <div className="max-w-3xl">
+            <p className={`${EYEBROW} ${EYEBROW_INK}`}>
               UX Context
             </p>
-            <h2 className="text-3xl sm:text-4xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight">
+            <h2 className={`mt-2 ${SECTION_TITLE} ${TITLE_INK}`}>
               The problem.
             </h2>
-            <p className="text-base sm:text-lg text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
+            <p className={`mt-4 max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY}`}>
               {design.background.problemStatement}
             </p>
           </div>
@@ -273,14 +277,14 @@ export default async function DesignDetailPage({ params }: PageProps) {
       {/* 4. Dual-Role Features Matrix (If available) */}
       {design.roleFeatures && (
         <section className="py-20 sm:py-28 px-6 sm:px-8 max-w-5xl mx-auto w-full space-y-12">
-          <div className="text-center max-w-2xl mx-auto space-y-3">
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#86868B]">
+          <div className="text-center max-w-2xl mx-auto">
+            <p className={`${EYEBROW} ${EYEBROW_INK}`}>
               Dual-Role Workflows
             </p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight">
+            <h2 className={`mt-2 ${SECTION_TITLE} ${TITLE_INK}`}>
               Tailored views for every stakeholder.
             </h2>
-            <p className="text-sm sm:text-base text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
+            <p className={`mt-4 max-w-2xl mx-auto ${SECTION_LEAD} ${LEAD_GRAY}`}>
               Optimized for distinct permissions, actions, and milestones across student teams and faculty coordinators.
             </p>
           </div>
@@ -318,14 +322,14 @@ export default async function DesignDetailPage({ params }: PageProps) {
 
       {/* 5. Design Architecture & Component Cards */}
       <section className="py-20 sm:py-28 px-6 sm:px-8 max-w-5xl mx-auto w-full space-y-12">
-        <div className="text-center max-w-2xl mx-auto space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#86868B]">
+        <div className="text-center max-w-2xl mx-auto">
+          <p className={`${EYEBROW} ${EYEBROW_INK}`}>
             Design Architecture
           </p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight">
+          <h2 className={`mt-2 ${SECTION_TITLE} ${TITLE_INK}`}>
             Structure and interaction.
           </h2>
-          <p className="text-sm sm:text-base text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
+          <p className={`mt-4 max-w-2xl mx-auto ${SECTION_LEAD} ${LEAD_GRAY}`}>
             {design.architecture.summary}
           </p>
         </div>
@@ -350,11 +354,11 @@ export default async function DesignDetailPage({ params }: PageProps) {
       {/* 6. Key Design Features Grid */}
       <section className="py-20 sm:py-28 bg-[#FAFAFA] dark:bg-[#0E0E11] border-y border-[#E5E5EA] dark:border-[#2C2C2E] transition-colors">
         <div className="max-w-5xl mx-auto px-6 sm:px-8 space-y-12">
-          <div className="space-y-3">
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#86868B]">
+          <div>
+            <p className={`${EYEBROW} ${EYEBROW_INK}`}>
               Core Capabilities
             </p>
-            <h2 className="text-3xl sm:text-4xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight">
+            <h2 className={`mt-2 ${SECTION_TITLE} ${TITLE_INK}`}>
               Key features.
             </h2>
           </div>
@@ -384,11 +388,11 @@ export default async function DesignDetailPage({ params }: PageProps) {
 
       {/* 7. Tooling & Specification Stack */}
       <section className="py-20 sm:py-28 px-6 sm:px-8 max-w-5xl mx-auto w-full space-y-12">
-        <div className="space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#86868B]">
+        <div>
+          <p className={`${EYEBROW} ${EYEBROW_INK}`}>
             Specifications &amp; Tools
           </p>
-          <h2 className="text-3xl sm:text-4xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight">
+          <h2 className={`mt-2 ${SECTION_TITLE} ${TITLE_INK}`}>
             Tools and deliverables.
           </h2>
         </div>
@@ -420,11 +424,11 @@ export default async function DesignDetailPage({ params }: PageProps) {
       {/* 8. Usability & Quantitative Outcomes */}
       <section className="py-20 sm:py-28 bg-[#FAFAFA] dark:bg-[#0E0E11] border-t border-[#E5E5EA] dark:border-[#2C2C2E] transition-colors">
         <div className="max-w-5xl mx-auto px-6 sm:px-8 space-y-12">
-          <div className="space-y-3">
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#6E6E73] dark:text-[#86868B]">
+          <div>
+            <p className={`${EYEBROW} ${EYEBROW_INK}`}>
               Measurable Outcomes
             </p>
-            <h2 className="text-3xl sm:text-4xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight">
+            <h2 className={`mt-2 ${SECTION_TITLE} ${TITLE_INK}`}>
               Impact across users.
             </h2>
           </div>

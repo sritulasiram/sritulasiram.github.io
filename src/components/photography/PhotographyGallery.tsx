@@ -10,9 +10,11 @@ import {
 } from "lucide-react";
 import ProjectImage from "@/components/ui/ProjectImage";
 import { photoThumb } from "@/lib/photoThumb";
+import { photoPlaceholderStyle } from "@/lib/photoPlaceholder";
 import PhotoPreviewModal from "./PhotoPreviewModal";
 import type { PhotoItem, PhotoAlbumId } from "@/types";
 import { PHOTO_ALBUMS, PHOTO_SPECS } from "@/data/content";
+import { SECTION_TITLE, TITLE_INK } from "@/components/shared/typeScale";
 
 interface PhotographyGalleryProps {
   photos: PhotoItem[];
@@ -102,7 +104,8 @@ export default function PhotographyGallery({ photos }: PhotographyGalleryProps) 
               placeholderLabel={photo.placeholderLabel}
               ratioText="High-Res Portrait"
               type="photo"
-              className="w-full h-full pointer-events-none transition-transform duration-700 ease-out group-hover:scale-[1.015]"
+              placeholderStyle={photoPlaceholderStyle(photo.imageSrc)}
+              className="w-full h-full pointer-events-none"
             />
 
             {/* Desktop Hover Overlay with Loupe Affordance */}
@@ -197,7 +200,8 @@ export default function PhotographyGallery({ photos }: PhotographyGalleryProps) 
             placeholderLabel={photo.placeholderLabel}
             ratioText="High-Res Portrait"
             type="photo"
-            className="w-full h-full pointer-events-none transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+              placeholderStyle={photoPlaceholderStyle(photo.imageSrc)}
+            className="w-full h-full pointer-events-none"
           />
 
           {/* Desktop Hover Overlay */}
@@ -339,7 +343,7 @@ export default function PhotographyGallery({ photos }: PhotographyGalleryProps) 
       <div id="gallery" className="text-center scroll-mt-24">
         <h2
           id="gallery-title"
-          className="text-3xl sm:text-5xl font-semibold tracking-apple-headline leading-[1.08] text-[#1D1D1F] dark:text-[#F5F5F7]"
+          className={`${SECTION_TITLE} ${TITLE_INK}`}
         >
           Every frame.
           <span className="block text-[#6E6E73] dark:text-[#8E8E93]">Browse by place and light.</span>

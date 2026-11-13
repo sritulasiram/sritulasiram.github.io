@@ -3,6 +3,7 @@ import Link from "next/link";
 import Reveal from "@/components/shared/Reveal";
 import { PROJECTS_DATA } from "@/data/content";
 import Button from "@/components/ui/Button";
+import { LEAD_GRAY, SECTION_LEAD, TILE_TITLE } from "@/components/shared/typeScale";
 import { Headline, INK, GRAY, WRAP_WIDE } from "./homeShared";
 
 const FEATURED = ["warranty-rma", "raspberry-pi-diagnostics", "iot-fertiliser-mixing"];
@@ -17,7 +18,7 @@ export default function HomeSystems() {
       <div className={WRAP_WIDE}>
         <Reveal>
           <Headline gray="Systems." ink="Built to be relied on." />
-          <p className={`mt-4 max-w-2xl text-lg sm:text-xl leading-relaxed ${GRAY}`}>
+          <p className={`mt-4 max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY}`}>
             Internal tools, hardware diagnostics and research, from the support desk at Cytron to the field.
           </p>
         </Reveal>
@@ -35,7 +36,7 @@ export default function HomeSystems() {
                 >
                   <div className={`p-8 sm:p-10 ${wide ? "md:w-[42%] md:self-center" : ""}`}>
                     <p className={`text-sm font-medium ${GRAY}`}>{project.subtitle}</p>
-                    <h3 className={`mt-2 text-3xl sm:text-4xl font-semibold tracking-apple-hero leading-[1.1] ${INK}`}>
+                    <h3 className={`mt-2 ${TILE_TITLE} ${INK}`}>
                       {project.title}
                     </h3>
                     <p className={`mt-4 max-w-md text-base leading-relaxed ${GRAY}`}>{project.outcome}</p>

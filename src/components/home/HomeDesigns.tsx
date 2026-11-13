@@ -3,7 +3,8 @@ import IphoneFrame from "@/components/mockups/IphoneFrame";
 import Reveal from "@/components/shared/Reveal";
 import Button from "@/components/ui/Button";
 import { STAGE_DESIGNS } from "@/components/designs/designStage";
-import { Headline, GRAY, WRAP_WIDE } from "./homeShared";
+import { LEAD_GRAY, SECTION_LEAD } from "@/components/shared/typeScale";
+import { Headline, WRAP_WIDE } from "./homeShared";
 
 const FEATURED = STAGE_DESIGNS.slice(0, 3);
 
@@ -15,7 +16,7 @@ export default function HomeDesigns() {
         {/* Left: title and the list of designs */}
         <Reveal>
           <Headline gray="Designs." ink="Every screen, considered." className="text-balance" />
-          <p className={`mt-5 max-w-md text-pretty text-lg sm:text-xl leading-relaxed ${GRAY}`}>
+          <p className={`mt-4 max-w-md ${SECTION_LEAD} ${LEAD_GRAY}`}>
             A collection of my app designs, from the first screen to the last. Each one covers the problem, the decisions, and the result.
           </p>
           <Button

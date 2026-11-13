@@ -11,6 +11,7 @@ import CopyCitation from "@/components/projects/CopyCitation";
 import PinnedScreens from "@/components/shared/PinnedScreens";
 import { projectThemeStyle } from "@/data/projectTheme";
 import type { CaseStudy, ProjectItem } from "@/types";
+import { EYEBROW, LEAD_GRAY, PAGE_TITLE, SECTION_LEAD, SECTION_TITLE } from "@/components/shared/typeScale";
 
 interface Props {
   project: CaseStudy;
@@ -378,15 +379,15 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
       <section className="hero-glow hero-glow-iot overflow-hidden">
         <div className={`${WRAP} pt-10 sm:pt-14 text-center`}>
           <div className="flex justify-center">
-            <CaseStudyBreadcrumb title="IoT Fertiliser Mixing" />
+            <CaseStudyBreadcrumb title="IoT Fertiliser Mixing" centered />
           </div>
-          <p className="mt-4 text-sm font-semibold text-[var(--pa)]">
+          <p className={`mt-4 ${EYEBROW} text-[var(--pa)]`}>
             Peer-reviewed · IJIE Vol. 18(1), 2026
           </p>
-          <h1 className={`mt-3 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold ${INK} tracking-apple-hero leading-[1.03]`}>
+          <h1 className={`mt-2 ${PAGE_TITLE} ${INK}`}>
             Nutrients, <span className="whitespace-nowrap">to the millilitre.</span>
           </h1>
-          <p className={`mt-5 mx-auto max-w-2xl text-lg sm:text-xl ${GRAY} leading-relaxed tracking-apple-subhead`}>
+          <p className={`mt-4 mx-auto max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY}`}>
             {project.tagline}
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
@@ -434,7 +435,7 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
           <div key={chapter.headline} className={`${WRAP} py-14 sm:py-24`}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
               <Reveal className={i % 2 ? "md:order-2" : ""}>
-                <h2 className="text-3xl sm:text-5xl font-semibold tracking-apple-hero leading-[1.08]">
+                <h2 className={SECTION_TITLE}>
                   <span className={`block ${GRAY}`}>{chapter.problem}</span>
                   <span className={`block ${INK}`}>{chapter.headline}</span>
                 </h2>
@@ -451,7 +452,7 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
       {/* 3b. Videos */}
       <section aria-label="Videos" className="max-w-6xl mx-auto w-full px-6 sm:px-8 pb-20 sm:pb-32">
         <Reveal>
-          <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero text-center`}>
+          <h2 className={`${SECTION_TITLE} ${INK} text-center`}>
             See it <span className={GRAY}>in action.</span>
           </h2>
         </Reveal>
@@ -469,8 +470,8 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
       <section aria-label="Figures from the paper" className="py-16 sm:py-24">
         <div className="max-w-6xl mx-auto w-full px-6 sm:px-8">
           <Reveal>
-            <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero text-center`}>See how it’s built.</h2>
-            <p className={`mt-3 mb-10 text-lg ${GRAY} text-center`}>Three figures from the published paper.</p>
+            <h2 className={`${SECTION_TITLE} ${INK} text-center`}>See how it’s built.</h2>
+            <p className={`mt-4 mb-10 mx-auto max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY} text-center`}>Three figures from the published paper.</p>
             <PinnedScreens screens={FIGURES} tone="light" />
           </Reveal>
         </div>
@@ -480,10 +481,10 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
       <section aria-label="Experimental validation" className="pt-16 sm:pt-24">
         <div className={WRAP}>
           <Reveal>
-            <h2 className={`text-3xl sm:text-5xl md:text-6xl font-semibold ${INK} tracking-apple-hero max-w-3xl leading-[1.08]`}>
+            <h2 className={`max-w-3xl ${SECTION_TITLE} ${INK}`}>
               Tested five ways.
             </h2>
-            <p className={`mt-4 max-w-2xl text-lg ${GRAY} leading-relaxed`}>
+            <p className={`mt-4 max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY}`}>
               Each subsystem was measured against a reference, as documented in the <em>International Journal of Integrated Engineering</em>.
             </p>
           </Reveal>
@@ -497,8 +498,8 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
       <section aria-label="Results" className="bg-[var(--pa-deep)] text-white py-24 sm:py-32">
         <div className={WRAP}>
           <Reveal>
-            <p className="text-sm font-semibold text-[#86868B]">The headline numbers</p>
-            <h2 className="mt-2 text-3xl sm:text-5xl font-semibold tracking-apple-hero max-w-2xl leading-[1.08]">
+            <p className={`${EYEBROW} text-[#86868B]`}>The headline numbers</p>
+            <h2 className={`mt-2 max-w-2xl ${SECTION_TITLE}`}>
               Precise, and peer-reviewed.
             </h2>
           </Reveal>
@@ -520,8 +521,8 @@ export default function IotFertiliserCaseStudy({ project, nextProject }: Props) 
       <section aria-label="Publication" className="py-16 sm:py-24">
         <div className={WRAP}>
           <Reveal>
-            <p className="text-sm font-semibold text-[var(--pa)]">Peer-reviewed · Scopus and MyCite indexed · Open access</p>
-            <h2 className={`mt-2 max-w-3xl text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero leading-[1.08]`}>
+            <p className={`${EYEBROW} text-[var(--pa)]`}>Peer-reviewed · Scopus and MyCite indexed · Open access</p>
+            <h2 className={`mt-2 max-w-3xl ${SECTION_TITLE} ${INK}`}>
               IoT-Based Fertiliser Mixing for Precision Farming.
             </h2>
             <div className={`mt-6 max-w-3xl space-y-1.5 text-base leading-relaxed ${GRAY}`}>

@@ -390,6 +390,51 @@ export const PROJECT_SPECS: Record<string, ProjectSpecGroup[]> = {
   ],
 };
 
+export interface ProjectSpecHighlight {
+  value: string;
+  label: string;
+}
+
+/** The four figures at the top of each Tech Specs page. Every one restates a row from PROJECT_SPECS above. */
+export const PROJECT_SPEC_HIGHLIGHTS: Record<string, ProjectSpecHighlight[]> = {
+  "cytron-hr-assistive-intelligence": [
+    { value: "0.60", label: "Similarity cut-off before it answers" },
+    { value: "4", label: "Document formats: DOCX, PDF, TXT, Markdown" },
+    { value: "20 MB", label: "Maximum size per file" },
+    { value: "0", label: "Model calls for out-of-scope questions" },
+  ],
+  "warranty-rma": [
+    { value: "v2.52.1", label: "Current release" },
+    { value: "5 days", label: "Default SLA target, business days" },
+    { value: "24", label: "Read-only tools in the Telegram assistant" },
+    { value: "300+", label: "Automated tests" },
+  ],
+  "raspberry-pi-diagnostics": [
+    { value: "19", label: "Automated test vectors" },
+    { value: "4", label: "Test phases in every run" },
+    { value: "180 s", label: "Ceiling per test before it fails" },
+    { value: "90 days", label: "Of records kept, pruned daily" },
+  ],
+  "opencore-efi-hackintosh": [
+    { value: "1.0.8", label: "OpenCore version" },
+    { value: "17", label: "Components confirmed working" },
+    { value: "3", label: "macOS versions tested, Sonoma to Tahoe" },
+    { value: "15", label: "USB ports in the XHCI map" },
+  ],
+  "iot-fertiliser-mixing": [
+    { value: "99.6%", label: "Mean TDS accuracy against a calibrated meter" },
+    { value: ">94%", label: "Dosing accuracy from 250 to 1,000 ml" },
+    { value: "2", label: "Independently metered pumps" },
+    { value: "30", label: "Samples in the median-filtered TDS buffer" },
+  ],
+  "rog-gaming-center": [
+    { value: "4", label: "Aura RGB lighting zones" },
+    { value: "5", label: "Lighting effects" },
+    { value: "6", label: "Display profiles" },
+    { value: "10 ms", label: "Between lighting reports, latest wins" },
+  ],
+};
+
 export const SHOWCASE_PROJECT_IDS = Object.keys(PROJECT_SPECS);
 
 export const isShowcaseProject = (id: string) => id in PROJECT_SPECS;

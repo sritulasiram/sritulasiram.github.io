@@ -207,6 +207,27 @@ export default function RootLayout({
                   for (var i = 0; i < metas.length; i++) {
                     metas[i].setAttribute('content', color);
                   }
+                  // On a reload or back/forward visit with a saved position, keep the page hidden and put it back there
+                  // right here, frame by frame as the HTML arrives, then show it. This doesn't wait for React to start,
+                  // so the hidden moment is short; ScrollMemory still corrects any later shift. 2.6 s is the hard cap.
+                  var navEntry = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+                  var revisit = navEntry && (navEntry.type === 'reload' || navEntry.type === 'back_forward');
+                  var target = revisit ? Number(sessionStorage.getItem('scroll:' + location.pathname)) || 0 : 0;
+                  if (target > 0) {
+                    d.classList.add('scroll-restoring');
+                    history.scrollRestoration = 'manual';
+                    var began = Date.now();
+                    var show = function () { d.classList.remove('scroll-restoring'); };
+                    var tryRestore = function () {
+                      if (!d.classList.contains('scroll-restoring')) return;
+                      if (d.scrollHeight - innerHeight >= target - 2) {
+                        scrollTo({ top: target, behavior: 'instant' });
+                        if (Math.abs(scrollY - target) < 2) return show();
+                      }
+                      if (Date.now() - began < 2600) requestAnimationFrame(tryRestore); else show();
+                    };
+                    requestAnimationFrame(tryRestore);
+                  }
                 } catch (e) {}
               })();
             `,

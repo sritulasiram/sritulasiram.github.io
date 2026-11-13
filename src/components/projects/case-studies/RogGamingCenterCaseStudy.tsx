@@ -11,6 +11,7 @@ import type { ViewerScreen } from "@/components/shared/ScreenViewer";
 import { PROJECTS_DATA } from "@/data/content";
 import { projectThemeStyle } from "@/data/projectTheme";
 import type { CaseStudy } from "@/types";
+import { EYEBROW, LEAD_GRAY, PAGE_TITLE, SECTION_LEAD, SECTION_TITLE } from "@/components/shared/typeScale";
 
 interface Props {
   project: CaseStudy;
@@ -252,13 +253,13 @@ export default function RogGamingCenterCaseStudy({ project }: Props) {
       <section className="hero-glow hero-glow-rog overflow-hidden">
         <div className={`${WRAP} pt-10 sm:pt-14 text-center`}>
           <div className="flex justify-center">
-            <CaseStudyBreadcrumb title="ROG Gaming Center" />
+            <CaseStudyBreadcrumb title="ROG Gaming Center" centered />
           </div>
-          <p className="mt-4 text-sm font-semibold text-[var(--pa)]">Native macOS app · Swift &amp; SwiftUI · Version 2</p>
-          <h1 className={`mt-3 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold ${INK} tracking-apple-hero leading-[1.03]`}>
+          <p className={`mt-4 ${EYEBROW} text-[var(--pa)]`}>Native macOS app · Swift &amp; SwiftUI · Version 2</p>
+          <h1 className={`mt-2 ${PAGE_TITLE} ${INK}`}>
             Every ROG control. <span className="sm:whitespace-nowrap">Zero runtimes.</span>
           </h1>
-          <p className={`mt-5 mx-auto max-w-2xl text-lg sm:text-xl ${GRAY} leading-relaxed tracking-apple-subhead`}>
+          <p className={`mt-4 mx-auto max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY}`}>
             Keyboard lighting, system vitals and display profiles for ASUS ROG laptops running macOS. Rebuilt from the core as a native SwiftUI app, with nothing running as root.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
@@ -312,7 +313,7 @@ export default function RogGamingCenterCaseStudy({ project }: Props) {
           <div key={chapter.headline} className={`${WRAP} py-14 sm:py-24`}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
               <Reveal className={i % 2 ? "md:order-2" : ""}>
-                <h2 className="text-3xl sm:text-5xl font-semibold tracking-apple-hero leading-[1.08]">
+                <h2 className={SECTION_TITLE}>
                   <span className={`block ${GRAY}`}>{chapter.problem}</span>
                   <span className={`block ${INK}`}>{chapter.headline}</span>
                 </h2>
@@ -330,8 +331,8 @@ export default function RogGamingCenterCaseStudy({ project }: Props) {
       <section id="screens" aria-label="Every screen" className="scroll-mt-20 py-16 sm:py-24">
         <div className="max-w-6xl mx-auto w-full px-6 sm:px-8">
           <Reveal>
-            <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero text-center`}>See every screen.</h2>
-            <p className={`mt-3 mb-10 text-lg ${GRAY} text-center`}>Four screens in one native window. Scroll to see each one.</p>
+            <h2 className={`${SECTION_TITLE} ${INK} text-center`}>See every screen.</h2>
+            <p className={`mt-4 mb-10 mx-auto max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY} text-center`}>Four screens in one native window. Scroll to see each one.</p>
             <PinnedScreens screens={SCREENS} fitWidth />
           </Reveal>
         </div>
@@ -341,11 +342,11 @@ export default function RogGamingCenterCaseStudy({ project }: Props) {
       <section id="menu-bar" aria-label="Menu bar and Settings" className="scroll-mt-20 py-16 sm:py-24">
         <div className={WRAP}>
           <Reveal>
-            <h2 className={`text-3xl sm:text-5xl font-semibold tracking-apple-hero leading-[1.08]`}>
+            <h2 className={SECTION_TITLE}>
               <span className={`block ${GRAY}`}>Close the window.</span>
               <span className={`block ${INK}`}>It stays out of the way.</span>
             </h2>
-            <p className={`mt-5 max-w-2xl text-lg ${GRAY} leading-relaxed`}>
+            <p className={`mt-4 max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY}`}>
               The everyday controls live in the menu bar, and everything else is in a standard Settings window, opened with ⌘,.
             </p>
           </Reveal>
@@ -380,7 +381,7 @@ export default function RogGamingCenterCaseStudy({ project }: Props) {
       <section id="built-without" aria-label="Built without" className="scroll-mt-20 py-16 sm:py-28">
         <div className={`${WRAP} grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16`}>
           <Reveal>
-            <h2 className="text-3xl sm:text-5xl font-semibold tracking-apple-hero leading-[1.08]">
+            <h2 className={SECTION_TITLE}>
               <span className={`block ${GRAY}`}>Swift, in user space.</span>
               <span className={`block ${INK}`}>What it doesn’t need.</span>
             </h2>
@@ -445,8 +446,8 @@ export default function RogGamingCenterCaseStudy({ project }: Props) {
       <section aria-label="Results" className="bg-[var(--pa-deep)] text-white py-24 sm:py-32">
         <div className={WRAP}>
           <Reveal>
-            <p className="text-sm font-semibold text-[#86868B]">At a glance</p>
-            <h2 className="mt-2 text-3xl sm:text-5xl font-semibold tracking-apple-hero max-w-2xl leading-[1.08]">
+            <p className={`${EYEBROW} text-[#86868B]`}>At a glance</p>
+            <h2 className={`mt-2 max-w-2xl ${SECTION_TITLE}`}>
               Rebuilt from the core.
             </h2>
           </Reveal>

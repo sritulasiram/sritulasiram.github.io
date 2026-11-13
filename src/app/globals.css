@@ -348,11 +348,14 @@ html.dark::-webkit-scrollbar-thumb:active {
 
 /* Pages with SectionNav: on desktop the nav shows scroll progress, so the page scrollbar is hidden. */
 @media (min-width: 1280px) {
-  html.section-nav-scroll {
+  /* :has() hides it from the first paint (the nav is server-rendered); the class covers the same state after hydration */
+  html.section-nav-scroll,
+  html:has([data-section-nav]) {
     scrollbar-width: none;
   }
 
-  html.section-nav-scroll::-webkit-scrollbar {
+  html.section-nav-scroll::-webkit-scrollbar,
+  html:has([data-section-nav])::-webkit-scrollbar {
     display: none;
   }
 }
@@ -1030,16 +1033,76 @@ html.dark .project-theme {
 }
 .story-rise { animation: storyRise 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s) both; }
 .story-phone { animation: storyPhoneIn 1.1s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s) both; }
-/* On small screens the name sits on one line, so a per-word stagger just makes "Ram" arrive late. */
+/* One-column layouts: the rest of a case-study hero follows its headline closely, so it reads as one entrance. */
 @media (max-width: 1023px) {
-  .story-rise.hero-word { --d: 0.08s !important; }
-  /* One column: the rest of the hero follows the name closely, so it reads as one entrance and not a long cascade. */
-  .story-rise:not(.hero-word), .story-phone { animation-delay: calc(var(--d, 0s) * 0.6); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .story-rise, .story-phone { animation: none; }
+  .story-rise, .story-phone { animation-delay: calc(var(--d, 0s) * 0.6); }
 }
 
+/* Home hero entrance, "lights up": the spotlight comes on and the portrait rises into it, then each line of type
+   (.hx, one per line, --d is its delay in ms) fades up. Only opacity and transform move (no blur: filters repaint
+   every frame and made this choppy). */
+@keyframes heroPhotoIn {
+  /* starts at 0.01, not 0: the portrait is the LCP element and Chrome ignores it while fully transparent */
+  from { opacity: 0.01; transform: translate3d(0, 36px, 0) scale(1.06); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes heroHaloIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes heroLineIn {
+  from { opacity: 0; transform: translate3d(var(--x, 0px), 14px, 0); }
+  to { opacity: 1; transform: none; }
+}
+.hx {
+  display: inline-block;
+  will-change: transform, opacity;
+  animation: heroLineIn 1100ms cubic-bezier(0.22, 1, 0.36, 1) calc(var(--d, 0) * 1ms) both;
+}
+.hero-photo { will-change: transform, opacity; animation: heroPhotoIn 1300ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.hero-halo { animation: heroHaloIn 1300ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+/* The type drifts inward from each side toward the portrait while all three settle together. */
+.hg-id { --x: -18px; }
+.hg-role { --x: 18px; }
+
+/* Scroll-linked, reversible, no JavaScript. The portrait drifts up and pulls back, the type leaves a touch faster.
+   The role block (below the fold on phones) is revealed by its own scroll position instead of on load. Browsers
+   without scroll timelines simply keep the load animation. */
+@supports (animation-timeline: scroll()) {
+  @keyframes heroPhotoOut { to { translate: 0 -4%; scale: 0.97; } }
+  @keyframes heroTextOut { to { translate: 0 -28px; opacity: 0; } }
+  .hero-photo {
+    animation: heroPhotoIn 1300ms cubic-bezier(0.22, 1, 0.36, 1) both, heroPhotoOut linear both;
+    animation-timeline: auto, scroll(root);
+    animation-range: normal, 0 90vh;
+  }
+  .hg-id {
+    animation: heroTextOut linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 70vh;
+  }
+  /* On phones the role block is below the fold and scrolls into view, so it must not fade out as you scroll. */
+  @media (min-width: 1024px) {
+    .hg-role {
+      animation: heroTextOut linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 70vh;
+    }
+  }
+}
+/* Phones: the role block waits for RoleReveal to mark the hero, then plays (delays count from the block's first line). */
+@media (max-width: 1023px) {
+  .hg-id, .hg-role { --x: 0px; }
+  .hg-role .hx { animation: none; opacity: 0; }
+  #hero[data-role-in] .hg-role .hx {
+    animation: heroLineIn 1100ms cubic-bezier(0.22, 1, 0.36, 1) calc(max(var(--d, 0) - 200, 0) * 1ms) both;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hx, .hero-photo, .hero-halo { animation: heroHaloIn 300ms ease both; animation-timeline: auto; animation-range: normal; }
+  .hg-id, .hg-role { animation: none; }
+  .story-rise, .story-phone { animation: none; }
+}
 
 /* Default accent for buttons and links outside a themed page (case studies set --pa instead). */
 :root { --btn-accent: #0071e3; }
@@ -1699,3 +1762,12 @@ html.launch-gated #site-root { display: none; }
 @keyframes fade-late { from { opacity: 0; transform: translateY(0.4em); } to { opacity: 1; transform: none; } }
 .fade-late { opacity: 0; animation: fade-late 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 @media (prefers-reduced-motion: reduce) { .fade-late { animation: none; opacity: 1; } }
+
+/* On a refresh, the page stays hidden until ScrollMemory has put it back where it was, then fades in there,
+   instead of flashing the top of the page first. The html background (set by the theme script) shows meanwhile. */
+html.scroll-restoring #site-root { opacity: 0; }
+#site-root { transition: opacity 0.25s ease-out; }
+@media (prefers-reduced-motion: reduce) { #site-root { transition: none; } }
+
+/* The home gallery's caption eases in each time a new photo takes the centre (see HomePhotoGallery). */
+@keyframes gallery-caption { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }

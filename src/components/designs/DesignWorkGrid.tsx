@@ -6,6 +6,7 @@ import { DESIGNS_DATA, DESIGN_DETAILS } from "@/data/designDetails";
 import { MacbookPro } from "@/components/mockups/MacbookPro";
 import DesignPhoneStage from "./DesignPhoneStage";
 import { DESIGN_ACCENT, STAGE_DESIGNS } from "./designStage";
+import { LEAD_GRAY, SECTION_LEAD, SECTION_TITLE, TITLE_INK } from "@/components/shared/typeScale";
 
 const FEATURED_ID = "sage";
 
@@ -14,15 +15,15 @@ export default function DesignWorkGrid() {
     <section id="work" data-section="work" className="scroll-mt-20 py-12 sm:py-16 bg-white dark:bg-black transition-colors">
       <div className="max-w-6xl mx-auto px-6 sm:px-8 space-y-10 sm:space-y-12">
         <Reveal>
-        <div className="max-w-3xl space-y-3">
-          <h2 className="text-3xl sm:text-5xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-tight leading-[1.08] text-balance">
+        <div className="max-w-3xl">
+          <h2 className={`${SECTION_TITLE} ${TITLE_INK}`}>
             Selected work.
             <br />
             <span className="text-[#6E6E73] dark:text-[#8E8E93] font-medium">
               Where ideas become interfaces.
             </span>
           </h2>
-          <p className="text-base sm:text-lg text-[#6E6E73] dark:text-[#A1A1A6] font-normal leading-relaxed">
+          <p className={`mt-4 max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY}`}>
             Four mobile apps and one website. Each page covers the problem, the decisions, and the result.
           </p>
         </div>

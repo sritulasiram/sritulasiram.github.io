@@ -1,5 +1,6 @@
 import CountUp from "@/components/shared/CountUp";
 import Reveal from "@/components/shared/Reveal";
+import { SECTION_TITLE, TITLE_INK } from "@/components/shared/typeScale";
 
 const FIGURES = [
   { value: "19", label: "Automated checks", detail: "Raspberry Pi Diagnostic Suite, from one Run All button" },
@@ -17,7 +18,7 @@ export default function ProjectsImpact() {
     >
       <div className="max-w-6xl mx-auto px-6 sm:px-8">
         <Reveal>
-        <h2 className="max-w-2xl text-3xl sm:text-5xl font-semibold tracking-apple-tight leading-[1.08] text-[#1D1D1F] dark:text-[#F5F5F7]">
+        <h2 className={`max-w-2xl ${SECTION_TITLE} ${TITLE_INK}`}>
           Built to be measured.{" "}
           <span className="text-[#6E6E73] dark:text-[#A1A1A6]">Shipped with the numbers to prove it.</span>
         </h2>

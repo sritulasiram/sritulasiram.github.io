@@ -10,12 +10,12 @@ import { WRAP } from "@/components/home/homeShared";
 const BEATS = [FixStatement, MeetSri, DesignStatement, PhotographyStatement];
 const COUNT = BEATS.length;
 /** How far you scroll, in screen heights, to move from one beat to the next. */
-const STEP_SVH = 60;
+const STEP_SVH = 80;
 
 /** Where the intro is while you scroll between two beats: it rests on each, then glides across the middle of the step. */
 function easePosition(pos: number) {
   const base = Math.floor(pos);
-  const t = Math.min(1, Math.max(0, (pos - base - 0.3) / 0.4));
+  const t = Math.min(1, Math.max(0, (pos - base - 0.4) / 0.2));
   return base + t * t * (3 - 2 * t);
 }
 
@@ -60,7 +60,7 @@ export default function IntroScroller() {
       });
       const now = Math.min(COUNT - 1, Math.max(0, Math.round(pos)));
       setActive(now);
-      setReached((r) => Math.max(r, rect.top <= window.innerHeight * 0.25 ? now + 1 : 0));
+      setReached((r) => Math.max(r, rect.top <= window.innerHeight * 0.5 ? now + 1 : 0));
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);

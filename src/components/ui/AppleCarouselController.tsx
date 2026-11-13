@@ -13,6 +13,8 @@ interface AppleCarouselControllerProps {
   ariaLabel?: string;
   /** false = no auto-advance and no play/pause button; the dots stay as manual navigation. */
   autoplay?: boolean;
+  /** Holds the progress where it is (e.g. while the carousel is hovered or dragged) without flipping the play button. */
+  paused?: boolean;
 }
 
 /**
@@ -32,6 +34,7 @@ export default function AppleCarouselController({
   className = "",
   ariaLabel = "Carousel controls",
   autoplay = true,
+  paused = false,
 }: AppleCarouselControllerProps) {
   const [isPlaying, setIsPlaying] = useState(true);
 
@@ -76,7 +79,7 @@ export default function AppleCarouselController({
       }
     }
 
-    if (!isPlaying || isReduced || !isVisible) {
+    if (!isPlaying || paused || isReduced || !isVisible) {
       lastTimeRef.current = null;
       if (rafIdRef.current) {
         cancelAnimationFrame(rafIdRef.current);
@@ -119,7 +122,7 @@ export default function AppleCarouselController({
         rafIdRef.current = null;
       }
     };
-  }, [autoplay, isPlaying, isVisible, activeIndex, itemCount, onSelectIndex, slideDuration]);
+  }, [autoplay, isPlaying, paused, isVisible, activeIndex, itemCount, onSelectIndex, slideDuration]);
 
   const handleDotClick = (idx: number) => {
     elapsedRef.current = 0;

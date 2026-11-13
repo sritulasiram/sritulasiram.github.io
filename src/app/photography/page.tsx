@@ -13,6 +13,7 @@ import PhotographyHighlights from "@/components/photography/PhotographyHighlight
 import CameraOpticsKitBento from "@/components/photography/CameraOpticsKitBento";
 import { PHOTOGRAPHY_DATA } from "@/data/content";
 import { HIGHLIGHT_PHOTOS } from "@/data/photoHighlights";
+import { PAGE_TITLE, TITLE_INK } from "@/components/shared/typeScale";
 
 export const metadata: Metadata = {
   title: "Photography",
@@ -30,6 +31,7 @@ const PHOTO_SECTIONS = [
   { id: "gallery", label: "Gallery" },
   { id: "origins", label: "Journey" },
   { id: "shot-on-iphone", label: "iPhone 16 Pro" },
+  { id: "apps", label: "Apps" },
 ];
 
 export default function PhotographyPage() {
@@ -67,7 +69,7 @@ export default function PhotographyPage() {
 
         {/* Page Header */}
         <div className="max-w-4xl mx-auto text-center space-y-4 mb-12 sm:mb-14">
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-apple-hero leading-[1.03]">
+          <h1 className={`${PAGE_TITLE} ${TITLE_INK}`}>
             Photography
             <span className="mt-3 block text-[0.36em] font-medium leading-[1.15] tracking-apple-tight text-[#6E6E73] dark:text-[#8E8E93] text-balance">Perspective and light</span>
           </h1>

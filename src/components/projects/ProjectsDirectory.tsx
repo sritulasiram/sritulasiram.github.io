@@ -8,6 +8,7 @@ import { MacbookPro } from "@/components/mockups/MacbookPro";
 import Reveal from "@/components/shared/Reveal";
 import { cn } from "@/lib/cn";
 import HrAssistiveMacbook from "./visuals/HrAssistiveMacbook";
+import { SECTION_TITLE, TITLE_INK } from "@/components/shared/typeScale";
 
 type ProjectStatus = "production" | "pilot" | "peer-reviewed" | "prototype" | "personal";
 
@@ -194,7 +195,7 @@ export default function ProjectsDirectory() {
         {/* Heading and category filter chips */}
         <Reveal>
         <div className="text-center">
-          <h2 className="text-3xl sm:text-5xl font-semibold tracking-apple-headline leading-[1.08] text-[#1D1D1F] dark:text-[#F5F5F7]">
+          <h2 className={`${SECTION_TITLE} ${TITLE_INK}`}>
             Every project.
             <span className="block text-[#6E6E73] dark:text-[#8E8E93]">Browse by system and build.</span>
           </h2>

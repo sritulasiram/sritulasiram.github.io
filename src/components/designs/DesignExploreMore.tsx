@@ -1,45 +1,45 @@
-import { ArrowUpRight } from "lucide-react";
-import { LayoutGrid, PenTool, Rocket } from "lucide-react";
-import { ExploreTiles, type ExploreTile } from "@/components/shared/ExploreMore";
+import NextUp, { type NextUpLink } from "@/components/shared/NextUp";
+import { accentStyle } from "@/data/projectTheme";
 import type { DesignItem } from "@/types";
+import { APP_STUDIES } from "./appStudies";
+import { WEB_STUDIES } from "./webStudies";
 
-/** "Keep exploring" tiles at the foot of a design page: the next design, all designs, and the source or prototype. */
+/** The end of a design page: links to the design file or source and to all designs, then the next design. */
 export default function DesignExploreMore({
+  title,
   nextDesign,
   figmaUrl,
   githubUrl,
   liveUrl,
 }: {
+  title: string;
   nextDesign: DesignItem;
   figmaUrl?: string;
   githubUrl?: string;
   liveUrl?: string;
 }) {
-  const tiles: ExploreTile[] = [
-    {
-      href: `/designs/${nextDesign.id}`,
-      icon: Rocket,
-      kicker: "Next design",
-      title: nextDesign.title,
-      body: nextDesign.subtitle,
-    },
-    {
-      href: "/designs",
-      icon: LayoutGrid,
-      kicker: "All designs",
-      title: "See more of the work.",
-      body: "Every design, from mobile apps to web platforms.",
-    },
-  ];
+  const links: NextUpLink[] = [];
+  if (figmaUrl) links.push({ label: "Open in Figma", href: figmaUrl, external: true });
+  else if (liveUrl) links.push({ label: "See it live", href: liveUrl, external: true });
+  else if (githubUrl) links.push({ label: "Read the code", href: githubUrl, external: true });
+  links.push({ label: "All designs", href: "/designs" });
 
-  const link = figmaUrl
-    ? { href: figmaUrl, kicker: "Figma", title: "Open the design file.", body: "Browse the screens, components and flows in Figma.", icon: PenTool }
-    : liveUrl
-      ? { href: liveUrl, kicker: "Live", title: "See it live.", body: "Open the working site in a new tab.", icon: ArrowUpRight }
-      : githubUrl
-        ? { href: githubUrl, kicker: "Source", title: "Read the code.", body: "Browse the repository on GitHub.", icon: ArrowUpRight }
-        : null;
-  if (link) tiles.push({ ...link, external: true });
+  const nextAccent = (APP_STUDIES[nextDesign.id] ?? WEB_STUDIES[nextDesign.id])?.accent;
 
-  return <ExploreTiles tiles={tiles} />;
+  return (
+    <NextUp
+      // "More on …" only when a link is actually about this design; "All designs" alone isn't.
+      context={links.length > 1 ? `More on ${title}.` : "Keep exploring."}
+      links={links}
+      next={{
+        kicker: "Next design",
+        title: nextDesign.title,
+        body: nextDesign.subtitle,
+        href: `/designs/${nextDesign.id}`,
+        imageSrc: nextDesign.imageSrc,
+        accent: nextAccent ? accentStyle(nextAccent) : undefined,
+        device: APP_STUDIES[nextDesign.id] ? "phone" : "screenshot",
+      }}
+    />
+  );
 }

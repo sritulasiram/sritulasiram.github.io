@@ -10,6 +10,7 @@ import { MacbookPro } from "@/components/mockups/MacbookPro";
 import { PROJECTS_DATA } from "@/data/content";
 import { projectThemeStyle } from "@/data/projectTheme";
 import type { CaseStudy } from "@/types";
+import { EYEBROW, LEAD_GRAY, PAGE_TITLE, SECTION_LEAD, SECTION_TITLE } from "@/components/shared/typeScale";
 
 const ALSO_WORKS: { name: string; note: string }[] = [
   { name: "Audio", note: "Speakers, microphone and headphone jack, plus the native startup chime." },
@@ -171,13 +172,13 @@ export default function OpenCoreEfiCaseStudy({ project }: Props) {
       <section className="hero-glow hero-glow-opencore overflow-hidden">
         <div className={`${WRAP} pt-10 sm:pt-14 text-center`}>
           <div className="flex justify-center">
-            <CaseStudyBreadcrumb title="OpenCore EFI Hackintosh" />
+            <CaseStudyBreadcrumb title="OpenCore EFI Hackintosh" centered />
           </div>
-          <p className="mt-4 text-sm font-semibold text-[var(--pa)]">macOS firmware engineering · OpenCore 1.0.8</p>
-          <h1 className={`mt-3 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold ${INK} tracking-apple-hero leading-[1.03]`}>
+          <p className={`mt-4 ${EYEBROW} text-[var(--pa)]`}>macOS firmware engineering · OpenCore 1.0.8</p>
+          <h1 className={`mt-2 ${PAGE_TITLE} ${INK}`}>
             A Mac, <span className="sm:whitespace-nowrap">from a gaming laptop.</span>
           </h1>
-          <p className={`mt-5 mx-auto max-w-2xl text-lg sm:text-xl ${GRAY} leading-relaxed tracking-apple-subhead`}>
+          <p className={`mt-4 mx-auto max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY}`}>
             {project.tagline}
           </p>
           {project.githubUrl && (
@@ -231,7 +232,7 @@ export default function OpenCoreEfiCaseStudy({ project }: Props) {
           <div key={chapter.headline} className={`${WRAP} py-14 sm:py-24`}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
               <Reveal className={i % 2 ? "md:order-2" : ""}>
-                <h2 className="text-3xl sm:text-5xl font-semibold tracking-apple-hero leading-[1.08]">
+                <h2 className={SECTION_TITLE}>
                   <span className={`block ${GRAY}`}>{chapter.problem}</span>
                   <span className={`block ${INK}`}>{chapter.headline}</span>
                 </h2>
@@ -248,7 +249,7 @@ export default function OpenCoreEfiCaseStudy({ project }: Props) {
       {/* 3b. The rest of the laptop */}
       <section aria-label="What else works" className={`${WRAP} py-16 sm:py-24`}>
         <Reveal>
-          <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero leading-[1.08]`}>
+          <h2 className={`${SECTION_TITLE} ${INK}`}>
             The rest of the laptop.
             <span className={`block ${GRAY}`}>Working too.</span>
           </h2>
@@ -280,8 +281,8 @@ export default function OpenCoreEfiCaseStudy({ project }: Props) {
       <section id="config" aria-label="The configuration" className="scroll-mt-20 py-16 sm:py-24">
         <div className="max-w-6xl mx-auto w-full px-6 sm:px-8">
           <Reveal>
-            <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero text-center`}>See what’s inside.</h2>
-            <p className={`mt-3 mb-10 text-lg ${GRAY} text-center max-w-2xl mx-auto`}>
+            <h2 className={`${SECTION_TITLE} ${INK} text-center`}>See what’s inside.</h2>
+            <p className={`mt-4 mb-10 mx-auto max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY} text-center`}>
               The config.plist in OpenCore Configurator, with twelve custom ACPI tables loaded.
             </p>
             <div className="mx-auto max-w-4xl">
@@ -302,8 +303,8 @@ export default function OpenCoreEfiCaseStudy({ project }: Props) {
       <section aria-label="Results" className="bg-[var(--pa-deep)] text-white py-24 sm:py-32">
         <div className={WRAP}>
           <Reveal>
-            <p className="text-sm font-semibold text-[#86868B]">Verified on this machine</p>
-            <h2 className="mt-2 text-3xl sm:text-5xl font-semibold tracking-apple-hero max-w-2xl leading-[1.08]">
+            <p className={`${EYEBROW} text-[#86868B]`}>Verified on this machine</p>
+            <h2 className={`mt-2 max-w-2xl ${SECTION_TITLE}`}>
               Works like it was made for it.
             </h2>
           </Reveal>
@@ -324,8 +325,8 @@ export default function OpenCoreEfiCaseStudy({ project }: Props) {
       {/* 6. Tech specs */}
       <section aria-label="Technical stack" className={`${WRAP} py-20 sm:py-28`}>
         <Reveal>
-          <h2 className={`text-3xl sm:text-5xl font-semibold ${INK} tracking-apple-hero`}>Under the hood.</h2>
-          <p className={`mt-3 text-lg ${GRAY} max-w-2xl`}>
+          <h2 className={`${SECTION_TITLE} ${INK}`}>Under the hood.</h2>
+          <p className={`mt-4 max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY}`}>
             {project.timeframe} · Tested against BIOS 319 on an ASUS ROG Strix GL503GE.
           </p>
         </Reveal>

@@ -206,6 +206,7 @@ export default function SectionNav({
 
   return (
     <nav
+      data-section-nav
       aria-label={ariaLabel}
       inert={!visible}
       data-dragging={dragging || undefined}
