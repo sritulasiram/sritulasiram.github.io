@@ -6,17 +6,17 @@ The site is deployed to **GitHub Pages** at <https://sritulasiram.my> by [`.gith
 
 | Branch | Purpose |
 | :-- | :-- |
-| `dev` | Day-to-day development. Pushing here does **not** deploy. |
 | `main` | Production. Every push builds and publishes to GitHub Pages. |
+| Any other branch | Short-lived work (for example `feat/tech-specs`). Pushing it does **not** deploy, because the workflow only runs on `main`. Merge it into `main`, then delete it. |
 
-Merging `dev` into `main` publishes the site. Pages are covered by the launch countdown until `LAUNCH_AT` (see [architecture.md](architecture.md#launch-gate)); `?preview=sri` shows the real site before then.
+There is no long-lived development branch: `main` is always meant to be deployable. Pushing to `main` publishes the site. Pages are covered by the launch countdown until `LAUNCH_AT` (see [architecture.md](architecture.md#launch-gate)); `?preview=sri` shows the real site before then.
 
 ```mermaid
 flowchart LR
-  work[Commit on dev] --> pushdev[Push dev]
-  pushdev --> review{Ready to launch?}
+  work[Commit on a short-lived branch] --> check["npm run build, lint and tsc pass locally"]
+  check --> review{Ready to publish?}
   review -- No --> work
-  review -- Yes --> merge[Merge dev into main]
+  review -- Yes --> merge[Merge into main]
   merge --> pushmain[Push main]
   pushmain --> ci[GitHub Actions deploy]
   ci --> live[sritulasiram.my]
@@ -65,7 +65,7 @@ flowchart TD
   b --> c["Enter sritulasiram.my in Pages settings"]
   c --> d["Wait for certificate"]
   d --> e["Enforce HTTPS"]
-  e --> f["Merge dev into main"]
+  e --> f["Push to main"]
   f --> g["Submit sitemap in Search Console"]
 ```
 
@@ -93,8 +93,8 @@ The output is plain static files, so `npm run build` followed by serving `out/` 
 
 | Symptom | Likely cause and fix |
 | :-- | :-- |
-| Workflow fails at `npm run build` | Reproduce locally with `npm ci && npm run build`. A type or lint error in `dev` blocks the deploy. |
-| Deploy succeeds but the site is unchanged | Hard-refresh; Pages and browsers cache. Confirm the run was on `main`, not `dev`. |
+| Workflow fails at `npm run build` | Reproduce locally with `npm ci && npm run build`. A type error on `main` blocks the deploy. |
+| Deploy succeeds but the site is unchanged | Hard-refresh; Pages and browsers cache. Confirm the run was on `main`; pushes to other branches do not deploy. |
 | Custom domain returns a 404 or certificate error | DNS has not propagated or the certificate is still issuing (can take up to an hour or more). Check the four `A` records and the `www` `CNAME`, then re-save the domain in Pages settings. |
 | "Enforce HTTPS" is greyed out | The certificate is not ready yet. Wait and retry. |
 | Site shows the "upgrading" screen | The build ran with `NEXT_PUBLIC_MAINTENANCE_MODE=true`. Unset it and redeploy. |

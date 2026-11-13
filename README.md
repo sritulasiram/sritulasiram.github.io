@@ -39,7 +39,7 @@ flowchart LR
   assets["public/ images and fonts"] --> app
   app -->|"next build (static export)"| out["out/ static site"]
   out -->|"GitHub Actions on main"| pages["GitHub Pages: sritulasiram.my"]
-  dev["dev branch"] -->|merge| main["main branch"] --> pages
+  branch["short-lived branch"] -->|merge| main["main branch"] --> pages
 ```
 
 ## Case studies
@@ -64,7 +64,6 @@ Requires Node.js 20.9 or later (CI uses Node 22).
 ```bash
 git clone https://github.com/sritulasiram/sritulasiram.github.io.git
 cd sritulasiram.github.io
-git checkout dev
 npm install
 npm run dev
 ```
@@ -140,7 +139,7 @@ To add a project, add an entry to `PROJECT_DETAILS`, put its images in `public/i
 
 ## Deployment
 
-The site deploys to GitHub Pages from `main` through [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). Work happens on `dev`; merging into `main` publishes. [`public/CNAME`](public/CNAME) maps the custom domain, and the full setup is in [docs/deployment.md](docs/deployment.md).
+The site deploys to GitHub Pages from `main` through [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). Pushing to `main` publishes; any other branch is safe to push and does not deploy. [`public/CNAME`](public/CNAME) maps the custom domain, and the full setup is in [docs/deployment.md](docs/deployment.md).
 
 [`vercel.json`](vercel.json) and [`public/_headers`](public/_headers) carry security and cache headers for hosts that read them. GitHub Pages ignores both.
 
