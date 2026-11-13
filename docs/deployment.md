@@ -9,7 +9,7 @@ The site is deployed to **GitHub Pages** at <https://sritulasiram.my> by [`.gith
 | `main` | Production. Every push builds and publishes to GitHub Pages. |
 | Any other branch | Short-lived work (for example `feat/tech-specs`). Pushing it does **not** deploy, because the workflow only runs on `main`. Merge it into `main`, then delete it. |
 
-There is no long-lived development branch: `main` is always meant to be deployable. Pushing to `main` publishes the site. Pages are covered by the launch countdown until `LAUNCH_AT` (see [architecture.md](architecture.md#launch-gate)); `?preview=sri` shows the real site before then.
+There is no long-lived development branch: `main` is always meant to be deployable. Pushing to `main` publishes the site.
 
 ```mermaid
 flowchart LR
@@ -73,7 +73,6 @@ flowchart TD
 
 - [ ] `NEXT_PUBLIC_MAINTENANCE_MODE` is not set for the production build.
 - [ ] `npm run build` passes locally.
-- [ ] After the launch time has passed, remove the launch gate (`LaunchGate`, `src/lib/launch.ts`, the gate script in `layout.tsx`) and redeploy.
 - [ ] `npm run lint` and `npx tsc --noEmit` pass (CI only runs the build).
 - [ ] Domain verified in Google Search Console and `https://sritulasiram.my/sitemap.xml` submitted.
 
