@@ -5,17 +5,15 @@ import DesignHeroStage from "@/components/designs/DesignHeroStage";
 import DesignShowcaseMorph from "@/components/designs/DesignShowcaseMorph";
 import DesignWorkGrid from "@/components/designs/DesignWorkGrid";
 import DesignFoundationsKit from "@/components/designs/DesignFoundationsKit";
-import DesignIconsKit from "@/components/designs/DesignIconsKit";
-import DesignTypographyKit from "@/components/designs/DesignTypographyKit";
-import DesignWorkflowKit from "@/components/designs/DesignWorkflowKit";
+import DesignFoundationsStudio from "@/components/designs/DesignFoundationsStudio";
+import DesignToolsStudio from "@/components/designs/DesignToolsStudio";
 
 const DESIGN_SECTIONS = [
   { id: "overview", label: "Overview" },
   { id: "work", label: "Work" },
   { id: "design", label: "Design" },
-  { id: "icons", label: "Icons" },
-  { id: "typography", label: "Typography" },
-  { id: "workflow", label: "Workflow" },
+  { id: "workflow", label: "Tools" },
+  { id: "foundations", label: "Typography & Icons" },
 ];
 
 export default function DesignsPage() {
@@ -38,14 +36,11 @@ export default function DesignsPage() {
       {/* 4. Design Languages */}
       <DesignFoundationsKit />
 
-      {/* 5. Icon Systems */}
-      <DesignIconsKit />
+      {/* 5. Tools, tied to the projects they were used on */}
+      <DesignToolsStudio />
 
-      {/* 6. Typography Systems */}
-      <DesignTypographyKit />
-
-      {/* 7. Studio Workflow Apps */}
-      <DesignWorkflowKit />
+      {/* 6. Typography and icons, merged: a reference section to close the page */}
+      <DesignFoundationsStudio />
 
       {/* 8. Contact Footer */}
       <Footer {...FOOTER_COPY.designs} />

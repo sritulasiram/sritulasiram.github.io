@@ -11,16 +11,19 @@ export default function DesignSpecimenToggle<T extends string | number | boolean
   options,
   value,
   onChange,
+  onCard = false,
 }: {
   label: string;
   options: Option<T>[];
   value: T;
   onChange: (value: T) => void;
+  /** Use on a grey card: the track and selected pill swap tones so both stay visible. */
+  onCard?: boolean;
 }) {
   return (
     <div role="group" aria-label={label} className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
       <span className="basis-full sm:basis-auto text-xs font-semibold text-[#6E6E73] dark:text-[#8E8E93] sm:mr-2">{label}</span>
-      <div className="inline-flex max-w-full items-center p-1 rounded-full bg-[#F5F5F7] dark:bg-[#1C1C1E] border border-black/[0.04] dark:border-white/[0.08] overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className={`inline-flex max-w-full items-center p-1 rounded-full border border-black/[0.04] dark:border-white/[0.08] overflow-x-auto ${onCard ? "bg-white dark:bg-[#0A0A0A]" : "bg-[#F5F5F7] dark:bg-[#1C1C1E]"} [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`}>
       {options.map((option) => {
         const selected = option.value === value;
         return (
@@ -31,7 +34,7 @@ export default function DesignSpecimenToggle<T extends string | number | boolean
             aria-pressed={selected}
             className={`px-3 py-1.5 rounded-full whitespace-nowrap text-xs font-medium transition-all duration-200 min-h-[38px] sm:min-h-[32px] cursor-pointer focus-visible:outline-2 focus-visible:outline-[var(--focus-ring)] ${
               selected
-                ? "bg-white dark:bg-[#2C2C2E] text-[#1D1D1F] dark:text-white shadow-xs"
+                ? `${onCard ? "bg-[#F5F5F7] dark:bg-[#2C2C2E]" : "bg-white dark:bg-[#2C2C2E]"} text-[#1D1D1F] dark:text-white shadow-xs`
                 : "text-[#6E6E73] dark:text-[#A1A1A6] hover:text-[#1D1D1F] dark:hover:text-white"
             }`}
           >

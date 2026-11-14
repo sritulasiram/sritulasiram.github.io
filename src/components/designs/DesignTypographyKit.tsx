@@ -16,8 +16,16 @@ import DesignSectionHeading from "./DesignSectionHeading";
 import Reveal from "@/components/shared/Reveal";
 import { LEAD_GRAY, SECTION_LEAD, SECTION_TITLE, TITLE_INK } from "@/components/shared/typeScale";
 
+export type TypeSystem = "apple" | "google" | "reui";
+
+export const TYPE_SYSTEM_OPTIONS: { value: TypeSystem; label: string }[] = [
+  { value: "apple", label: "San Francisco" },
+  { value: "google", label: "Google Fonts" },
+  { value: "reui", label: "ReUI" },
+];
+
 // Apple San Francisco
-const TYPE_PRINCIPLES_1: Principle[] = [
+export const TYPE_PRINCIPLES_1: Principle[] = [
   {
     icon: Sliders,
     color: "text-[#0071E3] dark:text-[#2997FF]",
@@ -45,7 +53,7 @@ const TYPE_PRINCIPLES_1: Principle[] = [
 ];
 
 // Google Fonts and Variable Systems
-const TYPE_PRINCIPLES_2: Principle[] = [
+export const TYPE_PRINCIPLES_2: Principle[] = [
   {
     icon: Sliders,
     color: "text-[#0071E3] dark:text-[#2997FF]",
@@ -69,6 +77,34 @@ const TYPE_PRINCIPLES_2: Principle[] = [
     color: "text-[#FF9500]",
     title: "Open licensing",
     body: "Most Google Fonts are open source, so designers and developers can use the same files.",
+  },
+];
+
+// ReUI
+export const TYPE_PRINCIPLES_3: Principle[] = [
+  {
+    icon: Sliders,
+    color: "text-[#0071E3] dark:text-[#2997FF]",
+    title: "Inter, end to end",
+    body: "ReUI sets every component in Inter, so headings, labels and tables share one voice.",
+  },
+  {
+    icon: Eye,
+    color: "text-[#AF52DE]",
+    title: "Built for interfaces",
+    body: "Tall x-height and open shapes keep dense UI text clear at small sizes.",
+  },
+  {
+    icon: Layers,
+    color: "text-[#34C759]",
+    title: "Variable weights",
+    body: "One variable file covers weights 100 to 900, so hierarchy comes from weight, not extra fonts.",
+  },
+  {
+    icon: Cpu,
+    color: "text-[#FF9500]",
+    title: "Neutral by design",
+    body: "A quiet typeface lets the component styling carry the look.",
   },
 ];
 
@@ -144,20 +180,42 @@ function Specimen({
   );
 }
 
-const APPLE_FAMILIES = {
+export const APPLE_FAMILIES = {
   display: { label: "SF Display", css: '-apple-system, BlinkMacSystemFont, "SF Pro Display", var(--font-inter), sans-serif' },
   text: { label: "SF Text", css: '-apple-system, BlinkMacSystemFont, "SF Pro Text", var(--font-inter), sans-serif' },
   rounded: { label: "SF Rounded", css: '"SF Pro Rounded", -apple-system, BlinkMacSystemFont, var(--font-inter), sans-serif' },
 } as const;
 
 // Loaded for this route in app/designs/layout.tsx (Inter is loaded site-wide).
-const GOOGLE_FAMILIES = {
+export const GOOGLE_FAMILIES = {
   roboto: { label: "Roboto Flex", css: "var(--font-roboto-flex), sans-serif" },
-  inter: { label: "Inter", css: "var(--font-inter), sans-serif" },
-  sans: { label: "Open Sans", css: "var(--font-open-sans), sans-serif" },
+  sans: { label: "Google Sans", css: "var(--font-google-sans), sans-serif" },
 } as const;
 
-export default function DesignTypographyKit() {
+function Wrapper({ embedded, id, children }: { embedded: boolean; id: string; children: React.ReactNode }) {
+  if (embedded) return <div className="space-y-8 sm:space-y-10">{children}</div>;
+  return (
+    <section id={id} className="scroll-mt-20 py-12 sm:py-16 bg-white dark:bg-black transition-colors overflow-hidden">
+      <div className="max-w-6xl mx-auto px-6 sm:px-8 space-y-12 sm:space-y-16">{children}</div>
+    </section>
+  );
+}
+
+const REUI_FAMILY = "var(--font-inter), sans-serif";
+
+export default function DesignTypographyKit({
+  embedded = false,
+  system: systemProp,
+}: {
+  embedded?: boolean;
+  /** When embedded, the parent owns the system switcher and passes the choice in. */
+  system?: TypeSystem;
+}) {
+  const [ownSystem, setSystem] = useState<TypeSystem>("apple");
+  const system = systemProp ?? ownSystem;
+
+  const [reuiWeight, setReuiWeight] = useState<Weight>(400);
+  const [reuiSize, setReuiSize] = useState<Size>(24);
   const [appleWeight, setAppleWeight] = useState<Weight>(400);
   const [appleVariant, setAppleVariant] = useState<keyof typeof APPLE_FAMILIES>("display");
   const [appleSize, setAppleSize] = useState<Size>(24);
@@ -167,25 +225,40 @@ export default function DesignTypographyKit() {
   const [googleSize, setGoogleSize] = useState<Size>(24);
 
   return (
-    <section id="typography" className="scroll-mt-20 py-12 sm:py-16 bg-white dark:bg-black transition-colors overflow-hidden">
-      <div className="max-w-6xl mx-auto px-6 sm:px-8 space-y-12 sm:space-y-16">
+    <Wrapper embedded={embedded} id="typography">
         {/* Section Header */}
+        {!embedded && (
         <Reveal>
           <div className="max-w-3xl">
             <h2 className={`${SECTION_TITLE} ${TITLE_INK}`}>
               Typography systems.
               <br />
               <span className="text-[#6E6E73] dark:text-[#8E8E93] font-medium">
-                San Francisco and the Google Fonts web stack.
+                San Francisco, Google Fonts and ReUI.
               </span>
             </h2>
             <p className={`mt-4 max-w-2xl ${SECTION_LEAD} ${LEAD_GRAY}`}>
-              Change the cut, weight and size to see how each typeface behaves.
+              Pick a system, then change the weight and size to see how each typeface behaves.
             </p>
+            <div className="mt-6">
+              <DesignSpecimenToggle
+                label="System"
+                value={system}
+                onChange={setSystem}
+                options={[
+                  { value: "apple", label: "San Francisco" },
+                  { value: "google", label: "Google Fonts" },
+                  { value: "reui", label: "ReUI" },
+                ]}
+              />
+            </div>
           </div>
         </Reveal>
 
+        )}
+
         {/* 1. Apple San Francisco */}
+        {system === "apple" && (
         <div className="space-y-8 sm:space-y-10">
           <Reveal>
             <DesignSectionHeading
@@ -226,8 +299,10 @@ export default function DesignTypographyKit() {
 
           <DesignPrincipleGrid items={TYPE_PRINCIPLES_1} />
         </div>
+        )}
 
         {/* 2. Google Fonts and Variable Systems */}
+        {system === "google" && (
         <div className="space-y-8 sm:space-y-10">
           <Reveal>
             <DesignSectionHeading
@@ -267,7 +342,41 @@ export default function DesignTypographyKit() {
 
           <DesignPrincipleGrid items={TYPE_PRINCIPLES_2} />
         </div>
-      </div>
-    </section>
+        )}
+
+        {/* 3. ReUI */}
+        {system === "reui" && (
+        <div className="space-y-8 sm:space-y-10">
+          <Reveal>
+            <DesignSectionHeading
+              title="ReUI"
+              description="The typeface behind ReUI's components: Inter, a variable font tuned for interfaces."
+              href="https://reui.io/"
+              linkLabel="ReUI Library"
+            />
+          </Reveal>
+
+          <Reveal delay={100}>
+            <div className="space-y-6">
+              <div className="flex flex-wrap items-center justify-between gap-4 py-2">
+                <DesignSpecimenToggle label="Weight" value={reuiWeight} onChange={setReuiWeight} options={[...WEIGHT_OPTIONS]} />
+                <DesignSpecimenToggle label="Size" value={reuiSize} onChange={setReuiSize} options={[...SIZE_OPTIONS]} />
+              </div>
+
+              <Specimen
+                title="Inter"
+                caption="ReUI"
+                detail="Variable"
+                family={REUI_FAMILY}
+                weight={reuiWeight}
+                size={reuiSize}
+              />
+            </div>
+          </Reveal>
+
+          <DesignPrincipleGrid items={TYPE_PRINCIPLES_3} />
+        </div>
+        )}
+    </Wrapper>
   );
 }

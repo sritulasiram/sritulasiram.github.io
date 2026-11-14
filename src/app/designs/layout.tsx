@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Open_Sans, Roboto_Flex } from "next/font/google";
+import { Google_Sans, Roboto_Flex } from "next/font/google";
+import { antiqueOlive, beyno } from "@/components/designs/customFonts";
 
 // Only the Designs page specimens use these, so they are scoped to this route and
 // not preloaded: each file downloads the first time its family is selected.
@@ -10,11 +11,13 @@ const robotoFlex = Roboto_Flex({
   variable: "--font-roboto-flex",
 });
 
-const openSans = Open_Sans({
+const googleSans = Google_Sans({
   subsets: ["latin"],
   display: "swap",
   preload: false,
-  variable: "--font-open-sans",
+  // next/font has no fallback metrics for Google Sans yet, so skip the adjusted fallback.
+  adjustFontFallback: false,
+  variable: "--font-google-sans",
 });
 
 export const metadata: Metadata = {
@@ -32,5 +35,5 @@ export default function DesignsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className={`${robotoFlex.variable} ${openSans.variable}`}>{children}</div>;
+  return <div className={`${robotoFlex.variable} ${googleSans.variable} ${antiqueOlive.variable} ${beyno.variable}`}>{children}</div>;
 }
